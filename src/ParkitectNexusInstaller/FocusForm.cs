@@ -6,17 +6,25 @@ using System.Windows.Forms;
 
 namespace ParkitectNexusInstaller
 {
+    /// <summary>
+    /// Represents an invisible form used for acquiring focus.
+    /// </summary>
     internal partial class FocusForm : Form
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FocusForm"/> class.
+        /// </summary>
         public FocusForm()
         {
             InitializeComponent();
 
-            StartPosition = FormStartPosition.Manual;
-            var rect = SystemInformation.VirtualScreen;
-            Location = new Point(rect.Bottom + 10, rect.Right + 10);
+            // Spawn the form outside of the screen.
+            Location = new Point(SystemInformation.VirtualScreen.Bottom + 10, SystemInformation.VirtualScreen.Right + 10);
         }
 
+        /// <summary>
+        /// Shows this instance.
+        /// </summary>
         public new void Show()
         {
             base.Show();

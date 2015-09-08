@@ -9,6 +9,9 @@ using CommandLine;
 
 namespace ParkitectNexusInstaller
 {
+    /// <summary>
+    /// Represents the entry point class for the application.
+    /// </summary>
     internal static class Program
     {
         /// <summary>
@@ -61,6 +64,7 @@ namespace ParkitectNexusInstaller
                         RootFolder = Environment.SpecialFolder.MyComputer
                     };
 
+                    // Keep showing folder browser dialog until an installation directory has been picked or the user has canceled.
                     while (!parkitect.IsInstalled)
                     {
                         if (dialog.ShowDialog(focus) != DialogResult.OK) return;
@@ -85,7 +89,14 @@ namespace ParkitectNexusInstaller
             ParkitectNexusUrl parkitectNexusUrl;
             if (!ParkitectNexusUrl.TryParse(options.DownloadUrl, out parkitectNexusUrl))
             {
-                parkitectNexus.Launch();
+
+                // Create a form to allow the dialogs to have a owner with forced focus and an icon.
+                using (var focus = new FocusForm())
+                {
+                    focus.Show();
+                    MessageBox.Show(focus, "The URL you opened is invalid!", "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
                 return;
             }
 

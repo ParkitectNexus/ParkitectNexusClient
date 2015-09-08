@@ -7,11 +7,23 @@ using System.Net;
 
 namespace ParkitectNexusInstaller
 {
+    /// <summary>
+    /// Represents an URL with the parkitectnexus protocol.
+    /// </summary>
     internal class ParkitectNexusUrl
     {
         private const string Protocol = "parkitectnexus:";
         private const string ProtocolInstructionSeparator = "|";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParkitectNexusUrl"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="assetType">Type of the asset.</param>
+        /// <param name="fileHash">The file hash.</param>
+        /// <exception cref="ArgumentNullException">
+        /// </exception>
+        /// <exception cref="ArgumentException">invalid file hash</exception>
         public ParkitectNexusUrl(string name, ParkitectAssetType assetType, string fileHash)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -24,8 +36,17 @@ namespace ParkitectNexusInstaller
             FileHash = fileHash;
         }
 
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         public string Name { get; }
+        /// <summary>
+        /// Gets the type of the asset.
+        /// </summary>
         public ParkitectAssetType AssetType { get; }
+        /// <summary>
+        /// Gets the file hash.
+        /// </summary>
         public string FileHash { get; }
 
         #region Overrides of Object
@@ -44,6 +65,12 @@ namespace ParkitectNexusInstaller
 
         #endregion
 
+        /// <summary>
+        /// Parses the specified input to an instance of <see cref="ParkitectNexusUrl"/>
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>The parsed instance.</returns>
+        /// <exception cref="FormatException">Thrown if invalid url format.</exception>
         public static ParkitectNexusUrl Parse(string input)
         {
             ParkitectNexusUrl output;
@@ -52,6 +79,13 @@ namespace ParkitectNexusInstaller
             return output;
         }
 
+        /// <summary>
+        /// Tries the parse the specified input to an instance of <see cref="ParkitectNexusUrl"/>.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="output">The output.</param>
+        /// <returns>true if successful; false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if input is null.</exception>
         public static bool TryParse(string input, out ParkitectNexusUrl output)
         {
             if (input == null)
@@ -79,10 +113,11 @@ namespace ParkitectNexusInstaller
             if (!Enum.TryParse(assetTypeString, out assetType))
                 return false;
 
+            // Decode HTML entities in the name of the asset.
             var name = WebUtility.HtmlDecode(parts[0]);
-            var fileHash = parts[2];
-
+            
             // Make sure the file hash is valid.
+            var fileHash = parts[2];
             if (!ParkitectNexus.IsValidFileHash(fileHash))
                 return false;
 

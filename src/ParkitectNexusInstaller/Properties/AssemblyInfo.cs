@@ -9,13 +9,13 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Parkitect Nexus Installer")]
+[assembly: AssemblyTitle("Parkitect Nexus")]
 [assembly: AssemblyDescription("Parkitect Nexus blueprint and savegame installer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Parkitect")]
-[assembly: AssemblyProduct("Parkitect Nexus Installer")]
-[assembly: AssemblyCopyright("Copyright © Parkitect 2015")]
-[assembly: AssemblyTrademark("Parkitect")]
+[assembly: AssemblyCompany("Parkitect Nexus")]
+[assembly: AssemblyProduct("Parkitect Nexus")]
+[assembly: AssemblyCopyright("Copyright © Parkitect Nexus 2015")]
+[assembly: AssemblyTrademark("Parkitect Nexus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
