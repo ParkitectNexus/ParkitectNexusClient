@@ -86,7 +86,7 @@
             this.MinimizeBox = false;
             this.Name = "InstallerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Parkitect Nexus downloader";
+            this.Text = "Parkitect Nexus Client";
             this.ResumeLayout(false);
             this.PerformLayout();
 
