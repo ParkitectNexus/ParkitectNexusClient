@@ -64,7 +64,7 @@ namespace ParkitectNexusInstaller
                 return false;
 
             // Trim off the protocol and any number of slashes.
-            input = input.Substring(Protocol.Length).TrimStart('/');
+            input = input.Substring(Protocol.Length).Trim('/');
 
             var parts = input.Split(new[] {ProtocolInstructionSeparator}, StringSplitOptions.None);
 
