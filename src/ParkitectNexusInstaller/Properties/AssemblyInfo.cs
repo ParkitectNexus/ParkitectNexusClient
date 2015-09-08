@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Parkitect Nexus")]
-[assembly: AssemblyDescription("Parkitect Nexus blueprint and savegame installer")]
+[assembly: AssemblyTitle("Parkitect Nexus Client")]
+[assembly: AssemblyDescription("Parkitect Nexus Client for automatically installing blueprints and savegames")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Parkitect Nexus")]
-[assembly: AssemblyProduct("Parkitect Nexus")]
+[assembly: AssemblyCompany("Parkitect Nexus Client")]
+[assembly: AssemblyProduct("Parkitect Nexus Client")]
 [assembly: AssemblyCopyright("Copyright © Parkitect Nexus 2015")]
 [assembly: AssemblyTrademark("Parkitect Nexus")]
 [assembly: AssemblyCulture("")]
@@ -39,6 +39,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.0.1.0")]
+[assembly: AssemblyFileVersion("0.0.1.0")]
 [assembly: NeutralResourcesLanguage("en")]

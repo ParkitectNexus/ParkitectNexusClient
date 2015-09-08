@@ -20,6 +20,10 @@ namespace ParkitectNexusInstaller
         [STAThread]
         private static void Main(string[] args)
         {
+            // Check for updates.
+            ClickOnceUpdater.Update();
+            ClickOnceUpdater.UpdateSettings();
+
             var parkitect = new Parkitect();
             var parkitectNexus = new ParkitectNexus();
             var options = new CommandLineOptions();
