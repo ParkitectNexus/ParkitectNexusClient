@@ -1,4 +1,4 @@
-# ParkitectNexusInstaller
+# Parkitect Nexus Client
 An automatic blueprint and savegames installer for Parkitect Nexus.
 
 https://parkitectnexus.com
