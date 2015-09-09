@@ -21,5 +21,11 @@ namespace ParkitectNexusInstaller
         /// </summary>
         [Option("set-installation-path")]
         public string SetInstallationPath { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether not to open the parkitect nexus website when no download action is specified.
+        /// </summary>
+        [Option('s', "silent")]
+        public bool Silent { get; set; }
     }
 }

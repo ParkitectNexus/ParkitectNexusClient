@@ -20,9 +20,8 @@ namespace ParkitectNexusInstaller
         [STAThread]
         private static void Main(string[] args)
         {
-            // Check for updates.
-            ClickOnceUpdater.Update();
-            ClickOnceUpdater.UpdateSettings();
+            // Update settings.
+            UpdateUtil.MigrateSettings();
 
             var parkitect = new Parkitect();
             var parkitectNexus = new ParkitectNexus();
@@ -38,7 +37,16 @@ namespace ParkitectNexusInstaller
             // Try to parse the command-line arguments. If parsing fails open parkitect nexus.
             if (!Parser.Default.ParseArguments(args, options))
             {
-                parkitectNexus.Launch();
+                if (!options.Silent)
+                    parkitectNexus.Launch();
+                return;
+            }
+
+            // If no download option was specified, launch parkitect nexus.
+            if (options.DownloadUrl == null)
+            {
+                if (!options.Silent)
+                    parkitectNexus.Launch();
                 return;
             }
 
@@ -80,13 +88,6 @@ namespace ParkitectNexusInstaller
                             return;
                     }
                 }
-            }
-
-            // If no download option was specified, launch parkitect nexus.
-            if (options.DownloadUrl == null)
-            {
-                parkitectNexus.Launch();
-                return;
             }
 
             // Try to parse the specified download url. If parsing fails open parkitect nexus. 
