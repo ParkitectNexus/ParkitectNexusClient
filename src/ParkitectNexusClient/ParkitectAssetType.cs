@@ -1,7 +1,7 @@
 // ParkitectNexusInstaller
 // Copyright 2015 Parkitect, Tim Potze
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Contains parkitect asset types supported by the client.

@@ -1,9 +1,9 @@
 ﻿// ParkitectNexusInstaller
 // Copyright 2015 Parkitect, Tim Potze
 
-using ParkitectNexusInstaller.Properties;
+using ParkitectNexusClient.Properties;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Contains utilities for updating.

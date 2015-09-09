@@ -13,11 +13,10 @@ namespace WixSharpSetup
         private const string AppIcon = @"..\nexus.ico";
         private const string AppName = @"Parkitect Nexus Client";
         private const string AppExecutable = @"ParkitectNexusClient.exe";
+        private const string AppBinariesPath = @"..\ParkitectNexusClient\bin\Release\";
         static void Main()
         {
-            var assembly =
-                System.Reflection.Assembly.LoadFrom(
-                    @"..\ParkitectNexusInstaller\bin\Release\" + AppExecutable);
+            var assembly = System.Reflection.Assembly.LoadFrom(AppBinariesPath + AppExecutable);
             var assemblyName = assembly.GetName();
             var project = new ManagedProject(AppName,
                 new Dir(@"%ProgramFiles%\" + AppName,
@@ -34,7 +33,7 @@ namespace WixSharpSetup
             {
                 GUID = new Guid(((GuidAttribute) assembly.GetCustomAttributes(typeof (GuidAttribute), true)[0]).Value),
                 ManagedUI = new ManagedUI(),
-                SourceBaseDir = @"..\ParkitectNexusInstaller\bin\Release\",
+                SourceBaseDir = AppBinariesPath,
                 OutDir = "bin",
                 Version = assemblyName.Version,
                 Description = "An installer for Theme Parkitect.",

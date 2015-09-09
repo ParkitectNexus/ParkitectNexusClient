@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ParkitectNexusInstaller.Properties {
+namespace ParkitectNexusClient.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

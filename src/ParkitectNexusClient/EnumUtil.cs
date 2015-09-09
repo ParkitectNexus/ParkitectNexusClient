@@ -4,7 +4,7 @@
 using System;
 using System.Reflection;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Contains utility methods for enum values.

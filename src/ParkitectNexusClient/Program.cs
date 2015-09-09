@@ -7,7 +7,7 @@ using CommandLine;
 
 // ReSharper disable ExpressionIsAlwaysNull
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents the entry point class for the application.

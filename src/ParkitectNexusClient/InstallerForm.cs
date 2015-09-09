@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents an installation form.

@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents the parkitect nexus server.

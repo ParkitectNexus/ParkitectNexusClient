@@ -4,9 +4,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using ParkitectNexusInstaller.Properties;
+using ParkitectNexusClient.Properties;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents the installation directory of the Parkitect game.

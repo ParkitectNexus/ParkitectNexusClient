@@ -70,25 +70,28 @@
 
     <Property Id="WixSharp_UI_INSTALLDIR" Value="INSTALLDIR"  />
     <Property Id="WixSharp_InstallDialogs" Value="WixSharp.UI, Version=1.0.22.3, Culture=neutral, PublicKeyToken=3775edd25acc43c2|WixSharp.UI.Forms.WelcomeDialog&#xA;WixSharp.UI, Version=1.0.22.3, Culture=neutral, PublicKeyToken=3775edd25acc43c2|WixSharp.UI.Forms.InstallDirDialog&#xA;WixSharp.UI, Version=1.0.22.3, Culture=neutral, PublicKeyToken=3775edd25acc43c2|WixSharp.UI.Forms.ProgressDialog&#xA;WixSharp.UI, Version=1.0.22.3, Culture=neutral, PublicKeyToken=3775edd25acc43c2|WixSharp.UI.Forms.ExitDialog"  />
-    <Property Id="WixSharp_AfterInstall_Handlers" Value="WixSharpSetup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|WixSharpSetup.Program|Msi_AfterInstall"  />
     <Property Id="ARPHELPLINK" Value="https://parkitectnexus.com"  />
     <Property Id="ARPNOREPAIR" Value="True"  />
     <Property Id="ARPPRODUCTICON" Value="app_icon.ico"  />
 
     <UI >
-      <EmbeddedUI Id="WixSharp.UI.dll" SourceFile="..\..\..\WixSharp Setup1\bin\WixSharp.UI.CA.dll" />
+      <EmbeddedUI Id="WixSharp.UI.dll" SourceFile="..\..\..\Setup\bin\WixSharp.UI.CA.dll" />
     </UI>
+
+    <Upgrade Id="82fcd17e-8e5e-4322-b8b8-c00c4c224fe4" >
+      <UpgradeVersion Minimum="0.0.0.0" IncludeMinimum="yes" Maximum="0.0.1.0" IncludeMaximum="no" Property="UPGRADEFOUND" />
+      <UpgradeVersion Minimum="0.0.1.0" IncludeMinimum="no" OnlyDetect="yes" Property="NEWPRODUCTFOUND" />
+    </Upgrade>
 
     <CustomAction Id="Action1_ParkitectNexusClient.exe" ExeCommand="-s" Return="asyncNoWait" FileKey="ParkitectNexusClient.exe"  />
     <CustomAction Id="WixSharp_InitRuntime_Action" BinaryKey="Action2_WixSharp_InitRuntime_Action_File" DllEntry="WixSharp_InitRuntime_Action" Impersonate="yes" Execute="immediate" Return="check"  />
-    <CustomAction Id="Set_WixSharp_AfterInstall_Action_Props" Property="WixSharp_AfterInstall_Action" Value="WixSharp_AfterInstall_Handlers=[WixSharp_AfterInstall_Handlers];WIXSHARP_RUNTIME_DATA=[WIXSHARP_RUNTIME_DATA];INSTALLDIR=[INSTALLDIR];UILevel=[UILevel];ProductName=[ProductName];INSTALLDIR=[INSTALLDIR];UILevel=[UILevel]"  />
-    <CustomAction Id="WixSharp_AfterInstall_Action" BinaryKey="Action2_WixSharp_InitRuntime_Action_File" DllEntry="WixSharp_AfterInstall_Action" Impersonate="no" Execute="deferred" Return="check"  />
+    <CustomAction Id="PreventDowngrading" Error="Newer version already installed"  />
 
-    <Binary Id="Action2_WixSharp_InitRuntime_Action_File" SourceFile="..\..\..\WixSharp Setup1\bin\WixSharp.CA.dll"  />
-    <Binary Id="WixSharp_UIText" SourceFile="..\..\..\WixSharp Setup1\bin\Parkitect Nexus Client.wxl"  />
-    <Binary Id="WixSharp_LicenceFile" SourceFile="..\..\..\WixSharp Setup1\bin\Parkitect Nexus Client.licence.rtf"  />
-    <Binary Id="WixUI_Bmp_Dialog" SourceFile="..\..\..\WixSharp Setup1\bin\Parkitect Nexus Client.dialog_bmp.png"  />
-    <Binary Id="WixUI_Bmp_Banner" SourceFile="..\..\..\WixSharp Setup1\bin\Parkitect Nexus Client.dialog_banner.png"  />
+    <Binary Id="Action2_WixSharp_InitRuntime_Action_File" SourceFile="..\..\..\Setup\bin\WixSharp.CA.dll"  />
+    <Binary Id="WixSharp_UIText" SourceFile="..\..\..\Setup\bin\Parkitect Nexus Client.wxl"  />
+    <Binary Id="WixSharp_LicenceFile" SourceFile="..\..\..\Setup\bin\Parkitect Nexus Client.licence.rtf"  />
+    <Binary Id="WixUI_Bmp_Dialog" SourceFile="..\..\..\Setup\bin\Parkitect Nexus Client.dialog_bmp.png"  />
+    <Binary Id="WixUI_Bmp_Banner" SourceFile="..\..\..\Setup\bin\Parkitect Nexus Client.dialog_banner.png"  />
 
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1" >
       <ComponentRef Id="Component.ParkitectNexusClient.exe" />
@@ -101,9 +104,14 @@
     <InstallExecuteSequence >
       <Custom Action="Action1_ParkitectNexusClient.exe" After="InstallExecute"> (NOT Installed) </Custom>
       <Custom Action="WixSharp_InitRuntime_Action" Before="AppSearch"> (1) </Custom>
-      <Custom Action="Set_WixSharp_AfterInstall_Action_Props" After="InstallInitialize" />
-      <Custom Action="WixSharp_AfterInstall_Action" After="InstallFiles">1</Custom>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+
+      <RemoveExistingProducts After="InstallInitialize" />
     </InstallExecuteSequence>
+
+    <InstallUISequence >
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+    </InstallUISequence>
 
     <Icon Id="app_icon.ico" SourceFile="..\..\..\nexus.ico"  />
     <Icon Id="IconFile1_nexus.ico" SourceFile="..\..\..\nexus.ico"  />

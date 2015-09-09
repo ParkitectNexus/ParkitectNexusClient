@@ -1,4 +1,4 @@
-﻿namespace ParkitectNexusInstaller
+﻿namespace ParkitectNexusClient
 {
     partial class InstallerForm
     {

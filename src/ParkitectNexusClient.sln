@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexusInstaller", "ParkitectNexusInstaller\ParkitectNexusInstaller.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexusClient", "ParkitectNexusClient\ParkitectNexusClient.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "Setup\Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 	ProjectSection(ProjectDependencies) = postProject

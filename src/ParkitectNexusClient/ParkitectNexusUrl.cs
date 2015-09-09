@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Net;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents an URL with the parkitectnexus protocol.

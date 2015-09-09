@@ -3,7 +3,7 @@
 
 using System;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Provides information about a parkitect asset.

@@ -3,7 +3,7 @@
 
 using CommandLine;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents a collection of command line options which can be set with the execution of the application.

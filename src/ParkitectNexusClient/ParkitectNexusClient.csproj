@@ -7,7 +7,7 @@
     <ProjectGuid>{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ParkitectNexusInstaller</RootNamespace>
+    <RootNamespace>ParkitectNexusClient</RootNamespace>
     <AssemblyName>ParkitectNexusClient</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -132,6 +132,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />

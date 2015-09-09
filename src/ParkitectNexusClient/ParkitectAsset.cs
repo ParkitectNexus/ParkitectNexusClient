@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents a parkitect asset.

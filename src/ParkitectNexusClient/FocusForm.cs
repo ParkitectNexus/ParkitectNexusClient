@@ -4,7 +4,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ParkitectNexusInstaller
+namespace ParkitectNexusClient
 {
     /// <summary>
     /// Represents an invisible form used for acquiring focus.
