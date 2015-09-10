@@ -59,8 +59,8 @@ namespace ParkitectNexusClient
                 {
                     // If the asset has failed to download, show some feedback to the user.
                     MessageBox.Show(this,
-                        $"Failed to install {assetName}\nPlease try again later!",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        $"Failed to install {assetName}!\nPlease try again later.",
+                        "Parkitect Nexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
                     return;
                 }
@@ -73,8 +73,8 @@ namespace ParkitectNexusClient
             {
                 // If the asset has failed to download, show some feedback to the user.
                 MessageBox.Show(this,
-                    $"Failed to install {assetName}\nPlease try again later!",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    $"Failed to install {assetName}!\nPlease try again later.",
+                    "Parkitect Nexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // todo: Maybe these errors should be sent to some server.
             }

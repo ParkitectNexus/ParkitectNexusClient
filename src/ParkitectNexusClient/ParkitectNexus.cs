@@ -73,12 +73,8 @@ namespace ParkitectNexusClient
             var downloadUrl = string.Format(DownloadUrl, url.FileHash);
 
             // Create a web client which will download the file.
-            using (var webClient = new WebClient())
+            using (var webClient = new ParkitectNexusWebClient())
             {
-                // Add a version number header to the request.
-                webClient.Headers.Add("X-ParkitectNexusInstaller-Version",
-                    Assembly.GetExecutingAssembly().GetName().Version.ToString());
-
                 // Receive the content of the file.
                 using (var stream = await webClient.OpenReadTaskAsync(downloadUrl))
                 {
