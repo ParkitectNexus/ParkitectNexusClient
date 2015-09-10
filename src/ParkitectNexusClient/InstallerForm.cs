@@ -1,14 +1,15 @@
-﻿// ParkitectNexusInstaller
+﻿// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents an installation form.
+    ///     Represents an installation form.
     /// </summary>
     internal partial class InstallerForm : Form
     {
@@ -19,7 +20,7 @@ namespace ParkitectNexusClient
         private int _dotsDirection = 1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstallerForm"/> class.
+        ///     Initializes a new instance of the <see cref="InstallerForm" /> class.
         /// </summary>
         /// <param name="parkitect">The parkitect.</param>
         /// <param name="parkitectNexus">The parkitect nexus.</param>
@@ -37,10 +38,13 @@ namespace ParkitectNexusClient
 
             // Format the "installing" label.
             installingLabel.Text = $"Installing {parkitectNexusUrl.AssetType} {parkitectNexusUrl.Name}";
+
+            // Set the client size to make the baner fit snugly.
+            ClientSize = new Size(493, 125);
         }
 
         /// <summary>
-        /// Installs the asset.
+        ///     Installs the asset.
         /// </summary>
         private async void InstallAsset()
         {

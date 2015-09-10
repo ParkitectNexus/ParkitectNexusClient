@@ -4,7 +4,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexusClient.Properties;
 
@@ -50,7 +49,6 @@ namespace ParkitectNexusClient
                 return null;
             }
         }
-
 
         public static bool InstallUpdate(UpdateInfo updateInfo)
         {

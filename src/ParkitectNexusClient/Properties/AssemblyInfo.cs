@@ -1,4 +1,4 @@
-﻿// ParkitectNexusInstaller
+﻿// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System.Reflection;

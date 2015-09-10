@@ -1,4 +1,4 @@
-// ParkitectNexusInstaller
+// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -8,7 +8,7 @@ using System.Net;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents an URL with the parkitectnexus protocol.
+    ///     Represents an URL with the parkitectnexus protocol.
     /// </summary>
     internal class ParkitectNexusUrl
     {
@@ -16,7 +16,7 @@ namespace ParkitectNexusClient
         private const string ProtocolInstructionSeparator = "|";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParkitectNexusUrl"/> class.
+        ///     Initializes a new instance of the <see cref="ParkitectNexusUrl" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="assetType">Type of the asset.</param>
@@ -37,15 +37,17 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Gets the name.
+        ///     Gets the name.
         /// </summary>
         public string Name { get; }
+
         /// <summary>
-        /// Gets the type of the asset.
+        ///     Gets the type of the asset.
         /// </summary>
         public ParkitectAssetType AssetType { get; }
+
         /// <summary>
-        /// Gets the file hash.
+        ///     Gets the file hash.
         /// </summary>
         public string FileHash { get; }
 
@@ -66,7 +68,7 @@ namespace ParkitectNexusClient
         #endregion
 
         /// <summary>
-        /// Parses the specified input to an instance of <see cref="ParkitectNexusUrl"/>
+        ///     Parses the specified input to an instance of <see cref="ParkitectNexusUrl" />
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>The parsed instance.</returns>
@@ -80,7 +82,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Tries the parse the specified input to an instance of <see cref="ParkitectNexusUrl"/>.
+        ///     Tries the parse the specified input to an instance of <see cref="ParkitectNexusUrl" />.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="output">The output.</param>
@@ -115,7 +117,7 @@ namespace ParkitectNexusClient
 
             // Decode HTML entities in the name of the asset.
             var name = WebUtility.HtmlDecode(parts[0]);
-            
+
             // Make sure the file hash is valid.
             var fileHash = parts[2];
             if (!ParkitectNexus.IsValidFileHash(fileHash))

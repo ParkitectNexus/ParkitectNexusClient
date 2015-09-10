@@ -1,4 +1,4 @@
-// ParkitectNexusInstaller
+// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -6,13 +6,13 @@ using System;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Provides information about a parkitect asset.
+    ///     Provides information about a parkitect asset.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     internal class ParkitectAssetInfoAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParkitectAssetInfoAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="ParkitectAssetInfoAttribute" /> class.
         /// </summary>
         /// <param name="contentType">Type of the content.</param>
         /// <param name="name">The name.</param>
@@ -30,15 +30,17 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Gets the type of the content provided when an asset of this type is being downloaded.
+        ///     Gets the type of the content provided when an asset of this type is being downloaded.
         /// </summary>
         public string ContentType { get; }
+
         /// <summary>
-        /// Gets the name.
+        ///     Gets the name.
         /// </summary>
         public string Name { get; }
+
         /// <summary>
-        /// Gets the storage folder within the game directory.
+        ///     Gets the storage folder within the game directory.
         /// </summary>
         public string StorageFolder { get; }
     }

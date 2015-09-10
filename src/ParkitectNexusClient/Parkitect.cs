@@ -1,4 +1,4 @@
-// ParkitectNexusInstaller
+// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -9,12 +9,12 @@ using ParkitectNexusClient.Properties;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents the installation directory of the Parkitect game.
+    ///     Represents the installation directory of the Parkitect game.
     /// </summary>
     internal class Parkitect
     {
         /// <summary>
-        /// Gets or sets the installation path.
+        ///     Gets or sets the installation path.
         /// </summary>
         /// <exception cref="ArgumentException">Thrown if the installation path is invalid</exception>
         public string InstallationPath
@@ -36,12 +36,12 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the game is installed.
+        ///     Gets or sets a value indicating whether the game is installed.
         /// </summary>
         public bool IsInstalled => InstallationPath != null;
 
         /// <summary>
-        /// Determines whether the specified path is valid installation path.
+        ///     Determines whether the specified path is valid installation path.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns>true if valid; false otherwise.</returns>
@@ -51,7 +51,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Sets the installation path if the specified path is a valid installation path.
+        ///     Sets the installation path if the specified path is a valid installation path.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns>true if valid; false otherwise.</returns>
@@ -67,7 +67,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Detects the installation path.
+        ///     Detects the installation path.
         /// </summary>
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
         public bool DetectInstallationPath()
@@ -81,7 +81,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Stores the specified asset in the game's correct directory.
+        ///     Stores the specified asset in the game's correct directory.
         /// </summary>
         /// <param name="asset">The asset.</param>
         /// <returns>A task which performs the requested action.</returns>

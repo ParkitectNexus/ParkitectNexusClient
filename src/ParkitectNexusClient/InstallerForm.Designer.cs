@@ -34,15 +34,17 @@
             this.installingLabel = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // progressBar
             // 
             this.progressBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this.progressBar.Location = new System.Drawing.Point(12, 25);
+            this.progressBar.Location = new System.Drawing.Point(12, 77);
             this.progressBar.MarqueeAnimationSpeed = 10;
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(388, 23);
+            this.progressBar.Size = new System.Drawing.Size(460, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar.TabIndex = 0;
             this.progressBar.Value = 100;
@@ -50,7 +52,7 @@
             // installingLabel
             // 
             this.installingLabel.AutoSize = true;
-            this.installingLabel.Location = new System.Drawing.Point(12, 9);
+            this.installingLabel.Location = new System.Drawing.Point(12, 61);
             this.installingLabel.Name = "installingLabel";
             this.installingLabel.Size = new System.Drawing.Size(65, 13);
             this.installingLabel.TabIndex = 1;
@@ -59,7 +61,7 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(12, 51);
+            this.statusLabel.Location = new System.Drawing.Point(12, 103);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(78, 13);
             this.statusLabel.TabIndex = 2;
@@ -71,11 +73,22 @@
             this.timer.Interval = 20;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pictureBox1.Image = global::ParkitectNexusClient.Properties.Resources.dialog_banner;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(484, 58);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
             // InstallerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(412, 75);
+            this.ClientSize = new System.Drawing.Size(484, 129);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.installingLabel);
             this.Controls.Add(this.progressBar);
@@ -87,6 +100,7 @@
             this.Name = "InstallerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Parkitect Nexus Client";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,6 +112,7 @@
         private System.Windows.Forms.Label installingLabel;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

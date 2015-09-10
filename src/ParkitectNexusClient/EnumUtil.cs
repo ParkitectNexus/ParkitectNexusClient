@@ -1,4 +1,4 @@
-// ParkitectNexusInstaller
+// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -7,12 +7,12 @@ using System.Reflection;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Contains utility methods for enum values.
+    ///     Contains utility methods for enum values.
     /// </summary>
     internal static class EnumUtil
     {
         /// <summary>
-        /// Gets the custom attribute of the enum value.
+        ///     Gets the custom attribute of the enum value.
         /// </summary>
         /// <typeparam name="T">The type of the custom attribute</typeparam>
         /// <param name="enum">The enum.</param>

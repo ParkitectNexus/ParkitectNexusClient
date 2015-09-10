@@ -1,4 +1,4 @@
-// ParkitectNexusInstaller
+// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using CommandLine;
@@ -6,24 +6,24 @@ using CommandLine;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents a collection of command line options which can be set with the execution of the application.
+    ///     Represents a collection of command line options which can be set with the execution of the application.
     /// </summary>
     internal class CommandLineOptions
     {
         /// <summary>
-        /// Gets the download URL of an asset file.
+        ///     Gets the download URL of an asset file.
         /// </summary>
         [Option('d', "download")]
         public string DownloadUrl { get; set; }
 
         /// <summary>
-        /// Gets the set-installation-path option value. Should be path to the installation path of the game if set.
+        ///     Gets the set-installation-path option value. Should be path to the installation path of the game if set.
         /// </summary>
         [Option("set-installation-path")]
         public string SetInstallationPath { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether not to open the parkitect nexus website when no download action is specified.
+        ///     Gets a value indicating whether not to open the parkitect nexus website when no download action is specified.
         /// </summary>
         [Option('s', "silent")]
         public bool Silent { get; set; }

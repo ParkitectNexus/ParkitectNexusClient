@@ -1,4 +1,4 @@
-﻿// ParkitectNexusInstaller
+﻿// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents the entry point class for the application.
+    ///     Represents the entry point class for the application.
     /// </summary>
     internal static class Program
     {
@@ -21,7 +21,7 @@ namespace ParkitectNexusClient
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             var app = new App();
             app.Run(args);
         }

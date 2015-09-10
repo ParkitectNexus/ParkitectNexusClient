@@ -1,4 +1,4 @@
-// ParkitectNexusInstaller
+// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -7,12 +7,12 @@ using System.IO;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents a parkitect asset.
+    ///     Represents a parkitect asset.
     /// </summary>
     internal class ParkitectAsset : IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParkitectAsset"/> class.
+        ///     Initializes a new instance of the <see cref="ParkitectAsset" /> class.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="type">The type.</param>
@@ -28,22 +28,24 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Gets the name of the file.
+        ///     Gets the name of the file.
         /// </summary>
         public string FileName { get; }
+
         /// <summary>
-        /// Gets the type.
+        ///     Gets the type.
         /// </summary>
         public ParkitectAssetType Type { get; }
+
         /// <summary>
-        /// Gets the stream.
+        ///     Gets the stream.
         /// </summary>
         public Stream Stream { get; }
 
         #region Implementation of IDisposable
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -54,7 +56,7 @@ namespace ParkitectNexusClient
         #endregion
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="ParkitectAsset"/> class.
+        ///     Finalizes an instance of the <see cref="ParkitectAsset" /> class.
         /// </summary>
         ~ParkitectAsset()
         {
@@ -62,10 +64,11 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        ///     Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing">
-        ///   <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+        /// </param>
         protected void Dispose(bool disposing)
         {
             if (disposing)

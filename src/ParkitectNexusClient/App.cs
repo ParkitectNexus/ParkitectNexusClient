@@ -1,5 +1,7 @@
+// ParkitectNexusClient
+// Copyright 2015 Parkitect, Tim Potze
+
 using System;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CommandLine;
 using ParkitectNexusClient.Properties;
@@ -63,7 +65,6 @@ namespace ParkitectNexusClient
             ParkitectNexusUrl parkitectNexusUrl;
             if (!ParkitectNexusUrl.TryParse(url, out parkitectNexusUrl))
             {
-
                 // Create a form to allow the dialogs to have a owner with forced focus and an icon.
                 using (var focus = new FocusForm())
                 {
@@ -82,7 +83,7 @@ namespace ParkitectNexusClient
         {
             // Try to parse the command-line arguments.
             Parser.Default.ParseArguments(args, Options);
-            
+
             // Check for updates.
             var updateInfo = UpdateUtil.FindUpdate();
             if (updateInfo != null)
@@ -125,7 +126,7 @@ namespace ParkitectNexusClient
 
             if (!EnsureParkitectInstalled())
                 return;
-            
+
             // Download assets.
             if (!string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
             {

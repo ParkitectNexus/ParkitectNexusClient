@@ -1,4 +1,4 @@
-﻿// ParkitectNexusInstaller
+﻿// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System.Drawing;
@@ -7,12 +7,12 @@ using System.Windows.Forms;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents an invisible form used for acquiring focus.
+    ///     Represents an invisible form used for acquiring focus.
     /// </summary>
     internal partial class FocusForm : Form
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FocusForm"/> class.
+        ///     Initializes a new instance of the <see cref="FocusForm" /> class.
         /// </summary>
         public FocusForm()
         {
@@ -23,7 +23,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Shows this instance.
+        ///     Shows this instance.
         /// </summary>
         public new void Show()
         {

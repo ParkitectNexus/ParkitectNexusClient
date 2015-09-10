@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="nexus.ico" />
+    <None Include="Resources\dialog_banner.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

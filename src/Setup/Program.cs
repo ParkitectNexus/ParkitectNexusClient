@@ -2,15 +2,9 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Xml.Linq;
 using WixSharp;
-using WixSharp.Forms;
-using WixSharp.UI.Forms;
 using Assembly = System.Reflection.Assembly;
 using File = WixSharp.File;
 
@@ -60,14 +54,14 @@ namespace WixSharpSetup
                 CustomUI = new DialogSequence()
                     // Skip license
                     .On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.InstallDirDlg))
-                    .On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg)),
+                    .On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg))
             };
-            
+
             project.MajorUpgradeStrategy.NewerProductInstalledErrorMessage = "A newer version of " + AppName +
                                                                              " has already been installed.";
             project.MajorUpgradeStrategy.UpgradeVersions = VersionRange.ThisAndOlder;
             project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;
-            
+
             project.BuildMsi();
         }
     }

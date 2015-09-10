@@ -1,4 +1,4 @@
-// ParkitectNexusInstaller
+// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -14,14 +14,14 @@ using Microsoft.Win32;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    /// Represents the parkitect nexus server.
+    ///     Represents the parkitect nexus server.
     /// </summary>
     internal class ParkitectNexus
     {
         private const string DownloadUrl = "https://parkitectnexus.com/download/{0}";
 
         /// <summary>
-        /// Launches the nexus.
+        ///     Launches the nexus.
         /// </summary>
         public void Launch()
         {
@@ -29,7 +29,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Installs the parkitectnexus:// protocol.
+        ///     Installs the parkitectnexus:// protocol.
         /// </summary>
         public void InstallProtocol()
         {
@@ -50,7 +50,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Determines whether the specified input is valid file hash.
+        ///     Determines whether the specified input is valid file hash.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>true if valid; false otherwise.</returns>
@@ -61,7 +61,7 @@ namespace ParkitectNexusClient
         }
 
         /// <summary>
-        /// Downloads the file associated with the specified url.
+        ///     Downloads the file associated with the specified url.
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>An instance which performs the requested task.</returns>
@@ -107,7 +107,7 @@ namespace ParkitectNexusClient
 
                     // Extract the filename of the asset from the content disposition header.
                     var fileNameMatch = Regex.Match(contentDispositionHeader, @"attachment; filename=""(.*)""");
-                    
+
                     if (fileNameMatch == null || !fileNameMatch.Success)
                         throw new Exception("invalid headers");
 
