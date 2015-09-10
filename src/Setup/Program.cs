@@ -1,61 +1,72 @@
-﻿using System;
+﻿// ParkitectNexusClient
+// Copyright 2015 Parkitect, Tim Potze
+
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using WixSharp;
 using WixSharp.Forms;
+using WixSharp.UI.Forms;
+using Assembly = System.Reflection.Assembly;
+using File = WixSharp.File;
 
 namespace WixSharpSetup
 {
-    class Program
+    internal class Program
     {
-        private const string AppIcon = @"..\nexus.ico";
+        private const string AppIcon = @"..\..\images\nexus.ico";
         private const string AppName = @"Parkitect Nexus Client";
         private const string AppExecutable = @"ParkitectNexusClient.exe";
-        private const string AppBinariesPath = @"..\ParkitectNexusClient\bin\Release\";
-        static void Main()
+        private const string AppBinariesPath = @"..\..\bin\";
+
+        private static void Main()
         {
-            var assembly = System.Reflection.Assembly.LoadFrom(AppBinariesPath + AppExecutable);
+            var assembly = Assembly.LoadFrom(AppBinariesPath + AppExecutable);
             var assemblyName = assembly.GetName();
             var project = new ManagedProject(AppName,
                 new Dir(@"%ProgramFiles%\" + AppName,
                     new File(AppExecutable,
-                        new FileShortcut(AppName, "INSTALLDIR"),
-                        new FileShortcut("MyApp", @"%ProgramMenu%\" + AppName) {IconFile = AppIcon}
+                        new FileShortcut(AppName, @"%ProgramMenu%\" + AppName) {IconFile = AppIcon}
                         ),
-                    new File(@"CommandLine.dll")),
+                    new File(@"CommandLine.dll"),
+                    new File(@"Newtonsoft.Json.dll")),
                 new Dir(@"%ProgramMenu%\" + AppName,
                     new ExeFileShortcut("Uninstall " + AppName, "[System64Folder]msiexec.exe", "/x [ProductCode]")),
-
-                 new InstalledFileAction(AppExecutable, "-s")
+                new InstalledFileAction(AppExecutable, "-s")
                 )
             {
                 GUID = new Guid(((GuidAttribute) assembly.GetCustomAttributes(typeof (GuidAttribute), true)[0]).Value),
-                ManagedUI = new ManagedUI(),
+                UI = WUI.WixUI_InstallDir,
                 SourceBaseDir = AppBinariesPath,
-                OutDir = "bin",
+                OutFileName = "setup",
+                OutDir = @"..\..\bin",
                 Version = assemblyName.Version,
                 Description = "An installer for Theme Parkitect.",
-                LicenceFile = null,
                 MajorUpgradeStrategy = MajorUpgradeStrategy.Default,
+                LicenceFile = null,
+                BannerImage = Directory.GetCurrentDirectory() + @"\..\..\images\dialog_banner.png",
+                BackgroundImage = Directory.GetCurrentDirectory() + @"\..\..\images\dialog_bg.png",
                 ControlPanelInfo =
                 {
                     NoRepair = true,
-                    // NoModify = true;
                     HelpLink = "https://parkitectnexus.com",
                     ProductIcon = AppIcon,
                     Manufacturer = "Parkitect Nexus, Tim Potze"
                 },
+                CustomUI = new DialogSequence()
+                    // Skip license
+                    .On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.InstallDirDlg))
+                    .On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg)),
             };
-
+            
+            project.MajorUpgradeStrategy.NewerProductInstalledErrorMessage = "A newer version of " + AppName +
+                                                                             " has already been installed.";
+            project.MajorUpgradeStrategy.UpgradeVersions = VersionRange.ThisAndOlder;
             project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;
-
-            //custom set of standard UI dialogs
-            project.ManagedUI.InstallDialogs.Add(Dialogs.Welcome)
-                                            .Add(Dialogs.InstallDir)
-                                            .Add(Dialogs.Progress)
-                                            .Add(Dialogs.Exit);
             
             project.BuildMsi();
         }

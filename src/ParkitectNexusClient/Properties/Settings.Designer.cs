@@ -46,5 +46,17 @@ namespace ParkitectNexusClient.Properties {
                 this["IsFirstRun"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DownloadOnNextRun {
+            get {
+                return ((string)(this["DownloadOnNextRun"]));
+            }
+            set {
+                this["DownloadOnNextRun"] = value;
+            }
+        }
     }
 }
