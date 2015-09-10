@@ -36,7 +36,7 @@ namespace WixSharpSetup
                 GUID = new Guid(((GuidAttribute) assembly.GetCustomAttributes(typeof (GuidAttribute), true)[0]).Value),
                 UI = WUI.WixUI_InstallDir,
                 SourceBaseDir = AppBinariesPath,
-                OutFileName = "setup",
+                OutFileName = "ParkitectNexusSetup",
                 OutDir = @"..\..\bin",
                 Version = assemblyName.Version,
                 Description = "An installer for Theme Parkitect.",
