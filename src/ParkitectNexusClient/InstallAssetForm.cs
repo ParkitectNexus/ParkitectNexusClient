@@ -37,10 +37,10 @@ namespace ParkitectNexusClient
             InitializeComponent();
 
             // Format the "installing" label.
-            installingLabel.Text = $"Installing {parkitectNexusUrl.AssetType} {parkitectNexusUrl.Name}";
+            installingLabel.Text = $"Please wait while Parkitect Nexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
 
             // Set the client size to make the baner fit snugly.
-            ClientSize = new Size(493, 125);
+            ClientSize = new Size(493, 360);
         }
 
         /// <summary>
@@ -80,7 +80,13 @@ namespace ParkitectNexusClient
             }
             finally
             {
-                Close();
+                downloadingTimer.Enabled = false;
+                statusLabel.Text = "Done!";
+                progressBar.Style= ProgressBarStyle.Continuous;
+                progressBar.Value = 100;
+                Cursor = DefaultCursor;
+                finishButton.Enabled = true;
+                closeTimer.Enabled = true;
             }
         }
 
@@ -96,10 +102,19 @@ namespace ParkitectNexusClient
             InstallAsset();
             base.OnLoad(e);
         }
+        
+        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data. </param>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            e.Graphics.DrawLine(new Pen(Color.FromArgb(182, 182, 182)), 0, 312, 488, 312);
+            e.Graphics.DrawLine(new Pen(Color.FromArgb(252, 252, 252)), 0, 313, 488, 313);
+            e.Graphics.DrawLine(new Pen(Color.FromArgb(252, 252, 252)), 489, 312, 489, 313);
+        }
 
         #endregion
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void downloadingTimer_Tick(object sender, EventArgs e)
         {
             //Downloading... Effect. 
 
@@ -112,6 +127,16 @@ namespace ParkitectNexusClient
 
             // Update the status label.
             statusLabel.Text = "Downloading." + string.Concat(Enumerable.Repeat(".", _dots));
+        }
+
+        private void closeTimer_Tick(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void finishButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
