@@ -112,11 +112,11 @@
     <Compile Include="FocusForm.Designer.cs">
       <DependentUpon>FocusForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InstallerForm.cs">
+    <Compile Include="InstallAssetForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InstallerForm.Designer.cs">
-      <DependentUpon>InstallerForm.cs</DependentUpon>
+    <Compile Include="InstallAssetForm.Designer.cs">
+      <DependentUpon>InstallAssetForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Parkitect.cs" />
     <Compile Include="ParkitectAsset.cs" />
@@ -129,8 +129,8 @@
     <EmbeddedResource Include="FocusForm.resx">
       <DependentUpon>FocusForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InstallerForm.resx">
-      <DependentUpon>InstallerForm.cs</DependentUpon>
+    <EmbeddedResource Include="InstallAssetForm.resx">
+      <DependentUpon>InstallAssetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -76,7 +76,7 @@ namespace ParkitectNexusClient
             }
 
             // Run the download process in an installer form, for a nice visible process.
-            Application.Run(new InstallerForm(Parkitect, ParkitectNexus, parkitectNexusUrl));
+            Application.Run(new InstallAssetForm(Parkitect, ParkitectNexus, parkitectNexusUrl));
         }
 
         public void Run(string[] args)

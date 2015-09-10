@@ -3,6 +3,8 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ParkitectNexusClient.Properties;
 
@@ -102,20 +104,35 @@ namespace ParkitectNexusClient
             var assetPath = Path.Combine(storagePath, asset.FileName);
 
             Directory.CreateDirectory(storagePath);
-
+            
             // If the file already exists, add a number behind the file name.
             if (File.Exists(assetPath))
             {
+                var md5 = MD5.Create();
+
+                // Compute hash of downloaded asset to match with installed hash.
+                asset.Stream.Seek(0, SeekOrigin.Begin);
+                var validHash = md5.ComputeHash(asset.Stream);
+
+                if (validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
+                    return;
+
                 // Separate the filename and the extension.
                 var attempt = 1;
                 var fileName = Path.GetFileNameWithoutExtension(asset.FileName);
                 var fileExtension = Path.GetExtension(asset.FileName);
 
                 // Update the path to where the the asset should be stored by adding a number behind the name until an available filename has been found.
-                do assetPath = Path.Combine(storagePath, $"{fileName} ({++attempt}){fileExtension}"); while (
-                    File.Exists(assetPath));
-            }
+                do
+                {
+                    assetPath = Path.Combine(storagePath, $"{fileName} ({++attempt}){fileExtension}");
 
+                    if (File.Exists(assetPath) && validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
+                        return;
+
+                } while ( File.Exists(assetPath));
+            }
+            
             // Write the stream to a file at the asset path.
             using (var fileStream = File.Create(assetPath))
             {

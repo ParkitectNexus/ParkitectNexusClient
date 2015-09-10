@@ -1,6 +1,6 @@
 ﻿namespace ParkitectNexusClient
 {
-    partial class InstallerForm
+    partial class InstallAssetForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstallerForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstallAssetForm));
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.installingLabel = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
