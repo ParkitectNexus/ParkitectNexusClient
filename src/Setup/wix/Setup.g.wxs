@@ -6,17 +6,17 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="82fcd17e-8e5e-4322-b8b8-c00c5c224fe5" Name="Parkitect Nexus Client" Language="1033" Codepage="Windows-1252" Version="1.0.0.0" UpgradeCode="82fcd17e-8e5e-4322-b8b8-c00c4c224fe4" Manufacturer="Parkitect Nexus, Tim Potze">
+  <Product Id="82fcd17e-8e5e-4322-b8b8-c00c5c224fe5" Name="ParkitectNexus Client" Language="1033" Codepage="Windows-1252" Version="1.0.0.0" UpgradeCode="82fcd17e-8e5e-4322-b8b8-c00c4c224fe4" Manufacturer="ParkitectNexus, Tim Potze">
     <Package InstallerVersion="200" Compressed="yes" Description="An installer for Theme Parkitect." SummaryCodepage="Windows-1252" Languages="1033" />
-    <Media Id="1" Cabinet="Parkitect_Nexus_Client.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="ParkitectNexus_Client.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir" >
       <Directory Id="ProgramFilesFolder" Name="ProgramFilesFolder">
-        <Directory Id="INSTALLDIR" Name="Parkitect Nexus Client">
+        <Directory Id="INSTALLDIR" Name="ParkitectNexus Client">
 
           <Component Id="Component.ParkitectNexusClient.exe" Guid="82fcd17e-8e5e-4322-b8b8-c00caf621644">
             <File Id="ParkitectNexusClient.exe" Source="ParkitectNexusClient.exe">
-              <Shortcut Id="Shortcut.ParkitectNexusClient.exe.Parkitect_Nexus_Client" WorkingDirectory="Parkitect_Nexus_Client" Directory="Parkitect_Nexus_Client" Name="Parkitect Nexus Client.lnk" Icon="IconFile1_nexus.ico" IconIndex="0" />
+              <Shortcut Id="Shortcut.ParkitectNexusClient.exe.ParkitectNexus_Client" WorkingDirectory="ParkitectNexus_Client" Directory="ParkitectNexus_Client" Name="ParkitectNexus Client.lnk" Icon="IconFile1_nexus.ico" IconIndex="0" />
             </File>
 
             <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -36,14 +36,14 @@
       </Directory>
 
       <Directory Id="ProgramMenuFolder" Name="ProgramMenuFolder">
-        <Directory Id="Parkitect_Nexus_Client" Name="Parkitect Nexus Client">
+        <Directory Id="ParkitectNexus_Client" Name="ParkitectNexus Client">
 
-          <Component Id="Uninstall_Parkitect_Nexus_Client" Guid="82fcd17e-8e5e-4322-b8b8-c00c31117937">
-            <Shortcut Id="Parkitect_Nexus_Client.Uninstall_Parkitect_Nexus_Client" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Uninstall Parkitect Nexus Client.lnk" />
+          <Component Id="Uninstall_ParkitectNexus_Client" Guid="82fcd17e-8e5e-4322-b8b8-c00cbb81290f">
+            <Shortcut Id="ParkitectNexus_Client.Uninstall_ParkitectNexus_Client" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Uninstall ParkitectNexus Client.lnk" />
 
             <CreateFolder />
 
-            <RemoveFolder Id="Parkitect_Nexus_Client" On="uninstall" />
+            <RemoveFolder Id="ParkitectNexus_Client" On="uninstall" />
 
             <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
               <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -83,7 +83,7 @@
 
     <CustomAction Id="Action1_ParkitectNexusClient.exe" ExeCommand="-s" Return="asyncNoWait" FileKey="ParkitectNexusClient.exe"  />
     <CustomAction Id="WixSharp_InitRuntime_Action" BinaryKey="Action2_WixSharp_InitRuntime_Action_File" DllEntry="WixSharp_InitRuntime_Action" Impersonate="yes" Execute="immediate" Return="check"  />
-    <CustomAction Id="PreventDowngrading" Error="A newer version of Parkitect Nexus Client has already been installed."  />
+    <CustomAction Id="PreventDowngrading" Error="A newer version of ParkitectNexus Client has already been installed."  />
 
     <Binary Id="Action2_WixSharp_InitRuntime_Action_File" SourceFile="WixSharp.CA.dll"  />
 
@@ -93,7 +93,7 @@
       <ComponentRef Id="Component.ParkitectNexusClient.exe" />
       <ComponentRef Id="Component.CommandLine.dll" />
       <ComponentRef Id="Component.Newtonsoft.Json.dll" />
-      <ComponentRef Id="Uninstall_Parkitect_Nexus_Client" />
+      <ComponentRef Id="Uninstall_ParkitectNexus_Client" />
       <ComponentRef Id="ProgramMenuFolder" />
     </Feature>
 

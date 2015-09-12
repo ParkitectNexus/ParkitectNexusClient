@@ -130,7 +130,7 @@
             this.MinimizeBox = false;
             this.Name = "InstallAssetForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Parkitect Nexus Client";
+            this.Text = "ParkitectNexus Client";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

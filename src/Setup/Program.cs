@@ -13,7 +13,7 @@ namespace WixSharpSetup
     internal class Program
     {
         private const string AppIcon = @"..\..\images\nexus.ico";
-        private const string AppName = @"Parkitect Nexus Client";
+        private const string AppName = @"ParkitectNexus Client";
         private const string AppExecutable = @"ParkitectNexusClient.exe";
         private const string AppBinariesPath = @"..\..\bin\";
 
@@ -49,7 +49,7 @@ namespace WixSharpSetup
                     NoRepair = true,
                     HelpLink = "https://parkitectnexus.com",
                     ProductIcon = AppIcon,
-                    Manufacturer = "Parkitect Nexus, Tim Potze"
+                    Manufacturer = "ParkitectNexus, Tim Potze"
                 },
                 CustomUI = new DialogSequence()
                     // Skip license

@@ -14,7 +14,7 @@ using Microsoft.Win32;
 namespace ParkitectNexusClient
 {
     /// <summary>
-    ///     Represents the parkitect nexus server.
+    ///     Represents the ParkitectNexus server.
     /// </summary>
     internal class ParkitectNexus
     {
@@ -38,7 +38,7 @@ namespace ParkitectNexusClient
                 var appPath = Assembly.GetEntryAssembly().Location;
 
                 var parkitectNexus = Registry.CurrentUser?.CreateSubKey(@"Software\Classes\parkitectnexus");
-                parkitectNexus?.SetValue("", "Parkitect Nexus Blueprint Installer");
+                parkitectNexus?.SetValue("", "ParkitectNexus Blueprint Installer");
                 parkitectNexus?.SetValue("URL Protocol", "");
                 parkitectNexus?.CreateSubKey(@"DefaultIcon")?.SetValue("", $"{appPath},0");
                 parkitectNexus?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{appPath}\" --download \"%1\"");

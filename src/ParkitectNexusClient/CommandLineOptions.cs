@@ -23,7 +23,7 @@ namespace ParkitectNexusClient
         public string SetInstallationPath { get; set; }
 
         /// <summary>
-        ///     Gets a value indicating whether not to open the parkitect nexus website when no download action is specified.
+        ///     Gets a value indicating whether not to open the ParkitectNexus website when no download action is specified.
         /// </summary>
         [Option('s', "silent")]
         public bool Silent { get; set; }

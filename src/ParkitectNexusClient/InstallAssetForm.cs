@@ -23,8 +23,8 @@ namespace ParkitectNexusClient
         ///     Initializes a new instance of the <see cref="InstallAssetForm" /> class.
         /// </summary>
         /// <param name="parkitect">The parkitect.</param>
-        /// <param name="parkitectNexus">The parkitect nexus.</param>
-        /// <param name="parkitectNexusUrl">The parkitect nexus URL.</param>
+        /// <param name="parkitectNexus">The ParkitectNexus.</param>
+        /// <param name="parkitectNexusUrl">The ParkitectNexus URL.</param>
         /// <exception cref="ArgumentNullException">Thrown if parkitect, parkitectNexus or parkitectNexusUrl is null.</exception>
         public InstallAssetForm(Parkitect parkitect, ParkitectNexus parkitectNexus, ParkitectNexusUrl parkitectNexusUrl)
         {
@@ -37,7 +37,7 @@ namespace ParkitectNexusClient
             InitializeComponent();
 
             // Format the "installing" label.
-            installingLabel.Text = $"Please wait while Parkitect Nexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
+            installingLabel.Text = $"Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
 
             // Set the client size to make the baner fit snugly.
             ClientSize = new Size(493, 360);
@@ -60,7 +60,7 @@ namespace ParkitectNexusClient
                     // If the asset has failed to download, show some feedback to the user.
                     MessageBox.Show(this,
                         $"Failed to install {assetName}!\nPlease try again later.",
-                        "Parkitect Nexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
                     return;
                 }
@@ -74,7 +74,7 @@ namespace ParkitectNexusClient
                 // If the asset has failed to download, show some feedback to the user.
                 MessageBox.Show(this,
                     $"Failed to install {assetName}!\nPlease try again later.",
-                    "Parkitect Nexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // todo: Maybe these errors should be sent to some server.
             }

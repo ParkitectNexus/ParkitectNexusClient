@@ -32,7 +32,7 @@ namespace ParkitectNexusClient
 
                     if (
                         MessageBox.Show(focus, "We couldn't detect Parkitect on your machine.\nPlease point me to it!",
-                            "Parkitect Nexus Client", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
+                            "ParkitectNexus Client", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
                         return false;
 
                     var dialog = new FolderBrowserDialog
@@ -50,7 +50,7 @@ namespace ParkitectNexusClient
                         if (!Parkitect.SetInstallationPathIfValid(dialog.SelectedPath) &&
                             MessageBox.Show(focus,
                                 "The folder you selected does not contain Parkitect!\nWould you like to try again?",
-                                "Parkitect Nexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes)
+                                "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes)
                             return false;
                     }
                 }
@@ -61,7 +61,7 @@ namespace ParkitectNexusClient
 
         private void Download(string url)
         {
-            // Try to parse the specified download url. If parsing fails open parkitect nexus. 
+            // Try to parse the specified download url. If parsing fails open ParkitectNexus. 
             ParkitectNexusUrl parkitectNexusUrl;
             if (!ParkitectNexusUrl.TryParse(url, out parkitectNexusUrl))
             {
@@ -69,7 +69,7 @@ namespace ParkitectNexusClient
                 using (var focus = new FocusForm())
                 {
                     focus.Show();
-                    MessageBox.Show(focus, "The URL you opened is invalid!", "Parkitect Nexus Client", MessageBoxButtons.OK,
+                    MessageBox.Show(focus, "The URL you opened is invalid!", "ParkitectNexus Client", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
                 return;
@@ -97,16 +97,16 @@ namespace ParkitectNexusClient
                     focus.Show();
                     if (
                         MessageBox.Show(focus,
-                            "A required update for the Parkitect Nexus Client needs to be installed.\n" +
+                            "A required update for the ParkitectNexus Client needs to be installed.\n" +
                             "Without this update you wont be able to install blueprints and savegames trough this application. The update should take less than a minute.\n" +
                             $"Would you like to install it now?\n\nYou are currently running v{typeof (ParkitectNexus).Assembly.GetName().Version}. The newest version is v{updateInfo.Version}",
-                            "Parkitect Nexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
+                            "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
                         DialogResult.Yes)
                         return;
 
 
                     if (!UpdateUtil.InstallUpdate(updateInfo))
-                        MessageBox.Show(focus, "Failed updating the update! Please try again later.", "Parkitect Nexus Client",
+                        MessageBox.Show(focus, "Failed updating the update! Please try again later.", "ParkitectNexus Client",
                             MessageBoxButtons.OK);
 
                     return;
