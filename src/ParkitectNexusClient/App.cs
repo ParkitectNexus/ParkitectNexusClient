@@ -79,12 +79,11 @@ namespace ParkitectNexusClient
             Application.Run(new InstallAssetForm(Parkitect, ParkitectNexus, parkitectNexusUrl));
         }
 
-        public void Run(string[] args)
+        private bool CheckForUpdates()
         {
-            // Try to parse the command-line arguments.
-            Parser.Default.ParseArguments(args, Options);
-
-            // Check for updates.
+#if DEBUG
+            return false;
+#else
             var updateInfo = UpdateUtil.FindUpdate();
             if (updateInfo != null)
             {
@@ -102,21 +101,29 @@ namespace ParkitectNexusClient
                             $"Would you like to install it now?\n\nYou are currently running v{typeof (ParkitectNexus).Assembly.GetName().Version}. The newest version is v{updateInfo.Version}",
                             "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
                         DialogResult.Yes)
-                        return;
+                        return true;
 
 
                     if (!UpdateUtil.InstallUpdate(updateInfo))
                         MessageBox.Show(focus, "Failed updating the update! Please try again later.", "ParkitectNexus Client",
                             MessageBoxButtons.OK);
 
-                    return;
+                    return true;
                 }
             }
 
-            // Make sure the protocol has been installed.
-            ParkitectNexus.InstallProtocol();
+            return false;
+#endif
+        }
 
-            // If no downloads are awaiting download, open nexus.
+        public void Run(string[] args)
+        {
+            Parser.Default.ParseArguments(args, Options);
+
+            if (CheckForUpdates()) return;
+            
+            ParkitectNexus.InstallProtocol();
+            
             if (Options.DownloadUrl == null && string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
             {
                 if (!Options.Silent)
@@ -126,8 +133,7 @@ namespace ParkitectNexusClient
 
             if (!EnsureParkitectInstalled())
                 return;
-
-            // Download assets.
+            
             if (!string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
             {
                 Download(Settings.Default.DownloadOnNextRun);
