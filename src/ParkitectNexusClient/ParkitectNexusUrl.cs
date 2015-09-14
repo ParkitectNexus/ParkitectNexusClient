@@ -116,7 +116,7 @@ namespace ParkitectNexusClient
                 return false;
 
             // Decode HTML entities in the name of the asset.
-            var name = WebUtility.HtmlDecode(parts[0]);
+            var name = WebUtility.UrlDecode(parts[0]);
 
             // Make sure the file hash is valid.
             var fileHash = parts[2];
