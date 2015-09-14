@@ -38,7 +38,7 @@ namespace ParkitectNexusClient
                 var appPath = Assembly.GetEntryAssembly().Location;
 
                 var parkitectNexus = Registry.CurrentUser?.CreateSubKey(@"Software\Classes\parkitectnexus");
-                parkitectNexus?.SetValue("", "ParkitectNexus Blueprint Installer");
+                parkitectNexus?.SetValue("", "ParkitectNexus Client");
                 parkitectNexus?.SetValue("URL Protocol", "");
                 parkitectNexus?.CreateSubKey(@"DefaultIcon")?.SetValue("", $"{appPath},0");
                 parkitectNexus?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{appPath}\" --download \"%1\"");
