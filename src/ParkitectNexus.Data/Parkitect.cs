@@ -6,14 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using ParkitectNexusClient.Properties;
+using ParkitectNexus.Data.Properties;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
     /// <summary>
     ///     Represents the installation directory of the Parkitect game.
     /// </summary>
-    internal class Parkitect
+    public class Parkitect
     {
         /// <summary>
         ///     Gets or sets the installation path.

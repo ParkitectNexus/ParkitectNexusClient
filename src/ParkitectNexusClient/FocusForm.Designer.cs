@@ -1,4 +1,4 @@
-﻿namespace ParkitectNexusClient
+﻿namespace ParkitectNexus.Client
 {
     partial class FocusForm
     {

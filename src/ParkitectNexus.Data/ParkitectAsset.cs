@@ -4,12 +4,12 @@
 using System;
 using System.IO;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
     /// <summary>
     ///     Represents a parkitect asset.
     /// </summary>
-    internal class ParkitectAsset : IDisposable
+    public class ParkitectAsset : IDisposable
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectAsset" /> class.

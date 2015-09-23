@@ -5,12 +5,12 @@ using System;
 using System.Linq;
 using System.Net;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
     /// <summary>
     ///     Represents an URL with the parkitectnexus protocol.
     /// </summary>
-    internal class ParkitectNexusUrl
+    public class ParkitectNexusUrl
     {
         private const string Protocol = "parkitectnexus:";
         private const string ProtocolInstructionSeparator = "|";
@@ -28,7 +28,7 @@ namespace ParkitectNexusClient
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (fileHash == null) throw new ArgumentNullException(nameof(fileHash));
-            if (!ParkitectNexus.IsValidFileHash(fileHash))
+            if (!global::ParkitectNexus.Data.ParkitectNexusWebsite.IsValidFileHash(fileHash))
                 throw new ArgumentException("invalid file hash", nameof(fileHash));
 
             Name = name;
@@ -120,7 +120,7 @@ namespace ParkitectNexusClient
 
             // Make sure the file hash is valid.
             var fileHash = parts[2];
-            if (!ParkitectNexus.IsValidFileHash(fileHash))
+            if (!global::ParkitectNexus.Data.ParkitectNexusWebsite.IsValidFileHash(fileHash))
                 return false;
 
             // Return an instance of the url.

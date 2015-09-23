@@ -7,7 +7,7 @@
     <ProjectGuid>{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ParkitectNexusClient</RootNamespace>
+    <RootNamespace>ParkitectNexus.Client</RootNamespace>
     <AssemblyName>ParkitectNexusClient</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -100,12 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="ParkitectNexusWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UpdateUtil.cs" />
     <Compile Include="CommandLineOptions.cs" />
-    <Compile Include="EnumUtil.cs" />
     <Compile Include="FocusForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,12 +114,6 @@
     <Compile Include="InstallAssetForm.Designer.cs">
       <DependentUpon>InstallAssetForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Parkitect.cs" />
-    <Compile Include="ParkitectAsset.cs" />
-    <Compile Include="ParkitectAssetInfoAttribute.cs" />
-    <Compile Include="ParkitectAssetType.cs" />
-    <Compile Include="ParkitectNexus.cs" />
-    <Compile Include="ParkitectNexusUrl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FocusForm.resx">
@@ -172,6 +162,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
+      <Project>{0cb13383-05d3-40f5-b0e1-3907a42872dc}</Project>
+      <Name>ParkitectNexus.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,7 +4,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Client
 {
     /// <summary>
     ///     Represents the entry point class for the application.

@@ -3,13 +3,13 @@
 
 using System;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
     /// <summary>
     ///     Provides information about a parkitect asset.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    internal class ParkitectAssetInfoAttribute : Attribute
+    public class ParkitectAssetInfoAttribute : Attribute
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectAssetInfoAttribute" /> class.

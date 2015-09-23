@@ -3,10 +3,11 @@
 
 using System;
 using System.Net;
+using System.Reflection;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
-    internal class ParkitectNexusWebClient : WebClient
+    public class ParkitectNexusWebClient : WebClient
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Net.WebClient" /> class.
@@ -14,8 +15,7 @@ namespace ParkitectNexusClient
         public ParkitectNexusWebClient()
         {
             // Add a version number header of requests.
-            Headers.Add("X-ParkitectNexusInstaller-Version",
-                typeof (ParkitectNexusWebClient).Assembly.GetName().Version.ToString());
+            Headers.Add("X-ParkitectNexusInstaller-Version", Assembly.GetEntryAssembly().GetName().Version.ToString());
         }
 
         protected override WebRequest GetWebRequest(Uri uri)

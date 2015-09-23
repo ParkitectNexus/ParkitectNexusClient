@@ -5,8 +5,9 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ParkitectNexus.Data;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Client
 {
     /// <summary>
     ///     Represents an installation form.
@@ -14,7 +15,7 @@ namespace ParkitectNexusClient
     internal partial class InstallAssetForm : Form
     {
         private readonly Parkitect _parkitect;
-        private readonly ParkitectNexus _parkitectNexus;
+        private readonly ParkitectNexusWebsite _parkitectNexus;
         private readonly ParkitectNexusUrl _parkitectNexusUrl;
         private int _dots;
         private int _dotsDirection = 1;
@@ -23,10 +24,10 @@ namespace ParkitectNexusClient
         ///     Initializes a new instance of the <see cref="InstallAssetForm" /> class.
         /// </summary>
         /// <param name="parkitect">The parkitect.</param>
-        /// <param name="parkitectNexus">The ParkitectNexus.</param>
+        /// <param name="parkitectNexus">The ParkitectNexus website.</param>
         /// <param name="parkitectNexusUrl">The ParkitectNexus URL.</param>
         /// <exception cref="ArgumentNullException">Thrown if parkitect, parkitectNexus or parkitectNexusUrl is null.</exception>
-        public InstallAssetForm(Parkitect parkitect, ParkitectNexus parkitectNexus, ParkitectNexusUrl parkitectNexusUrl)
+        public InstallAssetForm(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus, ParkitectNexusUrl parkitectNexusUrl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexus == null) throw new ArgumentNullException(nameof(parkitectNexus));

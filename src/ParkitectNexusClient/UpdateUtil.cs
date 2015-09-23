@@ -5,9 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
-using ParkitectNexusClient.Properties;
+using ParkitectNexus.Data;
+using ParkitectNexus.Client.Properties;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Client
 {
     /// <summary>
     ///     Contains utilities for updating.
@@ -39,7 +40,7 @@ namespace ParkitectNexusClient
                     var serializer = new JsonSerializer();
                     var updateInfo = (UpdateInfo) serializer.Deserialize(jsonTextReader, typeof (UpdateInfo));
 
-                    return updateInfo.Version == typeof (ParkitectNexus).Assembly.GetName().Version.ToString()
+                    return updateInfo.Version == typeof (App).Assembly.GetName().Version.ToString()
                         ? null
                         : updateInfo;
                 }

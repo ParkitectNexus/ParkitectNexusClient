@@ -1,12 +1,12 @@
 // ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
     /// <summary>
     ///     Contains parkitect asset types supported by the client.
     /// </summary>
-    internal enum ParkitectAssetType
+    public enum ParkitectAssetType
     {
         /// <summary>
         ///     A savegame.

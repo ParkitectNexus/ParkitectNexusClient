@@ -5,18 +5,17 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
     /// <summary>
-    ///     Represents the ParkitectNexus server.
+    ///     Represents the ParkitectNexus website.
     /// </summary>
-    internal class ParkitectNexus
+    public class ParkitectNexusWebsite
     {
         private const string DownloadUrl = "https://parkitectnexus.com/download/{0}";
 

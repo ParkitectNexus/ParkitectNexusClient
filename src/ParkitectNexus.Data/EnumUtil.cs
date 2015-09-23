@@ -4,12 +4,12 @@
 using System;
 using System.Reflection;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Data
 {
     /// <summary>
     ///     Contains utility methods for enum values.
     /// </summary>
-    internal static class EnumUtil
+    public static class EnumUtil
     {
         /// <summary>
         ///     Gets the custom attribute of the enum value.

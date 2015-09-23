@@ -4,14 +4,15 @@
 using System;
 using System.Windows.Forms;
 using CommandLine;
-using ParkitectNexusClient.Properties;
+using ParkitectNexus.Data;
+using ParkitectNexus.Client.Properties;
 
-namespace ParkitectNexusClient
+namespace ParkitectNexus.Client
 {
     internal class App
     {
         private Parkitect Parkitect { get; } = new Parkitect();
-        private ParkitectNexus ParkitectNexus { get; } = new ParkitectNexus();
+        private ParkitectNexus.Data.ParkitectNexusWebsite ParkitectNexusWebsite { get; } = new ParkitectNexus.Data.ParkitectNexusWebsite();
         private CommandLineOptions Options { get; } = new CommandLineOptions();
 
         private bool EnsureParkitectInstalled()
@@ -76,7 +77,7 @@ namespace ParkitectNexusClient
             }
 
             // Run the download process in an installer form, for a nice visible process.
-            Application.Run(new InstallAssetForm(Parkitect, ParkitectNexus, parkitectNexusUrl));
+            Application.Run(new InstallAssetForm(Parkitect, ParkitectNexusWebsite, parkitectNexusUrl));
         }
 
         private bool CheckForUpdates()
@@ -122,12 +123,12 @@ namespace ParkitectNexusClient
 
             if (CheckForUpdates()) return;
             
-            ParkitectNexus.InstallProtocol();
+            ParkitectNexusWebsite.InstallProtocol();
             
             if (Options.DownloadUrl == null && string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
             {
                 if (!Options.Silent)
-                    ParkitectNexus.Launch();
+                    ParkitectNexusWebsite.Launch();
                 return;
             }
 
