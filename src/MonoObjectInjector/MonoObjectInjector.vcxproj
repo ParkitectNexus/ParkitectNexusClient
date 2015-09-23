@@ -25,7 +25,7 @@
     <ClInclude Include="loader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1C1ECD9A-8783-492B-9CBD-CA9E0B18F0A0}</ProjectGuid>
+    <ProjectGuid>{9E83733C-BBFC-4EF8-AE94-971A543E21B6}</ProjectGuid>
     <RootNamespace>ModInjectorUnmanaged</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <ProjectName>MonoObjectInjector</ProjectName>

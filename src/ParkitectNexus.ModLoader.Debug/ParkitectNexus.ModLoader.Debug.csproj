@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0052122D-9DF0-42D8-A37D-83215C925AF1}</ProjectGuid>
+    <ProjectGuid>{85E69F50-1441-4678-BCBF-9C3C9200F18D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ParkitectNexus.ModLoader.Debug</RootNamespace>
@@ -48,12 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ParkitectNexus.ModLoader\ParkitectNexus.ModLoader.vcxproj">
-      <Project>{429d5352-4311-4041-bf4d-b3e2d89b3efa}</Project>
-      <Name>ParkitectNexus.ModLoader</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{429D5352-4311-4041-BF4D-B3E2D89B3EFA}</ProjectGuid>
+    <ProjectGuid>{72DEE48C-479C-4DEE-8701-5E291B7EF95A}</ProjectGuid>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>ParkitectNexus.ModLoader</RootNamespace>
