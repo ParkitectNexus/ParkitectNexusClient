@@ -16,7 +16,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyProductAttribute(L"Parkitect Mod Injector")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c) ParkitectNexus 2015")];
 [assembly:AssemblyTrademarkAttribute(L"ParkitectNexus")];
-[assembly:AssemblyCultureAttribute(L"English")];
+[assembly:AssemblyCultureAttribute(L"")];
 
 //
 // Version information for an assembly consists of the following four values:

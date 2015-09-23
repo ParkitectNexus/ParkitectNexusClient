@@ -59,6 +59,8 @@ namespace ParkitectNexus.Data
                             ? null
                             : Path.Combine(InstallationPath, "Parkitect.exe");
 
+        public IEnumerable<string> ManagedAssemblyNames => !IsInstalled ? null : Directory.GetFiles(ManagedDataPath, "*.dll").Select(Path.GetFileName);
+
         /// <summary>
         ///     Gets the mods path.
         /// </summary>
