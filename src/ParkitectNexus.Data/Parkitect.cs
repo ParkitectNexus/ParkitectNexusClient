@@ -2,10 +2,13 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using ParkitectNexus.Data.Properties;
 
 namespace ParkitectNexus.Data
@@ -40,7 +43,70 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Gets or sets a value indicating whether the game is installed.
         /// </summary>
-        public bool IsInstalled => InstallationPath != null;
+        public bool IsInstalled => ExecutablePath != null;
+
+        /// <summary>
+        ///     Gets the data path.
+        /// </summary>
+        public string DataPath => !IsInstalled ? null : Path.Combine(InstallationPath, "Parkitect_Data");
+
+        /// <summary>
+        /// Gets the executable path.
+        /// </summary>
+        public string ExecutablePath
+                    =>
+                        InstallationPath == null || !File.Exists(Path.Combine(InstallationPath, "Parkitect.exe"))
+                            ? null
+                            : Path.Combine(InstallationPath, "Parkitect.exe");
+
+        /// <summary>
+        ///     Gets the mods path.
+        /// </summary>
+        public string ModsPath
+        {
+            get
+            {
+                if (!IsInstalled) return null;
+                var path = Path.Combine(InstallationPath, "mods");
+                Directory.CreateDirectory(path);
+                return path;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the mods file path.
+        /// </summary>
+        public string ModsFilePath => !IsInstalled ? null : Path.Combine(ModsPath, "mods.json");
+
+        /// <summary>
+        ///     Gets the managed data path.
+        /// </summary>
+        public string ManagedDataPath => !IsInstalled ? null : Path.Combine(DataPath, "Managed");
+
+        public IEnumerable<ParkitectMod> InstalledMods 
+        {
+            get
+            {
+                if (!IsInstalled)
+                    yield break;
+
+                if (!File.Exists(ModsFilePath))
+                    yield break;
+
+                foreach (var name in JsonConvert.DeserializeObject<string[]>(File.ReadAllText(ModsFilePath)))
+                {
+                    var path = Path.Combine(ModsPath, name);
+                    var mod = JsonConvert.DeserializeObject<ParkitectMod>(File.ReadAllText(Path.Combine(path, "mod.json")));
+                    mod.Path = path;
+                    yield return mod;
+                }
+            }
+        }
+
+        public void InstallMod(string repository)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         ///     Determines whether the specified path is valid installation path.
@@ -80,6 +146,22 @@ namespace ParkitectNexus.Data
             // todo: Detect registry key of installation path.
 
             return false;
+        }
+
+        /// <summary>
+        /// Launches the game with the specified arguments.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The launched process.</returns>
+        public Process Launch(string arguments = "-single-instance")
+        {
+            return !IsInstalled
+                ? null
+                : Process.Start(new ProcessStartInfo(ExecutablePath)
+                {
+                    WorkingDirectory = InstallationPath,
+                    Arguments = arguments
+                });
         }
 
         /// <summary>

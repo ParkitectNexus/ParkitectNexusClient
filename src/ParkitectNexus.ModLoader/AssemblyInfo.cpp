@@ -10,13 +10,13 @@ using namespace System::Security::Permissions;
 // associated with an assembly.
 //
 [assembly:AssemblyTitleAttribute(L"ModInjector")];
-[assembly:AssemblyDescriptionAttribute(L"")];
+[assembly:AssemblyDescriptionAttribute(L"Parkitect Mod Injector")];
 [assembly:AssemblyConfigurationAttribute(L"")];
-[assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"ModInjector")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2015")];
-[assembly:AssemblyTrademarkAttribute(L"")];
-[assembly:AssemblyCultureAttribute(L"")];
+[assembly:AssemblyCompanyAttribute(L"ParkitectNexus")];
+[assembly:AssemblyProductAttribute(L"Parkitect Mod Injector")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright (c) ParkitectNexus 2015")];
+[assembly:AssemblyTrademarkAttribute(L"ParkitectNexus")];
+[assembly:AssemblyCultureAttribute(L"English")];
 
 //
 // Version information for an assembly consists of the following four values:
