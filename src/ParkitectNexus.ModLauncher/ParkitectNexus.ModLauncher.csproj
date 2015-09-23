@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +52,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
+      <Project>{0cb13383-05d3-40f5-b0e1-3907a42872dc}</Project>
+      <Name>ParkitectNexus.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParkitectNexus.ModLoader\ParkitectNexus.ModLoader.vcxproj">
+      <Project>{72dee48c-479c-4dee-8701-5e291b7ef95a}</Project>
+      <Name>ParkitectNexus.ModLoader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
