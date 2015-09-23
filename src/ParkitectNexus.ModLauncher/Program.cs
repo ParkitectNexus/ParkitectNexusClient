@@ -15,17 +15,20 @@ namespace ParkitectNexus.ModLauncher
         private static void Main(string[] args)
         {
             var parkitect = new Parkitect();
-
-#if DEBUG
-            if (!parkitect.IsInstalled)
-                parkitect.SetInstallationPathIfValid(@"C:\Users\Tim\Desktop\Parkitect - Modded");
-#endif
-
+            
             // Check to see if the parkitect game has been installed.
-            if (!parkitect.DetectInstallationPath() &&
-                !parkitect.SetInstallationPathIfValid(
-                    Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)))
-                return;
+            if (!parkitect.DetectInstallationPath())
+            {
+                var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                while (!parkitect.SetInstallationPathIfValid(path))
+                {
+                    var newPath = Path.GetDirectoryName(path);
+
+                    if (newPath == path || newPath == null)
+                        return;
+                    path = newPath;
+                }
+            }
 
             // Compile mods.
             var mods = parkitect.InstalledMods.Where(mod => mod.Compile(parkitect)).ToArray();
