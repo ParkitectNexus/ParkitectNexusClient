@@ -29,7 +29,7 @@ namespace WixSharpSetup
                     new File(@"CommandLine.dll"),
                     new File(@"Newtonsoft.Json.dll"),
                     new File(@"Octokit.dll"),
-                    new File(@"ParkitectModLauncher.dll"),
+                    new File(@"ParkitectModLauncher.exe"),
                     new File(@"ParkitectNexus.Data.dll"),
                     new File(@"Parkitectnexus.ModLoader.dll")
                     ),
