@@ -46,5 +46,17 @@ namespace ParkitectNexus.Client.Properties {
                 this["DownloadOnNextRun"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BootOnNextRun {
+            get {
+                return ((bool)(this["BootOnNextRun"]));
+            }
+            set {
+                this["BootOnNextRun"] = value;
+            }
+        }
     }
 }

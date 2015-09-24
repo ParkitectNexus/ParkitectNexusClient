@@ -3,8 +3,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -84,7 +86,7 @@ namespace ParkitectNexus.Data
         ///     Gets the managed data path.
         /// </summary>
         public string ManagedDataPath => !IsInstalled ? null : Path.Combine(DataPath, "Managed");
-
+        
         public IEnumerable<ParkitectMod> InstalledMods 
         {
             get
@@ -94,13 +96,23 @@ namespace ParkitectNexus.Data
 
                 if (!File.Exists(ModsFilePath))
                     yield break;
-
-                foreach (var name in JsonConvert.DeserializeObject<string[]>(File.ReadAllText(ModsFilePath)))
+                var txt = ReadModsFile();
+                foreach (var name in txt)
                 {
-                    var path = Path.Combine(ModsPath, name);
-                    var mod = JsonConvert.DeserializeObject<ParkitectMod>(File.ReadAllText(Path.Combine(path, "mod.json")));
-                    mod.Path = path;
-                    yield return mod;
+                    ParkitectMod mod = null;
+                    try
+                    {
+                        var path = Path.Combine(ModsPath, name);
+                        mod =
+                            JsonConvert.DeserializeObject<ParkitectMod>(File.ReadAllText(Path.Combine(path, "mod.json")));
+                        mod.Path = path;
+                    }
+                    catch
+                    {
+                    }
+
+                    if(mod!=null)
+                        yield return mod;
                 }
             }
         }
@@ -165,7 +177,7 @@ namespace ParkitectNexus.Data
                     Arguments = arguments
                 });
         }
-
+        
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.
         /// </summary>
@@ -183,46 +195,170 @@ namespace ParkitectNexus.Data
             if (assetInfo == null)
                 throw new Exception("invalid asset type");
 
-            // Create the directory where the asset should be stored and create a path to where the asset should be stored.
-            var storagePath = Path.Combine(InstallationPath, assetInfo.StorageFolder);
-            var assetPath = Path.Combine(storagePath, asset.FileName);
-
-            Directory.CreateDirectory(storagePath);
-            
-            // If the file already exists, add a number behind the file name.
-            if (File.Exists(assetPath))
+            switch (asset.Type)
             {
-                var md5 = MD5.Create();
+                case ParkitectAssetType.Blueprint:
+                case ParkitectAssetType.Savegame:
+                    // Create the directory where the asset should be stored and create a path to where the asset should be stored.
+                    var storagePath = Path.Combine(InstallationPath, assetInfo.StorageFolder);
+                    var assetPath = Path.Combine(storagePath, asset.FileName);
 
-                // Compute hash of downloaded asset to match with installed hash.
-                asset.Stream.Seek(0, SeekOrigin.Begin);
-                var validHash = md5.ComputeHash(asset.Stream);
+                    Directory.CreateDirectory(storagePath);
 
-                if (validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
-                    return;
+                    // If the file already exists, add a number behind the file name.
+                    if (File.Exists(assetPath))
+                    {
+                        var md5 = MD5.Create();
 
-                // Separate the filename and the extension.
-                var attempt = 1;
-                var fileName = Path.GetFileNameWithoutExtension(asset.FileName);
-                var fileExtension = Path.GetExtension(asset.FileName);
+                        // Compute hash of downloaded asset to match with installed hash.
+                        asset.Stream.Seek(0, SeekOrigin.Begin);
+                        var validHash = md5.ComputeHash(asset.Stream);
 
-                // Update the path to where the the asset should be stored by adding a number behind the name until an available filename has been found.
-                do
-                {
-                    assetPath = Path.Combine(storagePath, $"{fileName} ({++attempt}){fileExtension}");
+                        if (validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
+                            return;
 
-                    if (File.Exists(assetPath) && validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
-                        return;
+                        // Separate the filename and the extension.
+                        var attempt = 1;
+                        var fileName = Path.GetFileNameWithoutExtension(asset.FileName);
+                        var fileExtension = Path.GetExtension(asset.FileName);
 
-                } while ( File.Exists(assetPath));
-            }
-            
-            // Write the stream to a file at the asset path.
-            using (var fileStream = File.Create(assetPath))
-            {
-                asset.Stream.Seek(0, SeekOrigin.Begin);
-                await asset.Stream.CopyToAsync(fileStream);
+                        // Update the path to where the the asset should be stored by adding a number behind the name until an available filename has been found.
+                        do
+                        {
+                            assetPath = Path.Combine(storagePath, $"{fileName} ({++attempt}){fileExtension}");
+
+                            if (File.Exists(assetPath) &&
+                                validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
+                                return;
+
+                        } while (File.Exists(assetPath));
+                    }
+
+                    // Write the stream to a file at the asset path.
+                    using (var fileStream = File.Create(assetPath))
+                    {
+                        asset.Stream.Seek(0, SeekOrigin.Begin);
+                        await asset.Stream.CopyToAsync(fileStream);
+                    }
+                    break;
+                case ParkitectAssetType.Mod:
+                    using (var zip = new ZipArchive(asset.Stream, ZipArchiveMode.Read))
+                    {
+                        // Compute name of main directory inside archive.
+                        var mainFolder = zip.Entries.FirstOrDefault()?.FullName;
+                        if (mainFolder == null)
+                            throw new Exception("invalid archive");
+
+                        // Find the mod.json file. Yay for / \ path divider compatibility.
+                        var modJsonPath = Path.Combine(mainFolder, "mod.json").Replace('/', '\\');
+                        var modJson = zip.Entries.FirstOrDefault(e => e.FullName.Replace('/', '\\') == modJsonPath);
+
+                        // Read mod.json.
+                        if (modJson == null) throw new Exception("mod is missing mod.json file");
+                        using (var streamReader = new StreamReader(modJson.Open()))
+                        {
+                            var json = await streamReader.ReadToEndAsync();
+                            var mod = JsonConvert.DeserializeObject<ParkitectMod>(json);
+
+                            // Set default mod properties.
+                            mod.Tag = asset.DownloadInfo.Tag;
+                            mod.Repository = asset.DownloadInfo.Repository;
+                            mod.Path = Path.Combine(ModsPath, asset.DownloadInfo.Repository.Replace('/', '@'));
+                            mod.IsEnabled = true;
+                            mod.ForceCompile = false;
+                            mod.IsDevelopment = false;
+
+                            // Find previous version of mod.
+                            var oldMod = InstalledMods.FirstOrDefault(m => m.Repository == mod.Repository);
+                            if (oldMod != null)
+                            {
+                                // This version was already installed.
+                                if (oldMod.IsDevelopment || oldMod.Tag == mod.Tag)
+                                    return;
+
+                                Debug.WriteLine($"Delete old mod {Path.GetFileNameWithoutExtension(oldMod.Path)}");
+                                WriteModsFile(ReadModsFile().Except(new[] {Path.GetFileNameWithoutExtension(oldMod.Path)}).Distinct());
+
+                                DeleteFileSystemInfo(new DirectoryInfo(oldMod.Path));
+
+                                // Deleting is stupid.
+                                // todo look for better solution
+                                await Task.Delay(1000);
+                            }
+
+
+                            // Install mod.
+                            foreach (var entry in zip.Entries)
+                            {
+                                if (!entry.FullName.StartsWith(mainFolder))
+                                    continue;
+
+                                // Compute path.
+                                var partDir = entry.FullName.Substring(mainFolder.Length);
+                                var path = Path.Combine(mod.Path, partDir);
+
+                                if (string.IsNullOrEmpty(entry.Name))
+                                {
+                                    Debug.WriteLine("Create dir " + path);
+                                    Directory.CreateDirectory(path);
+                                }
+                                else
+                                {
+                                    Debug.WriteLine("Write " + path);
+                                    using (var openStream = entry.Open())
+                                    using (var fileStream = File.OpenWrite(path))
+                                        await openStream.CopyToAsync(fileStream);
+                                }
+                            }
+                            mod.Save();
+
+                            WriteModsFile(
+                                ReadModsFile()
+                                    .Concat(new[] {asset.DownloadInfo.Repository.Replace('/', '@')})
+                                    .Distinct());
+                        }
+                    }
+                    break;
+                default:
+                    throw new Exception("unsupported asset type");
             }
         }
+
+        private static void DeleteFileSystemInfo(FileSystemInfo fileSystemInfo)
+        {
+            var directoryInfo = fileSystemInfo as DirectoryInfo;
+            if (directoryInfo != null)
+            {
+                foreach (var childInfo in directoryInfo.GetFileSystemInfos())
+                {
+                    DeleteFileSystemInfo(childInfo);
+                }
+            }
+
+            fileSystemInfo.Attributes = FileAttributes.Normal;
+            fileSystemInfo.Delete();
+        }
+
+        private IEnumerable<string> ReadModsFile()
+        {
+            if (!File.Exists(ModsFilePath))
+                return new string[0];
+
+            try
+            {
+                return JsonConvert.DeserializeObject<string[]>(File.ReadAllText(ModsFilePath));
+            }
+            catch
+            {
+                return new string[0];
+            }
+        }
+
+        private void WriteModsFile(IEnumerable<string> mods)
+        {
+            if (mods == null) throw new ArgumentNullException(nameof(mods));
+            File.WriteAllText(ModsFilePath, JsonConvert.SerializeObject(mods is string[] ? mods : mods.ToArray()));
+        }
+
     }
 }

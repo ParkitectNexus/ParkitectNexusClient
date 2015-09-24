@@ -2,6 +2,7 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using Octokit;
 
 namespace ParkitectNexus.Data
 {
@@ -49,14 +51,59 @@ namespace ParkitectNexus.Data
         }
 
         /// <summary>
-        ///     Determines whether the specified input is valid file hash.
+        /// Determines whether the specified input is valid file hash.
         /// </summary>
         /// <param name="input">The input.</param>
-        /// <returns>true if valid; false otherwise.</returns>
-        public static bool IsValidFileHash(string input)
+        /// <param name="assetType">Type of the asset.</param>
+        /// <returns>
+        /// true if valid; false otherwise.
+        /// </returns>
+        public static bool IsValidFileHash(string input, ParkitectAssetType assetType)
         {
             if (input == null) throw new ArgumentNullException(nameof(input));
-            return input.Length == 10 && input.All(c => (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9'));
+            switch (assetType)
+            {
+                case ParkitectAssetType.Blueprint:
+                case ParkitectAssetType.Savegame:
+                    return input.Length == 10 && input.All(c => (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9'));
+                case ParkitectAssetType.Mod:
+                    var p = input.Split('/');
+                    return p.Length==2 && !string.IsNullOrWhiteSpace(p[0]) && !string.IsNullOrWhiteSpace(p[1]);
+                default:
+                    return false;
+            }
+        }
+
+
+        public async Task<RepositoryTag> GetLatestModTag(string mod)
+        {
+            if (mod == null) throw new ArgumentNullException(nameof(mod));
+            var p = mod.Split('/');
+
+            if (p.Length != 2 || string.IsNullOrWhiteSpace(p[0]) || string.IsNullOrWhiteSpace(p[1]))
+                throw new ArgumentException(nameof(mod));
+
+            var client = new GitHubClient(new ProductHeaderValue("parkitect-nexus-client"));
+            return (await client.Repository.GetAllTags(p[0], p[1])).FirstOrDefault();
+        }
+
+        private async Task<DownloadInfo> ResolveDownloadUrl(ParkitectNexusUrl url)
+        {
+            if (url == null) throw new ArgumentNullException(nameof(url));
+
+            switch (url.AssetType)
+            {
+                    case ParkitectAssetType.Blueprint:
+                    case ParkitectAssetType.Savegame:
+                    return new DownloadInfo(string.Format(DownloadUrl, url.FileHash), null, null);
+                    case ParkitectAssetType.Mod:
+                    var tag = await GetLatestModTag(url.FileHash);
+                    if(tag == null)
+                        throw new Exception("mod has not yet been released(tagged)");
+                    return new DownloadInfo(tag.ZipballUrl, url.FileHash, tag.Name);
+                default:
+                    throw new Exception("unsupported mod type");
+            }
         }
 
         /// <summary>
@@ -67,15 +114,15 @@ namespace ParkitectNexus.Data
         public async Task<ParkitectAsset> DownloadFile(ParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
-
+            
             // Create a download url based on the file hash.
-            var downloadUrl = string.Format(DownloadUrl, url.FileHash);
+            var downloadInfo = await ResolveDownloadUrl(url);
 
             // Create a web client which will download the file.
             using (var webClient = new ParkitectNexusWebClient())
             {
                 // Receive the content of the file.
-                using (var stream = await webClient.OpenReadTaskAsync(downloadUrl))
+                using (var stream = await webClient.OpenReadTaskAsync(downloadInfo.Url))
                 {
                     // Read content information from the headers.
                     var contentDispositionHeader = webClient.ResponseHeaders.Get("Content-Disposition");
@@ -101,12 +148,12 @@ namespace ParkitectNexus.Data
                         throw new Exception("invalid response type");
 
                     // Extract the filename of the asset from the content disposition header.
-                    var fileNameMatch = Regex.Match(contentDispositionHeader, @"attachment; filename=""(.*)""");
+                    var fileNameMatch = Regex.Match(contentDispositionHeader, @"attachment; filename=(""?)(.*)\1");
 
                     if (fileNameMatch == null || !fileNameMatch.Success)
                         throw new Exception("invalid headers");
 
-                    var fileName = fileNameMatch.Groups[1].Value;
+                    var fileName = fileNameMatch.Groups[2].Value;
 
                     // Copy the contents of the downloaded stream to a memory stream.
                     var memoryStream = new MemoryStream();
@@ -117,9 +164,25 @@ namespace ParkitectNexus.Data
                         throw new Exception("unexpected end of stream");
 
                     // Create an instance of ParkitectAsset with the received content and data.
-                    return new ParkitectAsset(fileName, url.AssetType, memoryStream);
+                    return new ParkitectAsset(fileName, downloadInfo, url.AssetType, memoryStream);
                 }
             }
         }
     }
+
+    public struct DownloadInfo
+    {
+        public DownloadInfo(string url, string repository, string tag)
+        {
+            if (url == null) throw new ArgumentNullException(nameof(url));
+            Url = url;
+            Repository = repository;
+            Tag = tag;
+        }
+
+        public string Url { get; }
+        public string Repository { get; }
+        public string Tag { get; }
+    }
+
 }

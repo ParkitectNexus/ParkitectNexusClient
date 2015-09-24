@@ -28,7 +28,7 @@ namespace ParkitectNexus.Data
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (fileHash == null) throw new ArgumentNullException(nameof(fileHash));
-            if (!global::ParkitectNexus.Data.ParkitectNexusWebsite.IsValidFileHash(fileHash))
+            if (!ParkitectNexusWebsite.IsValidFileHash(fileHash, assetType))
                 throw new ArgumentException("invalid file hash", nameof(fileHash));
 
             Name = name;
@@ -120,7 +120,7 @@ namespace ParkitectNexus.Data
 
             // Make sure the file hash is valid.
             var fileHash = parts[2];
-            if (!global::ParkitectNexus.Data.ParkitectNexusWebsite.IsValidFileHash(fileHash))
+            if (!ParkitectNexusWebsite.IsValidFileHash(fileHash, assetType))
                 return false;
 
             // Return an instance of the url.

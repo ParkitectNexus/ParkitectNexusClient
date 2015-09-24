@@ -34,7 +34,7 @@ namespace ParkitectNexus.ModLauncher
             try
             {
                 // Compile mods.
-                var mods = parkitect.InstalledMods.Where(mod => mod.Compile(parkitect)).ToArray();
+                var mods = parkitect.InstalledMods.Where(mod => mod.IsEnabled && mod.Compile(parkitect)).ToArray();
 
                 // Launch the game.
                 var process = parkitect.Launch();

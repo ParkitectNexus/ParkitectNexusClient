@@ -40,7 +40,7 @@ namespace ParkitectNexus.Client
                     var serializer = new JsonSerializer();
                     var updateInfo = (UpdateInfo) serializer.Deserialize(jsonTextReader, typeof (UpdateInfo));
 
-                    return updateInfo.Version == typeof (App).Assembly.GetName().Version.ToString()
+                    return updateInfo.Version == typeof (Program).Assembly.GetName().Version.ToString()
                         ? null
                         : updateInfo;
                 }

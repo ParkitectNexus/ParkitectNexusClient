@@ -18,10 +18,13 @@ namespace ParkitectNexus.Data
         private static readonly string[] SystemAssemblies =
         {
             "System", "System.Core", "System.Data", "System.Xml",
-            "System.Xml.Linq", "Microsoft.CSharp"
+            "System.Xml.Linq", "Microsoft.CSharp", "System.Data.DataSetExtensions", "System.Net.Http"
         };
         
         public string AssemblyPath => !IsInstalled ? null : System.IO.Path.Combine(Path, "compiled.dll");
+
+        [JsonProperty]
+        public string BaseDir { get; set; }
 
         [JsonProperty]
         public string ClassName { get; set; } = "Main";
@@ -31,13 +34,19 @@ namespace ParkitectNexus.Data
 
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
-
+        
         [JsonProperty]
         public bool EnableLogging { get; set; } = true;
 
         [JsonProperty]
         public bool ForceCompile { get; set; }
 
+        [JsonProperty]
+        public bool IsDevelopment { get; set; }
+
+        [JsonProperty]
+        public bool IsEnabled { get; set; }
+        
         public bool IsInstalled
             => !string.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
 
@@ -76,7 +85,7 @@ namespace ParkitectNexus.Data
             if (parkitect.ManagedAssemblyNames.Contains(dllName))
                 return System.IO.Path.Combine(parkitect.ManagedDataPath, dllName);
 
-            var modPath = System.IO.Path.Combine(Path, dllName);
+            var modPath = System.IO.Path.Combine(Path, BaseDir ?? "", dllName);
             if (File.Exists(System.IO.Path.Combine(modPath)))
                 return modPath;
 
@@ -100,9 +109,16 @@ namespace ParkitectNexus.Data
 
         public StreamWriter OpenLog()
         {
-            return !IsInstalled ? null : File.AppendText(System.IO.Path.Combine(Path, "mod.log"));
+            return !IsInstalled ? null : File.AppendText(System.IO.Path.Combine(Path, BaseDir ?? "", "mod.log"));
         }
 
+        public void Save()
+        {
+            if(!IsInstalled)
+                throw new Exception("Not installed");
+
+            File.WriteAllText(System.IO.Path.Combine(Path, "mod.json"), JsonConvert.SerializeObject(this));
+        }
         public bool Compile(Parkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
@@ -124,7 +140,7 @@ namespace ParkitectNexus.Data
                     var assemblyFiles = new List<string>();
                     var sourceFiles = new List<string>();
 
-                    var csProjPath = Project == null ? null : System.IO.Path.Combine(Path, Project);
+                    var csProjPath = Project == null ? null : System.IO.Path.Combine(Path, BaseDir ?? "", Project);
 
                     List<string> unresolvedAssemblyReferences;
                     List<string> unresolvedSourceFiles;
@@ -172,7 +188,7 @@ namespace ParkitectNexus.Data
 
                     // Resolve the source file paths.
                     logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)}.");
-                    sourceFiles.AddRange(unresolvedSourceFiles.Select(file => System.IO.Path.Combine(Path, file)));
+                    sourceFiles.AddRange(unresolvedSourceFiles.Select(file => System.IO.Path.Combine(Path, BaseDir ?? "", file)));
                     
                     // Compile.
                     var csCodeProvider = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});

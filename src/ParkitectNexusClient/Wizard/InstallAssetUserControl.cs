@@ -18,7 +18,7 @@ namespace ParkitectNexus.Client.Wizard
         private readonly ParkitectNexusUrl _parkitectNexusUrl;
         private int _dots;
         private int _dotsDirection = 1;
-
+        private string _keyword = "Downloading";
         public InstallAssetUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus, ParkitectNexusUrl parkitectNexusUrl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
@@ -49,8 +49,7 @@ namespace ParkitectNexus.Client.Wizard
             {
                 // Download the asset.
                 var asset = await _parkitectNexus.DownloadFile(_parkitectNexusUrl);
-
-
+                
                 if (asset == null)
                 {
                     // If the asset has failed to download, show some feedback to the user.
@@ -61,15 +60,17 @@ namespace ParkitectNexus.Client.Wizard
                     return;
                 }
 
+                _keyword = "Installing";
+
                 await _parkitect.StoreAsset(asset);
 
                 asset.Dispose();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 // If the asset has failed to download, show some feedback to the user.
                 MessageBox.Show(this,
-                    $"Failed to install {assetName}!\nPlease try again later.",
+                    $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}",
                     "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // todo: Maybe these errors should be sent to some server.
@@ -80,7 +81,7 @@ namespace ParkitectNexus.Client.Wizard
                 statusLabel.Text = "Done!";
                 progressBar.Style = ProgressBarStyle.Continuous;
                 progressBar.Value = 100;
-                Cursor = DefaultCursor;
+                WizardForm.Cursor = DefaultCursor;
                 finishButton.Enabled = true;
                 closeTimer.Enabled = true;
             }
@@ -91,6 +92,7 @@ namespace ParkitectNexus.Client.Wizard
         protected override void OnAttached()
         {
             InstallAsset();
+            WizardForm.Cursor = Cursors.WaitCursor;
             base.OnAttached();
         }
 
@@ -108,7 +110,7 @@ namespace ParkitectNexus.Client.Wizard
                 _dotsDirection = -_dotsDirection;
 
             // Update the status label.
-            statusLabel.Text = "Downloading." + string.Concat(Enumerable.Repeat(".", _dots));
+            statusLabel.Text = _keyword + "." + string.Concat(Enumerable.Repeat(".", _dots));
         }
 
         private void closeTimer_Tick(object sender, EventArgs e)

@@ -15,14 +15,25 @@ namespace ParkitectNexus.Data
         public ParkitectNexusWebClient()
         {
             // Add a version number header of requests.
-            Headers.Add("X-ParkitectNexusInstaller-Version", Assembly.GetEntryAssembly().GetName().Version.ToString());
+            var version = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            Headers.Add("X-ParkitectNexusInstaller-Version", version);
+            Headers.Add("user-agent", $"ParkitectNexus/{version}");
         }
 
         protected override WebRequest GetWebRequest(Uri uri)
         {
-            var w = base.GetWebRequest(uri);
-            w.Timeout = 10*60*1000;
-            return w;
+            var request = base.GetWebRequest(uri);
+
+            if (request == null) return null;
+
+            if (request is HttpWebRequest)
+            {
+                var http = request as HttpWebRequest;
+                http.KeepAlive = false;
+                http.ServicePoint.Expect100Continue = false;
+            }
+            request.Timeout = 10*60*1000;
+            return request;
         }
     }
 }
