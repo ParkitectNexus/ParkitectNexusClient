@@ -27,7 +27,8 @@ namespace WixSharpSetup
                         new FileShortcut(AppName, @"%ProgramMenu%\" + AppName) {IconFile = AppIcon}
                         ),
                     new File(@"CommandLine.dll"),
-                    new File(@"Newtonsoft.Json.dll")),
+                    new File(@"Newtonsoft.Json.dll")
+                    ),
                 new Dir(@"%ProgramMenu%\" + AppName,
                     new ExeFileShortcut("Uninstall " + AppName, "[System64Folder]msiexec.exe", "/x [ProductCode]")),
                 new InstalledFileAction(AppExecutable, "-s")

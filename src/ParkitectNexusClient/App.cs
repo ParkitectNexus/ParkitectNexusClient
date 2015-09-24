@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using CommandLine;
 using ParkitectNexus.Data;
 using ParkitectNexus.Client.Properties;
+using ParkitectNexus.Client.Wizard;
 
 namespace ParkitectNexus.Client
 {
@@ -77,7 +78,9 @@ namespace ParkitectNexus.Client
             }
 
             // Run the download process in an installer form, for a nice visible process.
-            Application.Run(new InstallAssetForm(Parkitect, ParkitectNexusWebsite, parkitectNexusUrl));
+            var form = new WizardForm();
+            form.Attach(new InstallAssetUserControl(Parkitect, ParkitectNexusWebsite, parkitectNexusUrl));
+            Application.Run(form);
         }
 
         private bool CheckForUpdates()

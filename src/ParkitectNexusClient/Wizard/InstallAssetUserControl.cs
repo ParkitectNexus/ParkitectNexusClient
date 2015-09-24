@@ -1,18 +1,17 @@
-﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Data;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
 
-namespace ParkitectNexus.Client
+namespace ParkitectNexus.Client.Wizard
 {
-    /// <summary>
-    ///     Represents an installation form.
-    /// </summary>
-    internal partial class InstallAssetForm : Form
+    internal partial class InstallAssetUserControl : BaseWizardUserControl
     {
         private readonly Parkitect _parkitect;
         private readonly ParkitectNexusWebsite _parkitectNexus;
@@ -20,14 +19,7 @@ namespace ParkitectNexus.Client
         private int _dots;
         private int _dotsDirection = 1;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InstallAssetForm" /> class.
-        /// </summary>
-        /// <param name="parkitect">The parkitect.</param>
-        /// <param name="parkitectNexus">The ParkitectNexus website.</param>
-        /// <param name="parkitectNexusUrl">The ParkitectNexus URL.</param>
-        /// <exception cref="ArgumentNullException">Thrown if parkitect, parkitectNexus or parkitectNexusUrl is null.</exception>
-        public InstallAssetForm(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus, ParkitectNexusUrl parkitectNexusUrl)
+        public InstallAssetUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus, ParkitectNexusUrl parkitectNexusUrl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexus == null) throw new ArgumentNullException(nameof(parkitectNexus));
@@ -35,15 +27,18 @@ namespace ParkitectNexus.Client
             _parkitect = parkitect;
             _parkitectNexus = parkitectNexus;
             _parkitectNexusUrl = parkitectNexusUrl;
+
             InitializeComponent();
 
             // Format the "installing" label.
             installingLabel.Text = $"Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
-
-            // Set the client size to make the baner fit snugly.
-            ClientSize = new Size(493, 360);
         }
 
+        public InstallAssetUserControl()
+        {
+            InitializeComponent();
+        }
+        
         /// <summary>
         ///     Installs the asset.
         /// </summary>
@@ -62,7 +57,7 @@ namespace ParkitectNexus.Client
                     MessageBox.Show(this,
                         $"Failed to install {assetName}!\nPlease try again later.",
                         "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Close();
+                    WizardForm.Close();
                     return;
                 }
 
@@ -83,34 +78,20 @@ namespace ParkitectNexus.Client
             {
                 downloadingTimer.Enabled = false;
                 statusLabel.Text = "Done!";
-                progressBar.Style= ProgressBarStyle.Continuous;
+                progressBar.Style = ProgressBarStyle.Continuous;
                 progressBar.Value = 100;
                 Cursor = DefaultCursor;
                 finishButton.Enabled = true;
                 closeTimer.Enabled = true;
             }
         }
-
-        #region Overrides of Form
-
-        /// <summary>
-        ///     Raises the <see cref="E:System.Windows.Forms.Form.Load" /> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
-        protected override void OnLoad(EventArgs e)
-        {
-            // Once the form is loading, start the downloading task.
-            InstallAsset();
-            base.OnLoad(e);
-        }
         
-        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data. </param>
-        protected override void OnPaint(PaintEventArgs e)
+        #region Overrides of BaseWizardUserControl
+
+        protected override void OnAttached()
         {
-            base.OnPaint(e);
-            e.Graphics.DrawLine(new Pen(Color.FromArgb(182, 182, 182)), 0, 312, 488, 312);
-            e.Graphics.DrawLine(new Pen(Color.FromArgb(252, 252, 252)), 0, 313, 488, 313);
-            e.Graphics.DrawLine(new Pen(Color.FromArgb(252, 252, 252)), 489, 312, 489, 313);
+            InstallAsset();
+            base.OnAttached();
         }
 
         #endregion
@@ -132,12 +113,12 @@ namespace ParkitectNexus.Client
 
         private void closeTimer_Tick(object sender, EventArgs e)
         {
-            Close();
+            WizardForm.Close();
         }
-
+        
         private void finishButton_Click(object sender, EventArgs e)
         {
-            Close();
+            WizardForm.Close();
         }
     }
 }
