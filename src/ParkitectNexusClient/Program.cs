@@ -143,8 +143,12 @@ namespace ParkitectNexus.Client
             var updateInfo = UpdateUtil.FindUpdate();
             if (updateInfo != null)
             {
-                // Store set download url so it can be downloaded after the update.
-                Settings.Default.DownloadOnNextRun = Options.DownloadUrl;
+                // Store download url so it can be downloaded after the update.
+                if (!string.IsNullOrEmpty(Options.DownloadUrl))
+                    Settings.Default.DownloadOnNextRun = Options.DownloadUrl;
+                else
+                    Settings.Default.BootOnNextRun = true;
+
                 Settings.Default.Save();
 
                 using (var focus = new FocusForm())
@@ -154,7 +158,7 @@ namespace ParkitectNexus.Client
                         MessageBox.Show(focus,
                             "A required update for the ParkitectNexus Client needs to be installed.\n" +
                             "Without this update you wont be able to install blueprints and savegames trough this application. The update should take less than a minute.\n" +
-                            $"Would you like to install it now?\n\nYou are currently running v{typeof (App).Assembly.GetName().Version}. The newest version is v{updateInfo.Version}",
+                            $"Would you like to install it now?\n\nYou are currently running v{typeof (Program).Assembly.GetName().Version}. The newest version is v{updateInfo.Version}",
                             "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
                         DialogResult.Yes)
                         return true;
