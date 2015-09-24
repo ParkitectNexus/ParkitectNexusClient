@@ -6,13 +6,20 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml;
 using Microsoft.CSharp;
 using Newtonsoft.Json;
 
 namespace ParkitectNexus.Data
 {
+    public enum LogLevel
+    {
+        Info,
+        Warn,
+        Error,
+        Fatal
+    }
+
     [JsonObject(MemberSerialization.OptIn)]
     public class ParkitectMod
     {
@@ -29,6 +36,9 @@ namespace ParkitectNexus.Data
 
         [JsonProperty]
         public string ClassName { get; set; } = "Main";
+
+        [JsonProperty]
+        public string CompilerVersion { get; set; } = "v4.0";
 
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
@@ -83,11 +93,31 @@ namespace ParkitectNexus.Data
 
             throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");
         }
-        
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{Name} {Tag}";
+        }
+
+        #endregion
+
+        public StreamWriter OpenLog()
+        {
+            return !IsInstalled ? null : File.AppendText(System.IO.Path.Combine(Path, "mod.log"));
+        }
+
         public bool Compile(Parkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (Path == null) throw new Exception("mod not installed");
+            if (!IsInstalled) throw new Exception("mod not installed");
 
             // Delete existing compiled file if compilation is forced.
             if (File.Exists(AssemblyPath))
@@ -95,47 +125,84 @@ namespace ParkitectNexus.Data
                     File.Delete(AssemblyPath);
                 else return true;
 
-            var assemblyFiles = new List<string>();
-            var sourceFiles = new List<string>();
-
-            var csProjPath = Project == null ? null : System.IO.Path.Combine(Path, Project);
-            if (csProjPath != null)
+            using (var logFile = OpenLog())
             {
-                // Load source files and referenced assemblies from *.csproj file.
-                var document = new XmlDocument();
-                document.Load(csProjPath);
+                try
+                {
+                    logFile.Log($"Compiling {Name}...");
+                    logFile.Log($"Entry point: {NameSpace}.{ClassName}.{MethodName}.");
 
-                var manager = new XmlNamespaceManager(document.NameTable);
-                manager.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
+                    var assemblyFiles = new List<string>();
+                    var sourceFiles = new List<string>();
 
-                assemblyFiles.AddRange(document.SelectNodes("//x:Reference", manager)
-                    .Cast<XmlNode>()
-                    .Select(node => node.Attributes["Include"])
-                    .Select(name => name.Value.Split(',').FirstOrDefault())
-                    .Select(name => ResolveAssembly(parkitect, name)));
+                    var csProjPath = Project == null ? null : System.IO.Path.Combine(Path, Project);
 
-                sourceFiles.AddRange(document.SelectNodes("//x:Compile", manager)
-                    .Cast<XmlNode>()
-                    .Select(node => node.Attributes["Include"])
-                    .Select(file => System.IO.Path.Combine(Path, file.Value)));
+                    List<string> unresolvedAssemblyReferences;
+                    List<string> unresolvedSourceFiles;
+
+                    if (csProjPath != null)
+                    {
+                        // Load source files and referenced assemblies from *.csproj file.
+                        logFile.Log($"Compiling from `{Project}`.");
+
+                        // Open the .csproj file of the mod.
+                        var document = new XmlDocument();
+                        document.Load(csProjPath);
+
+                        var manager = new XmlNamespaceManager(document.NameTable);
+                        manager.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
+
+                        // List the referenced assemblies of the mod.
+                        unresolvedAssemblyReferences = document.SelectNodes("//x:Reference", manager)
+                            .Cast<XmlNode>()
+                            .Select(node => node.Attributes["Include"])
+                            .Select(name => name.Value.Split(',').FirstOrDefault()).ToList();
+
+                        // List the source files of the mod.
+                        unresolvedSourceFiles = document.SelectNodes("//x:Compile", manager)
+                            .Cast<XmlNode>()
+                            .Select(node => node.Attributes["Include"].Value).ToList();
+                    }
+                    else
+                    {
+                        // Load source files and referenced assemblies from mod.json file.
+                        logFile.Log("Compiling from `mod.json`.");
+
+                        unresolvedAssemblyReferences = ReferencedAssemblies.ToList();
+                        unresolvedSourceFiles = CodeFiles.ToList();
+                    }
+
+                    // Resolve the assembly references.
+                    foreach (var name in unresolvedAssemblyReferences)
+                    {
+                        var resolved = ResolveAssembly(parkitect, name);
+                        assemblyFiles.Add(resolved);
+
+                        logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
+                    }
+
+                    // Resolve the source file paths.
+                    logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)}.");
+                    sourceFiles.AddRange(unresolvedSourceFiles.Select(file => System.IO.Path.Combine(Path, file)));
+                    
+                    // Compile.
+                    var csCodeProvider = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
+                    var parameters = new CompilerParameters(assemblyFiles.ToArray(), AssemblyPath);
+
+                    var result = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());
+                    
+                    // Log errors.
+                    foreach (var error in result.Errors.Cast<CompilerError>())
+                        logFile.Log($"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}", LogLevel.Error);
+                    
+                    return !result.Errors.HasErrors;
+                }
+                catch (Exception e)
+                {
+                    logFile.Log(e.Message, LogLevel.Error);
+                    return false;
+                }
             }
-            else
-            {
-                // Load source files and referenced assemblies from mod.json file.
-                assemblyFiles.AddRange(ReferencedAssemblies.Select(name => ResolveAssembly(parkitect, name)));
-                sourceFiles.AddRange(CodeFiles.Select(file => System.IO.Path.Combine(Path, file)));
-            }
-
-            // Compile files with default references.
-            var csCodeProvider = new CSharpCodeProvider(new Dictionary<string, string>() {{"CompilerVersion", "v4.0"}});
-            var parameters = new CompilerParameters(assemblyFiles.ToArray(), AssemblyPath);
-
-            var results = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());
-
-            // results.Errors.Cast<CompilerError>().ToList().ForEach(error => Console.WriteLine(error.ErrorText));
-            // todo log errors and warnings to log file in mod folder
-
-            return !results.Errors.HasErrors;
         }
     }
 }

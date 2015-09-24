@@ -61,6 +61,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="StreamWriterLogUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
