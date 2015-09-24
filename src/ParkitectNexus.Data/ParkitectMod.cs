@@ -28,11 +28,8 @@ namespace ParkitectNexus.Data
             "System", "System.Core", "System.Data", "System.Xml",
             "System.Xml.Linq", "Microsoft.CSharp"
         };
-
-        [JsonProperty]
-        public string AssemblyFileName { get; set; }
-
-        public string AssemblyPath => !IsInstalled ? null : System.IO.Path.Combine(Path, AssemblyFileName);
+        
+        public string AssemblyPath => !IsInstalled ? null : System.IO.Path.Combine(Path, "compiled.dll");
 
         [JsonProperty]
         public string ClassName { get; set; } = "Main";
