@@ -99,7 +99,7 @@ namespace ParkitectNexus.Client
                         MessageBox.Show(focus,
                             "A required update for the ParkitectNexus Client needs to be installed.\n" +
                             "Without this update you wont be able to install blueprints and savegames trough this application. The update should take less than a minute.\n" +
-                            $"Would you like to install it now?\n\nYou are currently running v{typeof (ParkitectNexus).Assembly.GetName().Version}. The newest version is v{updateInfo.Version}",
+                            $"Would you like to install it now?\n\nYou are currently running v{typeof (App).Assembly.GetName().Version}. The newest version is v{updateInfo.Version}",
                             "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
                         DialogResult.Yes)
                         return true;

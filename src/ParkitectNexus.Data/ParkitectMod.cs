@@ -12,14 +12,6 @@ using Newtonsoft.Json;
 
 namespace ParkitectNexus.Data
 {
-    public enum LogLevel
-    {
-        Info,
-        Warn,
-        Error,
-        Fatal
-    }
-
     [JsonObject(MemberSerialization.OptIn)]
     public class ParkitectMod
     {
