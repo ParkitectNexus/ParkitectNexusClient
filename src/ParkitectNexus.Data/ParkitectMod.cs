@@ -34,13 +34,7 @@ namespace ParkitectNexus.Data
 
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
-
-        [JsonProperty]
-        public bool EnableLogging { get; set; } = true;
-
-        [JsonProperty]
-        public bool ForceCompile { get; set; }
-
+        
         [JsonProperty]
         public bool IsDevelopment { get; set; }
 
@@ -148,7 +142,7 @@ namespace ParkitectNexus.Data
 
             // Delete existing compiled file if compilation is forced.
             if (File.Exists(AssemblyPath))
-                if (ForceCompile)
+                if (IsDevelopment)
                     File.Delete(AssemblyPath);
                 else return true;
 

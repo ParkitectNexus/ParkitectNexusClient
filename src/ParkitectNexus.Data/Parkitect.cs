@@ -190,7 +190,7 @@ namespace ParkitectNexus.Data
             try
             {
                 // Compile mods.
-                var mods = InstalledMods.Where(mod => mod.IsEnabled && mod.Compile(this)).ToArray();
+                var mods = InstalledMods.Where(mod => (mod.IsEnabled || mod.IsDevelopment) && mod.Compile(this)).ToArray();
 
                 // Launch the game.
                 var process = Launch(arguments);
@@ -322,7 +322,6 @@ namespace ParkitectNexus.Data
                             mod.Repository = asset.DownloadInfo.Repository;
                             mod.Path = Path.Combine(ModsPath, asset.DownloadInfo.Repository.Replace('/', '@'));
                             mod.IsEnabled = true;
-                            mod.ForceCompile = false;
                             mod.IsDevelopment = false;
 
                             // Find previous version of mod.
