@@ -8,6 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Properties;
@@ -182,7 +183,7 @@ namespace ParkitectNexus.Data
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The launched process.</returns>
-        public async Task<Process> LaunchWithMods(string arguments = "-single-instance")
+        public Process LaunchWithMods(string arguments = "-single-instance")
         {
             if (!InstalledMods.Any())
                 return Launch(arguments);
@@ -197,7 +198,7 @@ namespace ParkitectNexus.Data
                 // Wait for the game to start.
                 do
                 {
-                    await Task.Delay(500);
+                    Thread.Sleep(500);
                     process.Refresh();
                 } while (!process.HasExited && process.MainWindowTitle.Contains("Configuration"));
 

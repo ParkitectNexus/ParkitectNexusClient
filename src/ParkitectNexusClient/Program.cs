@@ -56,6 +56,13 @@ namespace ParkitectNexus.Client
 
                 return;
             }
+
+            if (Options.Launch)
+            {
+                Parkitect.LaunchWithMods();
+                return;
+            }
+
             // Handle silent calls.
             if (Options.Silent && !Settings.Default.BootOnNextRun)
                 return;

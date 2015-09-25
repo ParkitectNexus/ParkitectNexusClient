@@ -25,10 +25,10 @@ namespace ParkitectNexus.Client.Wizard
             WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _parkitectNexusWebsite));
         }
 
-        private async void launchParkitectButton_Click(object sender, EventArgs e)
+        private void launchParkitectButton_Click(object sender, EventArgs e)
         {
             WizardForm.Close();
-            await _parkitect.LaunchWithMods();
+            _parkitect.LaunchWithMods();
         }
 
         private void visitParkitectNexusButton_Click(object sender, EventArgs e)
