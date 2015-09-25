@@ -12,7 +12,7 @@ namespace ParkitectNexus.Data
     public class ParkitectAsset : IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParkitectAsset" /> class.
+        ///     Initializes a new instance of the <see cref="ParkitectAsset" /> class.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="downloadInfo">The download info.</param>
@@ -37,7 +37,7 @@ namespace ParkitectNexus.Data
         public string FileName { get; }
 
         /// <summary>
-        /// Gets the download info of the file.
+        ///     Gets the download info of the file.
         /// </summary>
         public DownloadInfo DownloadInfo { get; }
 

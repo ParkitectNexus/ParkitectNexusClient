@@ -17,6 +17,8 @@ namespace ParkitectNexus.Client.Wizard
 
         public WizardForm WizardForm { get; private set; }
 
+        protected bool DrawFooterLine { get; set; } = true;
+
         public void Attach(WizardForm wizardForm)
         {
             WizardForm = wizardForm;
@@ -42,11 +44,9 @@ namespace ParkitectNexus.Client.Wizard
             Detached?.Invoke(this, EventArgs.Empty);
         }
 
-        protected bool DrawFooterLine { get; set; } = true;
-
         #region Overrides of Control
 
-        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data. </param>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data. </param>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);

@@ -20,7 +20,7 @@ namespace ParkitectNexus.Data
             "System", "System.Core", "System.Data", "System.Xml",
             "System.Xml.Linq", "Microsoft.CSharp", "System.Data.DataSetExtensions", "System.Net.Http"
         };
-        
+
         public string AssemblyPath => !IsInstalled ? null : System.IO.Path.Combine(Path, "compiled.dll");
 
         [JsonProperty]
@@ -34,7 +34,7 @@ namespace ParkitectNexus.Data
 
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
-        
+
         [JsonProperty]
         public bool EnableLogging { get; set; } = true;
 
@@ -46,7 +46,7 @@ namespace ParkitectNexus.Data
 
         [JsonProperty]
         public bool IsEnabled { get; set; }
-        
+
         public bool IsInstalled
             => !String.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
 
@@ -95,10 +95,10 @@ namespace ParkitectNexus.Data
         #region Overrides of Object
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         public override string ToString()
         {
@@ -114,7 +114,7 @@ namespace ParkitectNexus.Data
 
         public void Save()
         {
-            if(!IsInstalled)
+            if (!IsInstalled)
                 throw new Exception("Not installed");
 
             File.WriteAllText(System.IO.Path.Combine(Path, "mod.json"), JsonConvert.SerializeObject(this));
@@ -122,7 +122,7 @@ namespace ParkitectNexus.Data
 
         public void Delete()
         {
-            if(!IsInstalled) throw new Exception("mod not installed");
+            if (!IsInstalled) throw new Exception("mod not installed");
             DeleteFileSystemInfo(new DirectoryInfo(Path));
         }
 
@@ -210,18 +210,22 @@ namespace ParkitectNexus.Data
 
                     // Resolve the source file paths.
                     logFile.Log($"Source files: {String.Join(", ", unresolvedSourceFiles)}.");
-                    sourceFiles.AddRange(unresolvedSourceFiles.Select(file => System.IO.Path.Combine(Path, BaseDir ?? "", file)));
-                    
+                    sourceFiles.AddRange(
+                        unresolvedSourceFiles.Select(file => System.IO.Path.Combine(Path, BaseDir ?? "", file)));
+
                     // Compile.
-                    var csCodeProvider = new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
+                    var csCodeProvider =
+                        new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
                     var parameters = new CompilerParameters(assemblyFiles.ToArray(), AssemblyPath);
 
                     var result = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());
-                    
+
                     // Log errors.
                     foreach (var error in result.Errors.Cast<CompilerError>())
-                        logFile.Log($"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}", LogLevel.Error);
-                    
+                        logFile.Log(
+                            $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
+                            LogLevel.Error);
+
                     return !result.Errors.HasErrors;
                 }
                 catch (Exception e)

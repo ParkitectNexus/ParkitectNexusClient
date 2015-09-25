@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
-using ParkitectNexus.Data;
 using ParkitectNexus.Client.Properties;
+using ParkitectNexus.Data;
 
 namespace ParkitectNexus.Client
 {
@@ -70,14 +70,5 @@ namespace ParkitectNexus.Client
                 return false;
             }
         }
-    }
-
-    [JsonObject]
-    internal class UpdateInfo
-    {
-        public string Version { get; set; }
-
-        [JsonProperty("download_url")]
-        public string DownloadUrl { get; set; }
     }
 }

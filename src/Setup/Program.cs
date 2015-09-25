@@ -24,13 +24,12 @@ namespace WixSharpSetup
             var project = new ManagedProject(AppName,
                 new Dir(new Id("INSTALL_DIR"), @"%ProgramFiles%\" + AppName,
                     new File(AppExecutable,
-                        new FileShortcut(AppName, @"%ProgramMenu%\" + AppName) {IconFile = AppIcon },
-                        new FileShortcut(AppName, @"%Desktop%") { IconFile = AppIcon }
+                        new FileShortcut(AppName, @"%ProgramMenu%\" + AppName) {IconFile = AppIcon},
+                        new FileShortcut(AppName, @"%Desktop%") {IconFile = AppIcon}
                         ),
                     new File(@"CommandLine.dll"),
                     new File(@"Newtonsoft.Json.dll"),
                     new File(@"Octokit.dll"),
-                    new File(@"ParkitectModLauncher.exe"),
                     new File(@"ParkitectNexus.Data.dll"),
                     new File(@"Parkitectnexus.ModLoader.dll")
                     ),
@@ -39,7 +38,10 @@ namespace WixSharpSetup
                     new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch")
                     ),
                 new Dir(@"%Desktop%",
-                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch") { IconFile = AppIcon }
+                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch")
+                    {
+                        IconFile = AppIcon
+                    }
                     ),
                 new InstalledFileAction(AppExecutable, "--silent")
                 )

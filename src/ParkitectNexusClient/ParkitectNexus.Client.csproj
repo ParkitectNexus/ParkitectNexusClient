@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UpdateInfo.cs" />
     <Compile Include="Wizard\BaseWizardUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -202,10 +203,6 @@
     <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
       <Project>{0cb13383-05d3-40f5-b0e1-3907a42872dc}</Project>
       <Name>ParkitectNexus.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ParkitectNexus.ModLoader\ParkitectNexus.ModLoader.vcxproj">
-      <Project>{72dee48c-479c-4dee-8701-5e291b7ef95a}</Project>
-      <Name>ParkitectNexus.ModLoader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

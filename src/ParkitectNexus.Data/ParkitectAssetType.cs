@@ -16,12 +16,11 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     A blueprint.
         /// </summary>
-        [ParkitectAssetInfo("image/png", "Blueprint", "Saves\\Blueprints")]
-        Blueprint,
+        [ParkitectAssetInfo("image/png", "Blueprint", "Saves\\Blueprints")] Blueprint,
+
         /// <summary>
         ///     A mod.
         /// </summary>
-        [ParkitectAssetInfo("application/zip", "Mod", "mods")]
-        Mod
+        [ParkitectAssetInfo("application/zip", "Mod", "mods")] Mod
     }
 }

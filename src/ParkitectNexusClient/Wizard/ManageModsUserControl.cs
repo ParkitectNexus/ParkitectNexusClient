@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿// ParkitectNexusClient
+// Copyright 2015 Parkitect, Tim Potze
+
+using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
@@ -17,7 +15,10 @@ namespace ParkitectNexus.Client.Wizard
         private readonly Parkitect _parkitect;
         private readonly ParkitectNexusWebsite _parkitectNexusWebsite;
 
-        public ManageModsUserControl(MenuUserControl menu, Parkitect parkitect, ParkitectNexusWebsite parkitectNexusWebsite)
+        private bool _disableChecking = true;
+
+        public ManageModsUserControl(MenuUserControl menu, Parkitect parkitect,
+            ParkitectNexusWebsite parkitectNexusWebsite)
         {
             if (menu == null) throw new ArgumentNullException(nameof(menu));
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
@@ -29,6 +30,8 @@ namespace ParkitectNexus.Client.Wizard
             InitializeComponent();
         }
 
+        private ParkitectMod SelectedMod => modsCheckedListBox.SelectedItem as ParkitectMod;
+
         #region Overrides of BaseWizardUserControl
 
         protected override void OnAttached()
@@ -39,17 +42,14 @@ namespace ParkitectNexus.Client.Wizard
 
         #endregion
 
-        private ParkitectMod SelectedMod => modsCheckedListBox.SelectedItem as ParkitectMod;
-
-        private bool _disableChecking = true;
         private void FillListBox()
         {
             modsCheckedListBox.Items.Clear();
             modsCheckedListBox.Items.AddRange(_parkitect.InstalledMods.ToArray());
 
             _disableChecking = false;
-            for (var i=0;i< modsCheckedListBox.Items.Count;i++)
-                modsCheckedListBox.SetItemChecked(i, ((ParkitectMod)modsCheckedListBox.Items[i]).IsEnabled);
+            for (var i = 0; i < modsCheckedListBox.Items.Count; i++)
+                modsCheckedListBox.SetItemChecked(i, ((ParkitectMod) modsCheckedListBox.Items[i]).IsEnabled);
             _disableChecking = true;
 
             optionsGroupBox.Enabled = false;
@@ -106,20 +106,21 @@ namespace ParkitectNexus.Client.Wizard
 
             var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
             var info = await _parkitectNexusWebsite.ResolveDownloadUrl(url);
-            
+
             WizardForm.Cursor = Cursors.Default;
             Enabled = true;
 
             if (info.Tag == SelectedMod.Tag)
             {
-                MessageBox.Show(this, $"{SelectedMod} is already up to date!", "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, $"{SelectedMod} is already up to date!", "ParkitectNexus Client",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectNexusWebsite, url, this));
             }
         }
-        
+
         private async void uninstallButton_Click(object sender, EventArgs e)
         {
             if (SelectedMod == null) return;

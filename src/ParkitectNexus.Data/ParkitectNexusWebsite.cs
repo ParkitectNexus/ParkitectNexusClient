@@ -2,7 +2,6 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -51,12 +50,12 @@ namespace ParkitectNexus.Data
         }
 
         /// <summary>
-        /// Determines whether the specified input is valid file hash.
+        ///     Determines whether the specified input is valid file hash.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="assetType">Type of the asset.</param>
         /// <returns>
-        /// true if valid; false otherwise.
+        ///     true if valid; false otherwise.
         /// </returns>
         public static bool IsValidFileHash(string input, ParkitectAssetType assetType)
         {
@@ -68,12 +67,12 @@ namespace ParkitectNexus.Data
                     return input.Length == 10 && input.All(c => (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9'));
                 case ParkitectAssetType.Mod:
                     var p = input.Split('/');
-                    return p.Length==2 && !string.IsNullOrWhiteSpace(p[0]) && !string.IsNullOrWhiteSpace(p[1]);
+                    return p.Length == 2 && !string.IsNullOrWhiteSpace(p[0]) && !string.IsNullOrWhiteSpace(p[1]);
                 default:
                     return false;
             }
         }
-        
+
         private async Task<RepositoryTag> GetLatestModTag(string mod)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
@@ -96,12 +95,12 @@ namespace ParkitectNexus.Data
 
             switch (url.AssetType)
             {
-                    case ParkitectAssetType.Blueprint:
-                    case ParkitectAssetType.Savegame:
+                case ParkitectAssetType.Blueprint:
+                case ParkitectAssetType.Savegame:
                     return new DownloadInfo(string.Format(DownloadUrl, url.FileHash), null, null);
-                    case ParkitectAssetType.Mod:
+                case ParkitectAssetType.Mod:
                     var tag = await GetLatestModTag(url.FileHash);
-                    if(tag == null)
+                    if (tag == null)
                         throw new Exception("mod has not yet been released(tagged)");
                     return new DownloadInfo(tag.ZipballUrl, url.FileHash, tag.Name);
                 default:
@@ -117,7 +116,7 @@ namespace ParkitectNexus.Data
         public async Task<ParkitectAsset> DownloadFile(ParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
-            
+
             // Create a download url based on the file hash.
             var downloadInfo = await ResolveDownloadUrl(url);
 
@@ -186,5 +185,4 @@ namespace ParkitectNexus.Data
         public string Repository { get; }
         public string Tag { get; }
     }
-
 }

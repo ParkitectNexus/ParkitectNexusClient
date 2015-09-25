@@ -3,13 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Properties;
@@ -55,22 +53,23 @@ namespace ParkitectNexus.Data
         public string DataPath => !IsInstalled ? null : Path.Combine(InstallationPath, "Parkitect_Data");
 
         /// <summary>
-        /// Gets the executable path.
+        ///     Gets the executable path.
         /// </summary>
         public string ExecutablePath
-                    =>
-                        InstallationPath == null || !File.Exists(Path.Combine(InstallationPath, "Parkitect.exe"))
-                            ? null
-                            : Path.Combine(InstallationPath, "Parkitect.exe");
+            =>
+                InstallationPath == null || !File.Exists(Path.Combine(InstallationPath, "Parkitect.exe"))
+                    ? null
+                    : Path.Combine(InstallationPath, "Parkitect.exe");
 
         /// <summary>
-        /// Gets the mod launcher executable path.
+        ///     Gets the mod launcher executable path.
         /// </summary>
         public string ModLauncherExecutablePath
             =>
                 !IsModLauncherInstalled ? null : Path.Combine(InstallationPath, "ParkitectModLauncher.exe");
 
-        public IEnumerable<string> ManagedAssemblyNames => !IsInstalled ? null : Directory.GetFiles(ManagedDataPath, "*.dll").Select(Path.GetFileName);
+        public IEnumerable<string> ManagedAssemblyNames
+            => !IsInstalled ? null : Directory.GetFiles(ManagedDataPath, "*.dll").Select(Path.GetFileName);
 
         /// <summary>
         ///     Gets the mods path.
@@ -85,7 +84,7 @@ namespace ParkitectNexus.Data
                 return path;
             }
         }
-        
+
         /// <summary>
         ///     Gets the managed data path.
         /// </summary>
@@ -94,14 +93,16 @@ namespace ParkitectNexus.Data
         public bool IsModLauncherInstalled
             => IsInstalled && File.Exists(Path.Combine(InstallationPath, "ParkitectModLauncher.exe"));
 
-        public IEnumerable<ParkitectMod> InstalledMods 
+        public IEnumerable<ParkitectMod> InstalledMods
         {
             get
             {
                 if (!IsInstalled)
                     yield break;
-                
-                foreach(var path in Directory.GetDirectories(ModsPath).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
+
+                foreach (
+                    var path in
+                        Directory.GetDirectories(ModsPath).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
                 {
                     ParkitectMod mod = null;
                     try
@@ -114,12 +115,12 @@ namespace ParkitectNexus.Data
                     {
                     }
 
-                    if(mod!=null)
+                    if (mod != null)
                         yield return mod;
                 }
             }
         }
-        
+
         /// <summary>
         ///     Determines whether the specified path is valid installation path.
         /// </summary>
@@ -161,7 +162,7 @@ namespace ParkitectNexus.Data
         }
 
         /// <summary>
-        /// Launches the game with the specified arguments.
+        ///     Launches the game with the specified arguments.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The launched process.</returns>
@@ -177,7 +178,7 @@ namespace ParkitectNexus.Data
         }
 
         /// <summary>
-        /// Launches the game with mods with the specified arguments.
+        ///     Launches the game with mods with the specified arguments.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The launched process.</returns>
@@ -218,7 +219,6 @@ namespace ParkitectNexus.Data
                             logFile.Log($"Failed to inject mod. {e.Message}", LogLevel.Fatal);
                         }
                     }
-
                 }
 
                 return process;
@@ -234,6 +234,7 @@ namespace ParkitectNexus.Data
                 return null;
             }
         }
+
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.
         /// </summary>
@@ -286,7 +287,6 @@ namespace ParkitectNexus.Data
                             if (File.Exists(assetPath) &&
                                 validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
                                 return;
-
                         } while (File.Exists(assetPath));
                     }
 

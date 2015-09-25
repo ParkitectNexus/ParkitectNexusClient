@@ -29,7 +29,7 @@ namespace ParkitectNexus.Client
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             // Check for updates. If updates are available, do not resume usual logic.
             if (CheckForUpdates()) return;
 
@@ -48,7 +48,7 @@ namespace ParkitectNexus.Client
                 Settings.Default.DownloadOnNextRun = null;
                 Settings.Default.Save();
             }
-            
+
             // Process download option.
             if (Options.DownloadUrl != null)
             {
@@ -59,7 +59,7 @@ namespace ParkitectNexus.Client
             // Handle silent calls.
             if (Options.Silent && !Settings.Default.BootOnNextRun)
                 return;
-            
+
             Settings.Default.BootOnNextRun = false;
             Settings.Default.Save();
 
@@ -86,7 +86,8 @@ namespace ParkitectNexus.Client
 
                     if (
                         MessageBox.Show(focus, "We couldn't detect Parkitect on your machine.\nPlease point me to it!",
-                            "ParkitectNexus Client", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
+                            "ParkitectNexus Client", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) !=
+                        DialogResult.OK)
                         return false;
 
                     var dialog = new FolderBrowserDialog
@@ -104,7 +105,8 @@ namespace ParkitectNexus.Client
                         if (!Parkitect.SetInstallationPathIfValid(dialog.SelectedPath) &&
                             MessageBox.Show(focus,
                                 "The folder you selected does not contain Parkitect!\nWould you like to try again?",
-                                "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes)
+                                "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Error) !=
+                            DialogResult.Yes)
                             return false;
                     }
                 }
@@ -123,7 +125,8 @@ namespace ParkitectNexus.Client
                 using (var focus = new FocusForm())
                 {
                     focus.Show();
-                    MessageBox.Show(focus, "The URL you opened is invalid!", "ParkitectNexus Client", MessageBoxButtons.OK,
+                    MessageBox.Show(focus, "The URL you opened is invalid!", "ParkitectNexus Client",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
                 return;
@@ -137,7 +140,7 @@ namespace ParkitectNexus.Client
 
         private static bool CheckForUpdates()
         {
-#if DEBUG
+#if DEBUG || TRUE
             return false;
 #else
             var updateInfo = UpdateUtil.FindUpdate();
@@ -157,7 +160,7 @@ namespace ParkitectNexus.Client
                     if (
                         MessageBox.Show(focus,
                             "A required update for the ParkitectNexus Client needs to be installed.\n" +
-                            "Without this update you wont be able to install blueprints and savegames trough this application. The update should take less than a minute.\n" +
+                            "Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n" +
                             $"Would you like to install it now?\n\nYou are currently running v{typeof (Program).Assembly.GetName().Version}. The newest version is v{updateInfo.Version}",
                             "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
                         DialogResult.Yes)

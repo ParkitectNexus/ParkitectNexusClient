@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿// ParkitectNexusClient
+// Copyright 2015 Parkitect, Tim Potze
+
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
 
@@ -20,7 +17,9 @@ namespace ParkitectNexus.Client.Wizard
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
-        public InstallAssetUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus, ParkitectNexusUrl parkitectNexusUrl, BaseWizardUserControl returnControl)
+
+        public InstallAssetUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus,
+            ParkitectNexusUrl parkitectNexusUrl, BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexus == null) throw new ArgumentNullException(nameof(parkitectNexus));
@@ -33,9 +32,10 @@ namespace ParkitectNexus.Client.Wizard
             InitializeComponent();
 
             // Format the "installing" label.
-            installingLabel.Text = $"Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
+            installingLabel.Text =
+                $"Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
         }
-        
+
         private async void InstallAsset()
         {
             var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
@@ -43,7 +43,7 @@ namespace ParkitectNexus.Client.Wizard
             {
                 // Download the asset.
                 var asset = await _parkitectNexus.DownloadFile(_parkitectNexusUrl);
-                
+
                 if (asset == null)
                 {
                     // If the asset has failed to download, show some feedback to the user.
@@ -80,7 +80,7 @@ namespace ParkitectNexus.Client.Wizard
                 closeTimer.Enabled = true;
             }
         }
-        
+
         #region Overrides of BaseWizardUserControl
 
         protected override void OnAttached()
@@ -115,7 +115,7 @@ namespace ParkitectNexus.Client.Wizard
             closeTimer.Enabled = false;
             downloadingTimer.Enabled = false;
         }
-        
+
         private void finishButton_Click(object sender, EventArgs e)
         {
             if (_returnControl == null)
