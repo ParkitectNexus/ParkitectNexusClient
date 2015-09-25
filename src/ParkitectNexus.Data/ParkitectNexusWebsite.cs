@@ -73,8 +73,7 @@ namespace ParkitectNexus.Data
                     return false;
             }
         }
-
-
+        
         public async Task<RepositoryTag> GetLatestModTag(string mod)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
@@ -84,7 +83,11 @@ namespace ParkitectNexus.Data
                 throw new ArgumentException(nameof(mod));
 
             var client = new GitHubClient(new ProductHeaderValue("parkitect-nexus-client"));
-            return (await client.Repository.GetAllTags(p[0], p[1])).FirstOrDefault();
+            var release = (await client.Release.GetAll(p[0], p[1])).FirstOrDefault(r => !r.Prerelease);
+
+            return release == null
+                ? null
+                : (await client.Repository.GetAllTags(p[0], p[1])).FirstOrDefault(t => t.Name == release.TagName);
         }
 
         private async Task<DownloadInfo> ResolveDownloadUrl(ParkitectNexusUrl url)
@@ -131,13 +134,12 @@ namespace ParkitectNexus.Data
 
                     // Ensure the required content headers exist.
                     if (string.IsNullOrWhiteSpace(contentDispositionHeader) ||
-                        string.IsNullOrWhiteSpace(contentLengthHeader) ||
                         string.IsNullOrWhiteSpace(contentTypeHeader))
                         throw new Exception("invalid headers");
 
                     // Parse the content length header to an integer.
-                    int contentLength;
-                    if (!int.TryParse(contentLengthHeader, out contentLength))
+                    var contentLength = 0;
+                    if (contentLengthHeader != null && !int.TryParse(contentLengthHeader, out contentLength))
                         throw new Exception("invalid headers");
 
                     // Get asset information for the asset type specified in the url.
@@ -160,7 +162,7 @@ namespace ParkitectNexus.Data
                     await stream.CopyToAsync(memoryStream);
 
                     // Verify we received all content.
-                    if (memoryStream.Length != contentLength)
+                    if (contentLengthHeader != null && memoryStream.Length != contentLength)
                         throw new Exception("unexpected end of stream");
 
                     // Create an instance of ParkitectAsset with the received content and data.
