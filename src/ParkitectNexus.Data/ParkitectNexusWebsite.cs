@@ -74,7 +74,7 @@ namespace ParkitectNexus.Data
             }
         }
         
-        public async Task<RepositoryTag> GetLatestModTag(string mod)
+        private async Task<RepositoryTag> GetLatestModTag(string mod)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             var p = mod.Split('/');
@@ -90,7 +90,7 @@ namespace ParkitectNexus.Data
                 : (await client.Repository.GetAllTags(p[0], p[1])).FirstOrDefault(t => t.Name == release.TagName);
         }
 
-        private async Task<DownloadInfo> ResolveDownloadUrl(ParkitectNexusUrl url)
+        public async Task<DownloadInfo> ResolveDownloadUrl(ParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
 

@@ -22,9 +22,10 @@ namespace WixSharpSetup
             var assembly = Assembly.LoadFrom(AppBinariesPath + AppExecutable);
             var assemblyName = assembly.GetName();
             var project = new ManagedProject(AppName,
-                new Dir(@"%ProgramFiles%\" + AppName,
+                new Dir(new Id("INSTALL_DIR"), @"%ProgramFiles%\" + AppName,
                     new File(AppExecutable,
-                        new FileShortcut(AppName, @"%ProgramMenu%\" + AppName) {IconFile = AppIcon}
+                        new FileShortcut(AppName, @"%ProgramMenu%\" + AppName) {IconFile = AppIcon },
+                        new FileShortcut(AppName, @"%Desktop%") { IconFile = AppIcon }
                         ),
                     new File(@"CommandLine.dll"),
                     new File(@"Newtonsoft.Json.dll"),
@@ -34,8 +35,13 @@ namespace WixSharpSetup
                     new File(@"Parkitectnexus.ModLoader.dll")
                     ),
                 new Dir(@"%ProgramMenu%\" + AppName,
-                    new ExeFileShortcut("Uninstall " + AppName, "[System64Folder]msiexec.exe", "/x [ProductCode]")),
-                new InstalledFileAction(AppExecutable, "-s")
+                    new ExeFileShortcut("Uninstall " + AppName, "[System64Folder]msiexec.exe", "/x [ProductCode]"),
+                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch")
+                    ),
+                new Dir(@"%Desktop%",
+                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch") { IconFile = AppIcon }
+                    ),
+                new InstalledFileAction(AppExecutable, "--silent")
                 )
             {
                 GUID = new Guid(((GuidAttribute) assembly.GetCustomAttributes(typeof (GuidAttribute), true)[0]).Value),

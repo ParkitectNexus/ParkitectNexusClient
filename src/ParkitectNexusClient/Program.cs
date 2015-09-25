@@ -16,7 +16,7 @@ namespace ParkitectNexus.Client
     internal static class Program
     {
         private static Parkitect Parkitect { get; } = new Parkitect();
-        private static ParkitectNexusWebsite ParkitectNexusWebsite { get; } = new ParkitectNexus.Data.ParkitectNexusWebsite();
+        private static ParkitectNexusWebsite ParkitectNexusWebsite { get; } = new ParkitectNexusWebsite();
         private static CommandLineOptions Options { get; } = new CommandLineOptions();
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace ParkitectNexus.Client
             Settings.Default.Save();
 
             var form = new WizardForm();
-            form.Attach(new MenuUserControl(Parkitect));
+            form.Attach(new MenuUserControl(Parkitect, ParkitectNexusWebsite));
             Application.Run(form);
         }
 
@@ -131,7 +131,7 @@ namespace ParkitectNexus.Client
 
             // Run the download process in an installer form, for a nice visible process.
             var form = new WizardForm();
-            form.Attach(new InstallAssetUserControl(Parkitect, ParkitectNexusWebsite, parkitectNexusUrl));
+            form.Attach(new InstallAssetUserControl(Parkitect, ParkitectNexusWebsite, parkitectNexusUrl, null));
             Application.Run(form);
         }
 

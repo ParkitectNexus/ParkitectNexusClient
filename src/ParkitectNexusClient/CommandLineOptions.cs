@@ -27,5 +27,11 @@ namespace ParkitectNexus.Client
         /// </summary>
         [Option('s', "silent")]
         public bool Silent { get; set; }
+
+        /// <summary>
+        ///     Launch the game.
+        /// </summary>
+        [Option('l', "launch")]
+        public bool Launch { get; set; }
     }
 }

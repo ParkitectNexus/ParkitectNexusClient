@@ -48,7 +48,7 @@ namespace ParkitectNexus.Data
         public bool IsEnabled { get; set; }
         
         public bool IsInstalled
-            => !string.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
+            => !String.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
 
         [JsonProperty]
         public string MethodName { get; set; } = "Load";
@@ -102,7 +102,7 @@ namespace ParkitectNexus.Data
         /// </returns>
         public override string ToString()
         {
-            return $"{Name} {Tag}";
+            return Name;
         }
 
         #endregion
@@ -119,6 +119,28 @@ namespace ParkitectNexus.Data
 
             File.WriteAllText(System.IO.Path.Combine(Path, "mod.json"), JsonConvert.SerializeObject(this));
         }
+
+        public void Delete()
+        {
+            if(!IsInstalled) throw new Exception("mod not installed");
+            DeleteFileSystemInfo(new DirectoryInfo(Path));
+        }
+
+        private static void DeleteFileSystemInfo(FileSystemInfo fileSystemInfo)
+        {
+            var directoryInfo = fileSystemInfo as DirectoryInfo;
+            if (directoryInfo != null)
+            {
+                foreach (var childInfo in directoryInfo.GetFileSystemInfos())
+                {
+                    DeleteFileSystemInfo(childInfo);
+                }
+            }
+
+            fileSystemInfo.Attributes = FileAttributes.Normal;
+            fileSystemInfo.Delete();
+        }
+
         public bool Compile(Parkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
@@ -187,7 +209,7 @@ namespace ParkitectNexus.Data
                     }
 
                     // Resolve the source file paths.
-                    logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)}.");
+                    logFile.Log($"Source files: {String.Join(", ", unresolvedSourceFiles)}.");
                     sourceFiles.AddRange(unresolvedSourceFiles.Select(file => System.IO.Path.Combine(Path, BaseDir ?? "", file)));
                     
                     // Compile.

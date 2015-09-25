@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿// ParkitectNexusClient
+// Copyright 2015 Parkitect, Tim Potze
+
+using System;
 using ParkitectNexus.Data;
 
 namespace ParkitectNexus.Client.Wizard
@@ -14,17 +9,37 @@ namespace ParkitectNexus.Client.Wizard
     internal partial class MenuUserControl : BaseWizardUserControl
     {
         private readonly Parkitect _parkitect;
+        private readonly ParkitectNexusWebsite _parkitectNexusWebsite;
 
-        public MenuUserControl(Parkitect parkitect)
+        public MenuUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexusWebsite)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             _parkitect = parkitect;
+            _parkitectNexusWebsite = parkitectNexusWebsite;
             InitializeComponent();
         }
 
         private void manageModsButton_Click(object sender, EventArgs e)
         {
-            WizardForm.Attach(new ManageModsUserControl(_parkitect));
+            WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _parkitectNexusWebsite));
+        }
+
+        private async void launchParkitectButton_Click(object sender, EventArgs e)
+        {
+            WizardForm.Close();
+            await _parkitect.LaunchWithMods();
+        }
+
+        private void visitParkitectNexusButton_Click(object sender, EventArgs e)
+        {
+            _parkitectNexusWebsite.Launch();
+            WizardForm.Close();
+        }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            WizardForm.Close();
         }
     }
 }

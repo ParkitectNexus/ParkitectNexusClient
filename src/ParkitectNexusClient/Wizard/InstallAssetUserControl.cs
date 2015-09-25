@@ -16,10 +16,11 @@ namespace ParkitectNexus.Client.Wizard
         private readonly Parkitect _parkitect;
         private readonly ParkitectNexusWebsite _parkitectNexus;
         private readonly ParkitectNexusUrl _parkitectNexusUrl;
+        private readonly BaseWizardUserControl _returnControl;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
-        public InstallAssetUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus, ParkitectNexusUrl parkitectNexusUrl)
+        public InstallAssetUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus, ParkitectNexusUrl parkitectNexusUrl, BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexus == null) throw new ArgumentNullException(nameof(parkitectNexus));
@@ -27,21 +28,14 @@ namespace ParkitectNexus.Client.Wizard
             _parkitect = parkitect;
             _parkitectNexus = parkitectNexus;
             _parkitectNexusUrl = parkitectNexusUrl;
+            _returnControl = returnControl;
 
             InitializeComponent();
 
             // Format the "installing" label.
             installingLabel.Text = $"Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
         }
-
-        public InstallAssetUserControl()
-        {
-            InitializeComponent();
-        }
         
-        /// <summary>
-        ///     Installs the asset.
-        /// </summary>
         private async void InstallAsset()
         {
             var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
@@ -115,12 +109,18 @@ namespace ParkitectNexus.Client.Wizard
 
         private void closeTimer_Tick(object sender, EventArgs e)
         {
-            WizardForm.Close();
+            if (_returnControl == null)
+                WizardForm.Close();
+            else WizardForm.Attach(_returnControl);
+            closeTimer.Enabled = false;
+            downloadingTimer.Enabled = false;
         }
         
         private void finishButton_Click(object sender, EventArgs e)
         {
-            WizardForm.Close();
+            if (_returnControl == null)
+                WizardForm.Close();
+            else WizardForm.Attach(_returnControl);
         }
     }
 }
