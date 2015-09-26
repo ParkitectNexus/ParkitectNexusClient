@@ -190,7 +190,13 @@ namespace ParkitectNexus.Data
             try
             {
                 // Compile mods.
-                var mods = InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment).Where(mod => mod.Compile(this)).ToArray();
+                foreach (var mod in InstalledMods)
+                {
+                    if (mod.IsEnabled || mod.IsDevelopment)
+                    {
+                        mod.Compile(this);
+                    }
+                }
 
                 // Launch the game.
                 var process = Launch(arguments);
@@ -207,20 +213,13 @@ namespace ParkitectNexus.Data
                     return null;
 
                 // Inject mods.
-                foreach (var m in mods)
-                {
-                    try
-                    {
-                        ModInjector.Inject(m.AssemblyPath, m.NameSpace, m.ClassName, m.MethodName);
-                    }
-                    catch (Exception e)
-                    {
-                        using (var logFile = m.OpenLog())
-                        {
-                            logFile.Log($"Failed to inject mod. {e.Message}", LogLevel.Fatal);
-                        }
-                    }
-                }
+                var  bp = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location));
+                var path = Path.Combine(bp, "ParkitectNexus.Mod.ModLoader.dll");
+
+                if(!File.Exists(path))
+                    throw new Exception("mod loader not found");
+                
+                var r= ModInjector.Inject(path, "ParkitectNexus.Mod.ModLoader", "Main", "Load");
 
                 return process;
             }
