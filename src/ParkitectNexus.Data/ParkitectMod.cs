@@ -28,7 +28,7 @@ namespace ParkitectNexus.Data
         public string BaseDir { get; set; }
 
         [JsonProperty]
-        public string ClassName { get; set; } = "Main";
+        public string ClassName { get; set; }
 
         [JsonProperty]
         public string CompilerVersion { get; set; } = "v4.0";
@@ -43,11 +43,8 @@ namespace ParkitectNexus.Data
         public bool IsEnabled { get; set; }
 
         public bool IsInstalled
-            => !String.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
-
-        [JsonProperty]
-        public string MethodName { get; set; } = "Load";
-
+            => !string.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
+        
         [JsonProperty]
         public string Name { get; set; }
 
@@ -154,7 +151,7 @@ namespace ParkitectNexus.Data
                 try
                 {
                     logFile.Log($"Compiling {Name}...");
-                    logFile.Log($"Entry point: {NameSpace}.{ClassName}.{MethodName}.");
+                    logFile.Log($"Entry point: {NameSpace}.{ClassName}.");
 
                     var assemblyFiles = new List<string>();
                     var sourceFiles = new List<string>();

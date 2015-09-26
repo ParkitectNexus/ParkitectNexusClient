@@ -219,7 +219,7 @@ namespace ParkitectNexus.Data
                 if(!File.Exists(path))
                     throw new Exception("mod loader not found");
                 
-                var r= ModInjector.Inject(path, "ParkitectNexus.Mod.ModLoader", "Main", "Load");
+                ModInjector.Inject(path, "ParkitectNexus.Mod.ModLoader", "Main", "Load");
 
                 return process;
             }
