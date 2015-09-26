@@ -215,7 +215,7 @@ int inject(char *dll, char *target, char *name_space, char *classname, char *met
   blackbone::Process::EnumByName(wtarget, found);
 
   if (found.size() > 0) {
-    if (target_process.Attach(found.front()) == STATUS_SUCCESS) {
+    if (target_process.Attach(found.back()) == STATUS_SUCCESS) {
 
       auto barrier = target_process.core().native()->GetWow64Barrier().type;
 
