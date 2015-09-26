@@ -190,7 +190,7 @@ namespace ParkitectNexus.Data
             try
             {
                 // Compile mods.
-                var mods = InstalledMods.Where(mod => (mod.IsEnabled || mod.IsDevelopment) && mod.Compile(this)).ToArray();
+                var mods = InstalledMods.Where(mod => (mod.IsEnabled || mod.IsDevelopment) && mod.Compile(this).Result).ToArray();
 
                 // Launch the game.
                 var process = Launch(arguments);
@@ -365,6 +365,7 @@ namespace ParkitectNexus.Data
                                 }
                             }
                             mod.Save();
+                            await mod.Compile(this);
                         }
                     }
                     break;

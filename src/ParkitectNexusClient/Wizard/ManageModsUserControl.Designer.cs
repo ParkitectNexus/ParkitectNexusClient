@@ -41,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.modNameLabel = new System.Windows.Forms.Label();
             this.enableModCheckBox = new System.Windows.Forms.CheckBox();
+            this.modInDevelopmentLabel = new System.Windows.Forms.Label();
             this.optionsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,6 +80,7 @@
             // 
             // optionsGroupBox
             // 
+            this.optionsGroupBox.Controls.Add(this.modInDevelopmentLabel);
             this.optionsGroupBox.Controls.Add(this.parkitectNexusLinkLabel);
             this.optionsGroupBox.Controls.Add(this.label5);
             this.optionsGroupBox.Controls.Add(this.updateButton);
@@ -98,7 +100,8 @@
             // parkitectNexusLinkLabel
             // 
             this.parkitectNexusLinkLabel.AutoSize = true;
-            this.parkitectNexusLinkLabel.Location = new System.Drawing.Point(66, 67);
+            this.parkitectNexusLinkLabel.Location = new System.Drawing.Point(66, 62);
+            this.parkitectNexusLinkLabel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.parkitectNexusLinkLabel.Name = "parkitectNexusLinkLabel";
             this.parkitectNexusLinkLabel.Size = new System.Drawing.Size(120, 13);
             this.parkitectNexusLinkLabel.TabIndex = 9;
@@ -109,8 +112,8 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 67);
-            this.label5.Margin = new System.Windows.Forms.Padding(5);
+            this.label5.Location = new System.Drawing.Point(8, 62);
+            this.label5.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 8;
@@ -139,8 +142,8 @@
             // modVersionLabel
             // 
             this.modVersionLabel.AutoSize = true;
-            this.modVersionLabel.Location = new System.Drawing.Point(66, 44);
-            this.modVersionLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.modVersionLabel.Location = new System.Drawing.Point(66, 41);
+            this.modVersionLabel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.modVersionLabel.Name = "modVersionLabel";
             this.modVersionLabel.Size = new System.Drawing.Size(55, 13);
             this.modVersionLabel.TabIndex = 5;
@@ -149,8 +152,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 44);
-            this.label3.Margin = new System.Windows.Forms.Padding(5);
+            this.label3.Location = new System.Drawing.Point(8, 41);
+            this.label3.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 13);
             this.label3.TabIndex = 4;
@@ -159,8 +162,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 21);
-            this.label2.Margin = new System.Windows.Forms.Padding(5);
+            this.label2.Location = new System.Drawing.Point(8, 20);
+            this.label2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 13);
             this.label2.TabIndex = 3;
@@ -169,8 +172,8 @@
             // modNameLabel
             // 
             this.modNameLabel.AutoSize = true;
-            this.modNameLabel.Location = new System.Drawing.Point(66, 21);
-            this.modNameLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.modNameLabel.Location = new System.Drawing.Point(66, 20);
+            this.modNameLabel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.modNameLabel.Name = "modNameLabel";
             this.modNameLabel.Size = new System.Drawing.Size(63, 13);
             this.modNameLabel.TabIndex = 2;
@@ -186,6 +189,18 @@
             this.enableModCheckBox.Text = "Enable Mod";
             this.enableModCheckBox.UseVisualStyleBackColor = true;
             this.enableModCheckBox.Click += new System.EventHandler(this.enableModCheckBox_Click);
+            // 
+            // modInDevelopmentLabel
+            // 
+            this.modInDevelopmentLabel.AutoSize = true;
+            this.modInDevelopmentLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.modInDevelopmentLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.modInDevelopmentLabel.Location = new System.Drawing.Point(8, 83);
+            this.modInDevelopmentLabel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.modInDevelopmentLabel.Name = "modInDevelopmentLabel";
+            this.modInDevelopmentLabel.Size = new System.Drawing.Size(148, 13);
+            this.modInDevelopmentLabel.TabIndex = 10;
+            this.modInDevelopmentLabel.Text = "MOD IN DEVELOPMENT";
             // 
             // ManageModsUserControl
             // 
@@ -218,5 +233,6 @@
         private System.Windows.Forms.Label modVersionLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label modInDevelopmentLabel;
     }
 }

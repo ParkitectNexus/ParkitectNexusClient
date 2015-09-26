@@ -57,7 +57,7 @@ namespace ParkitectNexus.Client.Wizard
                 _keyword = "Installing";
 
                 await _parkitect.StoreAsset(asset);
-
+                
                 asset.Dispose();
             }
             catch (Exception e)

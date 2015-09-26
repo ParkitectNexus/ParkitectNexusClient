@@ -2,6 +2,7 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -51,35 +52,38 @@ namespace ParkitectNexus.Client.Wizard
             for (var i = 0; i < modsCheckedListBox.Items.Count; i++)
                 modsCheckedListBox.SetItemChecked(i, ((ParkitectMod) modsCheckedListBox.Items[i]).IsEnabled);
             _disableChecking = true;
-
-            optionsGroupBox.Enabled = false;
-            modNameLabel.Text = "-";
-            modVersionLabel.Text = "-";
-            enableModCheckBox.Checked = false;
-            modsCheckedListBox.SelectedItem = null;
+            
+            HideMod();
         }
 
         private void modsCheckedListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedMod == null)
-            {
-                optionsGroupBox.Enabled = false;
-                modNameLabel.Text = "-";
-                modVersionLabel.Text = "-";
-                enableModCheckBox.Checked = false;
-            }
+                HideMod();
             else
-            {
                 ShowMod(SelectedMod);
-            }
+     
         }
 
+        private void HideMod()
+        {
+            optionsGroupBox.Enabled = false;
+            modNameLabel.Text = "-";
+            modVersionLabel.Text = "-";
+            enableModCheckBox.Checked = false;
+            modInDevelopmentLabel.Visible = false;
+        }
         private void ShowMod(ParkitectMod mod)
         {
             optionsGroupBox.Enabled = true;
             modNameLabel.Text = mod.Name;
             modVersionLabel.Text = mod.Tag;
-            enableModCheckBox.Checked = mod.IsEnabled;
+            enableModCheckBox.Checked = mod.IsEnabled || mod.IsDevelopment;
+            modInDevelopmentLabel.Visible = mod.IsDevelopment;
+            enableModCheckBox.Enabled = !mod.IsDevelopment;
+            updateButton.Enabled = !mod.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository);
+            parkitectNexusLinkLabel.Enabled = !mod.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository);
+            uninstallButton.Enabled = !mod.IsDevelopment;
         }
 
         private void modsCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -96,6 +100,7 @@ namespace ParkitectNexus.Client.Wizard
         private void parkitectNexusLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (SelectedMod == null) return;
+            Process.Start($"https://client.parkitectnexus.com/redirect/{SelectedMod.Repository}");
         }
 
         private async void updateButton_Click(object sender, EventArgs e)
@@ -104,20 +109,28 @@ namespace ParkitectNexus.Client.Wizard
             WizardForm.Cursor = Cursors.WaitCursor;
             Enabled = false;
 
-            var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
-            var info = await _parkitectNexusWebsite.ResolveDownloadUrl(url);
-
-            WizardForm.Cursor = Cursors.Default;
-            Enabled = true;
-
-            if (info.Tag == SelectedMod.Tag)
+            try
             {
-                MessageBox.Show(this, $"{SelectedMod} is already up to date!", "ParkitectNexus Client",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
+                var info = await _parkitectNexusWebsite.ResolveDownloadUrl(url);
+
+                WizardForm.Cursor = Cursors.Default;
+                Enabled = true;
+
+                if (info.Tag == SelectedMod.Tag)
+                {
+                    MessageBox.Show(this, $"{SelectedMod} is already up to date!", "ParkitectNexus Client",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectNexusWebsite, url, this));
+                }
             }
-            else
+            catch (Exception)
             {
-                WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectNexusWebsite, url, this));
+                MessageBox.Show(this, "Failed to check for updates. Please try again later.", "ParitectNexus Client", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
