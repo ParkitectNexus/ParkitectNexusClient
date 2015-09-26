@@ -147,7 +147,7 @@ namespace ParkitectNexus.Client
 
         private static bool CheckForUpdates()
         {
-#if DEBUG || TRUE
+#if DEBUG
             return false;
 #else
             var updateInfo = UpdateUtil.FindUpdate();

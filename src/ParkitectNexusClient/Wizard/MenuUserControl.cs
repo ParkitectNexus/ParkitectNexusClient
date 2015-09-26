@@ -2,7 +2,6 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
-using System.Threading;
 using ParkitectNexus.Data;
 
 namespace ParkitectNexus.Client.Wizard
