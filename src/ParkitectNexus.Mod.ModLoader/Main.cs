@@ -7,34 +7,12 @@ using UnityEngine;
 
 namespace ParkitectNexus.Mod.ModLoader
 {
-    public class TempFix : MonoBehaviour
-    {
-        private bool isloaded;
-
-        private void Awake()
-        {
-            DontDestroyOnLoad(this);
-        }
-
-        private void Update()
-        {
-            if (Application.loadedLevel == 2 && !isloaded)
-            {
-                isloaded = true;
-                ModManager.Instance.triggerEnable();
-            }
-        }
-    }
-
     public static class Main
     {
         private static GameObject go;
 
         public static void Load()
         {
-            go = new GameObject();
-            go.AddComponent<TempFix>();
-
             var gamePath = System.IO.Path.Combine(Application.dataPath, "../");
             var modsPath = System.IO.Path.Combine(gamePath, "mods");
             
@@ -69,6 +47,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     var assembly = Assembly.LoadFile(compiledPath);
                     var userMod = assembly.CreateInstance(sNameSpace + '.' + sClassName) as IMod;
                     if (userMod == null) continue;
+
                     ModManager.Instance.addMod(userMod);
                 }
                 catch (Exception e)
