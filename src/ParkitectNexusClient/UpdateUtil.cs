@@ -28,7 +28,11 @@ namespace ParkitectNexus.Client
             }
         }
 
-        public static UpdateInfo FindUpdate()
+        /// <summary>
+        ///     Checks for available updates.
+        /// </summary>
+        /// <returns>Information about the available update.</returns>
+        public static UpdateInfo CheckForUpdates()
         {
             try
             {
@@ -51,7 +55,12 @@ namespace ParkitectNexus.Client
             }
         }
 
-        public static bool InstallUpdate(UpdateInfo updateInfo)
+        /// <summary>
+        ///     Installs the specified update.
+        /// </summary>
+        /// <param name="update">The update.</param>
+        /// <returns>true on success; false otherwise.</returns>
+        public static bool InstallUpdate(UpdateInfo update)
         {
             try
             {
@@ -59,7 +68,7 @@ namespace ParkitectNexus.Client
 
                 using (var webClient = new WebClient())
                 {
-                    webClient.DownloadFile(updateInfo.DownloadUrl, tempPath);
+                    webClient.DownloadFile(update.DownloadUrl, tempPath);
                     Process.Start(tempPath);
                 }
 

@@ -20,18 +20,28 @@ namespace ParkitectNexus.Data
             Headers.Add("user-agent", $"ParkitectNexus/{version}");
         }
 
+        /// <summary>
+        ///     Returns a <see cref="T:System.Net.WebRequest" /> object for the specified resource.
+        /// </summary>
+        /// <returns>
+        ///     A new <see cref="T:System.Net.WebRequest" /> object for the specified resource.
+        /// </returns>
+        /// <param name="address">A <see cref="T:System.Uri" /> that identifies the resource to request.</param>
         protected override WebRequest GetWebRequest(Uri uri)
         {
             var request = base.GetWebRequest(uri);
 
             if (request == null) return null;
 
+            // Some jumble for downloading from github.
             if (request is HttpWebRequest)
             {
                 var http = request as HttpWebRequest;
                 http.KeepAlive = false;
                 http.ServicePoint.Expect100Continue = false;
             }
+
+            // Set a 10 minute timeout. Should allow the slowest of connections to download anything.
             request.Timeout = 10*60*1000;
             return request;
         }

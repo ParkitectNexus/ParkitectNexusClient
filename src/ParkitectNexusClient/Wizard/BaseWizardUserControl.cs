@@ -9,22 +9,38 @@ namespace ParkitectNexus.Client.Wizard
 {
     internal partial class BaseWizardUserControl : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseWizardUserControl"/> class.
+        /// </summary>
         public BaseWizardUserControl()
         {
             InitializeComponent();
             Size = new Size(493, 302);
         }
 
+        /// <summary>
+        /// Gets the wizard form this control is attached to.
+        /// </summary>
         public WizardForm WizardForm { get; private set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to draw a footer line.
+        /// </summary>
         protected bool DrawFooterLine { get; set; } = true;
 
+        /// <summary>
+        /// Attaches this instance to the specified wizard form.
+        /// </summary>
+        /// <param name="wizardForm">The wizard form.</param>
         public void Attach(WizardForm wizardForm)
         {
             WizardForm = wizardForm;
             OnAttached();
         }
 
+        /// <summary>
+        /// Detaches this instance from the wizard form it is attached to.
+        /// </summary>
         public void Detach()
         {
             OnDetached();
@@ -34,11 +50,17 @@ namespace ParkitectNexus.Client.Wizard
         public event EventHandler Attached;
         public event EventHandler Detached;
 
+        /// <summary>
+        /// Raises the <see cref="E:Attached"/> event.
+        /// </summary>
         protected virtual void OnAttached()
         {
             Attached?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:Detached"/> event.
+        /// </summary>
         protected virtual void OnDetached()
         {
             Detached?.Invoke(this, EventArgs.Empty);

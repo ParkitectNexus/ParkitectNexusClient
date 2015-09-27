@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DownloadInfo.cs" />
     <Compile Include="EnumUtil.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Parkitect.cs" />
@@ -68,6 +69,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="StreamWriterLogUtility.cs" />
+    <Compile Include="User32.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -96,6 +96,11 @@ namespace ParkitectNexus.Data
                 : (await client.Repository.GetAllTags(p[0], p[1])).FirstOrDefault(t => t.Name == release.TagName);
         }
 
+        /// <summary>
+        ///     Resolves the download URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>Information about the download.</returns>
         public async Task<DownloadInfo> ResolveDownloadUrl(ParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
@@ -176,20 +181,5 @@ namespace ParkitectNexus.Data
                 }
             }
         }
-    }
-
-    public struct DownloadInfo
-    {
-        public DownloadInfo(string url, string repository, string tag)
-        {
-            if (url == null) throw new ArgumentNullException(nameof(url));
-            Url = url;
-            Repository = repository;
-            Tag = tag;
-        }
-
-        public string Url { get; }
-        public string Repository { get; }
-        public string Tag { get; }
     }
 }

@@ -17,7 +17,7 @@ using ParkitectNexus.ModLoader;
 namespace ParkitectNexus.Data
 {
     /// <summary>
-    ///     Represents the installation directory of the Parkitect game.
+    ///     Represents the Parkitect game.
     /// </summary>
     public class Parkitect
     {
@@ -46,7 +46,7 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Gets or sets a value indicating whether the game is installed.
         /// </summary>
-        public bool IsInstalled => ExecutablePath != null;
+        public bool IsInstalled => IsValidInstallationPath(InstallationPath);
 
         /// <summary>
         ///     Gets the data path.
@@ -56,30 +56,25 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Gets the executable path.
         /// </summary>
-        public string ExecutablePath
-            =>
-                InstallationPath == null || !File.Exists(Path.Combine(InstallationPath, "Parkitect.exe"))
-                    ? null
-                    : Path.Combine(InstallationPath, "Parkitect.exe");
+        public string ExecutablePath => !IsInstalled ? null : Path.Combine(InstallationPath, "Parkitect.exe");
+
 
         /// <summary>
-        ///     Gets the mod launcher executable path.
+        ///     Gets a collection of assembly names provided by the game.
         /// </summary>
-        public string ModLauncherExecutablePath
-            =>
-                !IsModLauncherInstalled ? null : Path.Combine(InstallationPath, "ParkitectModLauncher.exe");
-
         public IEnumerable<string> ManagedAssemblyNames
-            => !IsInstalled ? null : Directory.GetFiles(ManagedDataPath, "*.dll").Select(Path.GetFileName);
+                    => !IsInstalled ? null : Directory.GetFiles(ManagedDataPath, "*.dll").Select(Path.GetFileName);
 
         /// <summary>
-        ///     Gets the mods path.
+        ///     Gets the path to the mods directory.
         /// </summary>
         public string ModsPath
         {
             get
             {
-                if (!IsInstalled) return null;
+                if (!IsInstalled)
+                    return null;
+
                 var path = Path.Combine(InstallationPath, "mods");
                 Directory.CreateDirectory(path);
                 return path;
@@ -90,10 +85,10 @@ namespace ParkitectNexus.Data
         ///     Gets the managed data path.
         /// </summary>
         public string ManagedDataPath => !IsInstalled ? null : Path.Combine(DataPath, "Managed");
-
-        public bool IsModLauncherInstalled
-            => IsInstalled && File.Exists(Path.Combine(InstallationPath, "ParkitectModLauncher.exe"));
-
+        
+        /// <summary>
+        ///     Gets a collection of installed mods.
+        /// </summary>
         public IEnumerable<ParkitectMod> InstalledMods
         {
             get
@@ -101,10 +96,12 @@ namespace ParkitectNexus.Data
                 if (!IsInstalled)
                     yield break;
 
+                // Iterate trough every directory in the mods directory which has a mod.json file.
                 foreach (
                     var path in
                         Directory.GetDirectories(ModsPath).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
                 {
+                    // Attempt to deserialize the mod.json file.
                     ParkitectMod mod = null;
                     try
                     {
@@ -116,6 +113,7 @@ namespace ParkitectNexus.Data
                     {
                     }
 
+                    // If the mod.json file was deserialized successfully, return the mod.
                     if (mod != null)
                         yield return mod;
                 }
@@ -129,6 +127,7 @@ namespace ParkitectNexus.Data
         /// <returns>true if valid; false otherwise.</returns>
         private static bool IsValidInstallationPath(string path)
         {
+            // Path must exist and contain Parkitect.exe.
             return !string.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "Parkitect.exe"));
         }
 
@@ -158,7 +157,7 @@ namespace ParkitectNexus.Data
                 return true;
 
             // todo: Detect registry key of installation path.
-
+            // can only do this once it's installed trough steam or a setup.
             return false;
         }
 
@@ -169,14 +168,16 @@ namespace ParkitectNexus.Data
         /// <returns>The launched process.</returns>
         public Process Launch(string arguments = "-single-instance")
         {
+            // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
-
+            
             if (running != null)
             {
-                // todo give running focus
+                User32.SetForegroundWindow(running.MainWindowHandle);
                 return running;
             }
 
+            // Start the game process.
             return !IsInstalled
                 ? null
                 : Process.Start(new ProcessStartInfo(ExecutablePath)
@@ -193,11 +194,12 @@ namespace ParkitectNexus.Data
         /// <returns>The launched process.</returns>
         public Process LaunchWithMods(string arguments = "-single-instance")
         {
+            // If no mods have been installed, simply launch the game.
             if (!InstalledMods.Any())
                 return Launch(arguments);
             try
             {
-                // Compile mods.
+                // Compile mods which have been enabled or are tagged as development mods.
                 foreach (var mod in InstalledMods)
                 {
                     if (mod.IsEnabled || mod.IsDevelopment)
@@ -222,23 +224,22 @@ namespace ParkitectNexus.Data
                     return null;
 
                 // Inject modloader.
-                var bp = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location));
-                var path = Path.Combine(bp, "ParkitectNexus.Mod.ModLoader.dll");
+                var modLoaderPath =
+                    Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location),
+                        "ParkitectNexus.Mod.ModLoader.dll");
 
-                if(!File.Exists(path))
-                    throw new Exception("mod loader not found");
+                if(!File.Exists(modLoaderPath))
+                    throw new Exception("ParkitectNexus.Mod.ModLoader.dll not found");
                 
-                ModInjector.Inject(path, "ParkitectNexus.Mod.ModLoader", "Main", "Load");
+                ModInjector.Inject(modLoaderPath, "ParkitectNexus.Mod.ModLoader", "Main", "Load");
 
                 return process;
             }
             catch (Exception e)
             {
-                using (
-                    var logFile = File.AppendText(Path.Combine(ModsPath, "ParkitectModLauncher.log")))
-                {
+                // log exceptions to mods/launcher.log.
+                using (var logFile = File.AppendText(Path.Combine(ModsPath, "launcher.log")))
                     logFile.Log(e.Message, LogLevel.Fatal);
-                }
 
                 return null;
             }
@@ -339,16 +340,14 @@ namespace ParkitectNexus.Data
                                 // This version was already installed.
                                 if (oldMod.IsDevelopment || oldMod.Tag == mod.Tag)
                                     return;
-
-                                Debug.WriteLine($"Delete old mod {Path.GetFileNameWithoutExtension(oldMod.Path)}");
+                                
                                 oldMod.Delete();
 
                                 // Deleting is stupid.
                                 // todo look for better solution
                                 await Task.Delay(1000);
                             }
-
-
+                            
                             // Install mod.
                             foreach (var entry in zip.Entries)
                             {
@@ -361,17 +360,17 @@ namespace ParkitectNexus.Data
 
                                 if (string.IsNullOrEmpty(entry.Name))
                                 {
-                                    Debug.WriteLine("Create dir " + path);
                                     Directory.CreateDirectory(path);
                                 }
                                 else
                                 {
-                                    Debug.WriteLine("Write " + path);
                                     using (var openStream = entry.Open())
                                     using (var fileStream = File.OpenWrite(path))
                                         await openStream.CopyToAsync(fileStream);
                                 }
                             }
+
+                            // Save and compile the mod.
                             mod.Save();
                             mod.CopyAssetBundles(this);
                             mod.Compile(this);

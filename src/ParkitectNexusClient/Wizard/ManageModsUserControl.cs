@@ -28,6 +28,7 @@ namespace ParkitectNexus.Client.Wizard
             _menu = menu;
             _parkitect = parkitect;
             _parkitectNexusWebsite = parkitectNexusWebsite;
+
             InitializeComponent();
         }
 
@@ -56,15 +57,6 @@ namespace ParkitectNexus.Client.Wizard
             HideMod();
         }
 
-        private void modsCheckedListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (SelectedMod == null)
-                HideMod();
-            else
-                ShowMod(SelectedMod);
-     
-        }
-
         private void HideMod()
         {
             optionsGroupBox.Enabled = false;
@@ -84,6 +76,15 @@ namespace ParkitectNexus.Client.Wizard
             updateButton.Enabled = !mod.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository);
             parkitectNexusLinkLabel.Enabled = !mod.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository);
             uninstallButton.Enabled = !mod.IsDevelopment;
+        }
+
+        private void modsCheckedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (SelectedMod == null)
+                HideMod();
+            else
+                ShowMod(SelectedMod);
+     
         }
 
         private void modsCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)

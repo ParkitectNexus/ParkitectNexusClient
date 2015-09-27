@@ -20,6 +20,10 @@ namespace ParkitectNexus.Client.Wizard
             ClientSize = new Size(493, 360);
         }
 
+        /// <summary>
+        /// Attaches the specified wizard user control to the wizard form.
+        /// </summary>
+        /// <param name="wizardUserControl">The wizard user control.</param>
         public void Attach(BaseWizardUserControl wizardUserControl)
         {
             if (wizardUserControl == null) throw new ArgumentNullException(nameof(wizardUserControl));

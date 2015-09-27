@@ -15,8 +15,19 @@ namespace ParkitectNexus.Client
     /// </summary>
     internal static class Program
     {
+        /// <summary>
+        /// Gets the an instance of <see cref="Parkitect"/> which represents the game.
+        /// </summary>
         private static Parkitect Parkitect { get; } = new Parkitect();
+
+        /// <summary>
+        /// Gets the an instance of <see cref="ParkitectNexusWebsite"/> which represents the game.
+        /// </summary>
         private static ParkitectNexusWebsite ParkitectNexusWebsite { get; } = new ParkitectNexusWebsite();
+
+        /// <summary>
+        /// Gets the command line options used to launch the client.
+        /// </summary>
         private static CommandLineOptions Options { get; } = new CommandLineOptions();
 
         /// <summary>
@@ -57,6 +68,7 @@ namespace ParkitectNexus.Client
                 return;
             }
 
+            // If the launch option has been used, launch the game.
             if (Options.Launch)
             {
                 Parkitect.LaunchWithMods();
@@ -150,7 +162,7 @@ namespace ParkitectNexus.Client
 #if DEBUG
             return false;
 #else
-            var updateInfo = UpdateUtil.FindUpdate();
+            var updateInfo = UpdateUtil.CheckForUpdates();
             if (updateInfo != null)
             {
                 // Store download url so it can be downloaded after the update.

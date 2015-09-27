@@ -15,80 +15,115 @@ namespace ParkitectNexus.Data
     [JsonObject(MemberSerialization.OptIn)]
     public class ParkitectMod
     {
+        /// <summary>
+        ///     Assemblies provided by the mono runtime.
+        /// </summary>
         private static readonly string[] SystemAssemblies =
         {
             "System", "System.Core", "System.Data", "System.Xml",
             "System.Xml.Linq", "Microsoft.CSharp", "System.Data.DataSetExtensions", "System.Net.Http"
         };
 
+        /// <summary>
+        ///     Gets or sets the asset bundle directory.
+        /// </summary>
         [JsonProperty]
         public string AssetBundleDir { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the asset bundle prefix.
+        /// </summary>
         [JsonProperty]
         public string AssetBundlePrefix { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the base directory.
+        /// </summary>
         [JsonProperty]
         public string BaseDir { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the name of the class.
+        /// </summary>
         [JsonProperty]
         public string ClassName { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the compiler version.
+        /// </summary>
         [JsonProperty]
         public string CompilerVersion { get; set; } = "v4.0";
 
+        /// <summary>
+        ///     Gets or sets the code files.
+        /// </summary>
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
 
+        /// <summary>
+        ///     Gets or sets the development build path.
+        /// </summary>
         [JsonProperty]
         public string DevelopmentBuildPath { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is development.
+        /// </summary>
         [JsonProperty]
         public bool IsDevelopment { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is enabled.
+        /// </summary>
         [JsonProperty]
         public bool IsEnabled { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is installed.
+        /// </summary>
         public bool IsInstalled
             => !string.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
 
+        /// <summary>
+        ///     Gets or sets the name.
+        /// </summary>
         [JsonProperty]
         public string Name { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the name space.
+        /// </summary>
         [JsonProperty]
         public string NameSpace { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the path.
+        /// </summary>
         public string Path { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the project.
+        /// </summary>
         [JsonProperty]
         public string Project { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the tag.
+        /// </summary>
         [JsonProperty]
         public string Tag { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the referenced assemblies.
+        /// </summary>
         [JsonProperty]
         public IList<string> ReferencedAssemblies { get; set; } = new List<string>();
 
+        /// <summary>
+        ///     Gets or sets the repository.
+        /// </summary>
         [JsonProperty]
         public string Repository { get; set; }
-
-        private string ResolveAssembly(Parkitect parkitect, string assemblyName)
-        {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
-
-            var dllName = $"{assemblyName}.dll";
-            if (SystemAssemblies.Contains(assemblyName))
-                return dllName;
-
-            if (parkitect.ManagedAssemblyNames.Contains(dllName))
-                return System.IO.Path.Combine(parkitect.ManagedDataPath, dllName);
-
-            var modPath = System.IO.Path.Combine(Path, BaseDir ?? "", dllName);
-            if (File.Exists(System.IO.Path.Combine(modPath)))
-                return modPath;
-
-            throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");
-        }
 
         #region Overrides of Object
 
@@ -105,11 +140,18 @@ namespace ParkitectNexus.Data
 
         #endregion
 
+        /// <summary>
+        ///     Opens the log for this mod instance.
+        /// </summary>
+        /// <returns>A stream writer for mod related logging.</returns>
         public StreamWriter OpenLog()
         {
             return !IsInstalled ? null : File.AppendText(System.IO.Path.Combine(Path, "mod.log"));
         }
 
+        /// <summary>
+        ///     Saves this instance.
+        /// </summary>
         public void Save()
         {
             if (!IsInstalled)
@@ -118,84 +160,25 @@ namespace ParkitectNexus.Data
             File.WriteAllText(System.IO.Path.Combine(Path, "mod.json"), JsonConvert.SerializeObject(this));
         }
 
+        /// <summary>
+        ///     Deletes this instance.
+        /// </summary>
         public void Delete()
         {
             if (!IsInstalled) throw new Exception("mod not installed");
-            DeleteFileSystemInfo(new DirectoryInfo(Path));
+            Directory.Delete(Path, true);
+            Path = null;
         }
 
-        private static void DeleteFileSystemInfo(FileSystemInfo fileSystemInfo)
-        {
-            var directoryInfo = fileSystemInfo as DirectoryInfo;
-            if (directoryInfo != null)
-            {
-                foreach (var childInfo in directoryInfo.GetFileSystemInfos())
-                {
-                    DeleteFileSystemInfo(childInfo);
-                }
-            }
-
-            fileSystemInfo.Attributes = FileAttributes.Normal;
-            fileSystemInfo.Delete();
-        }
-
-        public bool CopyAssetBundles(Parkitect parkitect)
-        {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (!IsInstalled) throw new Exception("mod not installed");
-            if (AssetBundleDir == null) return true;
-            if (AssetBundlePrefix == null) throw new Exception("AssetBundlePrefix is required when an AssetBundleDir is set");
-
-            using (var logFile = OpenLog())
-            {
-                try
-                {
-                    string modAssetBundlePath = System.IO.Path.Combine(parkitect.InstallationPath,
-                        "Parkitect_Data/StreamingAssets/mods", AssetBundlePrefix);
-
-                    // Delete existing compiled file if compilation is forced.
-                    if (Directory.Exists(System.IO.Path.Combine(modAssetBundlePath)))
-                    {
-                        if (IsDevelopment)
-                            Directory.Delete(System.IO.Path.Combine(modAssetBundlePath), true);
-                        else return true;
-                    }
-
-                    if (AssetBundleDir != null)
-                    {
-                        if (!Directory.Exists(modAssetBundlePath))
-                            Directory.CreateDirectory(modAssetBundlePath);
-
-                        foreach (
-                            string assetBundleFile in Directory.GetFiles(System.IO.Path.Combine(Path, AssetBundleDir)))
-                        {
-                            File.Copy(assetBundleFile,
-                                System.IO.Path.Combine(modAssetBundlePath, System.IO.Path.GetFileName(assetBundleFile)));
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    logFile.Log(e.Message, LogLevel.Error);
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private static string RandomString(int length)
-        {
-            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-            var random = new Random();
-            return new string(Enumerable.Range(0, length).Select(i => chars[random.Next(chars.Length)]).ToArray());
-        }
-
+        /// <summary>
+        ///     Compiles this instance.
+        /// </summary>
+        /// <param name="parkitect">The parkitect.</param>
+        /// <returns>true on success; false otherwise.</returns>
         public bool Compile(Parkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
-
 
             using (var logFile = OpenLog())
             {
@@ -316,6 +299,83 @@ namespace ParkitectNexus.Data
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        ///     Copies the asset bundles to the games assets directory.
+        /// </summary>
+        /// <param name="parkitect">The parkitect.</param>
+        /// <returns></returns>
+        public bool CopyAssetBundles(Parkitect parkitect)
+        {
+            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            if (!IsInstalled) throw new Exception("mod not installed");
+            if (AssetBundleDir == null) return true;
+            if (AssetBundlePrefix == null)
+                throw new Exception("AssetBundlePrefix is required when an AssetBundleDir is set");
+
+            using (var logFile = OpenLog())
+            {
+                try
+                {
+                    var modAssetBundlePath = System.IO.Path.Combine(parkitect.InstallationPath,
+                        "Parkitect_Data/StreamingAssets/mods", AssetBundlePrefix);
+
+                    // Delete existing compiled file if compilation is forced.
+                    if (Directory.Exists(System.IO.Path.Combine(modAssetBundlePath)))
+                    {
+                        if (IsDevelopment)
+                            Directory.Delete(System.IO.Path.Combine(modAssetBundlePath), true);
+                        else return true;
+                    }
+
+                    if (AssetBundleDir != null)
+                    {
+                        if (!Directory.Exists(modAssetBundlePath))
+                            Directory.CreateDirectory(modAssetBundlePath);
+
+                        foreach (var assetBundleFile in Directory.GetFiles(System.IO.Path.Combine(Path, AssetBundleDir))
+                            )
+                        {
+                            File.Copy(assetBundleFile,
+                                System.IO.Path.Combine(modAssetBundlePath, System.IO.Path.GetFileName(assetBundleFile)));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    logFile.Log(e.Message, LogLevel.Error);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private string ResolveAssembly(Parkitect parkitect, string assemblyName)
+        {
+            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
+
+            var dllName = $"{assemblyName}.dll";
+            if (SystemAssemblies.Contains(assemblyName))
+                return dllName;
+
+            if (parkitect.ManagedAssemblyNames.Contains(dllName))
+                return System.IO.Path.Combine(parkitect.ManagedDataPath, dllName);
+
+            var modPath = System.IO.Path.Combine(Path, BaseDir ?? "", dllName);
+            if (File.Exists(System.IO.Path.Combine(modPath)))
+                return modPath;
+
+            throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");
+        }
+
+        private static string RandomString(int length)
+        {
+            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            return new string(Enumerable.Range(0, length).Select(i => chars[random.Next(chars.Length)]).ToArray());
         }
     }
 }

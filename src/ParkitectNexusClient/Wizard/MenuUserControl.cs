@@ -15,8 +15,10 @@ namespace ParkitectNexus.Client.Wizard
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
+
             _parkitect = parkitect;
             _parkitectNexusWebsite = parkitectNexusWebsite;
+
             InitializeComponent();
         }
 

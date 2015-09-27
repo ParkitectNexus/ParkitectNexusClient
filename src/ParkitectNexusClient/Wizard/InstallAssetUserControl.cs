@@ -66,8 +66,6 @@ namespace ParkitectNexus.Client.Wizard
                 MessageBox.Show(this,
                     $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}",
                     "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // todo: Maybe these errors should be sent to some server.
             }
             finally
             {
