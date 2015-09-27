@@ -43,12 +43,6 @@ namespace ParkitectNexus.Data
         public string BaseDir { get; set; }
 
         /// <summary>
-        ///     Gets or sets the name of the class.
-        /// </summary>
-        [JsonProperty]
-        public string ClassName { get; set; }
-
-        /// <summary>
         ///     Gets or sets the compiler version.
         /// </summary>
         [JsonProperty]
@@ -65,6 +59,12 @@ namespace ParkitectNexus.Data
         /// </summary>
         [JsonProperty]
         public string DevelopmentBuildPath { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the entry point.
+        /// </summary>
+        [JsonProperty]
+        public string EntryPoint { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is development.
@@ -89,13 +89,7 @@ namespace ParkitectNexus.Data
         /// </summary>
         [JsonProperty]
         public string Name { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the name space.
-        /// </summary>
-        [JsonProperty]
-        public string NameSpace { get; set; }
-
+        
         /// <summary>
         ///     Gets or sets the path.
         /// </summary>
@@ -221,7 +215,7 @@ namespace ParkitectNexus.Data
                     }
 
                     logFile.Log($"Compiling {Name} to {compilePath}...");
-                    logFile.Log($"Entry point: {NameSpace}.{ClassName}.");
+                    logFile.Log($"Entry point: {EntryPoint}.");
 
                     var assemblyFiles = new List<string>();
                     var sourceFiles = new List<string>();

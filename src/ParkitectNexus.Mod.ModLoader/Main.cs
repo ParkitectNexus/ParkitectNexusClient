@@ -45,18 +45,16 @@ namespace ParkitectNexus.Mod.ModLoader
                     // Read the mod.json file.
                     var dictionary = Json.Deserialize(File.ReadAllText(filePath)) as Dictionary<string, object>;
 
-                    object isEnabled, isDevelopment, nameSpace, className, developmentBuildPath;
+                    object isEnabled, isDevelopment, entryPoint, developmentBuildPath;
                     
                     dictionary.TryGetValue("IsEnabled", out isEnabled);
                     dictionary.TryGetValue("IsDevelopment", out isDevelopment);
-                    dictionary.TryGetValue("NameSpace", out nameSpace);
-                    dictionary.TryGetValue("ClassName", out className);
+                    dictionary.TryGetValue("EntryPoint", out entryPoint);
                     dictionary.TryGetValue("DevelopmentBuildPath", out developmentBuildPath);
                     
                     bool bIsEnabled = (isEnabled is bool) ? (bool) isEnabled : false,
                         bisDevelopment = (isDevelopment is bool) ? (bool) isDevelopment : false;
-                    string sNameSpace = nameSpace as string,
-                        sClassName = className as string,
+                    string sEntryPoint = entryPoint as string,
                         sDevelopmentBuildPath = developmentBuildPath as string;
 
                     // If the mod is not enabled or in development, continue to the next mod.
@@ -77,7 +75,7 @@ namespace ParkitectNexus.Mod.ModLoader
                         string.Format("[{0}] Notice: Loaded {1}.\n", DateTime.Now.ToString("G"), assembly));
                     
                     // Create an instance of the mod and register it in the mod manager.
-                    var userMod = assembly.CreateInstance(sNameSpace + '.' + sClassName) as IMod;
+                    var userMod = assembly.CreateInstance(sEntryPoint) as IMod;
                     if (userMod == null) continue;
 
                     ModManager.Instance.addMod(userMod);
