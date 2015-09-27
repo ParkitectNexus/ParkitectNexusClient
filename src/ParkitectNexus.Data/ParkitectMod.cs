@@ -34,7 +34,7 @@ namespace ParkitectNexus.Data
 
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
-        
+
         [JsonProperty]
         public bool IsDevelopment { get; set; }
 
@@ -43,7 +43,7 @@ namespace ParkitectNexus.Data
 
         public bool IsInstalled
             => !string.IsNullOrWhiteSpace(Path) && File.Exists(System.IO.Path.Combine(Path, "mod.json"));
-        
+
         [JsonProperty]
         public string Name { get; set; }
 
@@ -60,6 +60,12 @@ namespace ParkitectNexus.Data
 
         [JsonProperty]
         public IList<string> ReferencedAssemblies { get; set; } = new List<string>();
+
+        [JsonProperty]
+        public string AssetBundleDir { get; set; }
+
+        [JsonProperty]
+        public string AssetBundlePrefix { get; set; }
 
         [JsonProperty]
         public string Repository { get; set; }
@@ -130,6 +136,46 @@ namespace ParkitectNexus.Data
 
             fileSystemInfo.Attributes = FileAttributes.Normal;
             fileSystemInfo.Delete();
+        }
+
+        public bool CopyAssetBundles(Parkitect parkitect)
+        {
+            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            if (!IsInstalled) throw new Exception("mod not installed");
+
+            using (var logFile = OpenLog())
+            {
+                try
+                {
+                    string modAssetBundlePath = System.IO.Path.Combine(parkitect.InstallationPath,"Parkitect_Data/StreamingAssets/mods", AssetBundlePrefix);
+
+                    // Delete existing compiled file if compilation is forced.
+                    if (Directory.Exists(System.IO.Path.Combine(modAssetBundlePath)))
+                    {
+                        if (IsDevelopment)
+                            Directory.Delete(System.IO.Path.Combine(modAssetBundlePath), true);
+                        else return true;
+                    }
+
+                    if (AssetBundleDir != null)
+                    {
+                        if (!Directory.Exists(modAssetBundlePath))
+                            Directory.CreateDirectory(modAssetBundlePath);
+
+                        foreach (string assetBundleFile in Directory.GetFiles(System.IO.Path.Combine(Path, AssetBundleDir)))
+                        {
+                            File.Copy(assetBundleFile, System.IO.Path.Combine(modAssetBundlePath, System.IO.Path.GetFileName(assetBundleFile)));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    logFile.Log(e.Message, LogLevel.Error);
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public bool Compile(Parkitect parkitect)
@@ -208,7 +254,7 @@ namespace ParkitectNexus.Data
 
                     // Compile.
                     var csCodeProvider =
-                        new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
+                        new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", CompilerVersion } });
                     var parameters = new CompilerParameters(assemblyFiles.ToArray(), AssemblyPath);
 
                     var result = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());

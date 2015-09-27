@@ -194,6 +194,7 @@ namespace ParkitectNexus.Data
                 {
                     if (mod.IsEnabled || mod.IsDevelopment)
                     {
+                        mod.CopyAssetBundles(this);
                         mod.Compile(this);
                     }
                 }
@@ -364,6 +365,7 @@ namespace ParkitectNexus.Data
                                 }
                             }
                             mod.Save();
+                            mod.CopyAssetBundles(this);
                             mod.Compile(this);
                         }
                     }
