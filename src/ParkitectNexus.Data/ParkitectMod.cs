@@ -142,12 +142,14 @@ namespace ParkitectNexus.Data
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
+            if (AssetBundleDir == null) return true;
+            if (AssetBundlePrefix == null) throw new Exception("AssetBundlePrefix is required when an AssetBundleDir is set");
 
             using (var logFile = OpenLog())
             {
                 try
                 {
-                    string modAssetBundlePath = System.IO.Path.Combine(parkitect.InstallationPath,"Parkitect_Data/StreamingAssets/mods", AssetBundlePrefix);
+                    string modAssetBundlePath = System.IO.Path.Combine(parkitect.InstallationPath, "Parkitect_Data/StreamingAssets/mods", AssetBundlePrefix);
 
                     // Delete existing compiled file if compilation is forced.
                     if (Directory.Exists(System.IO.Path.Combine(modAssetBundlePath)))
