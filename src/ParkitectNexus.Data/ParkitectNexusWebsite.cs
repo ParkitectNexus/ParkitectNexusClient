@@ -18,14 +18,21 @@ namespace ParkitectNexus.Data
     /// </summary>
     public class ParkitectNexusWebsite
     {
+#if DEBUG
+        private const string DownloadUrl = "https://staging.parkitectnexus.com/download/{0}";
+#else
         private const string DownloadUrl = "https://parkitectnexus.com/download/{0}";
-
+#endif
         /// <summary>
         ///     Launches the nexus.
         /// </summary>
         public void Launch()
         {
+#if DEBUG
+            Process.Start("https://staging.parkitectnexus.com");
+#else
             Process.Start("https://parkitectnexus.com");
+#endif
         }
 
         /// <summary>
