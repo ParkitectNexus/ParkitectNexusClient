@@ -169,6 +169,14 @@ namespace ParkitectNexus.Data
         /// <returns>The launched process.</returns>
         public Process Launch(string arguments = "-single-instance")
         {
+            var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
+
+            if (running != null)
+            {
+                // todo give running focus
+                return running;
+            }
+
             return !IsInstalled
                 ? null
                 : Process.Start(new ProcessStartInfo(ExecutablePath)
@@ -213,8 +221,8 @@ namespace ParkitectNexus.Data
                 if (process.HasExited)
                     return null;
 
-                // Inject mods.
-                var  bp = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location));
+                // Inject modloader.
+                var bp = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location));
                 var path = Path.Combine(bp, "ParkitectNexus.Mod.ModLoader.dll");
 
                 if(!File.Exists(path))
