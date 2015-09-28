@@ -23,6 +23,7 @@ namespace ParkitectNexus.Data
 #else
         private const string DownloadUrl = "https://parkitectnexus.com/download/{0}";
 #endif
+
         /// <summary>
         ///     Launches the nexus.
         /// </summary>

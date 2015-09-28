@@ -26,7 +26,7 @@ namespace ParkitectNexus.Data
         /// <returns>
         ///     A new <see cref="T:System.Net.WebRequest" /> object for the specified resource.
         /// </returns>
-        /// <param name="address">A <see cref="T:System.Uri" /> that identifies the resource to request.</param>
+        /// <param name="uri">A <see cref="T:System.Uri" /> that identifies the resource to request.</param>
         protected override WebRequest GetWebRequest(Uri uri)
         {
             var request = base.GetWebRequest(uri);
