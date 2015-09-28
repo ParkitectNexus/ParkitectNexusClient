@@ -58,7 +58,7 @@ namespace ParkitectNexus.Data
         ///     Gets or sets the development build path.
         /// </summary>
         [JsonProperty]
-        public string DevelopmentBuildPath { get; set; }
+        public string BuildPath { get; set; }
 
         /// <summary>
         ///     Gets or sets the entry point.
@@ -157,10 +157,21 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Deletes this instance.
         /// </summary>
-        public void Delete()
+        public void Delete(Parkitect parkitect)
         {
+            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
             Directory.Delete(Path, true);
+
+            if (AssetBundlePrefix != null)
+            {
+                var modAssetBundlePath = System.IO.Path.Combine(parkitect.DataPath, "StreamingAssets/mods",
+                    AssetBundlePrefix);
+
+                if (Directory.Exists(System.IO.Path.Combine(modAssetBundlePath)))
+                    Directory.Delete(System.IO.Path.Combine(modAssetBundlePath), true);
+            }
+
             Path = null;
         }
 
@@ -193,28 +204,20 @@ namespace ParkitectNexus.Data
                     }
 
                     // Compute build path
-                    var compilePath = "compile.dll";
-
-                    if (IsDevelopment)
+                    if (IsDevelopment || string.IsNullOrWhiteSpace(BuildPath) || !File.Exists(System.IO.Path.Combine(Path, BuildPath)))
                     {
                         Directory.CreateDirectory(binPath);
-                        do
-                        {
-                            DevelopmentBuildPath =
-                                $"bin/build-{DateTime.Now.ToString("yyMMddHHmmss")}{RandomString(2)}.dll";
-                        } while (File.Exists(DevelopmentBuildPath));
-
-                        compilePath = DevelopmentBuildPath;
+                        BuildPath = $"bin/build-{DateTime.Now.ToString("yyMMddHHmmss")}.dll";
                         Save();
                     }
 
                     // Delete existing compiled file if compilation is forced.
-                    if (File.Exists(compilePath))
+                    if (File.Exists(BuildPath))
                     {
                         return true;
                     }
 
-                    logFile.Log($"Compiling {Name} to {compilePath}...");
+                    logFile.Log($"Compiling {Name} to {BuildPath}...");
                     logFile.Log($"Entry point: {EntryPoint}.");
 
                     var assemblyFiles = new List<string>();
@@ -267,7 +270,7 @@ namespace ParkitectNexus.Data
                     }
 
                     // Resolve the source file paths.
-                    logFile.Log($"Source files: {String.Join(", ", unresolvedSourceFiles)}.");
+                    logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)}.");
                     sourceFiles.AddRange(
                         unresolvedSourceFiles.Select(file => System.IO.Path.Combine(Path, BaseDir ?? "", file)));
 
@@ -275,7 +278,7 @@ namespace ParkitectNexus.Data
                     var csCodeProvider =
                         new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
                     var parameters = new CompilerParameters(assemblyFiles.ToArray(),
-                        System.IO.Path.Combine(Path, compilePath));
+                        System.IO.Path.Combine(Path, BuildPath));
 
                     var result = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());
 
@@ -312,8 +315,8 @@ namespace ParkitectNexus.Data
             {
                 try
                 {
-                    var modAssetBundlePath = System.IO.Path.Combine(parkitect.InstallationPath,
-                        "Parkitect_Data/StreamingAssets/mods", AssetBundlePrefix);
+                    var modAssetBundlePath = System.IO.Path.Combine(parkitect.DataPath, "StreamingAssets/mods",
+                        AssetBundlePrefix);
 
                     // Delete existing compiled file if compilation is forced.
                     if (Directory.Exists(System.IO.Path.Combine(modAssetBundlePath)))
@@ -363,13 +366,6 @@ namespace ParkitectNexus.Data
                 return modPath;
 
             throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");
-        }
-
-        private static string RandomString(int length)
-        {
-            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-            var random = new Random();
-            return new string(Enumerable.Range(0, length).Select(i => chars[random.Next(chars.Length)]).ToArray());
         }
     }
 }

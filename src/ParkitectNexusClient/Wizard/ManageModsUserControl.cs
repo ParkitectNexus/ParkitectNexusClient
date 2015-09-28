@@ -141,7 +141,7 @@ namespace ParkitectNexus.Client.Wizard
 
             WizardForm.Cursor = Cursors.WaitCursor;
             Enabled = false;
-            SelectedMod.Delete();
+            SelectedMod.Delete(_parkitect);
             await Task.Delay(500);
 
             FillListBox();

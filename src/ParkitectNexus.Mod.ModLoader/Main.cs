@@ -17,15 +17,10 @@ namespace ParkitectNexus.Mod.ModLoader
             var field = typeof(ModManager).GetField("modEntries", BindingFlags.NonPublic | BindingFlags.Instance);
             var activeMods = field == null ? null : field.GetValue(ModManager.Instance) as List<ModManager.ModEntry>;
             
-            var anyModActive = false;
             if (activeMods != null)
             {
-                // If any mod is currently active we'll be activating the mods that will be loaded.
-                anyModActive = activeMods.Any(m=> m.active);
-
                 // Disable all active mod entries and clear the list.
-                if (anyModActive)
-                    ModManager.Instance.triggerDisable();
+                ModManager.Instance.triggerDisable();
                 activeMods.Clear();
             }
 
@@ -45,30 +40,28 @@ namespace ParkitectNexus.Mod.ModLoader
                     // Read the mod.json file.
                     var dictionary = Json.Deserialize(File.ReadAllText(filePath)) as Dictionary<string, object>;
 
-                    object isEnabled, isDevelopment, entryPoint, developmentBuildPath;
+                    object isEnabled, isDevelopment, entryPoint, buildPath;
                     
                     dictionary.TryGetValue("IsEnabled", out isEnabled);
                     dictionary.TryGetValue("IsDevelopment", out isDevelopment);
                     dictionary.TryGetValue("EntryPoint", out entryPoint);
-                    dictionary.TryGetValue("DevelopmentBuildPath", out developmentBuildPath);
+                    dictionary.TryGetValue("BuildPath", out buildPath);
                     
                     bool bIsEnabled = (isEnabled is bool) ? (bool) isEnabled : false,
                         bisDevelopment = (isDevelopment is bool) ? (bool) isDevelopment : false;
                     string sEntryPoint = entryPoint as string,
-                        sDevelopmentBuildPath = developmentBuildPath as string;
+                        sBuildPath = buildPath as string;
 
                     // If the mod is not enabled or in development, continue to the next mod.
                     if (!bisDevelopment && !bIsEnabled) continue;
 
-                    // Decide the path to the the mod assembly. If the path does not exist, continue to the next mod.
-                    var compiledPath = bisDevelopment
-                        ? System.IO.Path.Combine(folder, sDevelopmentBuildPath)
-                        : System.IO.Path.Combine(folder, "compiled.dll");
+                    // Compute the path to the the mod assembly. If the path does not exist, continue to the next mod.
+                    var assemblyPath = System.IO.Path.Combine(folder, sBuildPath);
                     
-                    if (!File.Exists(compiledPath)) continue;
+                    if (!File.Exists(assemblyPath)) continue;
                     
                     // Load the mod's assembly file.
-                    var assembly = Assembly.LoadFile(compiledPath);
+                    var assembly = Assembly.LoadFile(assemblyPath);
                     
                     // Log the successfull load of the mod.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
@@ -89,9 +82,10 @@ namespace ParkitectNexus.Mod.ModLoader
                 }
             }
 
-            // If any mods were active before, re enable all newly loaded mods.
-            if(anyModActive)
+            // If the game is being played, enable mods.
+            if(Application.loadedLevel == 2)
                 ModManager.Instance.triggerEnable();
+            
         }
     }
 }

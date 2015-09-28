@@ -341,7 +341,7 @@ namespace ParkitectNexus.Data
                                 if (oldMod.IsDevelopment || oldMod.Tag == mod.Tag)
                                     return;
                                 
-                                oldMod.Delete();
+                                oldMod.Delete(this);
 
                                 // Deleting is stupid.
                                 // todo look for better solution
