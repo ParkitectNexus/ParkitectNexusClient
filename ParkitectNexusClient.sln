@@ -3,28 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client", "ParkitectNexusClient\ParkitectNexus.Client.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client", "src\ParkitectNexusClient\ParkitectNexus.Client.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "Setup\Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "src\Setup\Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 	ProjectSection(ProjectDependencies) = postProject
 		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4} = {82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParkitectNexus.ModLoader", "ParkitectNexus.ModLoader\ParkitectNexus.ModLoader.vcxproj", "{72DEE48C-479C-4DEE-8701-5E291B7EF95A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParkitectNexus.ModLoader", "src\ParkitectNexus.ModLoader\ParkitectNexus.ModLoader.vcxproj", "{72DEE48C-479C-4DEE-8701-5E291B7EF95A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9E83733C-BBFC-4EF8-AE94-971A543E21B6} = {9E83733C-BBFC-4EF8-AE94-971A543E21B6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MonoObjectInjector", "MonoObjectInjector\MonoObjectInjector.vcxproj", "{9E83733C-BBFC-4EF8-AE94-971A543E21B6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MonoObjectInjector", "src\MonoObjectInjector\MonoObjectInjector.vcxproj", "{9E83733C-BBFC-4EF8-AE94-971A543E21B6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A2C53563-46F5-4D87-903F-3F1F2FDB2DEB} = {A2C53563-46F5-4D87-903F-3F1F2FDB2DEB}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlackBone", "BlackBone\src\BlackBone\BlackBone.vcxproj", "{A2C53563-46F5-4D87-903F-3F1F2FDB2DEB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlackBone", "src\BlackBone\src\BlackBone\BlackBone.vcxproj", "{A2C53563-46F5-4D87-903F-3F1F2FDB2DEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data", "ParkitectNexus.Data\ParkitectNexus.Data.csproj", "{0CB13383-05D3-40F5-B0E1-3907A42872DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data", "src\ParkitectNexus.Data\ParkitectNexus.Data.csproj", "{0CB13383-05D3-40F5-B0E1-3907A42872DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Mod.ModLoader", "ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader.csproj", "{3451EBAF-3D69-4019-92BE-10E331F32A6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Mod.ModLoader", "src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader.csproj", "{3451EBAF-3D69-4019-92BE-10E331F32A6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
