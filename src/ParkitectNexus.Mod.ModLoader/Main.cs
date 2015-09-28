@@ -65,19 +65,23 @@ namespace ParkitectNexus.Mod.ModLoader
                     
                     // Log the successfull load of the mod.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Notice: Loaded {1}.\n", DateTime.Now.ToString("G"), assembly));
+                        string.Format("[{0}] Notice: Loaded {1}.\r\n", DateTime.Now.ToString("G"), assembly));
                     
                     // Create an instance of the mod and register it in the mod manager.
                     var userMod = assembly.CreateInstance(sEntryPoint) as IMod;
                     if (userMod == null) continue;
 
                     ModManager.Instance.addMod(userMod);
+
+                    File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
+                        string.Format("[{0}] Notice: Sucessfully registered {1} to the mod manager.\n",
+                            DateTime.Now.ToString("G"), userMod));
                 }
                 catch (Exception e)
                 {
                     // Log failed loading attempts.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Fatal: Exception during loading: {1}.\n", DateTime.Now.ToString("G"),
+                        string.Format("[{0}] Fatal: Exception during loading: {1}.\r\n", DateTime.Now.ToString("G"),
                             e.Message));
                 }
             }
