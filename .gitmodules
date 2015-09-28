@@ -1,3 +1,3 @@
 [submodule "src/BlackBone"]
-	path = src/BlackBone
+	path = BlackBone
 	url = git@github.com:ParkitectNexus/Blackbone.git

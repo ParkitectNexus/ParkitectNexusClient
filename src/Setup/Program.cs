@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using WixSharp;
+using WixSharp.Controls;
 using Assembly = System.Reflection.Assembly;
 using File = WixSharp.File;
 
@@ -12,10 +13,17 @@ namespace WixSharpSetup
 {
     internal class Program
     {
+
+#if DEBUG
+        private const string Configuration = "Debug";
+#else
+        private const string Configuration = "Release";
+#endif
+
         private const string AppIcon = @"..\..\images\nexus.ico";
         private const string AppName = @"ParkitectNexus Client";
         private const string AppExecutable = @"ParkitectNexusClient.exe";
-        private const string AppBinariesPath = @"..\..\bin\";
+        private const string AppBinariesPath = @"..\..\bin\" + Configuration + @"\";
 
         private static void Main()
         {
@@ -49,7 +57,7 @@ namespace WixSharpSetup
                 GUID = guid,
                 UI = WUI.WixUI_InstallDir,
                 SourceBaseDir = AppBinariesPath,
-                OutFileName = "ParkitectNexusSetup",
+                OutFileName = "ParkitectNexusSetup" + (Configuration != "Release" ? Configuration : string.Empty),
                 OutDir = @"..\..\bin",
                 Version = version,
                 Description = "An installer for Theme Parkitect.",

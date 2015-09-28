@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
-#include "../BlackBone/src/BlackBone/Process/Process.h"
-#include "../BlackBone/src/BlackBone/Process/RPC/RemoteFunction.hpp"
-#include "../BlackBone/src/BlackBone/Misc/Utils.h"
+#include <Process/Process.h>
+#include <Process/RPC/RemoteFunction.hpp>
+#include <Misc/Utils.h>
 
 bool FileExists(const std::wstring& name) {
   std::ifstream f(name);
