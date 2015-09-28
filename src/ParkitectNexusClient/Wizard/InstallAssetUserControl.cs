@@ -11,21 +11,23 @@ namespace ParkitectNexus.Client.Wizard
     internal partial class InstallAssetUserControl : BaseWizardUserControl
     {
         private readonly Parkitect _parkitect;
-        private readonly ParkitectNexusWebsite _parkitectNexus;
+        private readonly ParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
         private readonly ParkitectNexusUrl _parkitectNexusUrl;
         private readonly BaseWizardUserControl _returnControl;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
 
-        public InstallAssetUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexus,
-            ParkitectNexusUrl parkitectNexusUrl, BaseWizardUserControl returnControl)
+        public InstallAssetUserControl(Parkitect parkitect,
+            ParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ParkitectNexusUrl parkitectNexusUrl,
+            BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectNexus == null) throw new ArgumentNullException(nameof(parkitectNexus));
+            if (parkitectOnlineAssetRepository == null)
+                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
             if (parkitectNexusUrl == null) throw new ArgumentNullException(nameof(parkitectNexusUrl));
             _parkitect = parkitect;
-            _parkitectNexus = parkitectNexus;
+            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
             _parkitectNexusUrl = parkitectNexusUrl;
             _returnControl = returnControl;
 
@@ -42,7 +44,7 @@ namespace ParkitectNexus.Client.Wizard
             try
             {
                 // Download the asset.
-                var asset = await _parkitectNexus.DownloadFile(_parkitectNexusUrl);
+                var asset = await _parkitectOnlineAssetRepository.DownloadFile(_parkitectNexusUrl);
 
                 if (asset == null)
                 {

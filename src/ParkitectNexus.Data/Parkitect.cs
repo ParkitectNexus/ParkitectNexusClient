@@ -231,8 +231,8 @@ namespace ParkitectNexus.Data
                 if(!File.Exists(modLoaderPath))
                     throw new Exception("ParkitectNexus.Mod.ModLoader.dll not found");
                 
-                ModInjector.Inject(modLoaderPath, "ParkitectNexus.Mod.ModLoader", "Main", "Load");
-
+                var result = ModInjector.Inject(modLoaderPath, "ParkitectNexus.Mod.ModLoader", "Main", "Load");
+                Debug.WriteLine(result);
                 return process;
             }
             catch (Exception e)

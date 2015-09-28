@@ -14,20 +14,21 @@ namespace ParkitectNexus.Client.Wizard
     {
         private readonly MenuUserControl _menu;
         private readonly Parkitect _parkitect;
-        private readonly ParkitectNexusWebsite _parkitectNexusWebsite;
+        private readonly ParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
 
         private bool _disableChecking = true;
 
         public ManageModsUserControl(MenuUserControl menu, Parkitect parkitect,
-            ParkitectNexusWebsite parkitectNexusWebsite)
+            ParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
             if (menu == null) throw new ArgumentNullException(nameof(menu));
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
+            if (parkitectOnlineAssetRepository == null)
+                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
 
             _menu = menu;
             _parkitect = parkitect;
-            _parkitectNexusWebsite = parkitectNexusWebsite;
+            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
 
             InitializeComponent();
         }
@@ -113,7 +114,7 @@ namespace ParkitectNexus.Client.Wizard
             try
             {
                 var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
-                var info = await _parkitectNexusWebsite.ResolveDownloadUrl(url);
+                var info = await _parkitectOnlineAssetRepository.ResolveDownloadUrl(url);
 
                 WizardForm.Cursor = Cursors.Default;
                 Enabled = true;
@@ -125,7 +126,7 @@ namespace ParkitectNexus.Client.Wizard
                 }
                 else
                 {
-                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectNexusWebsite, url, this));
+                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, url, this));
                 }
             }
             catch (Exception)

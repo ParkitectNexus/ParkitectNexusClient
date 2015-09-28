@@ -10,21 +10,26 @@ namespace ParkitectNexus.Client.Wizard
     {
         private readonly Parkitect _parkitect;
         private readonly ParkitectNexusWebsite _parkitectNexusWebsite;
+        private readonly ParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
 
-        public MenuUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexusWebsite)
+        public MenuUserControl(Parkitect parkitect, ParkitectNexusWebsite parkitectNexusWebsite,
+            ParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
+            if (parkitectOnlineAssetRepository == null)
+                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
 
             _parkitect = parkitect;
             _parkitectNexusWebsite = parkitectNexusWebsite;
+            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
 
             InitializeComponent();
         }
 
         private void manageModsButton_Click(object sender, EventArgs e)
         {
-            WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _parkitectNexusWebsite));
+            WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _parkitectOnlineAssetRepository));
         }
 
         private void launchParkitectButton_Click(object sender, EventArgs e)
