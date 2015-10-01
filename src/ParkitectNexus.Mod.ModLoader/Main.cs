@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using MiniJSON;
@@ -38,7 +39,7 @@ namespace ParkitectNexus.Mod.ModLoader
                 try
                 {
                     var filePath = System.IO.Path.Combine(folder, "mod.json");
-                    
+
                     if (!File.Exists(filePath))
                         continue;
 
@@ -57,28 +58,36 @@ namespace ParkitectNexus.Mod.ModLoader
                     // If the mod is not enabled or in development, continue to the next mod.
                     if (!isDevelopment && !isEnabled && File.Exists(binBuildPath))
                         continue;
-                    
+
                     // Compute the path to the the mod assembly. If the path does not exist, continue to the next mod.
                     var relativeBuildPath = File.ReadAllText(binBuildPath);
                     var buildPath = System.IO.Path.Combine(folder, relativeBuildPath);
-                    
+
                     if (!File.Exists(buildPath))
                         continue;
-                    
+
                     // Load the mod's assembly file.
                     var assembly = Assembly.LoadFile(buildPath);
-                    
+
                     // Log the successfull load of the mod.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
                         string.Format("[{0}] Info: Loaded {1}.\r\n", DateTime.Now.ToString("G"), assembly));
-                    
+
                     // Create an instance of the mod and register it in the mod manager.
-                    if(string.IsNullOrEmpty(entryPoint))
+                    if (string.IsNullOrEmpty(entryPoint))
                         throw new Exception("No EntryPoint has been specified in the mod.json file");
-                    
+
                     var userMod = assembly.CreateInstance(entryPoint) as IMod;
                     if (userMod == null)
                         throw new Exception("The class specified as EntryPoint does not implement IUserMod");
+
+                    const BindingFlags anyVisiblity = BindingFlags.NonPublic | BindingFlags.Public;
+                    var pathProperty = userMod.GetType()
+                        .GetProperty("Path", anyVisiblity | BindingFlags.Instance, null,
+                            typeof (string), new Type[0], null);
+                    if (pathProperty != null)
+                        pathProperty.SetValue(userMod, folder, anyVisiblity, null, null,
+                            CultureInfo.CurrentCulture);
 
                     ModManager.Instance.addMod(userMod);
 
