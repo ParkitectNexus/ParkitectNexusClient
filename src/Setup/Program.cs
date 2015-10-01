@@ -63,7 +63,7 @@ namespace WixSharpSetup
                 Version = version,
                 Description = "An installer for Theme Parkitect.",
                 MajorUpgradeStrategy = MajorUpgradeStrategy.Default,
-                LicenceFile = null,
+                LicenceFile = Directory.GetCurrentDirectory() + @"\..\..\tos.rtf",
                 BannerImage = Directory.GetCurrentDirectory() + @"\..\..\images\dialog_banner.png",
                 BackgroundImage = Directory.GetCurrentDirectory() + @"\..\..\images\dialog_bg.png",
                 ControlPanelInfo =
@@ -74,9 +74,9 @@ namespace WixSharpSetup
                     Manufacturer = "ParkitectNexus, Tim Potze"
                 },
                 // Use CustomUI to skip the license page.
-                CustomUI = new DialogSequence()
-                    .On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.InstallDirDlg))
-                    .On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg))
+//                CustomUI = new DialogSequence()
+//                    .On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.InstallDirDlg))
+//                    .On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg))
             };
             
             // Set message to indicate a newer version has already been installed.
