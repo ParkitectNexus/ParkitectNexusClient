@@ -41,7 +41,8 @@ namespace WixSharpSetup
                     new File(@"Newtonsoft.Json.dll"),
                     new File(@"Octokit.dll"),
                     new File(@"ParkitectNexus.Data.dll"),
-                    new File(@"Parkitectnexus.ModLoader.dll")
+                    new File(@"Parkitectnexus.ModLoader.dll"),
+                    new File(@"Parkitectnexus.Mod.ModLoader.dll")
                     ),
                 new Dir(@"%ProgramMenu%\" + AppName,
                     new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", ""),
