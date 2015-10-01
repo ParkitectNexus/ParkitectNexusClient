@@ -77,9 +77,14 @@ namespace ParkitectNexus.Mod.ModLoader
                     if (string.IsNullOrEmpty(entryPoint))
                         throw new Exception("No EntryPoint has been specified in the mod.json file");
 
-                    var userMod = assembly.CreateInstance(entryPoint) as IMod;
+                    var modObject = assembly.CreateInstance(entryPoint);
+
+                    if (modObject == null)
+                        throw new Exception("The class specified as EntryPoint failed to initialize (may not exist?)");
+
+                    var userMod = modObject as IMod;
                     if (userMod == null)
-                        throw new Exception("The class specified as EntryPoint does not implement IUserMod");
+                        throw new Exception("The class specified as EntryPoint does not implement `IMod`");
 
                     const BindingFlags anyVisiblity = BindingFlags.NonPublic | BindingFlags.Public;
                     var pathProperty = userMod.GetType()
