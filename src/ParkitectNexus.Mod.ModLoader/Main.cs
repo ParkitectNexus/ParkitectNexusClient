@@ -9,6 +9,12 @@ namespace ParkitectNexus.Mod.ModLoader
 {
     public static class Main
     {
+        private static T ReadFromDictonary<T>(IDictionary<string, object> dictionary, string key)
+        {
+            object o;
+            return dictionary.TryGetValue(key, out o) ? (o is T ? (T) o : default(T)) : default(T);
+        }
+
         public static void Load()
         {
             // Unload mods that are currently loaded. Because unloading mods is not yet publically available we need to
@@ -39,35 +45,40 @@ namespace ParkitectNexus.Mod.ModLoader
                     // Read the mod.json file.
                     var dictionary = Json.Deserialize(File.ReadAllText(filePath)) as Dictionary<string, object>;
 
-                    object isEnabled, isDevelopment, entryPoint;
-                    
-                    dictionary.TryGetValue("IsEnabled", out isEnabled);
-                    dictionary.TryGetValue("IsDevelopment", out isDevelopment);
-                    dictionary.TryGetValue("EntryPoint", out entryPoint);
-                    
-                    bool bIsEnabled = (isEnabled is bool) ? (bool) isEnabled : false,
-                        bisDevelopment = (isDevelopment is bool) ? (bool) isDevelopment : false;
-                    string sEntryPoint = entryPoint as string,
-                        sBuildPath = File.ReadAllText(System.IO.Path.Combine(folder, "bin/build.dat"));
+                    if (dictionary == null)
+                        continue;
+
+                    var isEnabled = ReadFromDictonary<bool>(dictionary, "IsEnabled");
+                    var isDevelopment = ReadFromDictonary<bool>(dictionary, "IsDevelopment");
+                    var entryPoint = ReadFromDictonary<string>(dictionary, "EntryPoint");
+
+                    var binBuildPath = System.IO.Path.Combine(folder, "bin/build.dat");
 
                     // If the mod is not enabled or in development, continue to the next mod.
-                    if (!bisDevelopment && !bIsEnabled) continue;
-
-                    // Compute the path to the the mod assembly. If the path does not exist, continue to the next mod.
-                    var assemblyPath = System.IO.Path.Combine(folder, sBuildPath);
+                    if (!isDevelopment && !isEnabled && File.Exists(binBuildPath))
+                        continue;
                     
-                    if (!File.Exists(assemblyPath)) continue;
+                    // Compute the path to the the mod assembly. If the path does not exist, continue to the next mod.
+                    var relativeBuildPath = File.ReadAllText(binBuildPath);
+                    var buildPath = System.IO.Path.Combine(folder, relativeBuildPath);
+                    
+                    if (!File.Exists(buildPath))
+                        continue;
                     
                     // Load the mod's assembly file.
-                    var assembly = Assembly.LoadFile(assemblyPath);
+                    var assembly = Assembly.LoadFile(buildPath);
                     
                     // Log the successfull load of the mod.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
                         string.Format("[{0}] Info: Loaded {1}.\r\n", DateTime.Now.ToString("G"), assembly));
                     
                     // Create an instance of the mod and register it in the mod manager.
-                    var userMod = assembly.CreateInstance(sEntryPoint) as IMod;
-                    if (userMod == null) continue;
+                    if(string.IsNullOrEmpty(entryPoint))
+                        throw new Exception("No EntryPoint has been specified in the mod.json file");
+                    
+                    var userMod = assembly.CreateInstance(entryPoint) as IMod;
+                    if (userMod == null)
+                        throw new Exception("The class specified as EntryPoint does not implement IUserMod");
 
                     ModManager.Instance.addMod(userMod);
 
