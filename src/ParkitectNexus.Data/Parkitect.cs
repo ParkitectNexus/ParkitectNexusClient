@@ -107,7 +107,7 @@ namespace ParkitectNexus.Data
                     {
                         mod =
                             JsonConvert.DeserializeObject<ParkitectMod>(File.ReadAllText(Path.Combine(path, "mod.json")));
-                        mod.Path = path;
+                        mod.InstallationPath = path;
                     }
                     catch
                     {
@@ -185,6 +185,23 @@ namespace ParkitectNexus.Data
                     WorkingDirectory = InstallationPath,
                     Arguments = arguments
                 });
+        }
+
+        private struct LoadableModData
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+            /// </summary>
+            public LoadableModData(string assembly, string entryPoint, string logFile)
+            {
+                Assembly = assembly;
+                EntryPoint = entryPoint;
+                LogFile = logFile;
+            }
+
+            string Assembly { get; set; }
+            string EntryPoint { get; set; }
+            string LogFile { get; set; }
         }
 
         /// <summary>
@@ -329,7 +346,7 @@ namespace ParkitectNexus.Data
                             // Set default mod properties.
                             mod.Tag = asset.DownloadInfo.Tag;
                             mod.Repository = asset.DownloadInfo.Repository;
-                            mod.Path = Path.Combine(ModsPath, asset.DownloadInfo.Repository.Replace('/', '@'));
+                            mod.InstallationPath = Path.Combine(ModsPath, asset.DownloadInfo.Repository.Replace('/', '@'));
                             mod.IsEnabled = true;
                             mod.IsDevelopment = false;
 
@@ -356,7 +373,7 @@ namespace ParkitectNexus.Data
 
                                 // Compute path.
                                 var partDir = entry.FullName.Substring(mainFolder.Length);
-                                var path = Path.Combine(mod.Path, partDir);
+                                var path = Path.Combine(mod.InstallationPath, partDir);
 
                                 if (string.IsNullOrEmpty(entry.Name))
                                 {

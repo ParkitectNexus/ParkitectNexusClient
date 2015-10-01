@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using MiniJSON;
 using UnityEngine;
@@ -40,17 +39,16 @@ namespace ParkitectNexus.Mod.ModLoader
                     // Read the mod.json file.
                     var dictionary = Json.Deserialize(File.ReadAllText(filePath)) as Dictionary<string, object>;
 
-                    object isEnabled, isDevelopment, entryPoint, buildPath;
+                    object isEnabled, isDevelopment, entryPoint;
                     
                     dictionary.TryGetValue("IsEnabled", out isEnabled);
                     dictionary.TryGetValue("IsDevelopment", out isDevelopment);
                     dictionary.TryGetValue("EntryPoint", out entryPoint);
-                    dictionary.TryGetValue("BuildPath", out buildPath);
                     
                     bool bIsEnabled = (isEnabled is bool) ? (bool) isEnabled : false,
                         bisDevelopment = (isDevelopment is bool) ? (bool) isDevelopment : false;
                     string sEntryPoint = entryPoint as string,
-                        sBuildPath = buildPath as string;
+                        sBuildPath = File.ReadAllText(System.IO.Path.Combine(folder, "bin/build.dat"));
 
                     // If the mod is not enabled or in development, continue to the next mod.
                     if (!bisDevelopment && !bIsEnabled) continue;
@@ -65,7 +63,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     
                     // Log the successfull load of the mod.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Notice: Loaded {1}.\r\n", DateTime.Now.ToString("G"), assembly));
+                        string.Format("[{0}] Info: Loaded {1}.\r\n", DateTime.Now.ToString("G"), assembly));
                     
                     // Create an instance of the mod and register it in the mod manager.
                     var userMod = assembly.CreateInstance(sEntryPoint) as IMod;
@@ -74,7 +72,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     ModManager.Instance.addMod(userMod);
 
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Notice: Sucessfully registered {1} to the mod manager.\n",
+                        string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\n",
                             DateTime.Now.ToString("G"), userMod));
                 }
                 catch (Exception e)
