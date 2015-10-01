@@ -186,24 +186,7 @@ namespace ParkitectNexus.Data
                     Arguments = arguments
                 });
         }
-
-        private struct LoadableModData
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-            /// </summary>
-            public LoadableModData(string assembly, string entryPoint, string logFile)
-            {
-                Assembly = assembly;
-                EntryPoint = entryPoint;
-                LogFile = logFile;
-            }
-
-            string Assembly { get; set; }
-            string EntryPoint { get; set; }
-            string LogFile { get; set; }
-        }
-
+        
         /// <summary>
         ///     Launches the game with mods with the specified arguments.
         /// </summary>
