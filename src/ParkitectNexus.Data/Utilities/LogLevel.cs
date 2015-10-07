@@ -1,13 +1,18 @@
 // ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Utilities
 {
     /// <summary>
     ///     Contains logging levels.
     /// </summary>
     public enum LogLevel
     {
+        /// <summary>
+        ///     Debugging log message.
+        /// </summary>
+        Debug,
+
         /// <summary>
         ///     Informative log message.
         /// </summary>

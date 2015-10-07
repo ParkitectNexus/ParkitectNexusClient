@@ -2,6 +2,7 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using CommandLine;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client
 {
@@ -30,8 +31,17 @@ namespace ParkitectNexus.Client
 
         /// <summary>
         /// Gets or sets a value indicating whether to lauch the game.
-        /// </summary>>
+        /// </summary>
         [Option('l', "launch")]
         public bool Launch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the log level.
+        /// </summary>
+        /// <value>
+        /// The log level.
+        /// </value>
+        [Option('o', "loglevel")]
+        public LogLevel LogLevel { get; set; } = LogLevel.Info;
     }
 }

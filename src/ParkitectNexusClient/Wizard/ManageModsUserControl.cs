@@ -114,7 +114,7 @@ namespace ParkitectNexus.Client.Wizard
             try
             {
                 var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
-                var info = await _parkitectOnlineAssetRepository.ResolveDownloadUrl(url);
+                var info = await _parkitectOnlineAssetRepository.ResolveDowloadInfo(url);
 
                 WizardForm.Cursor = Cursors.Default;
                 Enabled = true;

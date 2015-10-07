@@ -98,7 +98,7 @@ namespace ParkitectNexus.Mod.ModLoader
 
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
                         string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\n",
-                            DateTime.Now.ToString("G"), userMod));
+                            DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), userMod));
                 }
                 catch (Exception e)
                 {

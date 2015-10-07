@@ -50,8 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DownloadInfo.cs" />
-    <Compile Include="EnumUtil.cs" />
-    <Compile Include="LogLevel.cs" />
+    <Compile Include="ParkitectOnlineAssetRepository.cs" />
+    <Compile Include="ParkitectPaths.cs" />
+    <Compile Include="Utilities\EnumUtility.cs" />
+    <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Utilities\LogLevel.cs" />
     <Compile Include="Parkitect.cs" />
     <Compile Include="ParkitectAsset.cs" />
     <Compile Include="ParkitectAssetInfoAttribute.cs" />
@@ -68,7 +71,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="StreamWriterLogUtility.cs" />
+    <Compile Include="Utilities\StreamWriterLogUtility.cs" />
     <Compile Include="User32.cs" />
   </ItemGroup>
   <ItemGroup>

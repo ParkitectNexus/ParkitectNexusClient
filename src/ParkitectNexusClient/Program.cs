@@ -2,11 +2,14 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using CommandLine;
 using ParkitectNexus.Client.Properties;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client
 {
@@ -16,89 +19,91 @@ namespace ParkitectNexus.Client
     internal static class Program
     {
         /// <summary>
-        /// Gets the an instance of <see cref="Parkitect"/> which represents the game.
-        /// </summary>
-        private static Parkitect Parkitect { get; } = new Parkitect();
-
-        /// <summary>
-        /// Gets the an instance of <see cref="ParkitectNexusWebsite"/> which represents the game.
-        /// </summary>
-        private static ParkitectNexusWebsite ParkitectNexusWebsite { get; } = new ParkitectNexusWebsite();
-
-        private static ParkitectOnlineAssetRepository ParkitectOnlineAssetRepository { get; } = new ParkitectOnlineAssetRepository(ParkitectNexusWebsite);
-
-        /// <summary>
-        /// Gets the command line options used to launch the client.
-        /// </summary>
-        private static CommandLineOptions Options { get; } = new CommandLineOptions();
-
-        /// <summary>
         ///     The main entry point for the application.
         /// </summary>
         [STAThread]
         private static void Main(string[] args)
         {
+            var parkitect = new Parkitect();
+            var parkitectNexusWebsite = new ParkitectNexusWebsite();
+            var parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
+            var options = new CommandLineOptions();
+
             UpdateUtil.MigrateSettings();
+            Parser.Default.ParseArguments(args, options);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Log.Open(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                "ParkitectNexusLauncher.log"));
+            Log.MinimumLogLevel = options.LogLevel;
 
-            // Check for updates. If updates are available, do not resume usual logic.
-            if (CheckForUpdates()) return;
-
-            // Initialize.
-            Parser.Default.ParseArguments(args, Options);
-            ParkitectNexusWebsite.InstallProtocol();
-
-            // Ensure parkitect has been installed. If it has not been installed, quit the application.
-            if (!EnsureParkitectInstalled())
-                return;
-
-            // Install backlog.
-            if (!string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
+            try
             {
-                Download(Settings.Default.DownloadOnNextRun);
-                Settings.Default.DownloadOnNextRun = null;
+                Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
+                
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                // Check for updates. If updates are available, do not resume usual logic.
+                if (CheckForUpdates(options)) return;
+                
+                parkitectNexusWebsite.InstallProtocol();
+
+                // Ensure parkitect has been installed. If it has not been installed, quit the application.
+                if (!EnsureParkitectInstalled(parkitect, options))
+                    return;
+
+                // Install backlog.
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
+                {
+                    Download(Settings.Default.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository);
+                    Settings.Default.DownloadOnNextRun = null;
+                    Settings.Default.Save();
+                }
+
+                // Process download option.
+                if (options.DownloadUrl != null)
+                {
+                    Download(options.DownloadUrl, parkitect, parkitectOnlineAssetRepository);
+                    return;
+                }
+
+                // If the launch option has been used, launch the game.
+                if (options.Launch)
+                {
+                    parkitect.LaunchWithMods();
+                    return;
+                }
+
+                // Handle silent calls.
+                if (options.Silent && !Settings.Default.BootOnNextRun)
+                    return;
+
+                Settings.Default.BootOnNextRun = false;
                 Settings.Default.Save();
-            }
 
-            // Process download option.
-            if (Options.DownloadUrl != null)
+                var form = new WizardForm();
+                form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository));
+                Application.Run(form);
+            }
+            catch (Exception e)
             {
-                Download(Options.DownloadUrl);
-
-                return;
+                Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
+                Log.WriteException(e);
             }
 
-            // If the launch option has been used, launch the game.
-            if (Options.Launch)
-            {
-                Parkitect.LaunchWithMods();
-                return;
-            }
-
-            // Handle silent calls.
-            if (Options.Silent && !Settings.Default.BootOnNextRun)
-                return;
-
-            Settings.Default.BootOnNextRun = false;
-            Settings.Default.Save();
-
-            var form = new WizardForm();
-            form.Attach(new MenuUserControl(Parkitect, ParkitectNexusWebsite, ParkitectOnlineAssetRepository));
-            Application.Run(form);
+            Log.Close();
         }
 
-        private static bool EnsureParkitectInstalled()
+        private static bool EnsureParkitectInstalled(Parkitect parkitect, CommandLineOptions options)
         {
             // Detect Parkitect. If it could not be found ask the user to locate it.
-            Parkitect.DetectInstallationPath();
+            parkitect.DetectInstallationPath();
 
             // If an installation path is passed as argument, try and use it.
-            if (Options.SetInstallationPath != null)
-                Parkitect.SetInstallationPathIfValid(Options.SetInstallationPath);
+            if (options.SetInstallationPath != null)
+                parkitect.SetInstallationPathIfValid(options.SetInstallationPath);
 
-            if (!Parkitect.IsInstalled)
+            if (!parkitect.IsInstalled)
             {
                 // Create a form to allow the dialogs to have a owner with forced focus and an icon.
                 using (var focus = new FocusForm())
@@ -119,11 +124,11 @@ namespace ParkitectNexus.Client
                     };
 
                     // Keep showing folder browser dialog until an installation directory has been picked or the user has canceled.
-                    while (!Parkitect.IsInstalled)
+                    while (!parkitect.IsInstalled)
                     {
                         if (dialog.ShowDialog(focus) != DialogResult.OK) return false;
 
-                        if (!Parkitect.SetInstallationPathIfValid(dialog.SelectedPath) &&
+                        if (!parkitect.SetInstallationPathIfValid(dialog.SelectedPath) &&
                             MessageBox.Show(focus,
                                 "The folder you selected does not contain Parkitect!\nWould you like to try again?",
                                 "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Error) !=
@@ -136,7 +141,8 @@ namespace ParkitectNexus.Client
             return true;
         }
 
-        private static void Download(string url)
+        private static void Download(string url, Parkitect parkitect,
+            ParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
             // Try to parse the specified download url. If parsing fails open ParkitectNexus. 
             ParkitectNexusUrl parkitectNexusUrl;
@@ -155,23 +161,24 @@ namespace ParkitectNexus.Client
 
             // Run the download process in an installer form, for a nice visible process.
             var form = new WizardForm();
-            form.Attach(new InstallAssetUserControl(Parkitect, ParkitectOnlineAssetRepository, parkitectNexusUrl, null));
+            form.Attach(new InstallAssetUserControl(parkitect, parkitectOnlineAssetRepository, parkitectNexusUrl, null));
             Application.Run(form);
         }
 
-        private static bool CheckForUpdates()
+        private static bool CheckForUpdates(CommandLineOptions options)
         {
 #if DEBUG
             return false;
 #else
+
             var updateInfo = UpdateUtil.CheckForUpdates();
             if (updateInfo != null)
             {
                 // Store download url so it can be downloaded after the update.
-                if (!string.IsNullOrEmpty(Options.DownloadUrl))
-                    Settings.Default.DownloadOnNextRun = Options.DownloadUrl;
+                if (!string.IsNullOrEmpty(options.DownloadUrl))
+                    Settings.Default.DownloadOnNextRun = options.DownloadUrl;
                 else
-                    Settings.Default.BootOnNextRun = true;
+                    Settings.Default.BootOnNextRun = !options.Silent;
 
                 Settings.Default.Save();
 
@@ -189,7 +196,8 @@ namespace ParkitectNexus.Client
 
 
                     if (!UpdateUtil.InstallUpdate(updateInfo))
-                        MessageBox.Show(focus, "Failed updating the update! Please try again later.", "ParkitectNexus Client",
+                        MessageBox.Show(focus, "Failed updating the update! Please try again later.",
+                            "ParkitectNexus Client",
                             MessageBoxButtons.OK);
 
                     return true;

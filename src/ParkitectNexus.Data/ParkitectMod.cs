@@ -9,6 +9,7 @@ using System.Linq;
 using System.Xml;
 using Microsoft.CSharp;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data
 {
@@ -23,6 +24,8 @@ namespace ParkitectNexus.Data
             "System", "System.Core", "System.Data", "System.Xml",
             "System.Xml.Linq", "Microsoft.CSharp", "System.Data.DataSetExtensions", "System.Net.Http"
         };
+
+        #region Properties of ParkitectMod
 
         /// <summary>
         ///     Gets or sets the asset bundle directory.
@@ -113,6 +116,8 @@ namespace ParkitectNexus.Data
         [JsonProperty]
         public string Repository { get; set; }
 
+        #endregion
+
         #region Overrides of Object
 
         /// <summary>
@@ -137,25 +142,6 @@ namespace ParkitectNexus.Data
             return !IsInstalled ? null : File.AppendText(Path.Combine(InstallationPath, "mod.log"));
         }
 
-        private string GetBuildPath()
-        {
-            var currentFile = Path.Combine(InstallationPath, "bin/build.dat");
-
-            if (!File.Exists(currentFile))
-                return null;
-
-            var relativePath = File.ReadAllText(currentFile);
-
-            return File.Exists(Path.Combine(InstallationPath, relativePath)) ? relativePath : null;
-        }
-
-        private void SetBuildPath(string relativePath)
-        {
-            var currentFile = Path.Combine(InstallationPath, "bin/build.dat");
-
-            File.WriteAllText(currentFile, relativePath);
-        }
-        
         /// <summary>
         ///     Saves this instance.
         /// </summary>
@@ -164,6 +150,7 @@ namespace ParkitectNexus.Data
             if (!IsInstalled)
                 throw new Exception("Not installed");
 
+            Log.WriteLine("Saving mod configuration.");
             File.WriteAllText(Path.Combine(InstallationPath, "mod.json"), JsonConvert.SerializeObject(this));
         }
 
@@ -174,11 +161,13 @@ namespace ParkitectNexus.Data
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
+
+            Log.WriteLine($"Deleting mod '{this}'.");
             Directory.Delete(InstallationPath, true);
 
             if (AssetBundlePrefix != null)
             {
-                var modAssetBundlePath = Path.Combine(parkitect.DataPath, "StreamingAssets/mods",
+                var modAssetBundlePath = Path.Combine(parkitect.Paths.Data, "StreamingAssets/mods",
                     AssetBundlePrefix);
 
                 if (Directory.Exists(Path.Combine(modAssetBundlePath)))
@@ -197,6 +186,8 @@ namespace ParkitectNexus.Data
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
+
+            Log.WriteLine($"Compiling mod '{this}'.");
 
             using (var logFile = OpenLog())
             {
@@ -217,6 +208,7 @@ namespace ParkitectNexus.Data
                     }
 
                     var buildPath = GetBuildPath();
+
                     // Compute build path
                     if (IsDevelopment || string.IsNullOrWhiteSpace(buildPath) || !File.Exists(Path.Combine(InstallationPath, buildPath)))
                     {
@@ -325,11 +317,13 @@ namespace ParkitectNexus.Data
             if (AssetBundlePrefix == null)
                 throw new Exception("AssetBundlePrefix is required when an AssetBundleDir is set");
 
+            Log.WriteLine("Copying asset bundle.");
+
             using (var logFile = OpenLog())
             {
                 try
                 {
-                    var modAssetBundlePath = Path.Combine(parkitect.DataPath, "StreamingAssets/mods",
+                    var modAssetBundlePath = Path.Combine(parkitect.Paths.Data, "StreamingAssets/mods",
                         AssetBundlePrefix);
 
                     // Delete existing compiled file if compilation is forced.
@@ -373,7 +367,7 @@ namespace ParkitectNexus.Data
                 return dllName;
 
             if (parkitect.ManagedAssemblyNames.Contains(dllName))
-                return Path.Combine(parkitect.ManagedDataPath, dllName);
+                return Path.Combine(parkitect.Paths.DataManaged, dllName);
 
             var modPath = Path.Combine(InstallationPath, BaseDir ?? "", dllName);
             if (File.Exists(Path.Combine(modPath)))
@@ -381,5 +375,23 @@ namespace ParkitectNexus.Data
 
             throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");
         }
+
+        private string GetBuildPath()
+        {
+            var currentFile = Path.Combine(InstallationPath, "bin/build.dat");
+
+            if (!File.Exists(currentFile))
+                return null;
+
+            var relativePath = File.ReadAllText(currentFile);
+            return File.Exists(Path.Combine(InstallationPath, relativePath)) ? relativePath : null;
+        }
+
+        private void SetBuildPath(string relativePath)
+        {
+            var currentFile = Path.Combine(InstallationPath, "bin/build.dat");
+            File.WriteAllText(currentFile, relativePath);
+        }
+        
     }
 }

@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Utilities
 {
     /// <summary>
     ///     Contains StreamWriter logging utility methods.
@@ -33,8 +33,7 @@ namespace ParkitectNexus.Data
         public static void Log(this StreamWriter streamWriter, string message, LogLevel logLevel)
         {
             if (streamWriter == null) throw new ArgumentNullException(nameof(streamWriter));
-
-            streamWriter.WriteLine($"[{DateTime.Now.ToString("G")}] {logLevel}: {message}");
+            streamWriter.WriteLine($"[{DateTime.Now.ToString("yy-MM-dd HH:mm:ss")}] {logLevel}: {message}");
         }
     }
 }

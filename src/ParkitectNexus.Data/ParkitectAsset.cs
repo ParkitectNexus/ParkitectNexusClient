@@ -7,7 +7,7 @@ using System.IO;
 namespace ParkitectNexus.Data
 {
     /// <summary>
-    ///     Represents a parkitect asset.
+    ///     Represents a Parkitect asset.
     /// </summary>
     public class ParkitectAsset : IDisposable
     {
@@ -71,6 +71,21 @@ namespace ParkitectNexus.Data
         {
             Dispose(false);
         }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{{{FileName} {Type}}}";
+        }
+
+        #endregion
 
         /// <summary>
         ///     Releases unmanaged and - optionally - managed resources.

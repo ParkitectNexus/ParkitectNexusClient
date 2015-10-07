@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Wizard
 {
