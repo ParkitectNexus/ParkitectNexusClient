@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client", "src\ParkitectNexusClient\ParkitectNexus.Client.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3451EBAF-3D69-4019-92BE-10E331F32A6F} = {3451EBAF-3D69-4019-92BE-10E331F32A6F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParkitectNexus.ModLoader", "src\ParkitectNexus.ModLoader\ParkitectNexus.ModLoader.vcxproj", "{72DEE48C-479C-4DEE-8701-5E291B7EF95A}"
 	ProjectSection(ProjectDependencies) = postProject
