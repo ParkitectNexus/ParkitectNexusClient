@@ -98,13 +98,13 @@ namespace ParkitectNexus.Data
                     var contentTypeHeader = webClient.ResponseHeaders.Get("Content-Type");
 
                     // Ensure the required content headers exist.
-                    if (String.IsNullOrWhiteSpace(contentDispositionHeader) ||
-                        String.IsNullOrWhiteSpace(contentTypeHeader))
+                    if (string.IsNullOrWhiteSpace(contentDispositionHeader) ||
+                        string.IsNullOrWhiteSpace(contentTypeHeader))
                         throw new Exception("invalid headers");
 
                     // Parse the content length header to an integer.
                     var contentLength = 0;
-                    if (contentLengthHeader != null && !Int32.TryParse(contentLengthHeader, out contentLength))
+                    if (contentLengthHeader != null && !int.TryParse(contentLengthHeader, out contentLength))
                         throw new Exception("invalid headers");
 
                     // Get asset information for the asset type specified in the url.

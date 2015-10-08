@@ -2,7 +2,9 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.Windows.Forms;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Wizard
 {
@@ -34,8 +36,24 @@ namespace ParkitectNexus.Client.Wizard
 
         private void launchParkitectButton_Click(object sender, EventArgs e)
         {
+            WizardForm.Hide();
+            try
+            {
+                _parkitect.LaunchWithMods();
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine("Launching failed in an unusual way.", LogLevel.Fatal);
+                Log.WriteException(ex);
+
+                using (var focus = new FocusForm())
+                {
+                    MessageBox.Show(focus,
+                        $"Launching the game with mods failed.\n\nThe error has been logged to:\n{Log.LoggingPath}",
+                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             WizardForm.Close();
-            _parkitect.LaunchWithMods();
         }
 
         private void visitParkitectNexusButton_Click(object sender, EventArgs e)

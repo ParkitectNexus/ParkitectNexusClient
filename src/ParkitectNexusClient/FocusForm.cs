@@ -20,6 +20,8 @@ namespace ParkitectNexus.Client
 
             // Spawn the form outside of the screen.
             Location = new Point(SystemInformation.VirtualScreen.Bottom + 10, SystemInformation.VirtualScreen.Right + 10);
+
+            Show();
         }
 
         /// <summary>

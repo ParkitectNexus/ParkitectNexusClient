@@ -70,7 +70,22 @@ namespace ParkitectNexus.Client
                 // If the launch option has been used, launch the game.
                 if (options.Launch)
                 {
-                    parkitect.LaunchWithMods();
+                    try
+                    {
+                        parkitect.LaunchWithMods();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.WriteLine("Launching failed in an unusual way.", LogLevel.Fatal);
+                        Log.WriteException(ex);
+
+                        using (var focus = new FocusForm())
+                        {
+                            MessageBox.Show(focus,
+                                $"Launching the game with mods failed.\n\nThe error has been logged to:\n{Log.LoggingPath}",
+                                "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                     return;
                 }
 
@@ -89,6 +104,13 @@ namespace ParkitectNexus.Client
             {
                 Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
                 Log.WriteException(e);
+
+                using (var focus = new FocusForm())
+                {
+                    MessageBox.Show(focus,
+                        $"Launching the game with mods failed.\n\nThe error has been logged to:\n{Log.LoggingPath}",
+                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
             Log.Close();
@@ -108,8 +130,6 @@ namespace ParkitectNexus.Client
                 // Create a form to allow the dialogs to have a owner with forced focus and an icon.
                 using (var focus = new FocusForm())
                 {
-                    focus.Show();
-
                     if (
                         MessageBox.Show(focus, "We couldn't detect Parkitect on your machine.\nPlease point me to it!",
                             "ParkitectNexus Client", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) !=
@@ -151,7 +171,6 @@ namespace ParkitectNexus.Client
                 // Create a form to allow the dialogs to have a owner with forced focus and an icon.
                 using (var focus = new FocusForm())
                 {
-                    focus.Show();
                     MessageBox.Show(focus, "The URL you opened is invalid!", "ParkitectNexus Client",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -184,7 +203,6 @@ namespace ParkitectNexus.Client
 
                 using (var focus = new FocusForm())
                 {
-                    focus.Show();
                     if (
                         MessageBox.Show(focus,
                             "A required update for the ParkitectNexus Client needs to be installed.\n" +
@@ -196,7 +214,7 @@ namespace ParkitectNexus.Client
 
 
                     if (!UpdateUtil.InstallUpdate(updateInfo))
-                        MessageBox.Show(focus, "Failed updating the update! Please try again later.",
+                        MessageBox.Show(focus, "Failed installing the update! Please try again later.",
                             "ParkitectNexus Client",
                             MessageBoxButtons.OK);
 

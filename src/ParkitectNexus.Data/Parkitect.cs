@@ -54,7 +54,11 @@ namespace ParkitectNexus.Data
         /// </summary>
         public bool IsInstalled => IsValidInstallationPath(InstallationPath);
 
+        /// <summary>
+        /// Gets a collection of paths.
+        /// </summary>
         public ParkitectPaths Paths { get; }
+
         /// <summary>
         ///     Gets a collection of assembly names provided by the game.
         /// </summary>
@@ -166,41 +170,31 @@ namespace ParkitectNexus.Data
         /// <returns>The launched process.</returns>
         public Process LaunchWithMods(string arguments = "-single-instance")
         {
-            try
+            Log.WriteLine($"Attempting to launch game with mods with arguments '{arguments}'.");
+
+            Log.WriteLine("Attempting to compile active mods if necessary.");
+            CompileActiveMods();
+
+            Log.WriteLine("All mods have been compiled sucessfully. Launching the game.");
+
+            // Launch the game.
+            var process = Launch(arguments);
+
+            Log.WriteLine("Waiting for game to be ready for injection.");
+
+            // Make sure game didn't close.
+            if (!WaitForLaunch(process))
             {
-                Log.WriteLine($"Attempting to launch game with mods with arguments '{arguments}'.");
-
-                Log.WriteLine("Attempting to compile active mods if necessary.");
-                CompileActiveMods();
-                
-                Log.WriteLine("All mods have been compiled sucessfully. Launching the game.");
-
-                // Launch the game.
-                var process = Launch(arguments);
-
-                Log.WriteLine("Waiting for game to be ready for injection.");
-   
-                // Make sure game didn't close.
-                if (!WaitForLaunch(process))
-                {
-                    Log.WriteLine("The game has exited; Aborting.");
-                    return null;
-                }
-                
-                // Inject modloader.
-                Log.WriteLine("Starting injection procedure.");
-                var result = InjectModLoader();
-                Log.WriteLine($"Injection exited with error code {result}.");
-
-                return process;
-            }
-            catch (Exception e)
-            {
-                Log.WriteLine("Launching failed in an unusual way.", LogLevel.Fatal);
-                Log.WriteException(e);
-                
+                Log.WriteLine("The game has exited; Aborting.");
                 return null;
             }
+
+            // Inject modloader.
+            Log.WriteLine("Starting injection procedure.");
+            var result = InjectModLoader();
+            Log.WriteLine($"Injection exited with error code {result}.");
+
+            return process;
         }
 
         /// <summary>
