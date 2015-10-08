@@ -80,11 +80,11 @@ namespace ParkitectNexus.Mod.ModLoader
                     var modObject = assembly.CreateInstance(entryPoint);
 
                     if (modObject == null)
-                        throw new Exception("The class specified as EntryPoint failed to initialize (may not exist?)");
+                        throw new Exception("The class specified as EntryPoint(" + entryPoint + ") failed to initialize (may not exist?)");
 
                     var userMod = modObject as IMod;
                     if (userMod == null)
-                        throw new Exception("The class specified as EntryPoint does not implement `IMod`");
+                        throw new Exception("The class specified as EntryPoint(" + entryPoint + ") does not implement `IMod`");
 
                     const BindingFlags anyVisiblity = BindingFlags.NonPublic | BindingFlags.Public;
                     var pathProperty = userMod.GetType()
