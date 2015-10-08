@@ -18,6 +18,7 @@ namespace ParkitectNexus.Data.Utilities
         /// </summary>
         public static LogLevel MinimumLogLevel { get; set; } = LogLevel.Debug;
 
+        public static string LoggingPath { get; private set; }
         /// <summary>
         ///     Opens the logging stream at the specified path.
         /// </summary>
@@ -26,11 +27,13 @@ namespace ParkitectNexus.Data.Utilities
         {
             try
             {
+                LoggingPath = path;
                 _streamWriter = File.AppendText(path);
                 _streamWriter.AutoFlush = true;
             }
             catch
             {
+                LoggingPath = null;
             }
         }
 
@@ -41,6 +44,7 @@ namespace ParkitectNexus.Data.Utilities
         {
             if (_streamWriter != null)
             {
+                LoggingPath = null;
                 _streamWriter.Flush();
                 _streamWriter.Dispose();
                 _streamWriter = null;
