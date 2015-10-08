@@ -213,7 +213,7 @@ namespace ParkitectNexus.Data
                     if (IsDevelopment || string.IsNullOrWhiteSpace(buildPath) || !File.Exists(Path.Combine(InstallationPath, buildPath)))
                     {
                         Directory.CreateDirectory(binPath);
-                        buildPath = $"bin/build-{DateTime.Now.ToString("yyMMddHHmmss")}.dll";
+                        buildPath = $"bin/build-{DateTime.Now.ToString("yyMMddHHmmssfff")}.dll";
                         SetBuildPath(buildPath);
                     }
 
@@ -303,7 +303,7 @@ namespace ParkitectNexus.Data
                 }
             }
         }
-
+        
         /// <summary>
         ///     Copies the asset bundles to the games assets directory.
         /// </summary>
