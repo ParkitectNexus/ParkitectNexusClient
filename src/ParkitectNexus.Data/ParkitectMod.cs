@@ -363,11 +363,12 @@ namespace ParkitectNexus.Data
             if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
 
             var dllName = $"{assemblyName}.dll";
-            if (SystemAssemblies.Contains(assemblyName))
-                return dllName;
 
             if (parkitect.ManagedAssemblyNames.Contains(dllName))
                 return Path.Combine(parkitect.Paths.DataManaged, dllName);
+
+            if (SystemAssemblies.Contains(assemblyName))
+                return dllName;
 
             var modPath = Path.Combine(InstallationPath, BaseDir ?? "", dllName);
             if (File.Exists(Path.Combine(modPath)))
