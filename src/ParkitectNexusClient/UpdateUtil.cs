@@ -1,6 +1,7 @@
 ﻿// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -44,15 +45,24 @@ namespace ParkitectNexus.Client
                     var serializer = new JsonSerializer();
                     var updateInfo = (UpdateInfo) serializer.Deserialize(jsonTextReader, typeof (UpdateInfo));
 
-                    return updateInfo.Version == typeof (Program).Assembly.GetName().Version.ToString()
-                        ? null
-                        : updateInfo;
+                    if (updateInfo != null)
+                    {
+                        var currentVersion = typeof (Program).Assembly.GetName().Version;
+                        var newestVersion = new Version(updateInfo.Version);
+
+                        currentVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build);
+                        newestVersion = new Version(newestVersion.Major, newestVersion.Minor, newestVersion.Build);
+
+                        if (newestVersion > currentVersion)
+                            return updateInfo;
+                    }
                 }
             }
             catch
             {
-                return null;
             }
+
+            return null;
         }
 
         /// <summary>
