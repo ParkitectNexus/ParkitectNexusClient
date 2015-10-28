@@ -113,15 +113,22 @@ namespace ParkitectNexus.Client.Wizard
             if (_returnControl == null)
                 WizardForm.Close();
             else WizardForm.Attach(_returnControl);
+
             closeTimer.Enabled = false;
             downloadingTimer.Enabled = false;
         }
 
         private void finishButton_Click(object sender, EventArgs e)
         {
+            closeTimer.Enabled = false;
+            downloadingTimer.Enabled = false;
+
             if (_returnControl == null)
                 WizardForm.Close();
-            else WizardForm.Attach(_returnControl);
+            else
+            {
+                WizardForm.Attach(_returnControl);
+            }
         }
     }
 }
