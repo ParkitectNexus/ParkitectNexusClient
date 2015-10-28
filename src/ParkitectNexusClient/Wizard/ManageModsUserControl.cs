@@ -52,7 +52,10 @@ namespace ParkitectNexus.Client.Wizard
 
             _disableChecking = false;
             for (var i = 0; i < modsCheckedListBox.Items.Count; i++)
-                modsCheckedListBox.SetItemChecked(i, ((ParkitectMod) modsCheckedListBox.Items[i]).IsEnabled);
+            {
+                var mod = ((ParkitectMod) modsCheckedListBox.Items[i]);
+                modsCheckedListBox.SetItemChecked(i, mod.IsEnabled || mod.IsDevelopment);
+            }
             _disableChecking = true;
             
             HideMod();

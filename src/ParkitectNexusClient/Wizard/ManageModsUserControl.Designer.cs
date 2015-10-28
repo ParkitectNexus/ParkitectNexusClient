@@ -32,6 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.modsCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.optionsGroupBox = new System.Windows.Forms.GroupBox();
+            this.modInDevelopmentLabel = new System.Windows.Forms.Label();
             this.parkitectNexusLinkLabel = new System.Windows.Forms.LinkLabel();
             this.label5 = new System.Windows.Forms.Label();
             this.updateButton = new System.Windows.Forms.Button();
@@ -41,7 +42,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.modNameLabel = new System.Windows.Forms.Label();
             this.enableModCheckBox = new System.Windows.Forms.CheckBox();
-            this.modInDevelopmentLabel = new System.Windows.Forms.Label();
             this.optionsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,9 +73,8 @@
             this.modsCheckedListBox.HorizontalScrollbar = true;
             this.modsCheckedListBox.Location = new System.Drawing.Point(28, 56);
             this.modsCheckedListBox.Name = "modsCheckedListBox";
-            this.modsCheckedListBox.Size = new System.Drawing.Size(228, 184);
+            this.modsCheckedListBox.Size = new System.Drawing.Size(228, 173);
             this.modsCheckedListBox.TabIndex = 13;
-            this.modsCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.modsCheckedListBox_ItemCheck);
             this.modsCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.modsCheckedListBox_SelectedIndexChanged);
             // 
             // optionsGroupBox
@@ -96,6 +95,18 @@
             this.optionsGroupBox.TabIndex = 14;
             this.optionsGroupBox.TabStop = false;
             this.optionsGroupBox.Text = "Options";
+            // 
+            // modInDevelopmentLabel
+            // 
+            this.modInDevelopmentLabel.AutoSize = true;
+            this.modInDevelopmentLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.modInDevelopmentLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.modInDevelopmentLabel.Location = new System.Drawing.Point(8, 83);
+            this.modInDevelopmentLabel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.modInDevelopmentLabel.Name = "modInDevelopmentLabel";
+            this.modInDevelopmentLabel.Size = new System.Drawing.Size(148, 13);
+            this.modInDevelopmentLabel.TabIndex = 10;
+            this.modInDevelopmentLabel.Text = "MOD IN DEVELOPMENT";
             // 
             // parkitectNexusLinkLabel
             // 
@@ -189,18 +200,6 @@
             this.enableModCheckBox.Text = "Enable Mod";
             this.enableModCheckBox.UseVisualStyleBackColor = true;
             this.enableModCheckBox.Click += new System.EventHandler(this.enableModCheckBox_Click);
-            // 
-            // modInDevelopmentLabel
-            // 
-            this.modInDevelopmentLabel.AutoSize = true;
-            this.modInDevelopmentLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.modInDevelopmentLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.modInDevelopmentLabel.Location = new System.Drawing.Point(8, 83);
-            this.modInDevelopmentLabel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.modInDevelopmentLabel.Name = "modInDevelopmentLabel";
-            this.modInDevelopmentLabel.Size = new System.Drawing.Size(148, 13);
-            this.modInDevelopmentLabel.TabIndex = 10;
-            this.modInDevelopmentLabel.Text = "MOD IN DEVELOPMENT";
             // 
             // ManageModsUserControl
             // 
