@@ -18,13 +18,25 @@ namespace ParkitectNexus.Data.Utilities
         /// </summary>
         public static LogLevel MinimumLogLevel { get; set; } = LogLevel.Debug;
 
+        /// <summary>
+        ///     Gets the logging path.
+        /// </summary>
         public static string LoggingPath { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether this instance is opened.
+        /// </summary>
+        public static bool IsOpened => _streamWriter != null;
+
         /// <summary>
         ///     Opens the logging stream at the specified path.
         /// </summary>
         /// <param name="path">The path.</param>
         public static void Open(string path)
         {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (IsOpened) Close();
+
             try
             {
                 LoggingPath = path;
@@ -42,7 +54,7 @@ namespace ParkitectNexus.Data.Utilities
         /// </summary>
         public static void Close()
         {
-            if (_streamWriter != null)
+            if (IsOpened)
             {
                 LoggingPath = null;
                 _streamWriter.Flush();

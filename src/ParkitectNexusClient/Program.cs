@@ -74,10 +74,11 @@ namespace ParkitectNexus.Client
                     {
                         parkitect.LaunchWithMods();
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
                         Log.WriteLine("Launching failed in an unusual way.", LogLevel.Fatal);
-                        Log.WriteException(ex);
+                        Log.WriteException(e);
+                        CrashReporter.Report("launch_from_option", parkitect, parkitectNexusWebsite, e);
 
                         using (var focus = new FocusForm())
                         {
@@ -104,6 +105,7 @@ namespace ParkitectNexus.Client
             {
                 Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
                 Log.WriteException(e);
+                CrashReporter.Report("global", parkitect, parkitectNexusWebsite, e);
 
                 using (var focus = new FocusForm())
                 {

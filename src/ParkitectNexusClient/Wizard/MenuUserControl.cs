@@ -45,6 +45,7 @@ namespace ParkitectNexus.Client.Wizard
             {
                 Log.WriteLine("Launching failed in an unusual way.", LogLevel.Fatal);
                 Log.WriteException(ex);
+                CrashReporter.Report("launch_from_menu", _parkitect, _parkitectNexusWebsite, ex);
 
                 using (var focus = new FocusForm())
                 {
