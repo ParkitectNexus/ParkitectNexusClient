@@ -160,32 +160,32 @@ int UseAssembly(blackbone::Process& process, std::wstring dll, std::wstring name
   auto data = FileReadAllBytes(dll);
 
   if (data.size() == 0) {
-    return 1;
+    return 2;
   }
 
   int raw_image = ExecuteImageOpenFromDataFull(process, data);
 
   if (!raw_image) {
-    return 1;
+    return 3;
   }
 
   int assembly = ExecuteAssemblyLoadFromFull(process, raw_image);
   if (!assembly) {
-    return 1;
+    return 4;
   }
   int image = ExecuteAssemblyGetImage(process, assembly);
   if (!assembly) {
-    return 1;
+    return 5;
   }
   int klass = ExecuteGetClassFromName(process, image, blackbone::Utils::WstringToUTF8(name_space).c_str(), blackbone::Utils::WstringToUTF8(class_name).c_str());
   if (!klass) {
-    return 1;
+    return 6;
   }
 
   int method = ExecuteGetMethodFromName(process, klass, blackbone::Utils::WstringToUTF8(method_name).c_str());
 
   if (!method) {
-    return 1;
+    return 7;
   }
 
   ExecuteRuntimeInvoke(process, method);
@@ -221,17 +221,16 @@ int inject(char *dll, char *target, char *name_space, char *classname, char *met
 
       if (barrier != blackbone::wow_32_32 && barrier != blackbone::wow_64_64)
       {
-        return 1;
+        return 8;
       }
 
       return UseAssembly(target_process, wdll, wname_space, wclassname, wmethodname);
     }
     else {
-      return 1;
+      return 9;
     }
   }
   else {
-    return 1;
+    return 10;
   }
-  return 0;
 }
