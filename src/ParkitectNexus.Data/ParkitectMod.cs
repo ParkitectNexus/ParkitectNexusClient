@@ -34,10 +34,10 @@ namespace ParkitectNexus.Data
         public string AssetBundleDir { get; set; }
 
         /// <summary>
-        ///     Gets or sets the asset bundle prefix.
+        ///     Gets the asset bundle prefix.
         /// </summary>
         [JsonProperty]
-        public string AssetBundlePrefix { get; set; }
+        public string AssetBundlePrefix => !IsInstalled ? null : Path.GetFileName(InstallationPath);
 
         /// <summary>
         ///     Gets or sets the base directory.
