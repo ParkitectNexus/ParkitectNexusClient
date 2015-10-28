@@ -5,11 +5,14 @@ using System.IO;
 using System.Reflection;
 using MiniJSON;
 using UnityEngine;
+using Path = System.IO.Path;
 
 namespace ParkitectNexus.Mod.ModLoader
 {
     public static class Main
     {
+        const BindingFlags AnyVisiblity = BindingFlags.NonPublic | BindingFlags.Public;
+
         private static T ReadFromDictonary<T>(IDictionary<string, object> dictionary, string key)
         {
             object o;
@@ -38,6 +41,7 @@ namespace ParkitectNexus.Mod.ModLoader
             {
                 try
                 {
+                    var directoryName = System.IO.Path.GetFileName(folder);
                     var filePath = System.IO.Path.Combine(folder, "mod.json");
 
                     if (!File.Exists(filePath))
@@ -86,12 +90,20 @@ namespace ParkitectNexus.Mod.ModLoader
                     if (userMod == null)
                         throw new Exception("The class specified as EntryPoint(" + entryPoint + ") does not implement `IMod`");
 
-                    const BindingFlags anyVisiblity = BindingFlags.NonPublic | BindingFlags.Public;
+                    // Bind Path.
                     var pathProperty = userMod.GetType()
-                        .GetProperty("Path", anyVisiblity | BindingFlags.Instance, null,
+                        .GetProperty("Path", AnyVisiblity | BindingFlags.Instance, null,
                             typeof (string), new Type[0], null);
                     if (pathProperty != null)
-                        pathProperty.SetValue(userMod, folder, anyVisiblity, null, null,
+                        pathProperty.SetValue(userMod, folder, AnyVisiblity, null, null,
+                            CultureInfo.CurrentCulture);
+
+                    // Bind Identifier.
+                    var identifierProperty = userMod.GetType()
+                        .GetProperty("Identifier", AnyVisiblity | BindingFlags.Instance, null,
+                            typeof(string), new Type[0], null);
+                    if (identifierProperty != null)
+                        identifierProperty.SetValue(userMod, directoryName, AnyVisiblity, null, null,
                             CultureInfo.CurrentCulture);
 
                     ModManager.Instance.addMod(userMod);
