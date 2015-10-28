@@ -229,7 +229,11 @@ namespace ParkitectNexus.Data
                     var assemblyFiles = new List<string>();
                     var sourceFiles = new List<string>();
 
-                    var csProjPath = Project == null ? null : Path.Combine(InstallationPath, BaseDir ?? "", Project);
+                    var codeDir = string.IsNullOrWhiteSpace(BaseDir) || BaseDir.All(c => c == '/' || c == '\\')
+                        ? InstallationPath
+                        : Path.Combine(InstallationPath, BaseDir);
+
+                    var csProjPath = Project == null ? null : Path.Combine(codeDir, Project);
 
                     List<string> unresolvedAssemblyReferences;
                     List<string> unresolvedSourceFiles;
@@ -276,9 +280,9 @@ namespace ParkitectNexus.Data
                     }
 
                     // Resolve the source file paths.
-                    logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)}.");
+                    logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     sourceFiles.AddRange(
-                        unresolvedSourceFiles.Select(file => Path.Combine(InstallationPath, BaseDir ?? "", file)));
+                        unresolvedSourceFiles.Select(file => Path.Combine(codeDir, file)));
 
                     // Compile.
                     var csCodeProvider =
