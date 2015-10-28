@@ -126,9 +126,7 @@ namespace ParkitectNexus.Client.Wizard
             if (_returnControl == null)
                 WizardForm.Close();
             else
-            {
                 WizardForm.Attach(_returnControl);
-            }
         }
     }
 }
