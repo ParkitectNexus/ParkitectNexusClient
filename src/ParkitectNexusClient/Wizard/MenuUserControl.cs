@@ -33,23 +33,22 @@ namespace ParkitectNexus.Client.Wizard
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == (Keys.Control | Keys.Alt | Keys.Shift | Keys.C))
+            switch (keyData)
             {
-                if (
-                    MessageBox.Show(this, "Are you sure you wish to send us your log files?", "ParkitectNexus Client",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    CrashReporter.Report("log_upload", _parkitect, _parkitectNexusWebsite, new Exception("log_upload"));
+                case (Keys.Control | Keys.Alt | Keys.Shift | Keys.C):
+                    if (
+                        MessageBox.Show(this, "Are you sure you wish to send us your log files?", "ParkitectNexus Client",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        CrashReporter.Report("log_upload", _parkitect, _parkitectNexusWebsite, new Exception("log_upload"));
 
-                return true;
-            }
+                    return true;
+                case (Keys.Control | Keys.Alt | Keys.D):
+                    Log.Close();
+                    WizardForm.Close();
 
-            if (keyData == (Keys.Control | Keys.Alt | Keys.D))
-            {
-                Log.Close();
-                WizardForm.Close();
-
-                var path = System.Reflection.Assembly.GetEntryAssembly().Location;
-                Process.Start(path, "--loglevel Debug");
+                    var path = System.Reflection.Assembly.GetEntryAssembly().Location;
+                    Process.Start(path, "--loglevel Debug");
+                    break;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);

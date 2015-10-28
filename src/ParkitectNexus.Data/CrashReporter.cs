@@ -50,8 +50,7 @@ namespace ParkitectNexus.Data
 
             [JsonProperty]
             public string Action { get; }
-
-
+            
             [JsonProperty]
             public Exception Exception { get; }
 
