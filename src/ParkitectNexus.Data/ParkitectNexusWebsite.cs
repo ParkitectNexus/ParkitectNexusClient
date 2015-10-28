@@ -14,7 +14,7 @@ namespace ParkitectNexus.Data
     public class ParkitectNexusWebsite
     {
 #if DEBUG
-        private const string WebsiteUrl = "https://{0}staging.parkitectnexus.com/{1}";
+        private const string WebsiteUrl = "http://{0}staging.parkitectnexus.com/{1}";
 #else
         private const string WebsiteUrl = "https://{0}parkitectnexus.com/{1}";
 #endif

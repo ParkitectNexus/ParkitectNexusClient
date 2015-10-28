@@ -33,12 +33,12 @@ namespace ParkitectNexus.Client
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>
-        public static UpdateInfo CheckForUpdates()
+        public static UpdateInfo CheckForUpdates(ParkitectNexusWebsite website)
         {
             try
             {
                 using (var webClient = new ParkitectNexusWebClient())
-                using (var stream = webClient.OpenRead("https://client.parkitectnexus.com/update.json"))
+                using (var stream = webClient.OpenRead(website.ResolveUrl("update.json", "client")))
                 using (var streamReader = new StreamReader(stream))
                 using (var jsonTextReader = new JsonTextReader(streamReader))
                 {

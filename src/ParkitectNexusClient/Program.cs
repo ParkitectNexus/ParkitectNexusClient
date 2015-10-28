@@ -2,6 +2,7 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -28,7 +29,7 @@ namespace ParkitectNexus.Client
             var parkitectNexusWebsite = new ParkitectNexusWebsite();
             var parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
             var options = new CommandLineOptions();
-
+            
             UpdateUtil.MigrateSettings();
             Parser.Default.ParseArguments(args, options);
 
@@ -44,7 +45,7 @@ namespace ParkitectNexus.Client
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 // Check for updates. If updates are available, do not resume usual logic.
-                if (CheckForUpdates(options)) return;
+                if (CheckForUpdates(parkitectNexusWebsite, options)) return;
                 
                 parkitectNexusWebsite.InstallProtocol();
 
@@ -186,13 +187,13 @@ namespace ParkitectNexus.Client
             Application.Run(form);
         }
 
-        private static bool CheckForUpdates(CommandLineOptions options)
+        private static bool CheckForUpdates(ParkitectNexusWebsite website, CommandLineOptions options)
         {
 #if DEBUG
             return false;
 #else
 
-            var updateInfo = UpdateUtil.CheckForUpdates();
+            var updateInfo = UpdateUtil.CheckForUpdates(website);
             if (updateInfo != null)
             {
                 // Store download url so it can be downloaded after the update.
