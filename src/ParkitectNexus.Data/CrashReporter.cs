@@ -18,11 +18,18 @@ namespace ParkitectNexus.Data
         {
             if (exception == null) return;
 
-            var data = JsonConvert.SerializeObject(new CrashReport(parkitect, action, exception));
-
-            using (var client = new ParkitectNexusWebClient())
+            try
             {
-                client.UploadString(website.ResolveUrl("report/crash", "client"), data);
+                var data = JsonConvert.SerializeObject(new CrashReport(parkitect, action, exception));
+
+                using (var client = new ParkitectNexusWebClient())
+                {
+                    client.UploadString(website.ResolveUrl("report/crash", "client"), data);
+                }
+            }
+            catch
+            {
+                
             }
         }
 

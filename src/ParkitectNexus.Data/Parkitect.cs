@@ -192,7 +192,7 @@ namespace ParkitectNexus.Data
             // Inject modloader.
             Log.WriteLine("Starting injection procedure.");
             var result = InjectModLoader();
-            Log.WriteLine($"Injection exited with error code {result}.");
+            Log.WriteLine($"Injection exited with error code {result}.", result == 0 ? LogLevel.Debug : LogLevel.Warn);
 
             return process;
         }

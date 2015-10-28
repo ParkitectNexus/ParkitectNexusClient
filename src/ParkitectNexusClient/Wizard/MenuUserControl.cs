@@ -2,6 +2,8 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Utilities;
@@ -27,6 +29,30 @@ namespace ParkitectNexus.Client.Wizard
             _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
 
             InitializeComponent();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.Alt | Keys.Shift | Keys.C))
+            {
+                if (
+                    MessageBox.Show(this, "Are you sure you wish to send us your log files?", "ParkitectNexus Client",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    CrashReporter.Report("log_upload", _parkitect, _parkitectNexusWebsite, new Exception("log_upload"));
+
+                return true;
+            }
+
+            if (keyData == (Keys.Control | Keys.Alt | Keys.D))
+            {
+                Log.Close();
+                WizardForm.Close();
+
+                var path = System.Reflection.Assembly.GetEntryAssembly().Location;
+                Process.Start(path, "--loglevel Debug");
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void manageModsButton_Click(object sender, EventArgs e)

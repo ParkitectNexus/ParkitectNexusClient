@@ -46,6 +46,7 @@ namespace ParkitectNexus.Data.Utilities
             catch
             {
                 LoggingPath = null;
+                _streamWriter = null;
             }
         }
 
