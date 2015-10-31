@@ -64,7 +64,7 @@ namespace WixSharpSetup
                 GUID = guid,
                 UI = WUI.WixUI_InstallDir,
                 SourceBaseDir = AppBinariesPath,
-                OutFileName = "ParkitectNexusSetup" + (Configuration != "Release" ? Configuration : string.Empty),
+                OutFileName = "parkitectnexus-client" + (Configuration != "Release" ? "-" + Configuration.ToLower() : string.Empty) + "-" + version,
                 OutDir = @"..\..\bin",
                 Version = version,
                 Description = "An installer for Theme Parkitect.",
