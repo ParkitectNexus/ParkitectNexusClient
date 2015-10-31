@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
@@ -104,6 +105,24 @@ namespace ParkitectNexus.Data
                         var result = File.ReadAllText(path);
                         Utilities.Log.Open(path);
                         return result;
+                    }
+                    catch (Exception e)
+                    {
+                        return "failed to open: " + e.Message;
+                    }
+                }
+            }
+
+            [JsonProperty]
+            public string MonoObjectInjectorLog
+            {
+                get
+                {
+                    try
+                    {
+                        var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                        var path = Path.Combine(dir, "MonoObjectInjector.log");
+                        return File.Exists(path) ? File.ReadAllText(path) : null;
                     }
                     catch (Exception e)
                     {

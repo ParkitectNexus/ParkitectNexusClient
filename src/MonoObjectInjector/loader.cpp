@@ -151,45 +151,64 @@ int ExecuteRuntimeInvoke(blackbone::Process& process, int method) {
   return invoke_result;
 }
 
-int UseAssembly(blackbone::Process& process, std::wstring dll, std::wstring name_space, std::wstring class_name, std::wstring method_name) {
+int UseAssembly(std::ofstream& log, blackbone::Process& process, std::wstring dll, std::wstring name_space, std::wstring class_name, std::wstring method_name) {
+
+  log << "ExecuteGetDomain\n";
   int domain = ExecuteGetDomain(process);
   if (!domain) {
+    log << "return 1\n";
     return 1;
   }
 
+  log << "FileReadAllBytes\n";
   auto data = FileReadAllBytes(dll);
 
   if (data.size() == 0) {
+    log << "return 2\n";
     return 2;
   }
 
+  log << "ExecuteImageOpenFromDataFull\n";
   int raw_image = ExecuteImageOpenFromDataFull(process, data);
 
   if (!raw_image) {
+    log << "return 3\n";
     return 3;
   }
 
+  log << "ExecuteAssemblyLoadFromFull\n";
   int assembly = ExecuteAssemblyLoadFromFull(process, raw_image);
   if (!assembly) {
+    log << "return 4\n";
     return 4;
   }
+
+  log << "ExecuteAssemblyGetImage\n";
   int image = ExecuteAssemblyGetImage(process, assembly);
   if (!assembly) {
+    log << "return 5\n";
     return 5;
   }
+
+  log << "ExecuteGetClassFromName\n";
   int klass = ExecuteGetClassFromName(process, image, blackbone::Utils::WstringToUTF8(name_space).c_str(), blackbone::Utils::WstringToUTF8(class_name).c_str());
   if (!klass) {
+    log << "return 6\n";
     return 6;
   }
 
+  log << "ExecuteGetMethodFromName\n";
   int method = ExecuteGetMethodFromName(process, klass, blackbone::Utils::WstringToUTF8(method_name).c_str());
 
   if (!method) {
+    log << "return 7\n";
     return 7;
   }
 
+  log << "ExecuteRuntimeInvoke\n";
   ExecuteRuntimeInvoke(process, method);
 
+  log << "return 0\n";
   return 0;
 }
 
@@ -209,28 +228,51 @@ int inject(char *dll, char *target, char *name_space, char *classname, char *met
   mbstowcs_s(&convertedChars, wclassname, strlen(classname) + 1, classname, _TRUNCATE);
   mbstowcs_s(&convertedChars, wmethodname, strlen(methodname) + 1, methodname, _TRUNCATE);
   
+  std::ofstream log;
+  log.open("MonoObjectInjector.log");
+  log << "inject(\"" 
+      << dll << "\", \"" 
+      << target << "\", \"" 
+      << name_space << "\", \"" 
+      << classname << "\", \"" 
+      << methodname << "\")\n";
 
   blackbone::Process target_process;
   std::vector<DWORD> found;
+
+  log << "EnumByName\n";
   blackbone::Process::EnumByName(wtarget, found);
 
   if (found.size() > 0) {
+    log << "Attach\n";
     if (target_process.Attach(found.back()) == STATUS_SUCCESS) {
 
+      log << "GetWow64Barrier\n";
       auto barrier = target_process.core().native()->GetWow64Barrier().type;
 
       if (barrier != blackbone::wow_32_32 && barrier != blackbone::wow_64_64)
       {
+        log << "return 8\n";
         return 8;
       }
 
-      return UseAssembly(target_process, wdll, wname_space, wclassname, wmethodname);
+      log << "UseAssembly\n";
+      bool r = UseAssembly(log, target_process, wdll, wname_space, wclassname, wmethodname);
+
+
+      log << "return r\n"; 
+      log.close();
+      return r;
     }
     else {
+      log << "return 9\n";
+      log.close();
       return 9;
     }
   }
   else {
+    log << "return 10\n";
+    log.close();
     return 10;
   }
 }
