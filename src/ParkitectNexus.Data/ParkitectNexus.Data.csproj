@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppData.cs" />
     <Compile Include="CrashReporter.cs" />
     <Compile Include="DownloadInfo.cs" />
     <Compile Include="ParkitectOnlineAssetRepository.cs" />

@@ -49,6 +49,9 @@ namespace ParkitectNexus.Client.Wizard
                     var path = System.Reflection.Assembly.GetEntryAssembly().Location;
                     Process.Start(path, "--loglevel Debug");
                     break;
+                case (Keys.Control | Keys.Alt | Keys.L):
+                    Process.Start(AppData.Path);
+                    break;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);

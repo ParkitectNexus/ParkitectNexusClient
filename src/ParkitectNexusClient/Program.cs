@@ -33,8 +33,7 @@ namespace ParkitectNexus.Client
             UpdateUtil.MigrateSettings();
             Parser.Default.ParseArguments(args, options);
 
-            Log.Open(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                "ParkitectNexusLauncher.log"));
+            Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
             Log.MinimumLogLevel = options.LogLevel;
 
             try

@@ -120,8 +120,7 @@ namespace ParkitectNexus.Data
                 {
                     try
                     {
-                        var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                        var path = Path.Combine(dir, "MonoObjectInjector.log");
+                        var path = Path.Combine(AppData.Path, "MonoObjectInjector.log");
                         return File.Exists(path) ? File.ReadAllText(path) : null;
                     }
                     catch (Exception e)

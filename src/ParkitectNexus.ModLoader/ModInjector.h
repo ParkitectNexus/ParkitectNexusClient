@@ -5,13 +5,14 @@
 using namespace System;
 
 namespace ParkitectNexus {
-  namespace ModLoader {
+    namespace ModLoader {
 
-    public ref class ModInjector
-    {
-    public:
-      static int Inject(System::String ^dllPath, System::String ^nameSpace,
-        System::String ^className, System::String ^methodName);
-    };
-  }
+        public ref class ModInjector
+        {
+        public:
+            static int Inject(System::String ^logPath, System::String ^dllPath, 
+                System::String ^nameSpace, System::String ^className, 
+                System::String ^methodName);
+        };
+    }
 }
