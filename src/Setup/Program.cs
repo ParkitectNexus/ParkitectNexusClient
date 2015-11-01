@@ -36,7 +36,7 @@ namespace WixSharpSetup
             //Create the installer project.
             var project = new ManagedProject(AppName,
                 new Binary(new Id("Install_VC"), @"..\..\vc_redist.x86.exe"),
-                new BinaryFileAction("Install_VC", "/q /norestart",
+                new BinaryFileAction("Install_VC", "/norestart",
                     Return.asyncNoWait,
                     When.Before,
                     Step.InstallFinalize,
