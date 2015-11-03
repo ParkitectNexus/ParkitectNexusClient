@@ -6,6 +6,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Xml;
 using Microsoft.CSharp;
 using Newtonsoft.Json;
@@ -160,19 +161,18 @@ namespace ParkitectNexus.Data
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
+            if (AssetBundlePrefix == null)
+                return;
 
             Log.WriteLine($"Deleting mod '{this}'.");
+
+            var modAssetBundlePath = Path.Combine(parkitect.Paths.Data, "StreamingAssets/mods", AssetBundlePrefix);
+
             Directory.Delete(InstallationPath, true);
 
-            if (AssetBundlePrefix != null)
-            {
-                var modAssetBundlePath = Path.Combine(parkitect.Paths.Data, "StreamingAssets/mods",
-                    AssetBundlePrefix);
-
-                if (Directory.Exists(Path.Combine(modAssetBundlePath)))
-                    Directory.Delete(Path.Combine(modAssetBundlePath), true);
-            }
-
+            if (Directory.Exists(modAssetBundlePath))
+                Directory.Delete(modAssetBundlePath, true);
+            
             InstallationPath = null;
         }
 
@@ -306,13 +306,13 @@ namespace ParkitectNexus.Data
                 }
             }
         }
-        
+
         /// <summary>
-        ///     Copies the asset bundles to the games assets directory.
+        /// Copies the asset bundles to the games assets directory.
         /// </summary>
         /// <param name="parkitect">The parkitect.</param>
         /// <returns></returns>
-        public bool CopyAssetBundles(Parkitect parkitect)
+       public bool CopyAssetBundles(Parkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
@@ -328,26 +328,43 @@ namespace ParkitectNexus.Data
                 {
                     var modAssetBundlePath = Path.Combine(parkitect.Paths.Data, "StreamingAssets/mods",
                         AssetBundlePrefix);
+                    var files = Directory.GetFiles(Path.Combine(InstallationPath, AssetBundleDir));
+                    var fileNames = files.Select(Path.GetFileName).ToArray();
+                    var md5 = MD5.Create();
 
-                    // Delete existing compiled file if compilation is forced.
-                    if (Directory.Exists(Path.Combine(modAssetBundlePath)))
+                    Directory.CreateDirectory(modAssetBundlePath);
+
+                    // Delete old files no longer required for mod.
+                    foreach (var oldFile in Directory.GetFiles(modAssetBundlePath)
+                        .Where(f => !fileNames.Contains(Path.GetFileName(f))))
+                        File.Delete(oldFile);
+
+                    foreach (var assetBundleFile in Directory.GetFiles(Path.Combine(InstallationPath, AssetBundleDir)))
                     {
-                        if (IsDevelopment)
-                            Directory.Delete(Path.Combine(modAssetBundlePath), true);
-                        else return true;
-                    }
+                        var targetPath = Path.Combine(modAssetBundlePath, Path.GetFileName(assetBundleFile));
 
-                    if (AssetBundleDir != null)
-                    {
-                        if (!Directory.Exists(modAssetBundlePath))
-                            Directory.CreateDirectory(modAssetBundlePath);
-
-                        foreach (var assetBundleFile in Directory.GetFiles(Path.Combine(InstallationPath, AssetBundleDir))
-                            )
+                        // If file already exists in streaming directory, check if the hashes match.
+                        if (File.Exists(targetPath))
                         {
-                            File.Copy(assetBundleFile,
-                                Path.Combine(modAssetBundlePath, Path.GetFileName(assetBundleFile)));
+                            try
+                            {
+                                byte[] oldHash,
+                                    newHash;
+                                using (var stream = File.OpenRead(targetPath))
+                                    oldHash = md5.ComputeHash(stream);
+                                using (var stream = File.OpenRead(assetBundleFile))
+                                    newHash = md5.ComputeHash(stream);
+                                
+                                if (oldHash.SequenceEqual(newHash))
+                                    continue;
+                            }
+                            catch
+                            {
+                                continue;
+                            }
                         }
+
+                        File.Copy(assetBundleFile, targetPath, true);
                     }
                 }
                 catch (Exception e)
