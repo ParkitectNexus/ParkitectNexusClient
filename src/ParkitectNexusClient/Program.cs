@@ -70,23 +70,7 @@ namespace ParkitectNexus.Client
                 // If the launch option has been used, launch the game.
                 if (options.Launch)
                 {
-                    try
-                    {
-                        parkitect.LaunchWithMods();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.WriteLine("Launching failed in an unusual way.", LogLevel.Fatal);
-                        Log.WriteException(e);
-                        CrashReporter.Report("launch_from_option", parkitect, parkitectNexusWebsite, e);
-
-                        using (var focus = new FocusForm())
-                        {
-                            MessageBox.Show(focus,
-                                $"Launching the game with mods failed.\n\nThe error has been logged to:\n{Log.LoggingPath}",
-                                "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
+                    LaunchUtil.LaunchWithModsAndCrashHandler(parkitect, parkitectNexusWebsite, "option");
                     return;
                 }
 

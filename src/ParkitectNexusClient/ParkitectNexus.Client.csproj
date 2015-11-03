@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LaunchUtil.cs" />
     <Compile Include="UpdateInfo.cs" />
     <Compile Include="Wizard\BaseWizardUserControl.cs">
       <SubType>UserControl</SubType>

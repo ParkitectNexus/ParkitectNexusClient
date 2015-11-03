@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Utilities\StreamWriterLogUtility.cs" />
     <Compile Include="User32.cs" />
+    <Compile Include="Utilities\VCUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -65,23 +65,7 @@ namespace ParkitectNexus.Client.Wizard
         private void launchParkitectButton_Click(object sender, EventArgs e)
         {
             WizardForm.Hide();
-            try
-            {
-                _parkitect.LaunchWithMods();
-            }
-            catch (Exception ex)
-            {
-                Log.WriteLine("Launching failed in an unusual way.", LogLevel.Fatal);
-                Log.WriteException(ex);
-                CrashReporter.Report("launch_from_menu", _parkitect, _parkitectNexusWebsite, ex);
-
-                using (var focus = new FocusForm())
-                {
-                    MessageBox.Show(focus,
-                        $"Launching the game with mods failed.\n\nThe error has been logged to:\n{Log.LoggingPath}",
-                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            LaunchUtil.LaunchWithModsAndCrashHandler(_parkitect, _parkitectNexusWebsite, "menu");
             WizardForm.Close();
         }
 
