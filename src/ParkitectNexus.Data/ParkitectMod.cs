@@ -36,7 +36,6 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Gets the asset bundle prefix.
         /// </summary>
-        [JsonProperty]
         public string AssetBundlePrefix => !IsInstalled ? null : Path.GetFileName(InstallationPath);
 
         /// <summary>
