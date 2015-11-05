@@ -35,22 +35,13 @@ namespace WixSharpSetup
             
             //Create the installer project.
             var project = new ManagedProject(AppName,
-//                new Binary(new Id("Install_VC"), @"..\..\vc_redist.x86.exe"),
-//                new BinaryFileAction("Install_VC", "/norestart",
-//                    Return.asyncNoWait,
-//                    When.Before,
-//                    Step.InstallFinalize,
-//                    Condition.NOT_Installed),
                 new Dir(new Id("INSTALL_DIR"), @"%ProgramFiles%\" + AppName,
                     new File(AppExecutable),
                     new File(@"CommandLine.dll"),
                     new File(@"Newtonsoft.Json.dll"),
                     new File(@"Octokit.dll"),
                     new File(@"ParkitectNexus.Data.dll"),
-                    new File(@"ParkitectNexus.ModLoader.dll"),
-                    new File(@"ParkitectNexus.Mod.ModLoader.dll"),
-                    new Dir("redist",
-                        new File(@"..\..\vc_redist.x86.exe"))
+                    new File(@"ParkitectNexus.Mod.ModLoader.dll")
                     ),
                 new Dir(@"%ProgramMenu%\" + AppName,
                     new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", ""),
@@ -69,7 +60,7 @@ namespace WixSharpSetup
                 OutFileName = "parkitectnexus-client" + (Configuration != "Release" ? "-" + Configuration.ToLower() : string.Empty) + "-" + version,
                 OutDir = @"..\..\bin",
                 Version = version,
-                Description = "An installer for Theme Parkitect.",
+                Description = "An installer for Parkitect assets.",
                 MajorUpgradeStrategy = MajorUpgradeStrategy.Default,
                 LicenceFile = Directory.GetCurrentDirectory() + @"\..\..\tos.rtf",
                 BannerImage = Directory.GetCurrentDirectory() + @"\..\..\images\dialog_banner.png",
@@ -81,10 +72,6 @@ namespace WixSharpSetup
                     ProductIcon = AppIcon,
                     Manufacturer = "ParkitectNexus, Tim Potze"
                 },
-                // Use CustomUI to skip the license page.
-//                CustomUI = new DialogSequence()
-//                    .On(NativeDialogs.WelcomeDlg, Buttons.Next, new ShowDialog(NativeDialogs.InstallDirDlg))
-//                    .On(NativeDialogs.InstallDirDlg, Buttons.Back, new ShowDialog(NativeDialogs.WelcomeDlg))
             };
             
             // Set message to indicate a newer version has already been installed.
