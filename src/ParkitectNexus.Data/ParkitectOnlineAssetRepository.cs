@@ -55,7 +55,7 @@ namespace ParkitectNexus.Data
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>Information about the download.</returns>
-        public async Task<DownloadInfo> ResolveDowloadInfo(ParkitectNexusUrl url)
+        public async Task<DownloadInfo> ResolveDownloadInfo(ParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
 
@@ -84,7 +84,7 @@ namespace ParkitectNexus.Data
             if (url == null) throw new ArgumentNullException(nameof(url));
 
             // Create a download url based on the file hash.
-            var downloadInfo = await ResolveDowloadInfo(url);
+            var downloadInfo = await ResolveDownloadInfo(url);
             
             // Create a web client which will download the file.
             using (var webClient = new ParkitectNexusWebClient())
