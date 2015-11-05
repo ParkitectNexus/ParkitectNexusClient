@@ -1,14 +1,55 @@
-﻿using System;
+﻿// ParkitectNexusClient
+// Copyright 2015 Parkitect, Tim Potze
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using MiniJSON;
+using UnityEngine;
 
 namespace ParkitectNexus.Mod.ModLoader
 {
     public class ModLoader : IMod
     {
+        private readonly List<ModManager.ModEntry> _modEntries;
+        private readonly List<IMod> _loadedMods = new List<IMod>();
+
+        private GameObject _gameObject;
+        private bool _isEnabled;
+
+        public ModLoader()
+        {
+            _modEntries = typeof (ModManager).GetField("modEntries", BindingFlags.Instance | BindingFlags.NonPublic)
+                .GetValue(ModManager.Instance) as List<ModManager.ModEntry>;
+
+            LoadMods();
+        }
+
+        public void onEnabled()
+        {
+            _isEnabled = true;
+
+            _gameObject = new GameObject();
+            _gameObject.AddComponent<ModReloader>().ModLoader = this;
+        }
+
+        public void onDisabled()
+        {
+            _isEnabled = false;
+        }
+
+        public string Name
+        {
+            get { return "ParkitectNexus Mod Loader"; }
+        }
+
+        public string Description
+        {
+            get { return "A mod loader for mods distributed by ParkitectNexus.com."; }
+        }
+
         private static T ReadFromDictonary<T>(IDictionary<string, object> dictionary, string key)
         {
             object o;
@@ -26,11 +67,24 @@ namespace ParkitectNexus.Mod.ModLoader
                     CultureInfo.CurrentCulture);
         }
 
-        public ModLoader()
+        public void LoadMods()
         {
+            // Unload mods loaded by this mod loader.
+            foreach (var modEntry in _modEntries.ToArray())
+            {
+                if (!_loadedMods.Contains(modEntry.mod))
+                    continue;
+
+                if (_isEnabled)
+                    modEntry.disableMod();
+                _modEntries.Remove(modEntry);
+            }
+
+            _loadedMods.Clear();
+
             // Compute paths to the mods directory.
             var modsPath = FilePaths.getFolderPath("pnmods");
-            
+
             // Find mod directories in the mods directory.
             foreach (var folder in Directory.GetDirectories(modsPath))
             {
@@ -60,7 +114,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     // Compute the path to the the mod assembly. If the path does not exist, continue to the next mod.
                     var relativeBuildPath = File.ReadAllText(binBuildPath);
                     var buildPath = System.IO.Path.Combine(folder, relativeBuildPath);
-                    
+
                     if (!File.Exists(buildPath))
                         continue;
 
@@ -69,7 +123,8 @@ namespace ParkitectNexus.Mod.ModLoader
 
                     // Log the successfull load of the mod.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Info: Loaded {1}.\r\n", DateTime.Now.ToString("G"), assembly));
+                        string.Format("[{0}] Info: Loaded {1}.\r\n", DateTime.Now.ToString("yy-MM-dd HH:mm:ss"),
+                            assembly));
 
                     // Create an instance of the mod and register it in the mod manager.
                     var loadedAnyType = false;
@@ -88,6 +143,18 @@ namespace ParkitectNexus.Mod.ModLoader
                         SetProperty(userMod, "Identifier", directoryName);
 
                         ModManager.Instance.addMod(userMod);
+                        _loadedMods.Add(userMod);
+
+                        // Enable mod if mods were already enabled
+                        if (_isEnabled)
+                            foreach (var modEntry in _modEntries)
+                            {
+                                if (modEntry.mod == userMod)
+                                {
+                                    modEntry.enableMod();
+                                    break;
+                                }
+                            }
 
                         File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
                             string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\r\n",
@@ -107,29 +174,10 @@ namespace ParkitectNexus.Mod.ModLoader
                 {
                     // Log failed loading attempts.
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Fatal: Exception during loading: {1}.\r\n", DateTime.Now.ToString("G"),
-                            e.Message));
+                        string.Format("[{0}] Fatal: Exception during loading: {1}.\r\n",
+                            DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), e.Message));
                 }
             }
-        }
-
-        public void onEnabled()
-        {
-            //
-        }
-
-        public void onDisabled()
-        {
-            //
-        }
-
-        public string Name
-        {
-            get { return "ParkitectNexus Mod Loader"; }
-        }
-        public string Description
-        {
-            get { return "A mod loader for mods distributed by ParkitectNexus.com."; }
         }
     }
 }
