@@ -262,7 +262,8 @@ namespace ParkitectNexus.Data
                         using (var streamReader = new StreamReader(modJson.Open()))
                         {
                             var json = await streamReader.ReadToEndAsync();
-                            var mod = JsonConvert.DeserializeObject<ParkitectMod>(json);
+                            var mod = new ParkitectMod(this);
+                            JsonConvert.PopulateObject(json, mod);
 
                             Log.WriteLine($"mod.json was deserialized to mod object '{mod}'.");
 

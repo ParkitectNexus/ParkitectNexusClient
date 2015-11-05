@@ -65,6 +65,9 @@ namespace ParkitectNexus.Client.Wizard
             }
             catch (Exception e)
             {
+                Log.WriteLine($"Failed to install {assetName}!");
+                Log.WriteException(e);
+
                 // If the asset has failed to download, show some feedback to the user.
                 MessageBox.Show(this,
                     $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}",
