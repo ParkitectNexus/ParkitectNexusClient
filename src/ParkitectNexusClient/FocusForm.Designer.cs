@@ -42,7 +42,7 @@
             this.MinimizeBox = false;
             this.Name = "FocusForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "ParkitectNexus";
+            this.Text = "ParkitectNexus Client";
             this.TopMost = true;
             this.ResumeLayout(false);
 
