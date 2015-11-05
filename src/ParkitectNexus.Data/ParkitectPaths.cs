@@ -24,7 +24,7 @@ namespace ParkitectNexus.Data
 
         public string Data => GetPath("Parkitect_Data");
         public string DataManaged => GetPath("Parkitect_Data", "Managed");
-        public string Mods => GetPath(true, "mods");
+        public string Mods => GetPath(true, "pnmods");
         public string Executable => GetPath("Parkitect.exe");
 
         private string GetPath(params string[] paths)

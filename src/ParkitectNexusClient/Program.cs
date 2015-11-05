@@ -31,6 +31,8 @@ namespace ParkitectNexus.Client
             var options = new CommandLineOptions();
             
             UpdateUtil.MigrateSettings();
+            UpdateUtil.MigrateMods(parkitect);
+
             Parser.Default.ParseArguments(args, options);
 
             Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));

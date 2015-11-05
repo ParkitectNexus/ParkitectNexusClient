@@ -19,28 +19,19 @@ namespace ParkitectNexus.Mod.ModLoader
             return dictionary.TryGetValue(key, out o) ? (o is T ? (T) o : default(T)) : default(T);
         }
 
-        public static void Load()
+        public Main()
         {
-            // Unload mods that are currently loaded. Because unloading mods is not yet publically available we need to
-            // gain access to the mod entries list trough reflection.
-            var field = typeof(ModManager).GetField("modEntries", BindingFlags.NonPublic | BindingFlags.Instance);
-            var activeMods = field == null ? null : field.GetValue(ModManager.Instance) as List<ModManager.ModEntry>;
-            
-            if (activeMods != null)
-            {
-                // Disable all active mod entries and clear the list.
-                ModManager.Instance.triggerDisable();
-                activeMods.Clear();
-            }
-
             // Compute paths to the mods directory.
-            var modsPath = System.IO.Path.Combine(System.IO.Path.Combine(Application.dataPath, "../"), "mods");
+            var modsPath = FilePaths.getFolderPath("pnmods");
 
+            Debug.Log("Z");
             // Find mod directories in the mods directory.
             foreach (var folder in Directory.GetDirectories(modsPath))
             {
                 try
                 {
+
+                    Debug.Log("B " + folder);
                     var directoryName = System.IO.Path.GetFileName(folder);
                     var filePath = System.IO.Path.Combine(folder, "mod.json");
 
@@ -67,6 +58,8 @@ namespace ParkitectNexus.Mod.ModLoader
                     var relativeBuildPath = File.ReadAllText(binBuildPath);
                     var buildPath = System.IO.Path.Combine(folder, relativeBuildPath);
 
+
+                    Debug.Log("C");
                     if (!File.Exists(buildPath))
                         continue;
 
@@ -81,6 +74,8 @@ namespace ParkitectNexus.Mod.ModLoader
                     if (string.IsNullOrEmpty(entryPoint))
                         throw new Exception("No EntryPoint has been specified in the mod.json file");
 
+
+                    Debug.Log("D");
                     var modObject = assembly.CreateInstance(entryPoint);
 
                     if (modObject == null)
@@ -90,27 +85,28 @@ namespace ParkitectNexus.Mod.ModLoader
                     if (userMod == null)
                         throw new Exception("The class specified as EntryPoint(" + entryPoint + ") does not implement `IMod`");
 
+                    Debug.Log("E");
                     // Bind Path.
-                    var pathProperty = userMod.GetType()
-                        .GetProperty("Path", AnyVisiblity | BindingFlags.Instance, null,
-                            typeof (string), new Type[0], null);
-                    if (pathProperty != null)
-                        pathProperty.SetValue(userMod, folder, AnyVisiblity, null, null,
-                            CultureInfo.CurrentCulture);
-
-                    // Bind Identifier.
-                    var identifierProperty = userMod.GetType()
-                        .GetProperty("Identifier", AnyVisiblity | BindingFlags.Instance, null,
-                            typeof(string), new Type[0], null);
-                    if (identifierProperty != null)
-                        identifierProperty.SetValue(userMod, directoryName, AnyVisiblity, null, null,
-                            CultureInfo.CurrentCulture);
+//                    var pathProperty = userMod.GetType()
+//                        .GetProperty("Path", AnyVisiblity | BindingFlags.Instance, null,
+//                            typeof (string), new Type[0], null);
+//                    if (pathProperty != null)
+//                        pathProperty.SetValue(userMod, folder, AnyVisiblity, null, null,
+//                            CultureInfo.CurrentCulture);
+//
+//                    // Bind Identifier.
+//                    var identifierProperty = userMod.GetType()
+//                        .GetProperty("Identifier", AnyVisiblity | BindingFlags.Instance, null,
+//                            typeof(string), new Type[0], null);
+//                    if (identifierProperty != null)
+//                        identifierProperty.SetValue(userMod, directoryName, AnyVisiblity, null, null,
+//                            CultureInfo.CurrentCulture);
 
                     ModManager.Instance.addMod(userMod);
 
-                    File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\n",
-                            DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), userMod));
+//                    File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
+//                        string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\n",
+//                            DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), userMod));
                 }
                 catch (Exception e)
                 {
@@ -119,12 +115,9 @@ namespace ParkitectNexus.Mod.ModLoader
                         string.Format("[{0}] Fatal: Exception during loading: {1}.\r\n", DateTime.Now.ToString("G"),
                             e.Message));
                 }
-            }
 
-            // If the game is being played, enable mods.
-            if(Application.loadedLevel == 2)
-                ModManager.Instance.triggerEnable();
-            
+                Debug.Log("F");
+            }
         }
 
         public void onEnabled()

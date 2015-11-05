@@ -89,5 +89,27 @@ namespace ParkitectNexus.Client
                 return false;
             }
         }
+
+        public static void MigrateMods(Parkitect parkitect)
+        {
+            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            if (!parkitect.IsInstalled)
+                return;
+
+            var oldPath = Path.Combine(parkitect.InstallationPath, "mods");
+
+            if (!Directory.Exists(oldPath))
+                return;
+
+            foreach (var directory in Directory.GetDirectories(oldPath))
+            {
+                var target = Path.Combine(parkitect.Paths.Mods, Path.GetFileName(directory));
+
+                if (!File.Exists(Path.Combine(directory, "mod.json")) || Directory.Exists(target))
+                    continue;
+
+                Directory.Move(directory, target);
+            }
+        }
     }
 }
