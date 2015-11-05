@@ -50,7 +50,6 @@ namespace ParkitectNexus.Mod.ModLoader
 
                     var isEnabled = ReadFromDictonary<bool>(dictionary, "IsEnabled");
                     var isDevelopment = ReadFromDictonary<bool>(dictionary, "IsDevelopment");
-                    var entryPoint = ReadFromDictonary<string>(dictionary, "EntryPoint");
 
                     var binBuildPath = System.IO.Path.Combine(folder, "bin/build.dat");
 
@@ -73,27 +72,36 @@ namespace ParkitectNexus.Mod.ModLoader
                         string.Format("[{0}] Info: Loaded {1}.\r\n", DateTime.Now.ToString("G"), assembly));
 
                     // Create an instance of the mod and register it in the mod manager.
-                    if (string.IsNullOrEmpty(entryPoint))
-                        throw new Exception("No EntryPoint has been specified in the mod.json file");
-                    
-                    var modObject = assembly.CreateInstance(entryPoint);
+                    var loadedAnyType = false;
+                    foreach (var type in assembly.GetExportedTypes())
+                    {
+                        if (!typeof (IMod).IsAssignableFrom(type))
+                            continue;
 
-                    if (modObject == null)
-                        throw new Exception("The class specified as EntryPoint(" + entryPoint + ") failed to initialize (may not exist?)");
+                        var userMod = Activator.CreateInstance(type) as IMod;
 
-                    var userMod = modObject as IMod;
-                    if (userMod == null)
-                        throw new Exception("The class specified as EntryPoint(" + entryPoint + ") does not implement `IMod`");
+                        if (userMod == null)
+                            continue;
 
-                    // Bind additional mod information.
-                    SetProperty(userMod, "Path", folder);
-                    SetProperty(userMod, "Identifier", directoryName);
+                        // Bind additional mod information.
+                        SetProperty(userMod, "Path", folder);
+                        SetProperty(userMod, "Identifier", directoryName);
 
-                    ModManager.Instance.addMod(userMod);
+                        ModManager.Instance.addMod(userMod);
 
-                    File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\r\n",
-                            DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), userMod));
+                        File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
+                            string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\r\n",
+                                DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), userMod));
+
+                        loadedAnyType = true;
+                    }
+
+                    if (!loadedAnyType)
+                    {
+                        File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
+                            string.Format("[{0}] Warn: No exported type in {1} implements IMod.\r\n",
+                                DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), assembly));
+                    }
                 }
                 catch (Exception e)
                 {

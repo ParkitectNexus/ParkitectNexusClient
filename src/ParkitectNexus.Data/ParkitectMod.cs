@@ -138,7 +138,6 @@ namespace ParkitectNexus.Data
                     }
 
                     logFile.Log($"Compiling {Name} to {buildPath}...");
-                    logFile.Log($"Entry point: {EntryPoint}.");
 
                     var assemblyFiles = new List<string>();
                     var sourceFiles = new List<string>();
@@ -361,13 +360,7 @@ namespace ParkitectNexus.Data
         /// </summary>
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
-
-        /// <summary>
-        ///     Gets or sets the entry point.
-        /// </summary>
-        [JsonProperty]
-        public string EntryPoint { get; set; }
-
+        
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is development.
         /// </summary>
