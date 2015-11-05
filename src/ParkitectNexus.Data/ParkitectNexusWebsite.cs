@@ -1,10 +1,7 @@
 // ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
-using System;
 using System.Diagnostics;
-using System.Reflection;
-using Microsoft.Win32;
 
 namespace ParkitectNexus.Data
 {
@@ -25,27 +22,6 @@ namespace ParkitectNexus.Data
         public void Launch()
         {
             Process.Start(ResolveUrl(null));
-        }
-
-        /// <summary>
-        ///     Installs the parkitectnexus:// protocol.
-        /// </summary>
-        public void InstallProtocol()
-        {
-            try
-            {
-                var appPath = Assembly.GetEntryAssembly().Location;
-
-                var parkitectNexus = Registry.CurrentUser?.CreateSubKey(@"Software\Classes\parkitectnexus");
-                parkitectNexus?.SetValue("", "ParkitectNexus Client");
-                parkitectNexus?.SetValue("URL Protocol", "");
-                parkitectNexus?.CreateSubKey(@"DefaultIcon")?.SetValue("", $"{appPath},0");
-                parkitectNexus?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{appPath}\" --download \"%1\"");
-            }
-            catch (Exception)
-            {
-                // todo: Log the error or something. The app is useless without the url protocol.
-            }
         }
 
         /// <summary>

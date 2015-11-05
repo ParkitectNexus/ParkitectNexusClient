@@ -19,7 +19,7 @@ namespace ParkitectNexus.Data
         ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
         /// </summary>
         /// <param name="parkitectNexusWebsite">The parkitect nexus website.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">Thrown if parkitectNexusWebsite is null.</exception>
         public ParkitectOnlineAssetRepository(ParkitectNexusWebsite parkitectNexusWebsite)
         {
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));

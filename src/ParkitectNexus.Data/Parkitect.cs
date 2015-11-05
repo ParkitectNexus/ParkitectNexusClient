@@ -83,15 +83,15 @@ namespace ParkitectNexus.Data
                         Directory.GetDirectories(Paths.Mods).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
                 {
                     // Attempt to deserialize the mod.json file.
-                    ParkitectMod mod = null;
+                    ParkitectMod mod = new ParkitectMod(this);
                     try
                     {
-                        mod =
-                            JsonConvert.DeserializeObject<ParkitectMod>(File.ReadAllText(Path.Combine(path, "mod.json")));
+                        JsonConvert.PopulateObject(File.ReadAllText(Path.Combine(path, "mod.json")), mod);
                         mod.InstallationPath = path;
                     }
                     catch
                     {
+                        mod = null;
                     }
 
                     // If the mod.json file was deserialized successfully, return the mod.
@@ -126,7 +126,7 @@ namespace ParkitectNexus.Data
             if (IsInstalled)
                 return true;
 
-            // todo: Detect registry key of installation path.
+            // TODO Detect registry key of installation path.
             // can only do this once it's installed trough steam or a setup.
             return false;
         }
@@ -141,14 +141,7 @@ namespace ParkitectNexus.Data
             Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
             Log.WriteLine("Attempting to compile installed mods.");
-            foreach (var mod in InstalledMods)
-            {
-                if (mod.IsEnabled || mod.IsDevelopment)
-                {
-                    mod.CopyAssetBundles(this);
-                    mod.Compile(this);
-                }
-            }
+            CompileActiveMods();
 
             // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
@@ -293,10 +286,10 @@ namespace ParkitectNexus.Data
                                 }
 
                                 Log.WriteLine("Deleting installed version.");
-                                oldMod.Delete(this);
+                                oldMod.Delete();
 
                                 // Deleting is stupid.
-                                // todo look for better solution
+                                // TODO look for better solution
                                 await Task.Delay(1000);
                             }
 
@@ -327,8 +320,8 @@ namespace ParkitectNexus.Data
 
                             // Save and compile the mod.
                             mod.Save();
-                            mod.CopyAssetBundles(this);
-                            mod.Compile(this);
+                            mod.CopyAssetBundles();
+                            mod.Compile();
                         }
                     }
                     break;
@@ -349,8 +342,8 @@ namespace ParkitectNexus.Data
             {
                 if (mod.IsEnabled || mod.IsDevelopment)
                 {
-                    mod.CopyAssetBundles(this);
-                    mod.Compile(this);
+                    mod.CopyAssetBundles();
+                    mod.Compile();
                 }
             }
         }

@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModLoaderUtil.cs" />
+    <Compile Include="ParkitectNexusProtocol.cs" />
     <Compile Include="UpdateInfo.cs" />
     <Compile Include="Wizard\BaseWizardUserControl.cs">
       <SubType>UserControl</SubType>

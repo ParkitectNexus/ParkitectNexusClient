@@ -29,7 +29,7 @@ namespace ParkitectNexus.Data.Utilities
         /// <param name="streamWriter">The stream writer.</param>
         /// <param name="message">The message.</param>
         /// <param name="logLevel">The log level.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if streamWriter is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if streamWriter is null.</exception>
         public static void Log(this StreamWriter streamWriter, string message, LogLevel logLevel)
         {
             if (streamWriter == null) throw new ArgumentNullException(nameof(streamWriter));

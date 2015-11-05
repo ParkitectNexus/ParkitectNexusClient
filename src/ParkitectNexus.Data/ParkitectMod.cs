@@ -26,97 +26,14 @@ namespace ParkitectNexus.Data
             "System.Xml.Linq", "Microsoft.CSharp", "System.Data.DataSetExtensions", "System.Net.Http"
         };
 
-        #region Properties of ParkitectMod
-
         /// <summary>
-        ///     Gets or sets the asset bundle directory.
+        ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        [JsonProperty]
-        public string AssetBundleDir { get; set; }
-
-        /// <summary>
-        ///     Gets the asset bundle prefix.
-        /// </summary>
-        public string AssetBundlePrefix => !IsInstalled ? null : Path.GetFileName(InstallationPath);
-
-        /// <summary>
-        ///     Gets or sets the base directory.
-        /// </summary>
-        [JsonProperty]
-        public string BaseDir { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the compiler version.
-        /// </summary>
-        [JsonProperty]
-        public string CompilerVersion { get; set; } = "v4.0";
-
-        /// <summary>
-        ///     Gets or sets the code files.
-        /// </summary>
-        [JsonProperty]
-        public IList<string> CodeFiles { get; set; } = new List<string>();
-
-        /// <summary>
-        ///     Gets or sets the entry point.
-        /// </summary>
-        [JsonProperty]
-        public string EntryPoint { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance is development.
-        /// </summary>
-        [JsonProperty]
-        public bool IsDevelopment { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance is enabled.
-        /// </summary>
-        [JsonProperty]
-        public bool IsEnabled { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance is installed.
-        /// </summary>
-        public bool IsInstalled
-            => !string.IsNullOrWhiteSpace(InstallationPath) && File.Exists(Path.Combine(InstallationPath, "mod.json"));
-
-        /// <summary>
-        ///     Gets or sets the name.
-        /// </summary>
-        [JsonProperty]
-        public string Name { get; set; }
-        
-        /// <summary>
-        ///     Gets or sets the installation path.
-        /// </summary>
-        public string InstallationPath { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the project.
-        /// </summary>
-        [JsonProperty]
-        public string Project { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the tag.
-        /// </summary>
-        [JsonProperty]
-        public string Tag { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the referenced assemblies.
-        /// </summary>
-        [JsonProperty]
-        public IList<string> ReferencedAssemblies { get; set; } = new List<string>();
-
-        /// <summary>
-        ///     Gets or sets the repository.
-        /// </summary>
-        [JsonProperty]
-        public string Repository { get; set; }
-
-        #endregion
+        public ParkitectMod(Parkitect parkitect)
+        {
+            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            Parkitect = parkitect;
+        }
 
         #region Overrides of Object
 
@@ -157,33 +74,30 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Deletes this instance.
         /// </summary>
-        public void Delete(Parkitect parkitect)
+        public void Delete()
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
             if (AssetBundlePrefix == null)
                 return;
 
             Log.WriteLine($"Deleting mod '{this}'.");
 
-            var modAssetBundlePath = Path.Combine(parkitect.Paths.Data, "StreamingAssets/mods", AssetBundlePrefix);
+            var modAssetBundlePath = Path.Combine(Parkitect.Paths.Data, "StreamingAssets/mods", AssetBundlePrefix);
 
             Directory.Delete(InstallationPath, true);
 
             if (Directory.Exists(modAssetBundlePath))
                 Directory.Delete(modAssetBundlePath, true);
-            
+
             InstallationPath = null;
         }
 
         /// <summary>
         ///     Compiles this instance.
         /// </summary>
-        /// <param name="parkitect">The parkitect.</param>
         /// <returns>true on success; false otherwise.</returns>
-        public bool Compile(Parkitect parkitect)
+        public bool Compile()
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
 
             Log.WriteLine($"Compiling mod '{this}'.");
@@ -209,7 +123,8 @@ namespace ParkitectNexus.Data
                     var buildPath = GetBuildPath();
 
                     // Compute build path
-                    if (IsDevelopment || string.IsNullOrWhiteSpace(buildPath) || !File.Exists(Path.Combine(InstallationPath, buildPath)))
+                    if (IsDevelopment || string.IsNullOrWhiteSpace(buildPath) ||
+                        !File.Exists(Path.Combine(InstallationPath, buildPath)))
                     {
                         Directory.CreateDirectory(binPath);
                         buildPath = $"bin/build-{DateTime.Now.ToString("yyMMddHHmmssfff")}.dll";
@@ -272,7 +187,7 @@ namespace ParkitectNexus.Data
                     // Resolve the assembly references.
                     foreach (var name in unresolvedAssemblyReferences)
                     {
-                        var resolved = ResolveAssembly(parkitect, name);
+                        var resolved = ResolveAssembly(name);
                         assemblyFiles.Add(resolved);
 
                         logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
@@ -308,13 +223,11 @@ namespace ParkitectNexus.Data
         }
 
         /// <summary>
-        /// Copies the asset bundles to the games assets directory.
+        ///     Copies the asset bundles to the games assets directory.
         /// </summary>
-        /// <param name="parkitect">The parkitect.</param>
-        /// <returns></returns>
-       public bool CopyAssetBundles(Parkitect parkitect)
+        /// <returns>true on success; false otherwise.</returns>
+        public bool CopyAssetBundles()
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!IsInstalled) throw new Exception("mod not installed");
             if (AssetBundleDir == null) return true;
             if (AssetBundlePrefix == null)
@@ -326,7 +239,7 @@ namespace ParkitectNexus.Data
             {
                 try
                 {
-                    var modAssetBundlePath = Path.Combine(parkitect.Paths.Data, "StreamingAssets/mods",
+                    var modAssetBundlePath = Path.Combine(Parkitect.Paths.Data, "StreamingAssets/mods",
                         AssetBundlePrefix);
                     var files = Directory.GetFiles(Path.Combine(InstallationPath, AssetBundleDir));
                     var fileNames = files.Select(Path.GetFileName).ToArray();
@@ -354,7 +267,7 @@ namespace ParkitectNexus.Data
                                     oldHash = md5.ComputeHash(stream);
                                 using (var stream = File.OpenRead(assetBundleFile))
                                     newHash = md5.ComputeHash(stream);
-                                
+
                                 if (oldHash.SequenceEqual(newHash))
                                     continue;
                             }
@@ -377,15 +290,14 @@ namespace ParkitectNexus.Data
             return true;
         }
 
-        private string ResolveAssembly(Parkitect parkitect, string assemblyName)
+        private string ResolveAssembly(string assemblyName)
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
 
             var dllName = $"{assemblyName}.dll";
 
-            if (parkitect.ManagedAssemblyNames.Contains(dllName))
-                return Path.Combine(parkitect.Paths.DataManaged, dllName);
+            if (Parkitect.ManagedAssemblyNames.Contains(dllName))
+                return Path.Combine(Parkitect.Paths.DataManaged, dllName);
 
             if (SystemAssemblies.Contains(assemblyName))
                 return dllName;
@@ -413,6 +325,102 @@ namespace ParkitectNexus.Data
             var currentFile = Path.Combine(InstallationPath, "bin/build.dat");
             File.WriteAllText(currentFile, relativePath);
         }
-        
+
+        #region Properties of ParkitectMod
+
+        /// <summary>
+        ///     Gets the parkitect instance this mod was installed to.
+        /// </summary>
+        public Parkitect Parkitect { get; }
+
+        /// <summary>
+        ///     Gets or sets the asset bundle directory.
+        /// </summary>
+        [JsonProperty]
+        public string AssetBundleDir { get; set; }
+
+        /// <summary>
+        ///     Gets the asset bundle prefix.
+        /// </summary>
+        public string AssetBundlePrefix => !IsInstalled ? null : Path.GetFileName(InstallationPath);
+
+        /// <summary>
+        ///     Gets or sets the base directory.
+        /// </summary>
+        [JsonProperty]
+        public string BaseDir { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the compiler version.
+        /// </summary>
+        [JsonProperty]
+        public string CompilerVersion { get; set; } = "v4.0";
+
+        /// <summary>
+        ///     Gets or sets the code files.
+        /// </summary>
+        [JsonProperty]
+        public IList<string> CodeFiles { get; set; } = new List<string>();
+
+        /// <summary>
+        ///     Gets or sets the entry point.
+        /// </summary>
+        [JsonProperty]
+        public string EntryPoint { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is development.
+        /// </summary>
+        [JsonProperty]
+        public bool IsDevelopment { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is enabled.
+        /// </summary>
+        [JsonProperty]
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is installed.
+        /// </summary>
+        public bool IsInstalled
+            => !string.IsNullOrWhiteSpace(InstallationPath) && File.Exists(Path.Combine(InstallationPath, "mod.json"));
+
+        /// <summary>
+        ///     Gets or sets the name.
+        /// </summary>
+        [JsonProperty]
+        public string Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the installation path.
+        /// </summary>
+        public string InstallationPath { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the project.
+        /// </summary>
+        [JsonProperty]
+        public string Project { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the tag.
+        /// </summary>
+        [JsonProperty]
+        public string Tag { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the referenced assemblies.
+        /// </summary>
+        [JsonProperty]
+        public IList<string> ReferencedAssemblies { get; set; } = new List<string>();
+
+        /// <summary>
+        ///     Gets or sets the repository.
+        /// </summary>
+        [JsonProperty]
+        public string Repository { get; set; }
+
+        #endregion
     }
 }

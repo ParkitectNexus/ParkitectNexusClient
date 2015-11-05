@@ -4,22 +4,29 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using MiniJSON;
-using UnityEngine;
-using Path = System.IO.Path;
 
 namespace ParkitectNexus.Mod.ModLoader
 {
-    public class Main : IMod
+    public class ModLoader : IMod
     {
-        const BindingFlags AnyVisiblity = BindingFlags.NonPublic | BindingFlags.Public;
-
         private static T ReadFromDictonary<T>(IDictionary<string, object> dictionary, string key)
         {
             object o;
             return dictionary.TryGetValue(key, out o) ? (o is T ? (T) o : default(T)) : default(T);
         }
 
-        public Main()
+        private static void SetProperty<T>(object @object, string propertyName, T value)
+        {
+            var property = @object.GetType()
+                .GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null,
+                    typeof (T), new Type[0], null);
+
+            if (property != null)
+                property.SetValue(@object, value, BindingFlags.NonPublic | BindingFlags.Public, null, null,
+                    CultureInfo.CurrentCulture);
+        }
+
+        public ModLoader()
         {
             // Compute paths to the mods directory.
             var modsPath = FilePaths.getFolderPath("pnmods");
@@ -29,7 +36,6 @@ namespace ParkitectNexus.Mod.ModLoader
             {
                 try
                 {
-                    
                     var directoryName = System.IO.Path.GetFileName(folder);
                     var filePath = System.IO.Path.Combine(folder, "mod.json");
 
@@ -78,27 +84,15 @@ namespace ParkitectNexus.Mod.ModLoader
                     var userMod = modObject as IMod;
                     if (userMod == null)
                         throw new Exception("The class specified as EntryPoint(" + entryPoint + ") does not implement `IMod`");
-                    
-                    // Bind Path.
-                    var pathProperty = userMod.GetType()
-                        .GetProperty("Path", AnyVisiblity | BindingFlags.Instance, null,
-                            typeof (string), new Type[0], null);
-                    if (pathProperty != null)
-                        pathProperty.SetValue(userMod, folder, AnyVisiblity, null, null,
-                            CultureInfo.CurrentCulture);
 
-                    // Bind Identifier.
-                    var identifierProperty = userMod.GetType()
-                        .GetProperty("Identifier", AnyVisiblity | BindingFlags.Instance, null,
-                            typeof(string), new Type[0], null);
-                    if (identifierProperty != null)
-                        identifierProperty.SetValue(userMod, directoryName, AnyVisiblity, null, null,
-                            CultureInfo.CurrentCulture);
+                    // Bind additional mod information.
+                    SetProperty(userMod, "Path", folder);
+                    SetProperty(userMod, "Identifier", directoryName);
 
                     ModManager.Instance.addMod(userMod);
 
                     File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\n",
+                        string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\r\n",
                             DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), userMod));
                 }
                 catch (Exception e)
@@ -113,13 +107,21 @@ namespace ParkitectNexus.Mod.ModLoader
 
         public void onEnabled()
         {
+            //
         }
 
         public void onDisabled()
         {
+            //
         }
 
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string Name
+        {
+            get { return "ParkitectNexus Mod Loader"; }
+        }
+        public string Description
+        {
+            get { return "A mod loader for mods distributed by ParkitectNexus.com."; }
+        }
     }
 }

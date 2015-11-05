@@ -96,7 +96,7 @@ namespace ParkitectNexus.Client
             if (!parkitect.IsInstalled)
                 return;
 
-            var oldPath = Path.Combine(parkitect.InstallationPath, "mods");
+            var oldPath = parkitect.Paths["Mods"];
 
             if (!Directory.Exists(oldPath))
                 return;
