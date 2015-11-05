@@ -9,7 +9,7 @@ using Path = System.IO.Path;
 
 namespace ParkitectNexus.Mod.ModLoader
 {
-    public static class Main
+    public class Main : IMod
     {
         const BindingFlags AnyVisiblity = BindingFlags.NonPublic | BindingFlags.Public;
 
@@ -126,5 +126,16 @@ namespace ParkitectNexus.Mod.ModLoader
                 ModManager.Instance.triggerEnable();
             
         }
+
+        public void onEnabled()
+        {
+        }
+
+        public void onDisabled()
+        {
+        }
+
+        public string Name { get; private set; }
+        public string Description { get; private set; }
     }
 }

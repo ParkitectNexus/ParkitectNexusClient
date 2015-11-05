@@ -70,7 +70,7 @@ namespace ParkitectNexus.Client
                 // If the launch option has been used, launch the game.
                 if (options.Launch)
                 {
-                    LaunchUtil.LaunchWithModsAndCrashHandler(parkitect, parkitectNexusWebsite, "option");
+                    parkitect.Launch();
                     return;
                 }
 

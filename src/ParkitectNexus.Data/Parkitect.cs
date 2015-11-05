@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Properties;
 using ParkitectNexus.Data.Utilities;
-using ParkitectNexus.ModLoader;
 
 namespace ParkitectNexus.Data
 {
@@ -141,6 +140,16 @@ namespace ParkitectNexus.Data
         {
             Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
+            Log.WriteLine("Attempting to compile installed mods.");
+            foreach (var mod in InstalledMods)
+            {
+                if (mod.IsEnabled || mod.IsDevelopment)
+                {
+                    mod.CopyAssetBundles(this);
+                    mod.Compile(this);
+                }
+            }
+
             // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
             
@@ -162,41 +171,7 @@ namespace ParkitectNexus.Data
                     Arguments = arguments
                 });
         }
-
-        /// <summary>
-        ///     Launches the game with mods with the specified arguments.
-        /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The launched process.</returns>
-        public Process LaunchWithMods(string arguments = "-single-instance")
-        {
-            Log.WriteLine($"Attempting to launch game with mods with arguments '{arguments}'.");
-
-            Log.WriteLine("Attempting to compile active mods if necessary.");
-            CompileActiveMods();
-
-            Log.WriteLine("All mods have been compiled sucessfully. Launching the game.");
-
-            // Launch the game.
-            var process = Launch(arguments);
-
-            Log.WriteLine("Waiting for game to be ready for injection.");
-
-            // Make sure game didn't close.
-            if (!WaitForLaunch(process))
-            {
-                Log.WriteLine("The game has exited; Aborting.");
-                return null;
-            }
-
-            // Inject modloader.
-            Log.WriteLine("Starting injection procedure.");
-            var result = InjectModLoader();
-            Log.WriteLine($"Injection exited with error code {result}.", result == 0 ? LogLevel.Debug : LogLevel.Warn);
-
-            return process;
-        }
-
+        
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.
         /// </summary>
@@ -378,35 +353,6 @@ namespace ParkitectNexus.Data
                     mod.Compile(this);
                 }
             }
-        }
-
-        private bool WaitForLaunch(Process process)
-        {
-            do
-            {
-                Thread.Sleep(1000);
-                process.Refresh();
-            } while (!process.HasExited &&
-                     (string.IsNullOrWhiteSpace(process.MainWindowTitle) ||
-                      !process.MainWindowTitle.Contains("Parkitect") ||
-                      process.MainWindowTitle.Contains("Configuration")));
-
-            Thread.Sleep(2000);
-
-            return !process.HasExited;
-        }
-
-        private int InjectModLoader()
-        {
-            var modLoaderPath =
-                Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location),
-                    "ParkitectNexus.Mod.ModLoader.dll");
-
-            if (!File.Exists(modLoaderPath))
-                throw new Exception("ParkitectNexus.Mod.ModLoader.dll not found");
-
-            return ModInjector.Inject(Path.Combine(AppData.Path, "MonoObjectInjector.log"), modLoaderPath,
-                "ParkitectNexus.Mod.ModLoader", "Main", "Load");
         }
     }
 }

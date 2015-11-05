@@ -65,7 +65,7 @@ namespace ParkitectNexus.Client.Wizard
         private void launchParkitectButton_Click(object sender, EventArgs e)
         {
             WizardForm.Hide();
-            LaunchUtil.LaunchWithModsAndCrashHandler(_parkitect, _parkitectNexusWebsite, "menu");
+            _parkitect.Launch();
             WizardForm.Close();
         }
 

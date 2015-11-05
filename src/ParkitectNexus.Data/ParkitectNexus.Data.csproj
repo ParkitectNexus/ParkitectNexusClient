@@ -86,12 +86,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ParkitectNexus.ModLoader\ParkitectNexus.ModLoader.vcxproj">
-      <Project>{72dee48c-479c-4dee-8701-5e291b7ef95a}</Project>
-      <Name>ParkitectNexus.ModLoader</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
