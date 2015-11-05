@@ -31,7 +31,6 @@ namespace ParkitectNexus.Client
             var options = new CommandLineOptions();
             
             UpdateUtil.MigrateSettings();
-            UpdateUtil.MigrateMods(parkitect);
 
             Parser.Default.ParseArguments(args, options);
 
@@ -53,6 +52,9 @@ namespace ParkitectNexus.Client
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
                 if (!EnsureParkitectInstalled(parkitect, options))
                     return;
+
+                UpdateUtil.MigrateMods(parkitect);
+                ModLoaderUtil.InstallModLoader(parkitect);
 
                 // Install backlog.
                 if (!string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
