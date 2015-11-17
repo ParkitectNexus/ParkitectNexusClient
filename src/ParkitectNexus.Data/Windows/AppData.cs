@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Windows
 {
     public static class AppData
     {
@@ -21,7 +21,5 @@ namespace ParkitectNexus.Data
                 return path;
             }
         }
-
-
     }
 }

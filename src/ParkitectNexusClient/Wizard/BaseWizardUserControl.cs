@@ -10,7 +10,7 @@ namespace ParkitectNexus.Client.Wizard
     internal partial class BaseWizardUserControl : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseWizardUserControl"/> class.
+        ///     Initializes a new instance of the <see cref="BaseWizardUserControl" /> class.
         /// </summary>
         public BaseWizardUserControl()
         {
@@ -19,17 +19,17 @@ namespace ParkitectNexus.Client.Wizard
         }
 
         /// <summary>
-        /// Gets the wizard form this control is attached to.
+        ///     Gets the wizard form this control is attached to.
         /// </summary>
         public WizardForm WizardForm { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to draw a footer line.
+        ///     Gets or sets a value indicating whether to draw a footer line.
         /// </summary>
         protected bool DrawFooterLine { get; set; } = true;
 
         /// <summary>
-        /// Attaches this instance to the specified wizard form.
+        ///     Attaches this instance to the specified wizard form.
         /// </summary>
         /// <param name="wizardForm">The wizard form.</param>
         public void Attach(WizardForm wizardForm)
@@ -39,7 +39,7 @@ namespace ParkitectNexus.Client.Wizard
         }
 
         /// <summary>
-        /// Detaches this instance from the wizard form it is attached to.
+        ///     Detaches this instance from the wizard form it is attached to.
         /// </summary>
         public void Detach()
         {
@@ -51,7 +51,7 @@ namespace ParkitectNexus.Client.Wizard
         public event EventHandler Detached;
 
         /// <summary>
-        /// Raises the <see cref="E:Attached"/> event.
+        ///     Raises the <see cref="E:Attached" /> event.
         /// </summary>
         protected virtual void OnAttached()
         {
@@ -59,7 +59,7 @@ namespace ParkitectNexus.Client.Wizard
         }
 
         /// <summary>
-        /// Raises the <see cref="E:Detached"/> event.
+        ///     Raises the <see cref="E:Detached" /> event.
         /// </summary>
         protected virtual void OnDetached()
         {

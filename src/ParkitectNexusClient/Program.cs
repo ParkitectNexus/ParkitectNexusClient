@@ -2,15 +2,15 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 using CommandLine;
 using ParkitectNexus.Client.Properties;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Windows;
 
 namespace ParkitectNexus.Client
 {
@@ -25,11 +25,25 @@ namespace ParkitectNexus.Client
         [STAThread]
         private static void Main(string[] args)
         {
-            var parkitect = new Parkitect();
-            var parkitectNexusWebsite = new ParkitectNexusWebsite();
-            var parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
+            IParkitect parkitect;
+            IParkitectNexusWebsite parkitectNexusWebsite;
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository;
+
+            switch (OperatingSystemUtility.GetOperatingSystem())
+            {
+                case SupportedOperatingSystem.Windows:
+                    parkitect = new WindowsParkitect();
+                    parkitectNexusWebsite = new ParkitectNexusWebsite();
+                    parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
+                    break;
+                case SupportedOperatingSystem.MacOSX:
+                    throw new NotImplementedException();
+                    break;
+                default:
+                    return;
+            }
             var options = new CommandLineOptions();
-            
+
             UpdateUtil.MigrateSettings();
 
             Parser.Default.ParseArguments(args, options);
@@ -40,13 +54,13 @@ namespace ParkitectNexus.Client
             try
             {
                 Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
-                
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 // Check for updates. If updates are available, do not resume usual logic.
                 if (CheckForUpdates(parkitectNexusWebsite, options)) return;
-                
+
                 ParkitectNexusProtocol.Install();
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
@@ -106,7 +120,7 @@ namespace ParkitectNexus.Client
             Log.Close();
         }
 
-        private static bool EnsureParkitectInstalled(Parkitect parkitect, CommandLineOptions options)
+        private static bool EnsureParkitectInstalled(IParkitect parkitect, CommandLineOptions options)
         {
             // Detect Parkitect. If it could not be found ask the user to locate it.
             parkitect.DetectInstallationPath();
@@ -151,8 +165,8 @@ namespace ParkitectNexus.Client
             return true;
         }
 
-        private static void Download(string url, Parkitect parkitect,
-            ParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
+        private static void Download(string url, IParkitect parkitect,
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
             // Try to parse the specified download url. If parsing fails open ParkitectNexus. 
             ParkitectNexusUrl parkitectNexusUrl;
@@ -174,7 +188,7 @@ namespace ParkitectNexus.Client
             Application.Run(form);
         }
 
-        private static bool CheckForUpdates(ParkitectNexusWebsite website, CommandLineOptions options)
+        private static bool CheckForUpdates(IParkitectNexusWebsite website, CommandLineOptions options)
         {
 #if DEBUG
             return false;

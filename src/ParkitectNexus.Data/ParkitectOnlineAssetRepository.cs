@@ -1,3 +1,6 @@
+// ParkitectNexusClient
+// Copyright 2015 Parkitect, Tim Potze
+
 using System;
 using System.IO;
 using System.Linq;
@@ -11,43 +14,19 @@ namespace ParkitectNexus.Data
     /// <summary>
     ///     Represents the online parkitect asset storage.
     /// </summary>
-    public class ParkitectOnlineAssetRepository
+    public class ParkitectOnlineAssetRepository : IParkitectOnlineAssetRepository
     {
-        private readonly ParkitectNexusWebsite _parkitectNexusWebsite;
+        private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
         /// </summary>
         /// <param name="parkitectNexusWebsite">The parkitect nexus website.</param>
         /// <exception cref="ArgumentNullException">Thrown if parkitectNexusWebsite is null.</exception>
-        public ParkitectOnlineAssetRepository(ParkitectNexusWebsite parkitectNexusWebsite)
+        public ParkitectOnlineAssetRepository(IParkitectNexusWebsite parkitectNexusWebsite)
         {
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             _parkitectNexusWebsite = parkitectNexusWebsite;
-        }
-
-        /// <summary>
-        ///     Determines whether the specified input is valid file hash.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="assetType">Type of the asset.</param>
-        /// <returns>
-        ///     true if valid; false otherwise.
-        /// </returns>
-        public static bool IsValidFileHash(string input, ParkitectAssetType assetType)
-        {
-            if (input == null) throw new ArgumentNullException(nameof(input));
-            switch (assetType)
-            {
-                case ParkitectAssetType.Blueprint:
-                case ParkitectAssetType.Savegame:
-                    return input.Length == 10 && input.All(c => (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9'));
-                case ParkitectAssetType.Mod:
-                    var p = input.Split('/');
-                    return p.Length == 2 && !string.IsNullOrWhiteSpace(p[0]) && !string.IsNullOrWhiteSpace(p[1]);
-                default:
-                    return false;
-            }
         }
 
         /// <summary>
@@ -79,13 +58,13 @@ namespace ParkitectNexus.Data
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>An instance which performs the requested task.</returns>
-        public async Task<ParkitectAsset> DownloadFile(ParkitectNexusUrl url)
+        public async Task<IParkitectAsset> DownloadFile(ParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
 
             // Create a download url based on the file hash.
             var downloadInfo = await ResolveDownloadInfo(url);
-            
+
             // Create a web client which will download the file.
             using (var webClient = new ParkitectNexusWebClient())
             {
@@ -133,6 +112,30 @@ namespace ParkitectNexus.Data
                     // Create an instance of ParkitectAsset with the received content and data.
                     return new ParkitectAsset(fileName, downloadInfo, url.AssetType, memoryStream);
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Determines whether the specified input is valid file hash.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="assetType">Type of the asset.</param>
+        /// <returns>
+        ///     true if valid; false otherwise.
+        /// </returns>
+        public static bool IsValidFileHash(string input, ParkitectAssetType assetType)
+        {
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            switch (assetType)
+            {
+                case ParkitectAssetType.Blueprint:
+                case ParkitectAssetType.Savegame:
+                    return input.Length == 10 && input.All(c => (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9'));
+                case ParkitectAssetType.Mod:
+                    var p = input.Split('/');
+                    return p.Length == 2 && !string.IsNullOrWhiteSpace(p[0]) && !string.IsNullOrWhiteSpace(p[1]);
+                default:
+                    return false;
             }
         }
 

@@ -9,7 +9,7 @@ namespace ParkitectNexus.Data
     /// <summary>
     ///     Represents a Parkitect asset.
     /// </summary>
-    public class ParkitectAsset : IDisposable
+    public class ParkitectAsset : IParkitectAsset
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectAsset" /> class.
@@ -18,8 +18,6 @@ namespace ParkitectNexus.Data
         /// <param name="downloadInfo">The download info.</param>
         /// <param name="type">The type.</param>
         /// <param name="stream">The stream.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// </exception>
         /// <exception cref="ArgumentNullException">Thrown if fileName or stream is null.</exception>
         public ParkitectAsset(string fileName, DownloadInfo downloadInfo, ParkitectAssetType type, Stream stream)
         {
@@ -75,10 +73,10 @@ namespace ParkitectNexus.Data
         #region Overrides of Object
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         public override string ToString()
         {

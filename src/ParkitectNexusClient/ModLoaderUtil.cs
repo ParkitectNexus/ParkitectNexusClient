@@ -13,9 +13,9 @@ namespace ParkitectNexus.Client
 {
     public static class ModLoaderUtil
     {
-        private static void InstallModLoaderFile(Parkitect parkitect, string fileName)
+        private static void InstallModLoaderFile(IParkitect parkitect, string fileName)
         {
-            var targetDirectory = parkitect.Paths["Mods"];
+            var targetDirectory = parkitect.Paths.NativeMods;
 
             Directory.CreateDirectory(targetDirectory);
             var targetPath = Path.Combine(targetDirectory, fileName);
@@ -41,7 +41,7 @@ namespace ParkitectNexus.Client
             File.Copy(sourcePath, targetPath, true);
         }
 
-        public static void InstallModLoader(Parkitect parkitect)
+        public static void InstallModLoader(IParkitect parkitect)
         {
             try
             {

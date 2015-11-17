@@ -30,16 +30,16 @@ namespace ParkitectNexus.Client
         public bool Silent { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to lauch the game.
+        ///     Gets or sets a value indicating whether to lauch the game.
         /// </summary>
         [Option('l', "launch")]
         public bool Launch { get; set; }
 
         /// <summary>
-        /// Gets or sets the log level.
+        ///     Gets or sets the log level.
         /// </summary>
         /// <value>
-        /// The log level.
+        ///     The log level.
         /// </value>
         [Option('o', "loglevel")]
         public LogLevel LogLevel { get; set; } = LogLevel.Info;

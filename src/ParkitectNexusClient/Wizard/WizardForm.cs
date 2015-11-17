@@ -21,7 +21,7 @@ namespace ParkitectNexus.Client.Wizard
         }
 
         /// <summary>
-        /// Attaches the specified wizard user control to the wizard form.
+        ///     Attaches the specified wizard user control to the wizard form.
         /// </summary>
         /// <param name="wizardUserControl">The wizard user control.</param>
         public void Attach(BaseWizardUserControl wizardUserControl)

@@ -16,7 +16,7 @@ namespace ParkitectNexus.Data
         /// <param name="url">The URL.</param>
         /// <param name="repository">The repository.</param>
         /// <param name="tag">The tag.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">Thrown if url is null.</exception>
         public DownloadInfo(string url, string repository, string tag)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));

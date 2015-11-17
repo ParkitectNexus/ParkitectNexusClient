@@ -50,16 +50,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppData.cs" />
-    <Compile Include="CrashReporter.cs" />
+    <Compile Include="IParkitect.cs" />
+    <Compile Include="IParkitectAsset.cs" />
+    <Compile Include="IParkitectMod.cs" />
+    <Compile Include="IParkitectNexusWebsite.cs" />
+    <Compile Include="IParkitectOnlineAssetRepository.cs" />
+    <Compile Include="Windows\AppData.cs" />
+    <Compile Include="Reporting\CrashReporter.cs" />
     <Compile Include="DownloadInfo.cs" />
+    <Compile Include="IParkitectPaths.cs" />
     <Compile Include="ParkitectOnlineAssetRepository.cs" />
-    <Compile Include="ParkitectPaths.cs" />
-    <Compile Include="User32.cs" />
+    <Compile Include="Windows\WindowsParkitectPaths.cs" />
+    <Compile Include="Reporting\FailedCrashReport.cs" />
+    <Compile Include="Reporting\WindowsCrashReport.cs" />
+    <Compile Include="Windows\User32.cs" />
     <Compile Include="Utilities\EnumUtility.cs" />
     <Compile Include="Utilities\Log.cs" />
     <Compile Include="Utilities\LogLevel.cs" />
-    <Compile Include="Parkitect.cs" />
+    <Compile Include="Windows\WindowsParkitect.cs" />
     <Compile Include="ParkitectAsset.cs" />
     <Compile Include="ParkitectAssetInfoAttribute.cs" />
     <Compile Include="ParkitectAssetType.cs" />
@@ -75,7 +83,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\OperatingSystemUtility.cs" />
     <Compile Include="Utilities\StreamWriterLogUtility.cs" />
+    <Compile Include="SupportedOperatingSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -85,6 +95,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

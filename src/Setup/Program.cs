@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using WixSharp;
-using WixSharp.Controls;
 using Assembly = System.Reflection.Assembly;
 using File = WixSharp.File;
 
@@ -13,7 +12,6 @@ namespace WixSharpSetup
 {
     internal class Program
     {
-
 #if DEBUG
         private const string Configuration = "Debug";
 #else
@@ -32,7 +30,7 @@ namespace WixSharpSetup
             var assemblyName = assembly.GetName();
             var version = assemblyName.Version;
             var guid = new Guid(((GuidAttribute) assembly.GetCustomAttributes(typeof (GuidAttribute), true)[0]).Value);
-            
+
             //Create the installer project.
             var project = new ManagedProject(AppName,
                 new Dir(new Id("INSTALL_DIR"), @"%ProgramFiles%\" + AppName,
@@ -50,14 +48,19 @@ namespace WixSharpSetup
                     ),
                 new Dir(@"%Desktop%",
                     new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", ""),
-                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch") { IconFile = AppIcon } ),
+                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch")
+                    {
+                        IconFile = AppIcon
+                    }),
                 new InstalledFileAction(AppExecutable, "--silent")
                 )
             {
                 GUID = guid,
                 UI = WUI.WixUI_InstallDir,
                 SourceBaseDir = AppBinariesPath,
-                OutFileName = "parkitectnexus-client" + (Configuration != "Release" ? "-" + Configuration.ToLower() : string.Empty) + "-" + version,
+                OutFileName =
+                    "parkitectnexus-client" +
+                    (Configuration != "Release" ? "-" + Configuration.ToLower() : string.Empty) + "-" + version,
                 OutDir = @"..\..\bin",
                 Version = version,
                 Description = "An installer for Parkitect assets.",
@@ -71,9 +74,9 @@ namespace WixSharpSetup
                     HelpLink = "https://parkitectnexus.com",
                     ProductIcon = AppIcon,
                     Manufacturer = "ParkitectNexus, Tim Potze"
-                },
+                }
             };
-            
+
             // Set message to indicate a newer version has already been installed.
             project.MajorUpgradeStrategy.NewerProductInstalledErrorMessage = "A newer version of " + AppName +
                                                                              " has already been installed.";

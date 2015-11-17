@@ -8,22 +8,21 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Properties;
 using ParkitectNexus.Data.Utilities;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Windows
 {
     /// <summary>
     ///     Represents the Parkitect game.
     /// </summary>
-    public class Parkitect
+    public class WindowsParkitect : IParkitect
     {
-        public Parkitect()
+        public WindowsParkitect()
         {
-            Paths = new ParkitectPaths(this);
+            Paths = new WindowsParkitectPaths(this);
         }
 
         /// <summary>
@@ -54,9 +53,9 @@ namespace ParkitectNexus.Data
         public bool IsInstalled => IsValidInstallationPath(InstallationPath);
 
         /// <summary>
-        /// Gets a collection of paths.
+        ///     Gets a collection of paths.
         /// </summary>
-        public ParkitectPaths Paths { get; }
+        public IParkitectPaths Paths { get; }
 
         /// <summary>
         ///     Gets a collection of assembly names provided by the game.
@@ -70,7 +69,7 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Gets a collection of installed mods.
         /// </summary>
-        public IEnumerable<ParkitectMod> InstalledMods
+        public IEnumerable<IParkitectMod> InstalledMods
         {
             get
             {
@@ -83,7 +82,7 @@ namespace ParkitectNexus.Data
                         Directory.GetDirectories(Paths.Mods).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
                 {
                     // Attempt to deserialize the mod.json file.
-                    ParkitectMod mod = new ParkitectMod(this);
+                    var mod = new ParkitectMod(this);
                     try
                     {
                         JsonConvert.PopulateObject(File.ReadAllText(Path.Combine(path, "mod.json")), mod);
@@ -145,15 +144,16 @@ namespace ParkitectNexus.Data
 
             // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
-            
+
             if (running != null)
             {
-                Log.WriteLine($"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
+                Log.WriteLine(
+                    $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
 
                 User32.SetForegroundWindow(running.MainWindowHandle);
                 return running;
             }
-            
+
             Log.WriteLine($"Launching game at path '{Paths.Executable}'.");
             // Start the game process.
             return !IsInstalled
@@ -164,13 +164,13 @@ namespace ParkitectNexus.Data
                     Arguments = arguments
                 });
         }
-        
+
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.
         /// </summary>
         /// <param name="asset">The asset.</param>
         /// <returns>A task which performs the requested action.</returns>
-        public async Task StoreAsset(ParkitectAsset asset)
+        public async Task StoreAsset(IParkitectAsset asset)
         {
             if (asset == null) throw new ArgumentNullException(nameof(asset));
 
@@ -213,7 +213,7 @@ namespace ParkitectNexus.Data
                             Log.WriteLine("Asset hashes match, aborting.");
                             return;
                         }
-                        
+
                         Log.WriteLine("Asset hashes mismatch, computing new file name.");
                         // Separate the filename and the extension.
                         var attempt = 1;
@@ -270,7 +270,8 @@ namespace ParkitectNexus.Data
                             // Set default mod properties.
                             mod.Tag = asset.DownloadInfo.Tag;
                             mod.Repository = asset.DownloadInfo.Repository;
-                            mod.InstallationPath = Path.Combine(Paths.Mods, asset.DownloadInfo.Repository.Replace('/', '@'));
+                            mod.InstallationPath = Path.Combine(Paths.Mods,
+                                asset.DownloadInfo.Repository.Replace('/', '@'));
                             mod.IsEnabled = true;
                             mod.IsDevelopment = false;
 
@@ -330,7 +331,7 @@ namespace ParkitectNexus.Data
                     throw new Exception("unsupported asset type");
             }
         }
-        
+
         private static bool IsValidInstallationPath(string path)
         {
             // Path must exist and contain Parkitect.exe.

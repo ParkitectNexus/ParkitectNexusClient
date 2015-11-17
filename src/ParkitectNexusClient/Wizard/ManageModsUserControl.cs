@@ -13,13 +13,13 @@ namespace ParkitectNexus.Client.Wizard
     internal partial class ManageModsUserControl : BaseWizardUserControl
     {
         private readonly MenuUserControl _menu;
-        private readonly Parkitect _parkitect;
-        private readonly ParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IParkitect _parkitect;
+        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
 
         private bool _disableChecking = true;
 
-        public ManageModsUserControl(MenuUserControl menu, Parkitect parkitect,
-            ParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
+        public ManageModsUserControl(MenuUserControl menu, IParkitect parkitect,
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
             if (menu == null) throw new ArgumentNullException(nameof(menu));
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
@@ -33,7 +33,7 @@ namespace ParkitectNexus.Client.Wizard
             InitializeComponent();
         }
 
-        private ParkitectMod SelectedMod => modsCheckedListBox.SelectedItem as ParkitectMod;
+        private IParkitectMod SelectedMod => modsCheckedListBox.SelectedItem as IParkitectMod;
 
         #region Overrides of BaseWizardUserControl
 
@@ -53,11 +53,11 @@ namespace ParkitectNexus.Client.Wizard
             _disableChecking = false;
             for (var i = 0; i < modsCheckedListBox.Items.Count; i++)
             {
-                var mod = ((ParkitectMod) modsCheckedListBox.Items[i]);
+                var mod = ((IParkitectMod) modsCheckedListBox.Items[i]);
                 modsCheckedListBox.SetItemChecked(i, mod.IsEnabled || mod.IsDevelopment);
             }
             _disableChecking = true;
-            
+
             HideMod();
         }
 
@@ -69,7 +69,8 @@ namespace ParkitectNexus.Client.Wizard
             enableModCheckBox.Checked = false;
             modInDevelopmentLabel.Visible = false;
         }
-        private void ShowMod(ParkitectMod mod)
+
+        private void ShowMod(IParkitectMod mod)
         {
             optionsGroupBox.Enabled = true;
             modNameLabel.Text = mod.Name;
@@ -88,7 +89,6 @@ namespace ParkitectNexus.Client.Wizard
                 HideMod();
             else
                 ShowMod(SelectedMod);
-     
         }
 
         private void modsCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -134,7 +134,8 @@ namespace ParkitectNexus.Client.Wizard
             }
             catch (Exception)
             {
-                MessageBox.Show(this, "Failed to check for updates. Please try again later.", "ParitectNexus Client", MessageBoxButtons.OK,
+                MessageBox.Show(this, "Failed to check for updates. Please try again later.", "ParitectNexus Client",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }

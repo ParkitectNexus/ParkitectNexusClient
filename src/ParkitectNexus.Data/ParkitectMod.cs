@@ -14,8 +14,11 @@ using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data
 {
+    /// <summary>
+    ///     Represents a Parkitect mod provided by ParkitectNexus.
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class ParkitectMod
+    public class ParkitectMod : IParkitectMod
     {
         /// <summary>
         ///     Assemblies provided by the mono runtime.
@@ -29,26 +32,11 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        public ParkitectMod(Parkitect parkitect)
+        public ParkitectMod(IParkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             Parkitect = parkitect;
         }
-
-        #region Overrides of Object
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        #endregion
 
         /// <summary>
         ///     Opens the log for this mod instance.
@@ -289,6 +277,21 @@ namespace ParkitectNexus.Data
             return true;
         }
 
+        #region Overrides of Object
+
+        /// <summary>
+        ///     Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        ///     A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        #endregion
+
         private string ResolveAssembly(string assemblyName)
         {
             if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
@@ -330,7 +333,7 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     Gets the parkitect instance this mod was installed to.
         /// </summary>
-        public Parkitect Parkitect { get; }
+        public IParkitect Parkitect { get; }
 
         /// <summary>
         ///     Gets or sets the asset bundle directory.
@@ -360,7 +363,7 @@ namespace ParkitectNexus.Data
         /// </summary>
         [JsonProperty]
         public IList<string> CodeFiles { get; set; } = new List<string>();
-        
+
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is development.
         /// </summary>

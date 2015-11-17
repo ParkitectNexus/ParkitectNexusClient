@@ -8,7 +8,7 @@ namespace ParkitectNexus.Data
     /// <summary>
     ///     Represents the ParkitectNexus website.
     /// </summary>
-    public class ParkitectNexusWebsite
+    public class ParkitectNexusWebsite : IParkitectNexusWebsite
     {
 #if DEBUG
         private const string WebsiteUrl = "http://{0}staging.parkitectnexus.com/{1}";

@@ -33,7 +33,7 @@ namespace ParkitectNexus.Client
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>
-        public static UpdateInfo CheckForUpdates(ParkitectNexusWebsite website)
+        public static UpdateInfo CheckForUpdates(IParkitectNexusWebsite website)
         {
             try
             {
@@ -90,13 +90,13 @@ namespace ParkitectNexus.Client
             }
         }
 
-        public static void MigrateMods(Parkitect parkitect)
+        public static void MigrateMods(IParkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (!parkitect.IsInstalled)
                 return;
 
-            var oldPath = parkitect.Paths["Mods"];
+            var oldPath = parkitect.Paths.NativeMods;
 
             if (!Directory.Exists(oldPath))
                 return;

@@ -11,16 +11,16 @@ namespace ParkitectNexus.Client.Wizard
 {
     internal partial class InstallAssetUserControl : BaseWizardUserControl
     {
-        private readonly Parkitect _parkitect;
-        private readonly ParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IParkitect _parkitect;
         private readonly ParkitectNexusUrl _parkitectNexusUrl;
+        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
         private readonly BaseWizardUserControl _returnControl;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
 
-        public InstallAssetUserControl(Parkitect parkitect,
-            ParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ParkitectNexusUrl parkitectNexusUrl,
+        public InstallAssetUserControl(IParkitect parkitect,
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ParkitectNexusUrl parkitectNexusUrl,
             BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
@@ -60,7 +60,7 @@ namespace ParkitectNexus.Client.Wizard
                 _keyword = "Installing";
 
                 await _parkitect.StoreAsset(asset);
-                
+
                 asset.Dispose();
             }
             catch (Exception e)

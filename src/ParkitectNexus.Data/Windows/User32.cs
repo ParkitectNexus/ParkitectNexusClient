@@ -4,7 +4,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Windows
 {
     /// <summary>
     ///     Contains calls to the user32.dll API.

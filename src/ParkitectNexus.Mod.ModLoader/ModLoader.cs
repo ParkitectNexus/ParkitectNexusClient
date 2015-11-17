@@ -13,8 +13,15 @@ namespace ParkitectNexus.Mod.ModLoader
 {
     public class ModLoader : IMod
     {
-        private readonly List<ModManager.ModEntry> _modEntries;
+        /// <summary>
+        ///     The mods loaded by the ParkitectNexus mod loader.
+        /// </summary>
         private readonly List<IMod> _loadedMods = new List<IMod>();
+
+        /// <summary>
+        ///     A reference to the list of mod entries as found in the mod manager.
+        /// </summary>
+        private readonly List<ModManager.ModEntry> _modEntries;
 
         private GameObject _gameObject;
         private bool _isEnabled;
@@ -25,29 +32,6 @@ namespace ParkitectNexus.Mod.ModLoader
                 .GetValue(ModManager.Instance) as List<ModManager.ModEntry>;
 
             LoadMods();
-        }
-
-        public void onEnabled()
-        {
-            _isEnabled = true;
-
-            _gameObject = new GameObject();
-            _gameObject.AddComponent<ModReloader>().ModLoader = this;
-        }
-
-        public void onDisabled()
-        {
-            _isEnabled = false;
-        }
-
-        public string Name
-        {
-            get { return "ParkitectNexus Mod Loader"; }
-        }
-
-        public string Description
-        {
-            get { return "A mod loader for mods distributed by ParkitectNexus.com."; }
         }
 
         private static T ReadFromDictonary<T>(IDictionary<string, object> dictionary, string key)
@@ -179,5 +163,32 @@ namespace ParkitectNexus.Mod.ModLoader
                 }
             }
         }
+
+        #region Implementation of IMod
+
+        public void onEnabled()
+        {
+            _isEnabled = true;
+
+            _gameObject = new GameObject();
+            _gameObject.AddComponent<ModReloader>().ModLoader = this;
+        }
+
+        public void onDisabled()
+        {
+            _isEnabled = false;
+        }
+
+        public string Name
+        {
+            get { return "ParkitectNexus Mod Loader"; }
+        }
+
+        public string Description
+        {
+            get { return "A mod loader for mods distributed by ParkitectNexus.com."; }
+        }
+
+        #endregion
     }
 }
