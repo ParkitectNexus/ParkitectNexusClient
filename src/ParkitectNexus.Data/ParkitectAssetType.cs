@@ -21,6 +21,6 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     A mod.
         /// </summary>
-        [ParkitectAssetInfo("application/zip", "Mod", "mods")] Mod
+        [ParkitectAssetInfo("application/zip", "Mod", "pnmods")] Mod
     }
 }
