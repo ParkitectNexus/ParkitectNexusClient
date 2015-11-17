@@ -13,7 +13,7 @@ namespace ParkitectNexus.Data
     public class ParkitectNexusUrl
     {
         private const string Protocol = "parkitectnexus:";
-        private const string ProtocolInstructionSeparator = "|";
+        private const string ProtocolInstructionSeparator = "/";
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectNexusUrl" /> class.
@@ -119,7 +119,7 @@ namespace ParkitectNexus.Data
             var name = WebUtility.UrlDecode(parts[0]);
 
             // Make sure the file hash is valid.
-            var fileHash = parts[2];
+            var fileHash = WebUtility.UrlDecode(parts[2]);
             if (!ParkitectOnlineAssetRepository.IsValidFileHash(fileHash, assetType))
                 return false;
 
