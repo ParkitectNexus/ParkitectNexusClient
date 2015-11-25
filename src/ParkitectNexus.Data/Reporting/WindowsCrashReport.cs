@@ -24,8 +24,8 @@ namespace ParkitectNexus.Data.Reporting
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
             _parkitect = parkitect;
-            Action = action;
-            Exception = exception;
+            this.Action = action;
+            this.Exception = exception;
         }
 
         [JsonProperty]
