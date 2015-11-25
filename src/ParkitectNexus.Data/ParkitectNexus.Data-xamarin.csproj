@@ -84,6 +84,8 @@
     <Compile Include="Utilities\OperatingSystemUtility.cs" />
     <Compile Include="Utilities\StreamWriterLogUtility.cs" />
     <Compile Include="SupportedOperatingSystem.cs" />
+    <Compile Include="MacOSX\MacOSXParkitect.cs" />
+    <Compile Include="MacOSX\MacOSXParkitectPaths.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -102,4 +104,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="MacOSX\" />
+  </ItemGroup>
 </Project>

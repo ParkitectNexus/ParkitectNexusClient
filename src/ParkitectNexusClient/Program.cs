@@ -11,6 +11,7 @@ using ParkitectNexus.Data;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Windows;
+using ParkitectNexus.Data.MacOSX;
 
 namespace ParkitectNexus.Client
 {
@@ -36,23 +37,25 @@ namespace ParkitectNexus.Client
                     parkitectNexusWebsite = new ParkitectNexusWebsite();
                     parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
                     break;
-                case SupportedOperatingSystem.MacOSX:
-                    throw new NotImplementedException();
+			case SupportedOperatingSystem.MacOSX:
+				parkitect = new MacOSXParkitect ();
+				parkitectNexusWebsite = new ParkitectNexusWebsite ();
+				parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
                     break;
                 default:
                     return;
             }
             var options = new CommandLineOptions();
 
-            UpdateUtil.MigrateSettings();
+            //UpdateUtil.MigrateSettings();
 
             Parser.Default.ParseArguments(args, options);
 
             Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
             Log.MinimumLogLevel = options.LogLevel;
 
-            try
-            {
+//            try
+//            {
                 Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
 
                 Application.EnableVisualStyles();
@@ -61,14 +64,16 @@ namespace ParkitectNexus.Client
                 // Check for updates. If updates are available, do not resume usual logic.
                 if (CheckForUpdates(parkitectNexusWebsite, options)) return;
 
-                ParkitectNexusProtocol.Install();
+				if(OperatingSystemUtility.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                	ParkitectNexusProtocol.Install();
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
                 if (!EnsureParkitectInstalled(parkitect, options))
                     return;
 
-                UpdateUtil.MigrateMods(parkitect);
-                ModLoaderUtil.InstallModLoader(parkitect);
+				if(OperatingSystemUtility.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                	UpdateUtil.MigrateMods(parkitect);
+                //ModLoaderUtil.InstallModLoader(parkitect);
 
                 // Install backlog.
                 if (!string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
@@ -102,20 +107,20 @@ namespace ParkitectNexus.Client
                 var form = new WizardForm();
                 form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository));
                 Application.Run(form);
-            }
-            catch (Exception e)
-            {
-                Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
-                Log.WriteException(e);
-                CrashReporter.Report("global", parkitect, parkitectNexusWebsite, e);
-
-                using (var focus = new FocusForm())
-                {
-                    MessageBox.Show(focus,
-                        $"Launching the game with mods failed.\n\nThe error has been logged to:\n{Log.LoggingPath}",
-                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+//            }
+//            catch (Exception e)
+//            {
+//                Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
+//                Log.WriteException(e);
+//                CrashReporter.Report("global", parkitect, parkitectNexusWebsite, e);
+//
+//                using (var focus = new FocusForm())
+//                {
+//                    MessageBox.Show(focus,
+//                        $"The application has crashed in an unusual way.\n\nThe error has been logged to:\n{Log.LoggingPath}",
+//                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//                }
+//            }
 
             Log.Close();
         }

@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
+# Visual Studio 2012
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client", "src\ParkitectNexusClient\ParkitectNexus.Client-xamarin.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client-xamarin", "src\ParkitectNexusClient\ParkitectNexus.Client-xamarin.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F} = {3451EBAF-3D69-4019-92BE-10E331F32A6F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data", "src\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj", "{0CB13383-05D3-40F5-B0E1-3907A42872DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data-xamarin", "src\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj", "{0CB13383-05D3-40F5-B0E1-3907A42872DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Mod.ModLoader", "src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj", "{3451EBAF-3D69-4019-92BE-10E331F32A6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Mod.ModLoader-xamarin", "src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj", "{3451EBAF-3D69-4019-92BE-10E331F32A6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -30,6 +26,10 @@ Global
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
