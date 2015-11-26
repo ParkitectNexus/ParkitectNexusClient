@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Properties;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Data.Windows
 {
@@ -20,6 +21,8 @@ namespace ParkitectNexus.Data.Windows
     /// </summary>
     public class WindowsParkitect : IParkitect
     {
+        private GameSettings _gameSettings = new GameSettings();
+
         public WindowsParkitect()
         {
             Paths = new WindowsParkitectPaths(this);
@@ -28,13 +31,13 @@ namespace ParkitectNexus.Data.Windows
         /// <summary>
         ///     Gets or sets the installation path.
         /// </summary>
-        /// <exception cref="ArgumentException">Thrown if the installation path is invalid</exception>
+        /// <exception cref="ArgumentException">Thrown if the value is invalid.</exception>
         public string InstallationPath
         {
             get
             {
-                return IsValidInstallationPath(Settings.Default.InstallationPath)
-                    ? Settings.Default.InstallationPath
+                return IsValidInstallationPath(_gameSettings.InstallationPath)
+                    ? _gameSettings.InstallationPath
                     : null;
             }
             set
@@ -42,8 +45,8 @@ namespace ParkitectNexus.Data.Windows
                 if (!IsValidInstallationPath(value))
                     throw new ArgumentException("invalid installation path", nameof(value));
 
-                Settings.Default.InstallationPath = value;
-                Settings.Default.Save();
+                _gameSettings.InstallationPath = value;
+                _gameSettings.Save ();
             }
         }
 

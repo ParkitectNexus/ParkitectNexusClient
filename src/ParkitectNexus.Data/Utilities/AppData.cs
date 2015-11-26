@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace ParkitectNexus.Data.Windows
+namespace ParkitectNexus.Data.Utilities
 {
     public static class AppData
     {

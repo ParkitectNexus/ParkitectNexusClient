@@ -53,7 +53,6 @@
     <Compile Include="IParkitectMod.cs" />
     <Compile Include="IParkitectNexusWebsite.cs" />
     <Compile Include="IParkitectOnlineAssetRepository.cs" />
-    <Compile Include="Windows\AppData.cs" />
     <Compile Include="Reporting\CrashReporter.cs" />
     <Compile Include="DownloadInfo.cs" />
     <Compile Include="IParkitectPaths.cs" />
@@ -86,6 +85,8 @@
     <Compile Include="SupportedOperatingSystem.cs" />
     <Compile Include="MacOSX\MacOSXParkitect.cs" />
     <Compile Include="MacOSX\MacOSXParkitectPaths.cs" />
+    <Compile Include="Utilities\AppData.cs" />
+    <Compile Include="Settings\SettingsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -106,5 +107,6 @@
   -->
   <ItemGroup>
     <Folder Include="MacOSX\" />
+    <Folder Include="Settings\" />
   </ItemGroup>
 </Project>

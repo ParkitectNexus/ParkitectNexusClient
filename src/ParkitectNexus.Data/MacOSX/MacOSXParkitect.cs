@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Properties;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Data.MacOSX
 {
@@ -20,6 +21,8 @@ namespace ParkitectNexus.Data.MacOSX
     /// </summary>
     public class MacOSXParkitect : IParkitect
     {
+        private GameSettings _gameSettings = new GameSettings();
+
 		public MacOSXParkitect()
         {
             Paths = new MacOSXParkitectPaths(this);
@@ -28,19 +31,22 @@ namespace ParkitectNexus.Data.MacOSX
         /// <summary>
         ///     Gets or sets the installation path.
         /// </summary>
-        /// <exception cref="ArgumentException">Thrown if the installation path is invalid</exception>
+        /// <exception cref="ArgumentException">Thrown if the value is invalid.</exception>
         public string InstallationPath
         {
             get
             {
-				return Settings.Default.InstallationPath;
+                return IsValidInstallationPath(_gameSettings.InstallationPath)
+                    ? _gameSettings.InstallationPath
+                        : null;
             }
             set
             {
                 if (!IsValidInstallationPath(value))
                     throw new ArgumentException("invalid installation path", nameof(value));
 
-				throw new NotImplementedException ();
+                _gameSettings.InstallationPath = value;
+                _gameSettings.Save ();
             }
         }
 
@@ -122,8 +128,7 @@ namespace ParkitectNexus.Data.MacOSX
             if (IsInstalled)
                 return true;
 
-			// TODO Detect installation path (look in applications folder).
-            return false;
+            return SetInstallationPathIfValid("/Applications/Parkitect.app");
         }
 
         /// <summary>
@@ -305,8 +310,9 @@ namespace ParkitectNexus.Data.MacOSX
 
         private static bool IsValidInstallationPath(string path)
         {
-            // Path must exist and contain Parkitect.exe.
-            return !string.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "Parkitect.exe"));
+            // Path must exist and contain Contents/MacOS/Parkitect.
+            return !string.IsNullOrWhiteSpace(path) && Directory.Exists(path) && 
+                File.Exists(Path.Combine(path, "Contents/MacOS/Parkitect"));
         }
 
         private void CompileActiveMods()

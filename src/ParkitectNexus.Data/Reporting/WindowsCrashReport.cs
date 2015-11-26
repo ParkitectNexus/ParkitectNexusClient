@@ -10,6 +10,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Windows;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting
 {

@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data-xamarin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Mod.ModLoader-xamarin", "src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj", "{3451EBAF-3D69-4019-92BE-10E331F32A6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus Client", "src\ParkitectNexus.Client-mac\ParkitectNexus Client.csproj", "{7854E976-7E9F-4EC2-BDD4-0D90923501EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7854E976-7E9F-4EC2-BDD4-0D90923501EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7854E976-7E9F-4EC2-BDD4-0D90923501EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7854E976-7E9F-4EC2-BDD4-0D90923501EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7854E976-7E9F-4EC2-BDD4-0D90923501EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
