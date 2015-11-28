@@ -31,6 +31,17 @@ namespace ParkitectNexus.Clientmac
 
         #endregion
 
+        public void SetView(NSView view)
+        {
+            if (view == null)
+                throw new ArgumentNullException (nameof(view));
+            
+            if (CustomView.Subviews.Any ()) {
+                CustomView.ReplaceSubviewWith (CustomView.Subviews.First (), view);
+            } else {
+                CustomView.AddSubview (view);
+            }
+        }
         public override void AwakeFromNib()
         {
             base.AwakeFromNib ();
@@ -38,7 +49,7 @@ namespace ParkitectNexus.Clientmac
             using (var s = System.IO.File.OpenRead (NSBundle.MainBundle.PathForResource ("dialog_banner", "png")))
                 BannerImageView.Image = NSImage.FromStream (s);
             
-            CustomView.AddSubview (new MainMenuViewController(this).View);
+            SetView(new MainMenuViewController(this).View);
         }
     }
 }

@@ -20,11 +20,10 @@ namespace ParkitectNexus.Data.MacOSX
         }
 
         public string Installation => GetPathInGameFolder(null);
-        public string Data => GetPathInGameFolder("Parkitect_Data");
-        public string DataManaged => GetPathInGameFolder(@"Parkitect_Data\Managed");
-        public string Mods => GetPathInGameFolder("pnmods", true);
-        public string NativeMods => GetPathInGameFolder("Mods", true);
-        public string Executable => GetPathInGameFolder("Parkitect.exe");
+        public string Data => GetPathInGameFolder("Contents/Resources/Data");
+        public string DataManaged => GetPathInGameFolder("Contents/Resources/Data/Managed");
+        public string Mods => GetPathInSavesFolder("pnmods", true);
+        public string NativeMods => GetPathInSavesFolder("Mods", true);
 
         public string GetPathInSavesFolder(string path)
         {
@@ -33,11 +32,12 @@ namespace ParkitectNexus.Data.MacOSX
 
         public string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
+            
             path = !_parkitect.IsInstalled
                 ? null
                 : path == null
-                    ? Path.Combine(_parkitect.InstallationPath, "Saves")
-                    : Path.Combine(_parkitect.InstallationPath, "Saves", path);
+                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Library/Application Support/Parkitect")
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Library/Application Support/Parkitect", path);
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);

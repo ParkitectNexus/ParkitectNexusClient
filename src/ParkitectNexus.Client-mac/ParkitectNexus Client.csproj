@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ParkitectNexus.Clientmac</RootNamespace>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <AssemblyName>ParkitectNexus.Client-mac</AssemblyName>
+    <AssemblyName>ParkitectNexus Client</AssemblyName>
     <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.cs" />
@@ -65,23 +66,25 @@
     <Compile Include="AppDelegate.designer.cs">
       <DependentUpon>AppDelegate.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainMenuView.cs" />
-    <Compile Include="MainMenuViewController.cs" />
-    <Compile Include="MainMenuView.designer.cs">
+    <Compile Include="Views\MainMenuView.cs" />
+    <Compile Include="Views\MainMenuView.designer.cs">
       <DependentUpon>MainMenuView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ManageModsView.cs" />
-    <Compile Include="ManageModsViewController.cs" />
-    <Compile Include="ManageModsView.designer.cs">
-      <DependentUpon>ManageModsView.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Views\MainMenuViewController.cs" />
+    <Compile Include="Views\ManageModsView.cs" />
+    <Compile Include="Views\ManageModsView.designer.cs" />
+    <Compile Include="Views\ManageModsViewController.cs" />
+    <Compile Include="SourceListItem.cs" />
+    <Compile Include="SourceListDataSource.cs" />
+    <Compile Include="SourceListView.cs" />
+    <Compile Include="SourceListDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="MainMenu.xib" />
-    <InterfaceDefinition Include="MainMenuView.xib" />
     <InterfaceDefinition Include="Resources\MenuView.xib" />
-    <InterfaceDefinition Include="ManageModsView.xib" />
+    <InterfaceDefinition Include="Views\MainMenuView.xib" />
+    <InterfaceDefinition Include="Views\ManageModsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

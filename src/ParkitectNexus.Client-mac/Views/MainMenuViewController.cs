@@ -6,6 +6,7 @@ using MonoMac.Foundation;
 using MonoMac.AppKit;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.MacOSX;
+using System.IO;
 
 namespace ParkitectNexus.Clientmac
 {
@@ -65,13 +66,7 @@ namespace ParkitectNexus.Clientmac
         }
         partial void ClickedManageModsButton(MonoMac.Foundation.NSObject sender)
         {
-            var alert = new NSAlert() {
-                AlertStyle = NSAlertStyle.Informational,
-                InformativeText = "Informative",
-                MessageText = "Such wow messasche"
-
-            };
-            alert.BeginSheet(View.Window);
+            _mainWindow.SetView(new ManageModsViewController(_mainWindow).View);
         }
 
         partial void ClickedLaunchParkitectButton(MonoMac.Foundation.NSObject sender)
@@ -84,6 +79,9 @@ namespace ParkitectNexus.Clientmac
                     MessageText = "Such wow messasche"
                 };
                 alert.BeginSheet(View.Window);
+            }
+            else{
+                _parkitect.Launch();
             }
         }
 

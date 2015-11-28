@@ -10,7 +10,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ParkitectNexus.Data.Properties;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
 
@@ -157,11 +156,11 @@ namespace ParkitectNexus.Data.Windows
                 return running;
             }
 
-            Log.WriteLine($"Launching game at path '{Paths.Executable}'.");
+            Log.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.exe")}'.");
             // Start the game process.
             return !IsInstalled
                 ? null
-                : Process.Start(new ProcessStartInfo(Paths.Executable)
+                    : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
                 {
                     WorkingDirectory = InstallationPath,
                     Arguments = arguments
@@ -193,7 +192,7 @@ namespace ParkitectNexus.Data.Windows
                 case ParkitectAssetType.Blueprint:
                 case ParkitectAssetType.Savegame:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
-                    var storagePath = Path.Combine(InstallationPath, assetInfo.StorageFolder);
+                    var storagePath = Paths.GetPathInSavesFolder(assetInfo.StorageFolder);
                     var assetPath = Path.Combine(storagePath, asset.FileName);
 
                     Directory.CreateDirectory(storagePath);

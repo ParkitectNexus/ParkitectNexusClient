@@ -183,7 +183,10 @@ namespace ParkitectNexus.Data
                     // Resolve the source file paths.
                     logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     sourceFiles.AddRange(
-                        unresolvedSourceFiles.Select(file => Path.Combine(codeDir, file)));
+                        unresolvedSourceFiles.Select(file => {
+                            var repl = file.Replace("\\", "/");
+                            return Path.Combine(codeDir, repl);
+                        }));
 
                     // Compile.
                     var csCodeProvider =
@@ -298,11 +301,12 @@ namespace ParkitectNexus.Data
 
             var dllName = $"{assemblyName}.dll";
 
-            if (Parkitect.ManagedAssemblyNames.Contains(dllName))
-                return Path.Combine(Parkitect.Paths.DataManaged, dllName);
-
             if (SystemAssemblies.Contains(assemblyName))
                 return dllName;
+            
+            var man = Parkitect.ManagedAssemblyNames.ToArray();
+            if (man.Contains(dllName))
+                return Path.Combine(Parkitect.Paths.DataManaged, dllName);
 
             var modPath = Path.Combine(InstallationPath, BaseDir ?? "", dllName);
             if (File.Exists(Path.Combine(modPath)))

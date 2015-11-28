@@ -10,7 +10,6 @@ namespace ParkitectNexus.Data
     {
         string Data { get; }
         string DataManaged { get; }
-        string Executable { get; }
         string Installation { get; }
         string Mods { get; }
         string NativeMods { get; }

@@ -10,7 +10,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ParkitectNexus.Data.Properties;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
 
@@ -138,7 +137,17 @@ namespace ParkitectNexus.Data.MacOSX
         /// <returns>The launched process.</returns>
         public Process Launch(string arguments = "-single-instance")
         {
-			throw new NotImplementedException ();
+            Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+
+            Log.WriteLine("Attempting to compile installed mods.");
+            CompileActiveMods();
+
+            return IsInstalled ? 
+            Process.Start (new ProcessStartInfo (
+                "open",
+                    "-a '" + InstallationPath + "' --args " + arguments)
+                { UseShellExecute = false }) : 
+                null;
         }
 
         /// <summary>
@@ -166,7 +175,7 @@ namespace ParkitectNexus.Data.MacOSX
                 case ParkitectAssetType.Blueprint:
                 case ParkitectAssetType.Savegame:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
-                    var storagePath = Path.Combine(InstallationPath, assetInfo.StorageFolder);
+                    var storagePath = Paths.GetPathInSavesFolder(assetInfo.StorageFolder);
                     var assetPath = Path.Combine(storagePath, asset.FileName);
 
                     Directory.CreateDirectory(storagePath);

@@ -7,7 +7,7 @@ using MonoMac.AppKit;
 
 namespace ParkitectNexus.Clientmac
 {
-    public partial class ManageModsView : MonoMac.AppKit.NSWindow
+    public partial class ManageModsView : MonoMac.AppKit.NSView
     {
         #region Constructors
 
