@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WizardForm));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.userControlPanel = new System.Windows.Forms.Panel();
+            this.donateLinkLabel = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,11 +53,24 @@
             this.userControlPanel.Size = new System.Drawing.Size(477, 263);
             this.userControlPanel.TabIndex = 4;
             // 
+            // donateLinkLabel
+            // 
+            this.donateLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.donateLinkLabel.AutoSize = true;
+            this.donateLinkLabel.Location = new System.Drawing.Point(3, 299);
+            this.donateLinkLabel.Name = "donateLinkLabel";
+            this.donateLinkLabel.Size = new System.Drawing.Size(45, 13);
+            this.donateLinkLabel.TabIndex = 5;
+            this.donateLinkLabel.TabStop = true;
+            this.donateLinkLabel.Text = "Donate!";
+            this.donateLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.donateLinkLabel_LinkClicked);
+            // 
             // WizardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(477, 321);
+            this.Controls.Add(this.donateLinkLabel);
             this.Controls.Add(this.userControlPanel);
             this.Controls.Add(this.pictureBox1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -69,12 +83,14 @@
             this.Text = "ParkitectNexus Client";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel userControlPanel;
+        private System.Windows.Forms.LinkLabel donateLinkLabel;
     }
 }
 

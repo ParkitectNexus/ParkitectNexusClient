@@ -55,11 +55,11 @@
     <Compile Include="IParkitectMod.cs" />
     <Compile Include="IParkitectNexusWebsite.cs" />
     <Compile Include="IParkitectOnlineAssetRepository.cs" />
-    <Compile Include="Windows\AppData.cs" />
     <Compile Include="Reporting\CrashReporter.cs" />
     <Compile Include="DownloadInfo.cs" />
     <Compile Include="IParkitectPaths.cs" />
     <Compile Include="ParkitectOnlineAssetRepository.cs" />
+    <Compile Include="Settings\GameSettings.cs" />
     <Compile Include="Windows\WindowsParkitectPaths.cs" />
     <Compile Include="Reporting\FailedCrashReport.cs" />
     <Compile Include="Reporting\WindowsCrashReport.cs" />
@@ -78,14 +78,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Utilities\OperatingSystemUtility.cs" />
     <Compile Include="Utilities\StreamWriterLogUtility.cs" />
     <Compile Include="SupportedOperatingSystem.cs" />
+    <Compile Include="MacOSX\MacOSXParkitect.cs" />
+    <Compile Include="MacOSX\MacOSXParkitectPaths.cs" />
+    <Compile Include="Utilities\AppData.cs" />
+    <Compile Include="Settings\SettingsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

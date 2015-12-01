@@ -37,11 +37,6 @@ namespace ParkitectNexus.Client
                     parkitectNexusWebsite = new ParkitectNexusWebsite();
                     parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
                     break;
-			case SupportedOperatingSystem.MacOSX:
-				parkitect = new MacOSXParkitect ();
-				parkitectNexusWebsite = new ParkitectNexusWebsite ();
-				parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
-                    break;
                 default:
                     return;
             }
@@ -54,8 +49,8 @@ namespace ParkitectNexus.Client
             Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
             Log.MinimumLogLevel = options.LogLevel;
 
-//            try
-//            {
+            try
+            {
                 Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
 
                 Application.EnableVisualStyles();
@@ -107,20 +102,20 @@ namespace ParkitectNexus.Client
                 var form = new WizardForm();
                 form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository));
                 Application.Run(form);
-//            }
-//            catch (Exception e)
-//            {
-//                Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
-//                Log.WriteException(e);
-//                CrashReporter.Report("global", parkitect, parkitectNexusWebsite, e);
-//
-//                using (var focus = new FocusForm())
-//                {
-//                    MessageBox.Show(focus,
-//                        $"The application has crashed in an unusual way.\n\nThe error has been logged to:\n{Log.LoggingPath}",
-//                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-//                }
-//            }
+            }
+            catch (Exception e)
+            {
+                Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
+                Log.WriteException(e);
+                CrashReporter.Report("global", parkitect, parkitectNexusWebsite, e);
+
+                using (var focus = new FocusForm())
+                {
+                    MessageBox.Show(focus,
+                        $"The application has crashed in an unusual way.\n\nThe error has been logged to:\n{Log.LoggingPath}",
+                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
 
             Log.Close();
         }

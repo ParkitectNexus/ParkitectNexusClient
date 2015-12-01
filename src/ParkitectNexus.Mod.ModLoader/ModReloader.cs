@@ -12,7 +12,7 @@ namespace ParkitectNexus.Mod.ModLoader
         private void Update()
         {
             if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)) &&
-                Input.GetKeyDown(KeyCode.F5))
+                Input.GetKeyDown(KeyCode.R))
             {
                 if (ModLoader == null)
                     return;
