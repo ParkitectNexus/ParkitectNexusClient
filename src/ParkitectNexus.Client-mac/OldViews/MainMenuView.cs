@@ -7,26 +7,27 @@ using MonoMac.AppKit;
 
 namespace ParkitectNexus.Clientmac
 {
-    public partial class ManageModsView : MonoMac.AppKit.NSView
+    public partial class MainMenuView : MonoMac.AppKit.NSView
     {
         #region Constructors
 
         // Called when created from unmanaged code
-        public ManageModsView (IntPtr handle) : base (handle)
+        public MainMenuView(IntPtr handle) : base(handle)
         {
-            Initialize ();
+            Initialize();
         }
 		
         // Called when created directly from a XIB file
-        [Export ("initWithCoder:")]
-        public ManageModsView (NSCoder coder) : base (coder)
+        [Export("initWithCoder:")]
+        public MainMenuView(NSCoder coder) : base(coder)
         {
-            Initialize ();
+            Initialize();
         }
 		
         // Shared initialization code
-        void Initialize ()
+        void Initialize()
         {
+            
         }
 
         #endregion

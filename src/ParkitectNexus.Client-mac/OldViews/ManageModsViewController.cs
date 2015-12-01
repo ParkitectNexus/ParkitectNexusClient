@@ -6,6 +6,7 @@ using MonoMac.Foundation;
 using MonoMac.AppKit;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.MacOSX;
+using ParkitectNexus.Client.Window;
 
 namespace ParkitectNexus.Clientmac
 {
@@ -18,33 +19,33 @@ namespace ParkitectNexus.Clientmac
         #region Constructors
 
         // Called when created from unmanaged code
-        public ManageModsViewController (IntPtr handle) : base (handle)
+        public ManageModsViewController(IntPtr handle) : base(handle)
         {
-            Initialize ();
+            Initialize();
         }
 		
         // Called when created directly from a XIB file
-        [Export ("initWithCoder:")]
-        public ManageModsViewController (NSCoder coder) : base (coder)
+        [Export("initWithCoder:")]
+        public ManageModsViewController(NSCoder coder) : base(coder)
         {
-            Initialize ();
+            Initialize();
         }
 		
         // Call to load from the XIB/NIB file
-        public ManageModsViewController () : base ("ManageModsView", NSBundle.MainBundle)
+        public ManageModsViewController() : base("ManageModsView", NSBundle.MainBundle)
         {
-            Initialize ();
+            Initialize();
         }
 
         public ManageModsViewController(MainWindow mainWindow) : this()
         {
-            if (mainWindow == null)
-                throw new ArgumentNullException (nameof(mainWindow));
+            if(mainWindow == null)
+                throw new ArgumentNullException(nameof(mainWindow));
             _mainWindow = mainWindow;
         }
 
         // Shared initialization code
-        void Initialize ()
+        void Initialize()
         {
             _parkitectNexusWebsite = new ParkitectNexusWebsite();
             _parkitect = new MacOSXParkitect();
@@ -53,15 +54,17 @@ namespace ParkitectNexus.Clientmac
         #endregion
 
         //strongly typed view accessor
-        public new ManageModsView View {
-            get {
+        public new ManageModsView View
+        {
+            get
+            {
                 return (ManageModsView)base.View;
             }
         }
 
-        public override void AwakeFromNib ()
+        public override void AwakeFromNib()
         {
-            base.AwakeFromNib ();
+            base.AwakeFromNib();
 
             ModLabel.StringValue = "-";
             VersionLabel.StringValue = "-";
@@ -72,9 +75,9 @@ namespace ParkitectNexus.Clientmac
             //ModsListScrollView.
         }
 
-        partial void ClickedBackButton (MonoMac.Foundation.NSObject sender)
+        partial void ClickedBackButton(MonoMac.Foundation.NSObject sender)
         {
-            _mainWindow.SetView(new MainMenuViewController(_mainWindow).View);
+            //_mainWindow.SetView(new MainMenuViewController(_mainWindow).View);
         }
     }
 }

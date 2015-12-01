@@ -21,7 +21,7 @@
                     <rect key="frame" x="49" y="249" width="152" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <animations/>
-                    <buttonCell key="cell" type="push" title="Manage Mods" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MpE-1X-X58">
+                    <buttonCell key="cell" type="push" title="Manage Mods" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="MpE-1X-X58">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -29,16 +29,6 @@
                         <action selector="ClickedManageModsButton:" target="-2" id="fLS-Bp-Nt2"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="IGW-bZ-ykB">
-                    <rect key="frame" x="83" y="227" width="295" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Disable, update or uninstall your installed mods." placeholderString="" id="jF9-35-LOv">
-                        <font key="font" metaFont="system" size="10"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <button verticalHuggingPriority="750" id="Feg-5s-SwU">
                     <rect key="frame" x="49" y="170" width="152" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -103,6 +93,16 @@
                         <action selector="ClickedCloseButton:" target="-2" id="nkZ-bE-4mF"/>
                     </connections>
                 </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="IGW-bZ-ykB">
+                    <rect key="frame" x="83" y="231" width="295" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <animations/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Disable, update or uninstall your installed mods." placeholderString="" id="jF9-35-LOv">
+                        <font key="font" metaFont="system" size="10"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <animations/>
             <point key="canvasLocation" x="423" y="570"/>

@@ -7,6 +7,7 @@ using MonoMac.AppKit;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.MacOSX;
 using System.IO;
+using ParkitectNexus.Client.Window;
 
 namespace ParkitectNexus.Clientmac
 {
@@ -19,33 +20,33 @@ namespace ParkitectNexus.Clientmac
         #region Constructors
 
         // Called when created from unmanaged code
-        public MainMenuViewController (IntPtr handle) : base (handle)
+        public MainMenuViewController(IntPtr handle) : base(handle)
         {
-            Initialize ();
+            Initialize();
         }
 		
         // Called when created directly from a XIB file
-        [Export ("initWithCoder:")]
-        public MainMenuViewController (NSCoder coder) : base (coder)
+        [Export("initWithCoder:")]
+        public MainMenuViewController(NSCoder coder) : base(coder)
         {
-            Initialize ();
+            Initialize();
         }
 		
         // Call to load from the XIB/NIB file
-        public MainMenuViewController () : base ("MainMenuView", NSBundle.MainBundle)
+        public MainMenuViewController() : base("MainMenuView", NSBundle.MainBundle)
         {
-            Initialize ();
+            Initialize();
         }
 
         public MainMenuViewController(MainWindow mainWindow) : this()
         {
-            if (mainWindow == null)
-                throw new ArgumentNullException (nameof(mainWindow));
+            if(mainWindow == null)
+                throw new ArgumentNullException(nameof(mainWindow));
             _mainWindow = mainWindow;
         }
 		
         // Shared initialization code
-        void Initialize ()
+        void Initialize()
         {
             _parkitectNexusWebsite = new ParkitectNexusWebsite();
             _parkitect = new MacOSXParkitect();
@@ -54,19 +55,22 @@ namespace ParkitectNexus.Clientmac
         #endregion
 
         //strongly typed view accessor
-        public new MainMenuView View {
-            get {
+        public new MainMenuView View
+        {
+            get
+            {
                 return (MainMenuView)base.View;
             }
         }
 
-        public override void LoadView ()
+        public override void LoadView()
         {
-            base.LoadView ();
+            base.LoadView();
         }
+
         partial void ClickedManageModsButton(MonoMac.Foundation.NSObject sender)
         {
-            _mainWindow.SetView(new ManageModsViewController(_mainWindow).View);
+            //_mainWindow.SetView(new ManageModsViewController(_mainWindow).View);
         }
 
         partial void ClickedLaunchParkitectButton(MonoMac.Foundation.NSObject sender)
@@ -80,7 +84,8 @@ namespace ParkitectNexus.Clientmac
                 };
                 alert.BeginSheet(View.Window);
             }
-            else{
+            else
+            {
                 _parkitect.Launch();
             }
         }

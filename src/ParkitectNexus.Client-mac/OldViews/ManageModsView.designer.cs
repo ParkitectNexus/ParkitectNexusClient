@@ -13,7 +13,7 @@ namespace ParkitectNexus.Clientmac
 	partial class ManageModsViewController
 	{
 		[Outlet]
-		MonoMac.AppKit.NSButton CheckForUpdatesButton { get; set; }
+		public MonoMac.AppKit.NSButton CheckForUpdatesButton { get; set; }
 
 		[Outlet]
 		MonoMac.AppKit.NSButton EnableModButton { get; set; }
@@ -22,7 +22,7 @@ namespace ParkitectNexus.Clientmac
 		MonoMac.AppKit.NSTextField ModLabel { get; set; }
 
 		[Outlet]
-		MonoMac.AppKit.NSScrollView ModsListScrollView { get; set; }
+        public MonoMac.AppKit.NSScrollView ModsListScrollView { get; set; }
 
 		[Outlet]
 		MonoMac.AppKit.NSButton UninstallButton { get; set; }

@@ -34,6 +34,7 @@ namespace ParkitectNexus.Clientmac
         {
 
         }
+
         #endregion
 
         #region Override Methods
