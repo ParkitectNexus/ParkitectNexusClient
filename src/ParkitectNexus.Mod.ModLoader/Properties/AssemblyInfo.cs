@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("ParkitectNexus.Mod.ModLoader")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("ParkitectNexus ModLoader Mod")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ParkitectNexus")]
 [assembly: AssemblyProduct("ParkitectNexus.Mod.ModLoader")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2015")]
+[assembly: AssemblyTrademark("ParkitectNexus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -38,5 +38,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]

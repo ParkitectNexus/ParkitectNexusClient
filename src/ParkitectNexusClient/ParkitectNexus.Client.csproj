@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ParkitectNexus.Client</RootNamespace>
     <AssemblyName>ParkitectNexusClient</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>true</IsWebBootstrapper>
@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="ParkitectNexusProtocol.cs" />
+    <Compile Include="Settings\ClientSettings.cs" />
     <Compile Include="UpdateInfo.cs" />
     <Compile Include="Wizard\BaseWizardUserControl.cs">
       <SubType>UserControl</SubType>
@@ -175,15 +176,6 @@
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

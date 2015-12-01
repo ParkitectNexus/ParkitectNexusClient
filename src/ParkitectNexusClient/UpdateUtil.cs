@@ -17,19 +17,6 @@ namespace ParkitectNexus.Client
     internal static class UpdateUtil
     {
         /// <summary>
-        ///     Migrates settings from previous versions.
-        /// </summary>
-        public static void MigrateSettings()
-        {
-            if (Settings.Default.IsFirstRun)
-            {
-                Settings.Default.Upgrade();
-                Settings.Default.IsFirstRun = false;
-                Settings.Default.Save();
-            }
-        }
-
-        /// <summary>
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>

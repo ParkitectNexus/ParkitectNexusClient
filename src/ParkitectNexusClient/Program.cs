@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using CommandLine;
 using ParkitectNexus.Client.Properties;
+using ParkitectNexus.Client.Settings;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Reporting;
@@ -41,9 +42,7 @@ namespace ParkitectNexus.Client
                     return;
             }
             var options = new CommandLineOptions();
-
-            //UpdateUtil.MigrateSettings();
-
+            var settings = new ClientSettings();
             Parser.Default.ParseArguments(args, options);
 
             Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
@@ -68,14 +67,15 @@ namespace ParkitectNexus.Client
 
 				if(OperatingSystemUtility.GetOperatingSystem() == SupportedOperatingSystem.Windows)
                 	UpdateUtil.MigrateMods(parkitect);
-                //ModLoaderUtil.InstallModLoader(parkitect);
+
+                ModLoaderUtil.InstallModLoader(parkitect);
 
                 // Install backlog.
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DownloadOnNextRun))
+                if (!string.IsNullOrWhiteSpace(settings.DownloadOnNextRun))
                 {
-                    Download(Settings.Default.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository);
-                    Settings.Default.DownloadOnNextRun = null;
-                    Settings.Default.Save();
+                    Download(settings.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository);
+                    settings.DownloadOnNextRun = null;
+                    settings.Save();
                 }
 
                 // Process download option.
@@ -93,11 +93,11 @@ namespace ParkitectNexus.Client
                 }
 
                 // Handle silent calls.
-                if (options.Silent && !Settings.Default.BootOnNextRun)
+                if (options.Silent && !settings.BootOnNextRun)
                     return;
 
-                Settings.Default.BootOnNextRun = false;
-                Settings.Default.Save();
+                settings.BootOnNextRun = false;
+                settings.Save();
 
                 var form = new WizardForm();
                 form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository));

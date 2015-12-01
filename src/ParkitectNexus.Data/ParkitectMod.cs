@@ -184,7 +184,7 @@ namespace ParkitectNexus.Data
                     logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     sourceFiles.AddRange(
                         unresolvedSourceFiles.Select(file => {
-                            var repl = file.Replace("\\", "/");
+                            var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
                             return Path.Combine(codeDir, repl);
                         }));
 
@@ -304,13 +304,13 @@ namespace ParkitectNexus.Data
             if (SystemAssemblies.Contains(assemblyName))
                 return dllName;
             
-            var man = Parkitect.ManagedAssemblyNames.ToArray();
-            if (man.Contains(dllName))
-                return Path.Combine(Parkitect.Paths.DataManaged, dllName);
-
             var modPath = Path.Combine(InstallationPath, BaseDir ?? "", dllName);
             if (File.Exists(Path.Combine(modPath)))
                 return modPath;
+
+            var man = Parkitect.ManagedAssemblyNames.ToArray();
+            if (man.Contains(dllName))
+                return Path.Combine(Parkitect.Paths.DataManaged, dllName);
 
             throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");
         }
@@ -360,7 +360,7 @@ namespace ParkitectNexus.Data
         ///     Gets or sets the compiler version.
         /// </summary>
         [JsonProperty]
-        public string CompilerVersion { get; set; } = "v4.0";
+        public string CompilerVersion { get; set; } = "v3.5";
 
         /// <summary>
         ///     Gets or sets the code files.

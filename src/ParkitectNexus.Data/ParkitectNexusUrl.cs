@@ -62,7 +62,7 @@ namespace ParkitectNexus.Data
         public override string ToString()
         {
             return
-                $"{Protocol}//{Name}{ProtocolInstructionSeparator}{AssetType}{ProtocolInstructionSeparator}{FileHash}";
+                $"{Protocol}//{WebUtility.UrlEncode(Name)}{ProtocolInstructionSeparator}{AssetType}{ProtocolInstructionSeparator}{WebUtility.UrlEncode(FileHash)}";
         }
 
         #endregion
