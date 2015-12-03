@@ -26,7 +26,15 @@ namespace ParkitectNexus.Data
         private static readonly string[] SystemAssemblies =
         {
             "System", "System.Core", "System.Data", "System.Xml",
-            "System.Xml.Linq", "Microsoft.CSharp", "System.Data.DataSetExtensions", "System.Net.Http"
+            "System.Xml.Linq", "System.Data.DataSetExtensions", "System.Net.Http"
+        };
+
+        /// <summary>
+        ///     References ignored during compilation.
+        /// </summary>
+        private static readonly string[] IgnoredAssemblies =
+        {
+            "Microsoft.CSharp"
         };
 
         /// <summary>
@@ -171,10 +179,20 @@ namespace ParkitectNexus.Data
                     foreach (var name in unresolvedAssemblyReferences)
                     {
                         var resolved = ResolveAssembly(name);
-                        assemblyFiles.Add(resolved);
 
-                        logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
-                        Log.WriteLine($"Resolved assembly reference `{name}` to `{resolved}`");
+                        if (resolved != null)
+                        {
+                            assemblyFiles.Add(resolved);
+
+                            logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
+                            Log.WriteLine($"Resolved assembly reference `{name}` to `{resolved}`");
+                        }
+                        else
+                        {
+
+                            logFile.Log($"IGNORING assembly reference `{name}`");
+                            Log.WriteLine($"IGNORING assembly reference `{name}`");
+                        }
                     }
 
                     // Resolve the source file paths.
@@ -239,6 +257,9 @@ namespace ParkitectNexus.Data
             if (SystemAssemblies.Contains(assemblyName))
                 return dllName;
             
+            if (IgnoredAssemblies.Contains(assemblyName))
+                return null;
+
             var modPath = Path.Combine(InstallationPath, BaseDir ?? "", dllName);
             if (File.Exists(Path.Combine(modPath)))
                 return modPath;
