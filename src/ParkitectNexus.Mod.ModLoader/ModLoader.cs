@@ -100,7 +100,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     var binBuildPath = FPath.Combine(folder, "bin/build.dat");
 
                     // If the mod is not enabled or in development, continue to the next mod.
-                    if (!isDevelopment || !isEnabled || !File.Exists(binBuildPath))
+                    if ((!isDevelopment && !isEnabled) || !File.Exists(binBuildPath))
                         continue;
 
                     // Compute the path to the the mod assembly. If the path does not exist, continue to the next mod.
