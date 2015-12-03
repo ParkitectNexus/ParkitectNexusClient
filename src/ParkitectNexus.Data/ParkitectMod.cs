@@ -126,6 +126,7 @@ namespace ParkitectNexus.Data
                     }
 
                     logFile.Log($"Compiling {Name} to {buildPath}...");
+                    Log.WriteLine($"Compiling {Name} to {buildPath}...");
 
                     var assemblyFiles = new List<string>();
                     var sourceFiles = new List<string>();
@@ -143,6 +144,7 @@ namespace ParkitectNexus.Data
                     {
                         // Load source files and referenced assemblies from *.csproj file.
                         logFile.Log($"Compiling from `{Project}`.");
+                        Log.WriteLine($"Compiling from `{Project}`.");
 
                         // Open the .csproj file of the mod.
                         var document = new XmlDocument();
@@ -166,6 +168,7 @@ namespace ParkitectNexus.Data
                     {
                         // Load source files and referenced assemblies from mod.json file.
                         logFile.Log("Compiling from `mod.json`.");
+                        Log.WriteLine("Compiling from `mod.json`.");
 
                         unresolvedAssemblyReferences = ReferencedAssemblies.ToList();
                         unresolvedSourceFiles = CodeFiles.ToList();
@@ -178,10 +181,12 @@ namespace ParkitectNexus.Data
                         assemblyFiles.Add(resolved);
 
                         logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
+                        Log.WriteLine($"Resolved assembly reference `{name}` to `{resolved}`");
                     }
 
                     // Resolve the source file paths.
                     logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
+                    Log.WriteLine($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     sourceFiles.AddRange(
                         unresolvedSourceFiles.Select(file => {
                             var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
@@ -198,15 +203,20 @@ namespace ParkitectNexus.Data
 
                     // Log errors.
                     foreach (var error in result.Errors.Cast<CompilerError>())
+                    {
                         logFile.Log(
                             $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
                             LogLevel.Error);
-
+                        Log.WriteLine(
+                            $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
+                            LogLevel.Error);
+                    }
                     return !result.Errors.HasErrors;
                 }
                 catch (Exception e)
                 {
                     logFile.Log(e.Message, LogLevel.Error);
+                    Log.WriteLine(e.Message, LogLevel.Error);
                     return false;
                 }
             }
@@ -273,6 +283,7 @@ namespace ParkitectNexus.Data
                 catch (Exception e)
                 {
                     logFile.Log(e.Message, LogLevel.Error);
+                    Log.WriteLine(e.Message, LogLevel.Error);
                     return false;
                 }
             }
