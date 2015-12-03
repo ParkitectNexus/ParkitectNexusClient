@@ -5,14 +5,12 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using CommandLine;
-using ParkitectNexus.Client.Properties;
 using ParkitectNexus.Client.Settings;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Windows;
-using ParkitectNexus.Data.MacOSX;
 
 namespace ParkitectNexus.Client
 {
@@ -193,17 +191,17 @@ namespace ParkitectNexus.Client
 #if DEBUG
             return false;
 #else
-
+            var settings = new ClientSettings();
             var updateInfo = UpdateUtil.CheckForUpdates(website);
             if (updateInfo != null)
             {
                 // Store download url so it can be downloaded after the update.
                 if (!string.IsNullOrEmpty(options.DownloadUrl))
-                    Settings.Default.DownloadOnNextRun = options.DownloadUrl;
+                    settings.DownloadOnNextRun = options.DownloadUrl;
                 else
-                    Settings.Default.BootOnNextRun = !options.Silent;
+                    settings.BootOnNextRun = !options.Silent;
 
-                Settings.Default.Save();
+                settings.Save();
 
                 using (var focus = new FocusForm())
                 {
