@@ -47,11 +47,8 @@ namespace WixSharpSetup
                     new ExeFileShortcut("Uninstall " + AppName, "[System64Folder]msiexec.exe", "/x [ProductCode]")
                     ),
                 new Dir(@"%Desktop%",
-                    new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", ""),
-                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch")
-                    {
-                        IconFile = AppIcon
-                    }),
+                    new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", "")
+                    ),
                 new InstalledFileAction(AppExecutable, "--silent")
                 )
             {
