@@ -324,7 +324,6 @@ namespace ParkitectNexus.Data.Windows
 
                             // Save and compile the mod.
                             mod.Save();
-                            mod.CopyAssetBundles();
                             mod.Compile();
                         }
                     }
@@ -346,7 +345,6 @@ namespace ParkitectNexus.Data.Windows
             {
                 if (mod.IsEnabled || mod.IsDevelopment)
                 {
-                    mod.CopyAssetBundles();
                     mod.Compile();
                 }
             }

@@ -15,17 +15,7 @@ namespace ParkitectNexus.Data
         ///     Gets the parkitect instance this mod was installed to.
         /// </summary>
         IParkitect Parkitect { get; }
-
-        /// <summary>
-        ///     Gets or sets the asset bundle directory.
-        /// </summary>
-        string AssetBundleDir { get; set; }
-
-        /// <summary>
-        ///     Gets the asset bundle prefix.
-        /// </summary>
-        string AssetBundlePrefix { get; }
-
+        
         /// <summary>
         ///     Gets or sets the base directory.
         /// </summary>
@@ -107,11 +97,5 @@ namespace ParkitectNexus.Data
         /// </summary>
         /// <returns>true on success; false otherwise.</returns>
         bool Compile();
-
-        /// <summary>
-        ///     Copies the asset bundles to the games assets directory.
-        /// </summary>
-        /// <returns>true on success; false otherwise.</returns>
-        bool CopyAssetBundles();
     }
 }

@@ -61,7 +61,7 @@ namespace ParkitectNexus.Data.Reporting
                 try
                 {
                     return _parkitect.InstalledMods.Select(
-                        m => $"{m}(Enabled: {m.IsEnabled}, Directory: {m.AssetBundlePrefix})");
+                        m => $"{m}(Enabled: {m.IsEnabled}, Directory: {m.InstallationPath})");
                 }
                 catch
                 {

@@ -307,7 +307,6 @@ namespace ParkitectNexus.Data.MacOSX
 
                             // Save and compile the mod.
                             mod.Save();
-                            mod.CopyAssetBundles();
                             mod.Compile();
                         }
                     }
@@ -330,7 +329,6 @@ namespace ParkitectNexus.Data.MacOSX
             {
                 if (mod.IsEnabled || mod.IsDevelopment)
                 {
-                    mod.CopyAssetBundles();
                     mod.Compile();
                 }
             }

@@ -65,18 +65,11 @@ namespace ParkitectNexus.Data
         public void Delete()
         {
             if (!IsInstalled) throw new Exception("mod not installed");
-            if (AssetBundlePrefix == null)
-                return;
 
             Log.WriteLine($"Deleting mod '{this}'.");
-
-            var modAssetBundlePath = Path.Combine(Parkitect.Paths.Data, "StreamingAssets/mods", AssetBundlePrefix);
-
+            
             Directory.Delete(InstallationPath, true);
-
-            if (Directory.Exists(modAssetBundlePath))
-                Directory.Delete(modAssetBundlePath, true);
-
+            
             InstallationPath = null;
         }
 
@@ -192,7 +185,7 @@ namespace ParkitectNexus.Data
                             var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
                             return Path.Combine(codeDir, repl);
                         }));
-
+                    
                     // Compile.
                     var csCodeProvider =
                         new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
@@ -222,75 +215,6 @@ namespace ParkitectNexus.Data
             }
         }
 
-        /// <summary>
-        ///     Copies the asset bundles to the games assets directory.
-        /// </summary>
-        /// <returns>true on success; false otherwise.</returns>
-        public bool CopyAssetBundles()
-        {
-            if (!IsInstalled) throw new Exception("mod not installed");
-            if (AssetBundleDir == null) return true;
-            if (AssetBundlePrefix == null)
-                throw new Exception("AssetBundlePrefix is required when an AssetBundleDir is set");
-
-            Log.WriteLine("Copying asset bundle.");
-
-            using (var logFile = OpenLog())
-            {
-                try
-                {
-                    var modAssetBundlePath = Path.Combine(Parkitect.Paths.Data, "StreamingAssets/mods",
-                        AssetBundlePrefix);
-                    var files = Directory.GetFiles(Path.Combine(InstallationPath, AssetBundleDir));
-                    var fileNames = files.Select(Path.GetFileName).ToArray();
-                    var md5 = MD5.Create();
-
-                    Directory.CreateDirectory(modAssetBundlePath);
-
-                    // Delete old files no longer required for mod.
-                    foreach (var oldFile in Directory.GetFiles(modAssetBundlePath)
-                        .Where(f => !fileNames.Contains(Path.GetFileName(f))))
-                        File.Delete(oldFile);
-
-                    foreach (var assetBundleFile in Directory.GetFiles(Path.Combine(InstallationPath, AssetBundleDir)))
-                    {
-                        var targetPath = Path.Combine(modAssetBundlePath, Path.GetFileName(assetBundleFile));
-
-                        // If file already exists in streaming directory, check if the hashes match.
-                        if (File.Exists(targetPath))
-                        {
-                            try
-                            {
-                                byte[] oldHash,
-                                    newHash;
-                                using (var stream = File.OpenRead(targetPath))
-                                    oldHash = md5.ComputeHash(stream);
-                                using (var stream = File.OpenRead(assetBundleFile))
-                                    newHash = md5.ComputeHash(stream);
-
-                                if (oldHash.SequenceEqual(newHash))
-                                    continue;
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-                        }
-
-                        File.Copy(assetBundleFile, targetPath, true);
-                    }
-                }
-                catch (Exception e)
-                {
-                    logFile.Log(e.Message, LogLevel.Error);
-                    Log.WriteLine(e.Message, LogLevel.Error);
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         #region Overrides of Object
 
         /// <summary>
@@ -318,6 +242,9 @@ namespace ParkitectNexus.Data
             var modPath = Path.Combine(InstallationPath, BaseDir ?? "", dllName);
             if (File.Exists(Path.Combine(modPath)))
                 return modPath;
+
+            if (SystemAssemblies.Contains(assemblyName))
+                return dllName;
 
             var man = Parkitect.ManagedAssemblyNames.ToArray();
             if (man.Contains(dllName))
@@ -349,18 +276,7 @@ namespace ParkitectNexus.Data
         ///     Gets the parkitect instance this mod was installed to.
         /// </summary>
         public IParkitect Parkitect { get; }
-
-        /// <summary>
-        ///     Gets or sets the asset bundle directory.
-        /// </summary>
-        [JsonProperty]
-        public string AssetBundleDir { get; set; }
-
-        /// <summary>
-        ///     Gets the asset bundle prefix.
-        /// </summary>
-        public string AssetBundlePrefix => !IsInstalled ? null : Path.GetFileName(InstallationPath);
-
+        
         /// <summary>
         ///     Gets or sets the base directory.
         /// </summary>
