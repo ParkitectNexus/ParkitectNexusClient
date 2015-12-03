@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using MiniJSON;
 using UnityEngine;
+using FPath = System.IO.Path;
 
 namespace ParkitectNexus.Mod.ModLoader
 {
@@ -51,6 +52,13 @@ namespace ParkitectNexus.Mod.ModLoader
                     CultureInfo.CurrentCulture);
         }
 
+        private static void LogToMod(string folder, string level, string format, params object[] args)
+        {
+            File.AppendAllText(FPath.Combine(folder, "mod.log"),
+                string.Format("[{0}] {1}: {2}\r\n", DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), level,
+                    string.Format(format, args)));
+        }
+
         public void LoadMods()
         {
             // Unload mods loaded by this mod loader.
@@ -74,8 +82,8 @@ namespace ParkitectNexus.Mod.ModLoader
             {
                 try
                 {
-                    var directoryName = System.IO.Path.GetFileName(folder);
-                    var filePath = System.IO.Path.Combine(folder, "mod.json");
+                    var directoryName = FPath.GetFileName(folder);
+                    var filePath = FPath.Combine(folder, "mod.json");
 
                     if (!File.Exists(filePath))
                         continue;
@@ -89,7 +97,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     var isEnabled = ReadFromDictonary<bool>(dictionary, "IsEnabled");
                     var isDevelopment = ReadFromDictonary<bool>(dictionary, "IsDevelopment");
 
-                    var binBuildPath = System.IO.Path.Combine(folder, "bin/build.dat");
+                    var binBuildPath = FPath.Combine(folder, "bin/build.dat");
 
                     // If the mod is not enabled or in development, continue to the next mod.
                     if (!isDevelopment && !isEnabled && File.Exists(binBuildPath))
@@ -97,7 +105,7 @@ namespace ParkitectNexus.Mod.ModLoader
 
                     // Compute the path to the the mod assembly. If the path does not exist, continue to the next mod.
                     var relativeBuildPath = File.ReadAllText(binBuildPath);
-                    var buildPath = System.IO.Path.Combine(folder, relativeBuildPath);
+                    var buildPath = FPath.Combine(folder, relativeBuildPath);
 
                     if (!File.Exists(buildPath))
                         continue;
@@ -106,7 +114,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     var assembly = Assembly.LoadFile(buildPath);
 
                     // Log the successfull load of the mod.
-                    File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
+                    File.AppendAllText(FPath.Combine(folder, "mod.log"),
                         string.Format("[{0}] Info: Loaded {1}.\r\n", DateTime.Now.ToString("yy-MM-dd HH:mm:ss"),
                             assembly));
 
@@ -140,26 +148,17 @@ namespace ParkitectNexus.Mod.ModLoader
                                 }
                             }
 
-                        File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                            string.Format("[{0}] Info: Sucessfully registered {1} to the mod manager.\r\n",
-                                DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), userMod));
-
+                        LogToMod(folder, "Info", "Sucessfully registered {0} to the mod manager.", userMod);
                         loadedAnyType = true;
                     }
 
                     if (!loadedAnyType)
-                    {
-                        File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                            string.Format("[{0}] Warn: No exported type in {1} implements IMod.\r\n",
-                                DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), assembly));
-                    }
+                        LogToMod(folder, "Warn", "No exported type in {0} implements IMod.", assembly);
                 }
                 catch (Exception e)
                 {
                     // Log failed loading attempts.
-                    File.AppendAllText(System.IO.Path.Combine(folder, "mod.log"),
-                        string.Format("[{0}] Fatal: Exception during loading: {1}.\r\n",
-                            DateTime.Now.ToString("yy-MM-dd HH:mm:ss"), e.Message));
+                    LogToMod(folder, "Fatal", "Exception during loading: {0}.", e.Message);
                 }
             }
         }
