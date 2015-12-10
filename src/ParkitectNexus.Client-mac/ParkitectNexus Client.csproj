@@ -79,6 +79,7 @@
     <Compile Include="View\BaseView.cs" />
     <Compile Include="View\MainMenuView.cs" />
     <Compile Include="View\ManageModsView.cs" />
+    <Compile Include="View\InstallAssetView.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
@@ -92,6 +93,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <BundleResource Include="Resources\dialog_banner.png" />
+    <BundleResource Include="Resources\logo.icns" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">

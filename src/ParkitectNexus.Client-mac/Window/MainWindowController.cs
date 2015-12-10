@@ -23,7 +23,7 @@ namespace ParkitectNexus.Client.Window
 
         public MainWindowController() : base("MainWindow")
         {
-            base.Window = new MainWindow(new Rectangle(0, 0, 493, 369), (NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable), NSBackingStore.Buffered, false);
+            base.Window = new MainWindow();
 
             Window.AwakeFromNib();
         }

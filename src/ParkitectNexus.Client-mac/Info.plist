@@ -16,5 +16,22 @@
 	<string>NSApplication</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.games</string>
+	<key>CFBundleIconFile</key>
+	<string>logo.icns</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLIconFile</key>
+			<string>logo</string>
+			<key>CFBundleURLName</key>
+			<string>com.ParkitectNexus.Install</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>parkitectnexus</string>
+			</array>
+			<key>CFBundleURLTypes</key>
+			<string>Editor</string>
+		</dict>
+	</array>
 </dict>
 </plist>

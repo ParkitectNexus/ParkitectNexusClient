@@ -13,6 +13,8 @@ namespace ParkitectNexus.Clientmac
         static void Main (string[] args)
         {
             Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
+            Log.MinimumLogLevel = LogLevel.Debug;
+            Log.WriteLine($"Starting with args '{string.Join(" ", args)}'");
 
             NSApplication.Init ();
             NSApplication.Main (args);
