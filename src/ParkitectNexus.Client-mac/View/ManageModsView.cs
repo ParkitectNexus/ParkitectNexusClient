@@ -102,8 +102,7 @@ namespace ParkitectNexus.Client.View
 				Editable = false,
 				Bezeled = false,
 				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
-				StringValue = "Mod: ",
-				Font = NSFont.SystemFontOfSize(10)
+				StringValue = "Mod: "
 			};
 
 			_modName = new NSTextField(new Rectangle(230, 250, 300, 20)) {
@@ -112,8 +111,7 @@ namespace ParkitectNexus.Client.View
 				Editable = false,
 				Bezeled = false,
 				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
-				StringValue = "",
-				Font = NSFont.SystemFontOfSize(10)
+				StringValue = ""
 			};
 
 			NSTextField versionLabel = new NSTextField(new Rectangle(200, 230, 300, 20)) {
@@ -122,8 +120,7 @@ namespace ParkitectNexus.Client.View
 				Editable = false,
 				Bezeled = false,
 				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
-				StringValue = "Version: ",
-				Font = NSFont.SystemFontOfSize(10)
+				StringValue = "Version: "
 			};
 
 			_version = new NSTextField(new Rectangle(250, 230, 300, 20)) {
@@ -132,8 +129,7 @@ namespace ParkitectNexus.Client.View
 				Editable = false,
 				Bezeled = false,
 				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
-				StringValue = "",
-				Font = NSFont.SystemFontOfSize(10)
+				StringValue = ""
 			};
 
 			NSTextField websiteLabel = new NSTextField(new Rectangle(200, 210, 280, 20)) {
@@ -142,11 +138,10 @@ namespace ParkitectNexus.Client.View
 				Editable = false,
 				Bezeled = false,
 				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
-				StringValue = "Website: ",
-				Font = NSFont.SystemFontOfSize(10)
+				StringValue = "Website: "
 			};
 
-			_website = new NSButton (new Rectangle (250, 212, 170, 20)) {
+			_website = new NSButton (new Rectangle (250, 210, 170, 20)) {
 				AutoresizingMask = NSViewResizingMask.MinYMargin,
 				BezelStyle = NSBezelStyle.Rounded,
 				Title = "View on ParkitectNexus",
@@ -159,8 +154,7 @@ namespace ParkitectNexus.Client.View
 				Editable = false,
 				Bezeled = false,
 				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
-				StringValue = "MOD IS IN DEVELOPMENT",
-				Font = NSFont.SystemFontOfSize(10)
+				StringValue = "MOD IS IN DEVELOPMENT"
 			};
 
 			_checkForUpdates = new NSButton(new Rectangle(200, 130, 280, 20)) {
@@ -178,7 +172,10 @@ namespace ParkitectNexus.Client.View
 			};
 
 			_website.Activated += (sender, e) => {
-				Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.Repository}");
+				if(_selectedMod != null)
+				{
+					Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.Repository}");
+				}
 			};
 
 			_checkForUpdates.Activated += (sender, e) => {
@@ -186,9 +183,12 @@ namespace ParkitectNexus.Client.View
 			};
 
 			_uninstall.Activated += (sender, e) => {
-				_selectedMod.Delete();
+				if(_selectedMod != null)
+				{
+					_selectedMod.Delete();
 
-				Window.ContentView.ReplaceSubviewWith(this, new ManageModsView(_parkitect));
+					Window.ContentView.ReplaceSubviewWith(this, new ManageModsView(_parkitect));
+				}
 			};
 
 			AddSubview(modNameLabel);
