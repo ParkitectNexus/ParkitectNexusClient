@@ -96,7 +96,7 @@ namespace ParkitectNexus.Client.View
 
             _manageModsButton.Activated += (sender, e) =>
             {
-                Window.SetView(new ManageModsView());
+                Window.SetView(new ManageModsView(_parkitect));
             };
             _launchParkitectButton.Activated += (sender, e) =>
             {
