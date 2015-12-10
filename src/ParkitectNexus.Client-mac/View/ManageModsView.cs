@@ -93,7 +93,7 @@ namespace ParkitectNexus.Client.View
 
             _backButton.Activated += (sender, e) =>
             {
-                Window.ContentView.ReplaceSubviewWith(this, new MainMenuView());
+                Window.SetView(new MainMenuView());
             };
         }
 
@@ -195,28 +195,28 @@ namespace ParkitectNexus.Client.View
 
                     _website.Enabled = _uninstall.Enabled = _checkForUpdates.Enabled = false;
  
-                    if (info.Tag == _selectedMod.Tag)
+                    if(info.Tag == _selectedMod.Tag)
                     {
-                        var alert = new NSAlert () {
+                        var alert = new NSAlert() {
                             AlertStyle = NSAlertStyle.Informational,
-                            InformativeText = $"{_selectedMod} is already up to date!",
+                            InformativeText =$"{_selectedMod} is already up to date!",
                             MessageText = _selectedMod.Name,
                         };
-                        alert.BeginSheet (Window);
+                        alert.BeginSheet(Window);
                     }
                     else
                     {
                         Window.SetView(new InstallAssetView(url, new ManageModsView(_parkitect)));
                     }
                 }
-                catch (Exception)
+                catch(Exception)
                 {                       
-                    var alert = new NSAlert () {
+                    var alert = new NSAlert() {
                         AlertStyle = NSAlertStyle.Informational,
                         InformativeText = "Failed to check for updates. Please try again later.",
                         MessageText = "Failure",
                     };
-                    alert.BeginSheet (Window);
+                    alert.BeginSheet(Window);
                 }
 
                 _website.Enabled = _uninstall.Enabled = _checkForUpdates.Enabled = true;
@@ -228,7 +228,7 @@ namespace ParkitectNexus.Client.View
                 {
                     _selectedMod.Delete();
 
-                    Window.ContentView.ReplaceSubviewWith(this, new ManageModsView(_parkitect));
+                    Window.SetView(new ManageModsView(_parkitect));
                 }
             };
 
