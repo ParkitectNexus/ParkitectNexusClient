@@ -7,8 +7,14 @@ using System.Reflection;
 
 namespace ParkitectNexus.Data.Utilities
 {
+    /// <summary>
+    ///     Contains the path to the app data storage.
+    /// </summary>
     public static class AppData
     {
+        /// <summary>
+        ///     Gets the path to the app data storage.
+        /// </summary>
         public static string Path
         {
             get

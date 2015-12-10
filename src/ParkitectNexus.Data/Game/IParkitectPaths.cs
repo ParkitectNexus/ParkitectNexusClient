@@ -1,7 +1,7 @@
 ﻿// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Provides the functionality of a paths collection for the Parkitect game.

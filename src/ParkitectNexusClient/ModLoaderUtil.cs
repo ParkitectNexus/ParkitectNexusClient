@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client

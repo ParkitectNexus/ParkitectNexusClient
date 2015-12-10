@@ -2,8 +2,9 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System.Threading.Tasks;
+using ParkitectNexus.Data.Game;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Web
 {
     /// <summary>
     ///     Provides the functionality of an online Parkitect asset storage.

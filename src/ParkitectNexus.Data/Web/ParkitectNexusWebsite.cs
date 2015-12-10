@@ -3,7 +3,7 @@
 
 using System.Diagnostics;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Web
 {
     /// <summary>
     ///     Represents the ParkitectNexus website.

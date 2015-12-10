@@ -3,7 +3,7 @@
 
 using System;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Provides information about a parkitect asset.

@@ -5,7 +5,7 @@ using System;
 using System.Net;
 using System.Reflection;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Web
 {
     public class ParkitectNexusWebClient : WebClient
     {

@@ -3,8 +3,9 @@
 
 using System;
 using System.IO;
+using ParkitectNexus.Data.Web;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Provides the functionality of a Parkitect asset.

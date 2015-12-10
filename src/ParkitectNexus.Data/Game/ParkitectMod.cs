@@ -6,13 +6,12 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Xml;
 using Microsoft.CSharp;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Utilities;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Represents a Parkitect mod provided by ParkitectNexus.

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Web
 {
     /// <summary>
     ///     Contains information about a downloadable file.
