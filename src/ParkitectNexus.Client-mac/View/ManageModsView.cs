@@ -11,6 +11,7 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.MacOSX;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.View
 {
@@ -20,7 +21,7 @@ namespace ParkitectNexus.Client.View
         private NSButton _backButton;
 
         private IParkitect _parkitect;
-
+        private IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
         IParkitectMod _selectedMod;
 
         /**
@@ -36,7 +37,7 @@ namespace ParkitectNexus.Client.View
         public ManageModsView(IParkitect parkitect)
         {
             _parkitect = parkitect;
-
+            _parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(new ParkitectNexusWebsite());
             _label1 = new NSTextField(new Rectangle(10, 275, 300, 20)) {
                 BackgroundColor = NSColor.Clear,
                 TextColor = NSColor.Black,
@@ -148,6 +149,7 @@ namespace ParkitectNexus.Client.View
                 BezelStyle = NSBezelStyle.Rounded,
                 Title = "View on ParkitectNexus",
                 Bordered = true,
+                Enabled = false,
             };
 
             _inDevelopment = new NSTextField(new Rectangle(200, 160, 280, 20)) {
@@ -164,6 +166,7 @@ namespace ParkitectNexus.Client.View
                 BezelStyle = NSBezelStyle.Rounded,
                 Title = "Check for updates",
                 Bordered = true,
+                Enabled = false,
             };
 
             _uninstall = new NSButton(new Rectangle(200, 100, 280, 20)) {
@@ -171,6 +174,7 @@ namespace ParkitectNexus.Client.View
                 BezelStyle = NSBezelStyle.Rounded,
                 Title = "Uninstall",
                 Bordered = true,
+                Enabled = false,
             };
 
             _website.Activated += (sender, e) =>
@@ -181,9 +185,41 @@ namespace ParkitectNexus.Client.View
                 }
             };
 
-            _checkForUpdates.Activated += (sender, e) =>
+            _checkForUpdates.Activated += async (sender, e) =>
             {
-                // todo yo
+                
+                try
+                {
+                    var url = new ParkitectNexusUrl(_selectedMod.Name, ParkitectAssetType.Mod, _selectedMod.Repository);
+                    var info = await _parkitectOnlineAssetRepository.ResolveDownloadInfo(url);
+
+                    _website.Enabled = _uninstall.Enabled = _checkForUpdates.Enabled = false;
+ 
+                    if (info.Tag == _selectedMod.Tag)
+                    {
+                        var alert = new NSAlert () {
+                            AlertStyle = NSAlertStyle.Informational,
+                            InformativeText = $"{_selectedMod} is already up to date!",
+                            MessageText = _selectedMod.Name,
+                        };
+                        alert.BeginSheet (Window);
+                    }
+                    else
+                    {
+                        Window.SetView(new InstallAssetView(url, new ManageModsView(_parkitect)));
+                    }
+                }
+                catch (Exception)
+                {                       
+                    var alert = new NSAlert () {
+                        AlertStyle = NSAlertStyle.Informational,
+                        InformativeText = "Failed to check for updates. Please try again later.",
+                        MessageText = "Failure",
+                    };
+                    alert.BeginSheet (Window);
+                }
+
+                _website.Enabled = _uninstall.Enabled = _checkForUpdates.Enabled = true;
             };
 
             _uninstall.Activated += (sender, e) =>
@@ -215,7 +251,7 @@ namespace ParkitectNexus.Client.View
             _modName.StringValue = _selectedMod.Name;
             _version.StringValue = !string.IsNullOrEmpty(_selectedMod.Tag) ? _selectedMod.Tag : "";
             _inDevelopment.StringValue = _selectedMod.IsDevelopment ? "Mod is in development" : "";
-            _website.Enabled = !_selectedMod.IsDevelopment;
+            _website.Enabled = _uninstall.Enabled = _checkForUpdates.Enabled = !_selectedMod.IsDevelopment;
         }
     }
 }
