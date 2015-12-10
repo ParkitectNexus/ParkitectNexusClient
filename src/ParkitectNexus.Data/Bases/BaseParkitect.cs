@@ -1,4 +1,4 @@
-// ParkitectNexusClient
+﻿// ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
@@ -10,34 +10,30 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
 
-namespace ParkitectNexus.Data.MacOSX
+namespace ParkitectNexus.Data.Base
 {
     /// <summary>
     ///     Represents the Parkitect game.
     /// </summary>
-    public class MacOSXParkitect : IParkitect
+    public abstract class BaseParkitect : IParkitect
     {
         private GameSettings _gameSettings = new GameSettings();
-
-		public MacOSXParkitect()
-        {
-            Paths = new MacOSXParkitectPaths(this);
-        }
-
+        
         /// <summary>
         ///     Gets or sets the installation path.
         /// </summary>
         /// <exception cref="ArgumentException">Thrown if the value is invalid.</exception>
-        public string InstallationPath
+        public virtual string InstallationPath
         {
             get
             {
                 return IsValidInstallationPath(_gameSettings.InstallationPath)
                     ? _gameSettings.InstallationPath
-                        : null;
+                    : null;
             }
             set
             {
@@ -45,24 +41,24 @@ namespace ParkitectNexus.Data.MacOSX
                     throw new ArgumentException("invalid installation path", nameof(value));
 
                 _gameSettings.InstallationPath = value;
-                _gameSettings.Save ();
+                _gameSettings.Save();
             }
         }
 
         /// <summary>
         ///     Gets a value indicating whether the game is installed.
         /// </summary>
-        public bool IsInstalled => IsValidInstallationPath(InstallationPath);
+        public virtual bool IsInstalled => IsValidInstallationPath(InstallationPath);
 
         /// <summary>
         ///     Gets a collection of paths.
         /// </summary>
-        public IParkitectPaths Paths { get; }
+        public abstract IParkitectPaths Paths { get; }
 
         /// <summary>
         ///     Gets a collection of assembly names provided by the game.
         /// </summary>
-        public IEnumerable<string> ManagedAssemblyNames
+        public virtual IEnumerable<string> ManagedAssemblyNames
             =>
                 !IsInstalled
                     ? null
@@ -71,7 +67,7 @@ namespace ParkitectNexus.Data.MacOSX
         /// <summary>
         ///     Gets a collection of installed mods.
         /// </summary>
-        public IEnumerable<IParkitectMod> InstalledMods
+        public virtual IEnumerable<IParkitectMod> InstalledMods
         {
             get
             {
@@ -103,11 +99,17 @@ namespace ParkitectNexus.Data.MacOSX
         }
 
         /// <summary>
+        ///     Gets a collection of enabled and development mods.
+        /// </summary>
+        public virtual IEnumerable<IParkitectMod> ActiveMods
+                    => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
+
+        /// <summary>
         ///     Sets the installation path if the specified path is a valid installation path.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns>true if valid; false otherwise.</returns>
-        public bool SetInstallationPathIfValid(string path)
+        public virtual bool SetInstallationPathIfValid(string path)
         {
             if (IsValidInstallationPath(path))
             {
@@ -122,40 +124,21 @@ namespace ParkitectNexus.Data.MacOSX
         ///     Detects the installation path.
         /// </summary>
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
-        public bool DetectInstallationPath()
-        {
-            if (IsInstalled)
-                return true;
-
-            return SetInstallationPathIfValid("/Applications/Parkitect.app");
-        }
+        public abstract bool DetectInstallationPath();
 
         /// <summary>
         ///     Launches the game with the specified arguments.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The launched process.</returns>
-        public Process Launch(string arguments = "-single-instance")
-        {
-            Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
-
-            Log.WriteLine("Attempting to compile installed mods.");
-            CompileActiveMods();
-
-            return IsInstalled ? 
-            Process.Start (new ProcessStartInfo (
-                "open",
-                    "-a '" + InstallationPath + "' --args " + arguments)
-                { UseShellExecute = false }) : 
-                null;
-        }
+        public abstract Process Launch(string arguments = "-single-instance");
 
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.
         /// </summary>
         /// <param name="asset">The asset.</param>
         /// <returns>A task which performs the requested action.</returns>
-        public async Task StoreAsset(IParkitectAsset asset)
+        public virtual async Task StoreAsset(IParkitectAsset asset)
         {
             if (asset == null) throw new ArgumentNullException(nameof(asset));
 
@@ -316,22 +299,12 @@ namespace ParkitectNexus.Data.MacOSX
             }
         }
 
-        private static bool IsValidInstallationPath(string path)
-        {
-            // Path must exist and contain Contents/MacOS/Parkitect.
-            return !string.IsNullOrWhiteSpace(path) && Directory.Exists(path) && 
-                File.Exists(Path.Combine(path, "Contents/MacOS/Parkitect"));
-        }
+        protected abstract bool IsValidInstallationPath(string path);
 
-        private void CompileActiveMods()
+        protected virtual void CompileActiveMods()
         {
-            foreach (var mod in InstalledMods)
-            {
-                if (mod.IsEnabled || mod.IsDevelopment)
-                {
-                    mod.Compile();
-                }
-            }
+            foreach (var mod in ActiveMods)
+                mod.Compile();
         }
     }
 }

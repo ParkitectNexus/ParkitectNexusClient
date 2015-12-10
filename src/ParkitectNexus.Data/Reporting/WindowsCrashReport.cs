@@ -9,7 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
-using ParkitectNexus.Data.Windows;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting

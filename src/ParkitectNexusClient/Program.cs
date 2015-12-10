@@ -8,9 +8,11 @@ using CommandLine;
 using ParkitectNexus.Client.Settings;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Game.Windows;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
-using ParkitectNexus.Data.Windows;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client
 {
@@ -29,7 +31,7 @@ namespace ParkitectNexus.Client
             IParkitectNexusWebsite parkitectNexusWebsite;
             IParkitectOnlineAssetRepository parkitectOnlineAssetRepository;
 
-            switch (OperatingSystemUtility.GetOperatingSystem())
+            switch (OperatingSystems.GetOperatingSystem())
             {
                 case SupportedOperatingSystem.Windows:
                     parkitect = new WindowsParkitect();
@@ -56,14 +58,14 @@ namespace ParkitectNexus.Client
                 // Check for updates. If updates are available, do not resume usual logic.
                 if (CheckForUpdates(parkitectNexusWebsite, options)) return;
 
-				if(OperatingSystemUtility.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+				if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
                 	ParkitectNexusProtocol.Install();
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
                 if (!EnsureParkitectInstalled(parkitect, options))
                     return;
 
-				if(OperatingSystemUtility.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+				if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
                 	UpdateUtil.MigrateMods(parkitect);
 
                 ModLoaderUtil.InstallModLoader(parkitect);

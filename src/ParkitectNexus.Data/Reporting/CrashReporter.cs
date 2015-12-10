@@ -3,7 +3,9 @@
 
 using System;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Data.Reporting
 {
@@ -32,7 +34,7 @@ namespace ParkitectNexus.Data.Reporting
         {
             try
             {
-                var os = OperatingSystemUtility.GetOperatingSystem();
+                var os = OperatingSystems.GetOperatingSystem();
                 switch (os)
                 {
                     case SupportedOperatingSystem.Windows:

@@ -8,6 +8,8 @@ using System.Net;
 using Newtonsoft.Json;
 using ParkitectNexus.Client.Properties;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client
 {

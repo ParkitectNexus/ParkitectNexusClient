@@ -1,7 +1,7 @@
 // ParkitectNexusClient
 // Copyright 2015 Parkitect, Tim Potze
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Web
 {
     /// <summary>
     ///     Provides the functionality of the ParkitectNexus website.

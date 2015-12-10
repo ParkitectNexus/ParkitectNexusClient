@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Provides the functionality of a Parkitect mod provided by ParkitectNexus.

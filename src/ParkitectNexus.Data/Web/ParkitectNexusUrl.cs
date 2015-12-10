@@ -4,8 +4,9 @@
 using System;
 using System.Linq;
 using System.Net;
+using ParkitectNexus.Data.Game;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Web
 {
     /// <summary>
     ///     Represents an URL with the parkitectnexus protocol.

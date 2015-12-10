@@ -6,9 +6,10 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
-using ParkitectNexus.Data.Windows;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.Wizard
 {

@@ -4,24 +4,23 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ParkitectNexus.Data.Utilities
+namespace ParkitectNexus.Data
 {
-    public static class OperatingSystemUtility
+    public static class OperatingSystems
 	{
 		[DllImport("libc")] 
 		private static extern int uname(IntPtr buf); 
 
-		private static bool IsRunningOnMac()
+		private static bool IsUnixMacOSXPlatform()
 		{ 
-			IntPtr buf = IntPtr.Zero; 
+			var buf = IntPtr.Zero; 
 			try
 			{ 
 				buf = Marshal.AllocHGlobal (8192); 
 				// This is a hacktastic way of getting sysname from uname () 
 				if (uname (buf) == 0)
 				{ 
-					string os = Marshal.PtrToStringAnsi (buf); 
-					if (os == "Darwin")
+					if (Marshal.PtrToStringAnsi(buf) == "Darwin")
 						return true; 
 				} 
 			}
@@ -49,7 +48,7 @@ namespace ParkitectNexus.Data.Utilities
                 case PlatformID.MacOSX:
                     return SupportedOperatingSystem.MacOSX;
 			case PlatformID.Unix:
-				if (IsRunningOnMac ())
+				if (IsUnixMacOSXPlatform ())
 					return SupportedOperatingSystem.MacOSX;
 				break;
             }

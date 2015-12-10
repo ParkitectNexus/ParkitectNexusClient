@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Octokit;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Web
 {
     /// <summary>
     ///     Represents the online parkitect asset storage.
