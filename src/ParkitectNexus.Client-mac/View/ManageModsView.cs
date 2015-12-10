@@ -97,7 +97,7 @@ namespace ParkitectNexus.Client.View
     public class ManageModsView : BaseView
     {
         private NSTextField _label1;
-        private NSScrollView _modsScrollView;
+        //private NSScrollView _modsScrollView;
         private NSButton _backButton;
 
         public ManageModsView()
@@ -111,99 +111,80 @@ namespace ParkitectNexus.Client.View
                 StringValue = "Select a mod to disable, update or uninstall it.",
                 Font = NSFont.SystemFontOfSize(10)
             };
-            _modsScrollView = new NSScrollView(new Rectangle(0, 50, 204, 210) {
-                
-            });
 
-            _modsScrollView.AutohidesScrollers = true;
-            _modsScrollView.HorizontalLineScroll = 19;
-            _modsScrollView.HorizontalPageScroll = 10;
-            _modsScrollView.VerticalLineScroll = 19;
-            _modsScrollView.VerticalPageScroll = 10;
-            _modsScrollView.UsesPredominantAxisScrolling = false;
-            _modsScrollView.AutoresizingMask = NSViewResizingMask.HeightSizable;
-
-            var ol = new NSOutlineView() {
-            };
-            ol.SetFrameSize(new Size(202, 0));
-            ol.RowSizeStyle = NSTableViewRowSizeStyle.Default;
-            ol.AutosaveTableColumns = false;
-            ol.AllowsMultipleSelection = false;
-            ol.SelectionHighlightStyle = NSTableViewSelectionHighlightStyle.SourceList;
-            ol.ColumnAutoresizingStyle = NSTableViewColumnAutoresizingStyle.LastColumnOnly;
-            ol.AutoresizingMask = new NSViewResizingMask();
-            ol.IntercellSpacing = new SizeF(3, 2);
-            ol.BackgroundColor = NSColor.Black;// NSColor.FromCatalogName("System", "_sourceListBackgroundColor");//sourceListBackgroundColor;
-            ol.GridColor = NSColor.Black;// NSColor.FromCatalogName("System", "gridColor");
-
-            var column = new NSTableColumn() {
-            };
-            column.Width = 199;
-            column.MinWidth = 16;
-            column.MaxWidth = 1000;
-
-            column.HeaderCell = new NSTableHeaderCell() {//"headerCell"
-                LineBreakMode = NSLineBreakMode.TruncatingTail,
-                Bordered = true,
-                Font = NSFont.SystemFontOfSize( NSFont.SmallSystemFontSize), //smallSystem
-                TextColor = NSColor.White,// NSColor.FromCatalogName("System", "headerTextColor"),
-                BackgroundColor = NSColor.Black// NSColor.FromCatalogName("System", "headerColor")
-            };
-
-            column.DataCell = new NSTextFieldCell("Text Cell") {
-                LineBreakMode = NSLineBreakMode.TruncatingTail,
-                Selectable = true,
-                Editable = true,
-                Title = "Text Cell",
-                Font = NSFont.SystemFontOfSize(NSFont.SystemFontSize),
-                TextColor = NSColor.White,//NSColor.FromCatalogName("System", "controlTextColor"),
-                BackgroundColor =NSColor.Black// NSColor.FromCatalogName("System", "controlBackgroundColor")
-            };
-            column.ResizingMask = NSTableColumnResizing.UserResizingMask;
-
-            ol.AddColumn(column);
-
-            ol.DataSource = new MyDataSource();
-            var ds = ol.DataSource as MyDataSource;
-
-            _modsScrollView.AddSubview(ol);
-
-//            var modsListView = new NSOutlineView() {
-//                    DataSource = new MyDataSource(), 
+            // doesn't work:
+//            _modsScrollView = new NSScrollView(new Rectangle(0, 50, 204, 210) {
+//                
+//            });
 //
+//            _modsScrollView.AutohidesScrollers = true;
+//            _modsScrollView.HorizontalLineScroll = 19;
+//            _modsScrollView.HorizontalPageScroll = 10;
+//            _modsScrollView.VerticalLineScroll = 19;
+//            _modsScrollView.VerticalPageScroll = 10;
+//            _modsScrollView.UsesPredominantAxisScrolling = false;
+//            _modsScrollView.AutoresizingMask = NSViewResizingMask.HeightSizable;
+//
+//            var ol = new NSOutlineView() {
 //            };
-//            _modsScrollView.AddSubview(modsListView);
-//            modsListView.AddColumn(new NSTableColumn("colName"));
-//            modsListView.AddColumn(new NSTableColumn("colAge"));
-//            modsListView.SetFrameOrigin(new Point(0, 0));
-//            modsListView.SetFrameSize(new Size(5555, 5555));
-//            var ds = modsListView.DataSource as MyDataSource;
+//            ol.SetFrameSize(new Size(202, 0));
+//            ol.RowSizeStyle = NSTableViewRowSizeStyle.Default;
+//            ol.AutosaveTableColumns = false;
+//            ol.AllowsMultipleSelection = false;
+//            ol.SelectionHighlightStyle = NSTableViewSelectionHighlightStyle.SourceList;
+//            ol.ColumnAutoresizingStyle = NSTableViewColumnAutoresizingStyle.LastColumnOnly;
+//            ol.AutoresizingMask = new NSViewResizingMask();
+//            ol.IntercellSpacing = new SizeF(3, 2);
+//            ol.BackgroundColor = NSColor.Black;// NSColor.FromCatalogName("System", "_sourceListBackgroundColor");//sourceListBackgroundColor;
+//            ol.GridColor = NSColor.Black;// NSColor.FromCatalogName("System", "gridColor");
 //
-//            modsListView.AutoresizesOutlineColumn = true;
-//            _modsScrollView.HasVerticalScroller = true;  
+//            var column = new NSTableColumn() {
+//            };
+//            column.Width = 199;
+//            column.MinWidth = 16;
+//            column.MaxWidth = 1000;
 //
-            ds.Persons.Add(new Person("Joe Doe",10));
-            ds.Persons.Add(new Person("Joe Doe",11));
-            ds.Persons.Add(new Person("Joe Doe",12));
-            ds.Persons.Add(new Person("Joe Doe",13));
-            ds.Persons.Add(new Person("Joe Doe",14));
-            ds.Persons.Add(new Person("Joe Doe",15));
-            ds.Persons.Add(new Person("Joe Doe",16));
-            ds.Persons.Add(new Person("Joe Doe",17));
-            ds.Persons.Add(new Person("Joe Doe",18));
-            ds.Persons.Add(new Person("Joe Doe",19));
-            ds.Persons.Add(new Person("Joe Doe",20));
-            ds.Persons.Add(new Person("Joe Doe",21));
-            ds.Persons.Add(new Person("Joe Doe",22));
-            ds.Persons.Add(new Person("Joe Doe",23));
-            ds.Persons.Add(new Person("Joe Doe",24));
-            ds.Persons.Add(new Person("Joe Doe",25));
-            ds.Persons.Add(new Person("Joe Doe",26));
-            ds.Persons.Add(new Person("Joe Doe",27));
-            ds.Persons.Add(new Person("Joe Doe",28));
+//            column.HeaderCell = new NSTableHeaderCell() {//"headerCell"
+//                LineBreakMode = NSLineBreakMode.TruncatingTail,
+//                Bordered = true,
+//                Font = NSFont.SystemFontOfSize( NSFont.SmallSystemFontSize), //smallSystem
+//                TextColor = NSColor.White,// NSColor.FromCatalogName("System", "headerTextColor"),
+//                BackgroundColor = NSColor.Black// NSColor.FromCatalogName("System", "headerColor")
+//            };
 //
-            ol.ReloadData();
-//            _modsScrollView.ResizeSubviewsWithOldSize(new SizeF(88888, 88888));
+//            column.DataCell = new NSTextFieldCell("Text Cell") {
+//                LineBreakMode = NSLineBreakMode.TruncatingTail,
+//                Selectable = true,
+//                Editable = true,
+//                Title = "Text Cell",
+//                Font = NSFont.SystemFontOfSize(NSFont.SystemFontSize),
+//                TextColor = NSColor.White,//NSColor.FromCatalogName("System", "controlTextColor"),
+//                BackgroundColor =NSColor.Black// NSColor.FromCatalogName("System", "controlBackgroundColor")
+//            };
+//            column.ResizingMask = NSTableColumnResizing.UserResizingMask;
+//
+//            ol.AddColumn(column);
+//
+//            ds.Persons.Add(new Person("Joe Doe",10));
+//            ds.Persons.Add(new Person("Joe Doe",11));
+//            ds.Persons.Add(new Person("Joe Doe",12));
+//            ds.Persons.Add(new Person("Joe Doe",13));
+//            ds.Persons.Add(new Person("Joe Doe",14));
+//            ds.Persons.Add(new Person("Joe Doe",15));
+//            ds.Persons.Add(new Person("Joe Doe",16));
+//            ds.Persons.Add(new Person("Joe Doe",17));
+//            ds.Persons.Add(new Person("Joe Doe",18));
+//            ds.Persons.Add(new Person("Joe Doe",19));
+//            ds.Persons.Add(new Person("Joe Doe",20));
+//            ds.Persons.Add(new Person("Joe Doe",21));
+//            ds.Persons.Add(new Person("Joe Doe",22));
+//            ds.Persons.Add(new Person("Joe Doe",23));
+//            ds.Persons.Add(new Person("Joe Doe",24));
+//            ds.Persons.Add(new Person("Joe Doe",25));
+//            ds.Persons.Add(new Person("Joe Doe",26));
+//            ds.Persons.Add(new Person("Joe Doe",27));
+//            ds.Persons.Add(new Person("Joe Doe",28));
+//            ol.ReloadData();
 
             _backButton = new NSButton(new Rectangle(399, 10, 81, 32)) {
                 AutoresizingMask = NSViewResizingMask.MinYMargin,

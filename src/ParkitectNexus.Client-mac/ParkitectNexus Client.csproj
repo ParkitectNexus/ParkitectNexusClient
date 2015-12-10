@@ -59,7 +59,6 @@
     <Folder Include="Testing\" />
     <Folder Include="Window\" />
     <Folder Include="View\" />
-    <Folder Include="OldViews\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -80,21 +79,11 @@
     <Compile Include="View\BaseView.cs" />
     <Compile Include="View\MainMenuView.cs" />
     <Compile Include="View\ManageModsView.cs" />
-    <Compile Include="OldViews\MainMenuView.cs" />
-    <Compile Include="OldViews\MainMenuView.designer.cs">
-      <DependentUpon>MainMenuView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OldViews\MainMenuViewController.cs" />
-    <Compile Include="OldViews\ManageModsView.cs" />
-    <Compile Include="OldViews\ManageModsView.designer.cs" />
-    <Compile Include="OldViews\ManageModsViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
     <InterfaceDefinition Include="Resources\MenuView.xib" />
     <InterfaceDefinition Include="Testing\TestWindow.xib" />
-    <InterfaceDefinition Include="OldViews\MainMenuView.xib" />
-    <InterfaceDefinition Include="OldViews\ManageModsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
