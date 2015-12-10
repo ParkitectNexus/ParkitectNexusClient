@@ -7,102 +7,37 @@ using MonoMac.Foundation;
 using System.Linq;
 using Newtonsoft.Json;
 using System.IO;
+using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Game.MacOSX;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ParkitectNexus.Client.View
-{public class Person:NSObject
-    {
-        public string Name {
-            get;
-            set;
-        }
-
-        public int Age {
-            get;
-            set;
-        }
-
-        public List<Person> Children {
-            get;
-            set;
-        }
-
-        public Person (string name, int age)
-        {
-            Name = name;
-            Age = age;
-            Children = new List<Person>();
-        }
-    }
-    public class MyDataSource:NSOutlineViewDataSource
-    {
-        /// The list of persons (top level)
-        public List<Person> Persons {
-            get;
-            set;
-        }
-        // Constructor
-        public MyDataSource()
-        {
-            // Create the Persons list
-            Persons = new List<Person>();
-        }
-
-        public override int GetChildrenCount (NSOutlineView outlineView, NSObject item)
-        {
-            // If the item is not null, return the child count of our item
-            if(item != null)
-                return (item as Person).Children.Count;
-            // Its null, that means its asking for our root element count.
-            return Persons.Count();
-        }
-
-        public override NSObject GetObjectValue (NSOutlineView outlineView, NSTableColumn forTableColumn, NSObject byItem)
-        {
-            // Is it null? (It really shouldnt be...)
-            if (byItem != null) {
-                // Jackpot, typecast to our Person object
-                var p = ((Person)byItem);
-                // Get the table column identifier
-                var ident = forTableColumn.Identifier.ToString();
-                // We return the appropriate information for each column
-                if (ident == "colName") {
-                    return (NSString)p.Name;
-                }
-                if (ident == "colAge") {
-                    return (NSString)p.Age.ToString();
-                }
-            }
-            // Oh well.. errors dont have to be THAT depressing..
-            return (NSString)"Not enough jQuery";
-        }
-
-        public override NSObject GetChild (NSOutlineView outlineView, int childIndex, NSObject ofItem)
-        {
-            // If the item is null, it's asking for a root element. I had serious trouble figuring this out...
-            if(ofItem == null)
-                return Persons[childIndex];
-            // Return the child its asking for.
-            return (NSObject)((ofItem as Person).Children[childIndex]);
-        }
-
-        public override bool ItemExpandable (NSOutlineView outlineView, NSObject item)
-        {
-            // Straight forward - it wants to know if its expandable.
-            if(item == null)
-                return false;
-            return (item as Person).Children.Count > 0;
-        }
-    }
-
+{
     public class ManageModsView : BaseView
     {
         private NSTextField _label1;
-        //private NSScrollView _modsScrollView;
         private NSButton _backButton;
 
-        public ManageModsView()
+		private IParkitect _parkitect;
+
+		IParkitectMod _selectedMod;
+
+		/**
+		 * Right side fields
+		 **/
+		NSTextField _modName;
+		NSTextField _version;
+		NSTextField _inDevelopment;
+		NSButton _checkForUpdates;
+		NSButton _uninstall;
+		NSButton _website;
+
+        public ManageModsView(IParkitect parkitect)
         {
-            _label1 = new NSTextField(new Rectangle(18, 265, 300, 20)) {
+			_parkitect = parkitect;
+
+            _label1 = new NSTextField(new Rectangle(10, 275, 300, 20)) {
                 BackgroundColor = NSColor.Clear,
                 TextColor = NSColor.Black,
                 Editable = false,
@@ -112,79 +47,26 @@ namespace ParkitectNexus.Client.View
                 Font = NSFont.SystemFontOfSize(10)
             };
 
-            // doesn't work:
-//            _modsScrollView = new NSScrollView(new Rectangle(0, 50, 204, 210) {
-//                
-//            });
-//
-//            _modsScrollView.AutohidesScrollers = true;
-//            _modsScrollView.HorizontalLineScroll = 19;
-//            _modsScrollView.HorizontalPageScroll = 10;
-//            _modsScrollView.VerticalLineScroll = 19;
-//            _modsScrollView.VerticalPageScroll = 10;
-//            _modsScrollView.UsesPredominantAxisScrolling = false;
-//            _modsScrollView.AutoresizingMask = NSViewResizingMask.HeightSizable;
-//
-//            var ol = new NSOutlineView() {
-//            };
-//            ol.SetFrameSize(new Size(202, 0));
-//            ol.RowSizeStyle = NSTableViewRowSizeStyle.Default;
-//            ol.AutosaveTableColumns = false;
-//            ol.AllowsMultipleSelection = false;
-//            ol.SelectionHighlightStyle = NSTableViewSelectionHighlightStyle.SourceList;
-//            ol.ColumnAutoresizingStyle = NSTableViewColumnAutoresizingStyle.LastColumnOnly;
-//            ol.AutoresizingMask = new NSViewResizingMask();
-//            ol.IntercellSpacing = new SizeF(3, 2);
-//            ol.BackgroundColor = NSColor.Black;// NSColor.FromCatalogName("System", "_sourceListBackgroundColor");//sourceListBackgroundColor;
-//            ol.GridColor = NSColor.Black;// NSColor.FromCatalogName("System", "gridColor");
-//
-//            var column = new NSTableColumn() {
-//            };
-//            column.Width = 199;
-//            column.MinWidth = 16;
-//            column.MaxWidth = 1000;
-//
-//            column.HeaderCell = new NSTableHeaderCell() {//"headerCell"
-//                LineBreakMode = NSLineBreakMode.TruncatingTail,
-//                Bordered = true,
-//                Font = NSFont.SystemFontOfSize( NSFont.SmallSystemFontSize), //smallSystem
-//                TextColor = NSColor.White,// NSColor.FromCatalogName("System", "headerTextColor"),
-//                BackgroundColor = NSColor.Black// NSColor.FromCatalogName("System", "headerColor")
-//            };
-//
-//            column.DataCell = new NSTextFieldCell("Text Cell") {
-//                LineBreakMode = NSLineBreakMode.TruncatingTail,
-//                Selectable = true,
-//                Editable = true,
-//                Title = "Text Cell",
-//                Font = NSFont.SystemFontOfSize(NSFont.SystemFontSize),
-//                TextColor = NSColor.White,//NSColor.FromCatalogName("System", "controlTextColor"),
-//                BackgroundColor =NSColor.Black// NSColor.FromCatalogName("System", "controlBackgroundColor")
-//            };
-//            column.ResizingMask = NSTableColumnResizing.UserResizingMask;
-//
-//            ol.AddColumn(column);
-//
-//            ds.Persons.Add(new Person("Joe Doe",10));
-//            ds.Persons.Add(new Person("Joe Doe",11));
-//            ds.Persons.Add(new Person("Joe Doe",12));
-//            ds.Persons.Add(new Person("Joe Doe",13));
-//            ds.Persons.Add(new Person("Joe Doe",14));
-//            ds.Persons.Add(new Person("Joe Doe",15));
-//            ds.Persons.Add(new Person("Joe Doe",16));
-//            ds.Persons.Add(new Person("Joe Doe",17));
-//            ds.Persons.Add(new Person("Joe Doe",18));
-//            ds.Persons.Add(new Person("Joe Doe",19));
-//            ds.Persons.Add(new Person("Joe Doe",20));
-//            ds.Persons.Add(new Person("Joe Doe",21));
-//            ds.Persons.Add(new Person("Joe Doe",22));
-//            ds.Persons.Add(new Person("Joe Doe",23));
-//            ds.Persons.Add(new Person("Joe Doe",24));
-//            ds.Persons.Add(new Person("Joe Doe",25));
-//            ds.Persons.Add(new Person("Joe Doe",26));
-//            ds.Persons.Add(new Person("Joe Doe",27));
-//            ds.Persons.Add(new Person("Joe Doe",28));
-//            ol.ReloadData();
+			int height = 270;
+
+			foreach(IParkitectMod mod in _parkitect.InstalledMods)
+			{
+				NSButton modButton = new NSButton (new Rectangle(10, height -= 20, 150, 15)) {
+					AutoresizingMask = NSViewResizingMask.MinYMargin,
+					BezelStyle = NSBezelStyle.Rounded,
+					Title = mod.Name,
+					Alignment = NSTextAlignment.Left,
+					Bordered = false
+				};
+
+				AddSubview (modButton);
+
+				modButton.Activated += (sender, e) => {
+					_selectedMod = mod;
+
+					UpdateModInfoView();
+				};
+			}
 
             _backButton = new NSButton(new Rectangle(399, 10, 81, 32)) {
                 AutoresizingMask = NSViewResizingMask.MinYMargin,
@@ -193,9 +75,10 @@ namespace ParkitectNexus.Client.View
                 Bordered = true,
             };
 
-            AddSubview(_label1);
-//            AddSubview(_modsScrollView);
+			AddSubview(_label1);
             AddSubview(_backButton);
+
+			InitializeModView ();
 
             AwakeFromNib();
         }
@@ -210,6 +93,125 @@ namespace ParkitectNexus.Client.View
                 Window.ContentView.ReplaceSubviewWith(this, new MainMenuView());
             };
         }
+
+		private void InitializeModView()
+		{
+			NSTextField modNameLabel = new NSTextField(new Rectangle(200, 250, 300, 20)) {
+				BackgroundColor = NSColor.Clear,
+				TextColor = NSColor.Black,
+				Editable = false,
+				Bezeled = false,
+				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
+				StringValue = "Mod: ",
+				Font = NSFont.SystemFontOfSize(10)
+			};
+
+			_modName = new NSTextField(new Rectangle(230, 250, 300, 20)) {
+				BackgroundColor = NSColor.Clear,
+				TextColor = NSColor.Black,
+				Editable = false,
+				Bezeled = false,
+				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
+				StringValue = "",
+				Font = NSFont.SystemFontOfSize(10)
+			};
+
+			NSTextField versionLabel = new NSTextField(new Rectangle(200, 230, 300, 20)) {
+				BackgroundColor = NSColor.Clear,
+				TextColor = NSColor.Black,
+				Editable = false,
+				Bezeled = false,
+				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
+				StringValue = "Version: ",
+				Font = NSFont.SystemFontOfSize(10)
+			};
+
+			_version = new NSTextField(new Rectangle(250, 230, 300, 20)) {
+				BackgroundColor = NSColor.Clear,
+				TextColor = NSColor.Black,
+				Editable = false,
+				Bezeled = false,
+				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
+				StringValue = "",
+				Font = NSFont.SystemFontOfSize(10)
+			};
+
+			NSTextField websiteLabel = new NSTextField(new Rectangle(200, 210, 280, 20)) {
+				BackgroundColor = NSColor.Clear,
+				TextColor = NSColor.Black,
+				Editable = false,
+				Bezeled = false,
+				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
+				StringValue = "Website: ",
+				Font = NSFont.SystemFontOfSize(10)
+			};
+
+			_website = new NSButton (new Rectangle (250, 212, 170, 20)) {
+				AutoresizingMask = NSViewResizingMask.MinYMargin,
+				BezelStyle = NSBezelStyle.Rounded,
+				Title = "View on ParkitectNexus",
+				Bordered = true,
+			};
+
+			_inDevelopment = new NSTextField(new Rectangle(200, 160, 280, 20)) {
+				BackgroundColor = NSColor.Clear,
+				TextColor = NSColor.Black,
+				Editable = false,
+				Bezeled = false,
+				AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
+				StringValue = "MOD IS IN DEVELOPMENT",
+				Font = NSFont.SystemFontOfSize(10)
+			};
+
+			_checkForUpdates = new NSButton(new Rectangle(200, 130, 280, 20)) {
+				AutoresizingMask = NSViewResizingMask.MinYMargin,
+				BezelStyle = NSBezelStyle.Rounded,
+				Title = "Check for updates",
+				Bordered = true,
+			};
+
+			_uninstall = new NSButton(new Rectangle(200, 100, 280, 20)) {
+				AutoresizingMask = NSViewResizingMask.MinYMargin,
+				BezelStyle = NSBezelStyle.Rounded,
+				Title = "Uninstall",
+				Bordered = true,
+			};
+
+			_website.Activated += (sender, e) => {
+				Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.Repository}");
+			};
+
+			_checkForUpdates.Activated += (sender, e) => {
+				// todo yo
+			};
+
+			_uninstall.Activated += (sender, e) => {
+				_selectedMod.Delete();
+
+				Window.ContentView.ReplaceSubviewWith(this, new ManageModsView(_parkitect));
+			};
+
+			AddSubview(modNameLabel);
+			AddSubview(_modName);
+
+			AddSubview (versionLabel);
+			AddSubview (_version);
+
+			AddSubview (websiteLabel);
+			AddSubview (_website);
+
+			AddSubview (_inDevelopment);
+			AddSubview (_checkForUpdates);
+			AddSubview (_uninstall);
+		}
+
+		private void UpdateModInfoView()
+		{
+			_modName.StringValue = _selectedMod.Name;
+			_version.StringValue = !string.IsNullOrEmpty (_selectedMod.Tag) ? _selectedMod.Tag : "";
+			_inDevelopment.StringValue = _selectedMod.IsDevelopment ? "Mod is in development" : "";
+			_website.Enabled = !_selectedMod.IsDevelopment;
+		}
     }
 }
 

@@ -96,7 +96,7 @@ namespace ParkitectNexus.Client.View
 
             _manageModsButton.Activated += (sender, e) =>
             {
-                Window.ContentView.ReplaceSubviewWith(this, new ManageModsView());
+				Window.ContentView.ReplaceSubviewWith(this, new ManageModsView(_parkitect));
             };
             _launchParkitectButton.Activated += (sender, e) =>
             {
