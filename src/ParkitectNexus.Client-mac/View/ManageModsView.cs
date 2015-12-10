@@ -194,7 +194,7 @@ namespace ParkitectNexus.Client.View
             };
 
             AddSubview(_label1);
-            AddSubview(_modsScrollView);
+//            AddSubview(_modsScrollView);
             AddSubview(_backButton);
 
             AwakeFromNib();

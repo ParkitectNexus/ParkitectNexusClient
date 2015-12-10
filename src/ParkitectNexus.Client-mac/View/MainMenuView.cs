@@ -2,7 +2,9 @@
 using MonoMac.AppKit;
 using System.Drawing;
 using ParkitectNexus.Data;
-using ParkitectNexus.Data.MacOSX;
+using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Game.MacOSX;
 
 namespace ParkitectNexus.Client.View
 {

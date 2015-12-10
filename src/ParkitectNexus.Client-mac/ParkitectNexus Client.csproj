@@ -91,12 +91,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <BundleResource Include="Resources\dialog_banner.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
       <Name>ParkitectNexus.Data-xamarin</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\dialog_banner.png" />
   </ItemGroup>
 </Project>

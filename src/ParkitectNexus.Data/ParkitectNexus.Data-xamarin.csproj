@@ -48,38 +48,41 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IParkitect.cs" />
-    <Compile Include="IParkitectAsset.cs" />
-    <Compile Include="IParkitectMod.cs" />
-    <Compile Include="IParkitectNexusWebsite.cs" />
-    <Compile Include="IParkitectOnlineAssetRepository.cs" />
+    <Compile Include="Bases\BaseParkitect.cs" />
+    <Compile Include="Bases\BaseParkitectPaths.cs" />
+    <Compile Include="Game\IParkitect.cs" />
+    <Compile Include="Game\IParkitectAsset.cs" />
+    <Compile Include="Game\IParkitectMod.cs" />
+    <Compile Include="Web\IParkitectNexusWebsite.cs" />
+    <Compile Include="Web\IParkitectOnlineAssetRepository.cs" />
     <Compile Include="Reporting\CrashReporter.cs" />
-    <Compile Include="DownloadInfo.cs" />
-    <Compile Include="IParkitectPaths.cs" />
-    <Compile Include="ParkitectOnlineAssetRepository.cs" />
-    <Compile Include="Windows\WindowsParkitectPaths.cs" />
+    <Compile Include="Web\DownloadInfo.cs" />
+    <Compile Include="Game\IParkitectPaths.cs" />
+    <Compile Include="Web\ParkitectOnlineAssetRepository.cs" />
+    <Compile Include="Settings\GameSettings.cs" />
+    <Compile Include="Game\Windows\WindowsParkitectPaths.cs" />
     <Compile Include="Reporting\FailedCrashReport.cs" />
     <Compile Include="Reporting\WindowsCrashReport.cs" />
-    <Compile Include="Windows\User32.cs" />
+    <Compile Include="Game\Windows\User32.cs" />
     <Compile Include="Utilities\EnumUtility.cs" />
     <Compile Include="Utilities\Log.cs" />
     <Compile Include="Utilities\LogLevel.cs" />
-    <Compile Include="Windows\WindowsParkitect.cs" />
-    <Compile Include="ParkitectAsset.cs" />
-    <Compile Include="ParkitectAssetInfoAttribute.cs" />
-    <Compile Include="ParkitectAssetType.cs" />
-    <Compile Include="ParkitectMod.cs" />
-    <Compile Include="ParkitectNexusWebsite.cs" />
-    <Compile Include="ParkitectNexusUrl.cs" />
-    <Compile Include="ParkitectNexusWebClient.cs">
+    <Compile Include="Game\Windows\WindowsParkitect.cs" />
+    <Compile Include="Game\ParkitectAsset.cs" />
+    <Compile Include="Game\ParkitectAssetInfoAttribute.cs" />
+    <Compile Include="Game\ParkitectAssetType.cs" />
+    <Compile Include="Game\ParkitectMod.cs" />
+    <Compile Include="Web\ParkitectNexusWebsite.cs" />
+    <Compile Include="Web\ParkitectNexusUrl.cs" />
+    <Compile Include="Web\ParkitectNexusWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\OperatingSystemUtility.cs" />
+    <Compile Include="OperatingSystems.cs" />
     <Compile Include="Utilities\StreamWriterLogUtility.cs" />
     <Compile Include="SupportedOperatingSystem.cs" />
-    <Compile Include="MacOSX\MacOSXParkitect.cs" />
-    <Compile Include="MacOSX\MacOSXParkitectPaths.cs" />
+    <Compile Include="Game\MacOSX\MacOSXParkitect.cs" />
+    <Compile Include="Game\MacOSX\MacOSXParkitectPaths.cs" />
     <Compile Include="Utilities\AppData.cs" />
     <Compile Include="Settings\SettingsBase.cs" />
   </ItemGroup>
@@ -97,7 +100,6 @@
   </Target>
   -->
   <ItemGroup>
-    <Folder Include="MacOSX\" />
     <Folder Include="Settings\" />
   </ItemGroup>
 </Project>
