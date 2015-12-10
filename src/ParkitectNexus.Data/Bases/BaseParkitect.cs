@@ -158,7 +158,7 @@ namespace ParkitectNexus.Data.Base
                 case ParkitectAssetType.Blueprint:
                 case ParkitectAssetType.Savegame:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
-                    var storagePath = Paths.GetPathInSavesFolder(assetInfo.StorageFolder);
+                var storagePath = Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
                     var assetPath = Path.Combine(storagePath, asset.FileName);
 
                     Directory.CreateDirectory(storagePath);
