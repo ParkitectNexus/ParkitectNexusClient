@@ -5,8 +5,9 @@ using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
 using ParkitectNexus.Data.Utilities;
 using System.IO;
+using ParkitectNexus.Data.Game.MacOSX;
 
-namespace ParkitectNexus.Clientmac
+namespace ParkitectNexus.Client
 {
     class MainClass
     {
@@ -17,6 +18,9 @@ namespace ParkitectNexus.Clientmac
             Log.WriteLine($"Starting with args '{string.Join(" ", args)}'");
 
             NSApplication.Init ();
+
+            ModLoaderUtil.InstallModLoader(new MacOSXParkitect());
+
             NSApplication.Main (args);
         }
     }

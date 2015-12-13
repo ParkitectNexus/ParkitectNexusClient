@@ -66,10 +66,6 @@
     <Compile Include="AppDelegate.designer.cs">
       <DependentUpon>AppDelegate.cs</DependentUpon>
     </Compile>
-    <Compile Include="SourceListItem.cs" />
-    <Compile Include="SourceListDataSource.cs" />
-    <Compile Include="SourceListView.cs" />
-    <Compile Include="SourceListDelegate.cs" />
     <Compile Include="Testing\TestWindow.cs" />
     <Compile Include="Testing\TestWindow.designer.cs">
       <DependentUpon>TestWindow.cs</DependentUpon>
@@ -80,6 +76,7 @@
     <Compile Include="View\MainMenuView.cs" />
     <Compile Include="View\ManageModsView.cs" />
     <Compile Include="View\InstallAssetView.cs" />
+    <Compile Include="ModLoaderUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
@@ -94,6 +91,9 @@
   <ItemGroup>
     <BundleResource Include="Resources\dialog_banner.png" />
     <BundleResource Include="Resources\logo.icns" />
+    <BundleResource Include="..\..\bin\Release\ParkitectNexus.Mod.ModLoader.dll">
+      <Link>Resources\ParkitectNexus.Mod.ModLoader.dll</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
