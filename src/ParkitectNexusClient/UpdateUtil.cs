@@ -65,7 +65,7 @@ namespace ParkitectNexus.Client
             {
                 var tempPath = Path.Combine(Path.GetTempPath(), "pncsetup.msi");
 
-                using (var webClient = new WebClient())
+                using (var webClient = new ParkitectNexusWebClient())
                 {
                     webClient.DownloadFile(update.DownloadUrl, tempPath);
                     Process.Start(tempPath);
