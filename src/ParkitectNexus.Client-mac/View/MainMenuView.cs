@@ -75,7 +75,7 @@ namespace ParkitectNexus.Client.View
                 Editable = false,
                 Bezeled = false,
                 AutoresizingMask = NSViewResizingMask.WidthSizable | NSViewResizingMask.MinYMargin,
-                StringValue = "Visit ParkitectNexus.COm to download new mods, blueprints and savegames.",
+                StringValue = "Visit ParkitectNexus.com to download new mods, blueprints and savegames.",
                 Font = NSFont.SystemFontOfSize(10)
             };
 

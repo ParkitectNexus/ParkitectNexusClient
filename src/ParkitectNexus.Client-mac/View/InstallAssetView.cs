@@ -90,6 +90,7 @@ namespace ParkitectNexus.Client.View
 
             _progressIndicator.StartAnimation(this);
 
+            Window.DoNotDisturb = true;
             InstallAsset();
 
             _closeButton.Activated += (sender, e) => {
@@ -142,6 +143,8 @@ namespace ParkitectNexus.Client.View
             }
             finally
             {
+                Window.DoNotDisturb = false;
+
                 _label3.StringValue = "Done!";
                 _progressIndicator.StopAnimation(this);
                 _closeButton.Enabled = true;

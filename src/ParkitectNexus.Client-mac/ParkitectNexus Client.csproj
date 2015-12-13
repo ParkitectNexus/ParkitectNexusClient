@@ -6,10 +6,11 @@
     <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{7854E976-7E9F-4EC2-BDD4-0D90923501EB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ParkitectNexus.Clientmac</RootNamespace>
+    <RootNamespace>ParkitectNexus.Client</RootNamespace>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <AssemblyName>ParkitectNexus Client</AssemblyName>
     <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+    <ReleaseVersion>1.2.1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,7 +30,6 @@
     <EnablePackageSigning>false</EnablePackageSigning>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -59,6 +59,7 @@
     <Folder Include="Testing\" />
     <Folder Include="Window\" />
     <Folder Include="View\" />
+    <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -77,6 +78,10 @@
     <Compile Include="View\ManageModsView.cs" />
     <Compile Include="View\InstallAssetView.cs" />
     <Compile Include="ModLoaderUtil.cs" />
+    <Compile Include="UpdateInfo.cs" />
+    <Compile Include="UpdateUtil.cs" />
+    <Compile Include="Settings\ClientSettings.cs" />
+    <Compile Include="Settings\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
@@ -89,10 +94,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <BundleResource Include="Resources\dialog_banner.png" />
-    <BundleResource Include="Resources\logo.icns" />
     <BundleResource Include="..\..\bin\Release\ParkitectNexus.Mod.ModLoader.dll">
       <Link>Resources\ParkitectNexus.Mod.ModLoader.dll</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\images\logo.icns">
+      <Link>Resources\logo.icns</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\images\dialog_banner.png">
+      <Link>Resources\dialog_banner.png</Link>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
