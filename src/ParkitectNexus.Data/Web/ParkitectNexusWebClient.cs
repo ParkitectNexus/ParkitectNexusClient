@@ -15,7 +15,8 @@ namespace ParkitectNexus.Data.Web
         public ParkitectNexusWebClient()
         {
             // Add a version number header of requests.
-            var version = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            var version = $"{Assembly.GetEntryAssembly().GetName().Version}-{OperatingSystems.GetOperatingSystem()}";
+
             Headers.Add("X-ParkitectNexusInstaller-Version", version);
             Headers.Add("user-agent", $"ParkitectNexus/{version}");
         }
