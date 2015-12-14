@@ -5,6 +5,7 @@ using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Utilities;
+using System.Threading.Tasks;
 
 namespace ParkitectNexus.Client.View
 {
@@ -90,7 +91,6 @@ namespace ParkitectNexus.Client.View
 
             _progressIndicator.StartAnimation(this);
 
-            Window.DoNotDisturb = true;
             InstallAsset();
 
             _closeButton.Activated += (sender, e) => {
@@ -104,6 +104,12 @@ namespace ParkitectNexus.Client.View
         private async void InstallAsset()
         {
             var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
+
+            while(Window == null)
+                await Task.Delay(10);
+
+            Window.DoNotDisturb = true;
+
             try
             {
                 // Download the asset.
@@ -143,7 +149,8 @@ namespace ParkitectNexus.Client.View
             }
             finally
             {
-                Window.DoNotDisturb = false;
+                if(Window != null)
+                    Window.DoNotDisturb = false;
 
                 _label3.StringValue = "Done!";
                 _progressIndicator.StopAnimation(this);
