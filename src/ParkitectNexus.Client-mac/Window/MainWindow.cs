@@ -120,8 +120,8 @@ namespace ParkitectNexus.Client.Window
 
         public void HandleInstall(ParkitectNexusUrl url)
         {
-            var _parkitect = new MacOSXParkitect();
-            _parkitect.DetectInstallationPath();
+            var parkitect = new MacOSXParkitect();
+            parkitect.DetectInstallationPath();
 
             if(url == null)
                 throw new ArgumentNullException("url");

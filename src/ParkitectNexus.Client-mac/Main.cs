@@ -6,6 +6,8 @@ using MonoMac.ObjCRuntime;
 using ParkitectNexus.Data.Utilities;
 using System.IO;
 using ParkitectNexus.Data.Game.MacOSX;
+using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Reporting;
 
 namespace ParkitectNexus.Client
 {
@@ -17,11 +19,36 @@ namespace ParkitectNexus.Client
             Log.MinimumLogLevel = LogLevel.Debug;
             Log.WriteLine($"Starting with args '{string.Join(" ", args)}'");
 
-            NSApplication.Init ();
+            var parkitect = new MacOSXParkitect();
+            parkitect.DetectInstallationPath();
+            var parkitectNexusWebsite = new ParkitectNexusWebsite();
 
-            ModLoaderUtil.InstallModLoader(new MacOSXParkitect());
+            #if !DEBUG
+            try
+            {
+            #endif
+                NSApplication.Init ();
 
-            NSApplication.Main (args);
+                try
+                {
+                    ModLoaderUtil.InstallModLoader(parkitect);
+                }
+                catch(Exception e)
+                {
+                    Log.WriteLine("Failed to install mod loader", LogLevel.Fatal);
+                    Log.WriteException(e);
+                    CrashReporter.Report("install_mod_loader", parkitect, parkitectNexusWebsite, e);
+                }
+                NSApplication.Main (args);
+            #if !DEBUG
+            }
+            catch(Exception e)
+            {
+                Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
+                Log.WriteException(e);
+                CrashReporter.Report("global", parkitect, parkitectNexusWebsite, e);
+            }
+            #endif
         }
     }
 }

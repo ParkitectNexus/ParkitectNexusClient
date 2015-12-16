@@ -6,8 +6,6 @@
 	<string>ParkitectNexus Client</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.ParkitectNexus.Client</string>
-	<key>CFBundleVersion</key>
-	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.6</string>
 	<key>NSMainNibFile</key>
@@ -33,5 +31,7 @@
 			<string>Editor</string>
 		</dict>
 	</array>
+	<key>CFBundleShortVersionString</key>
+	<string>1.2.2.0</string>
 </dict>
 </plist>

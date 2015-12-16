@@ -14,6 +14,7 @@ using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting
 {
+
     [JsonObject(MemberSerialization.OptIn)]
     public class WindowsCrashReport
     {
@@ -41,7 +42,7 @@ namespace ParkitectNexus.Data.Reporting
                 (from x in
                     new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get()
                         .OfType<ManagementObject>()
-                    select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown";
+            select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown (Windows)";
 
         [JsonProperty]
         public int ProcessBits => IntPtr.Size*8;
@@ -85,23 +86,6 @@ namespace ParkitectNexus.Data.Reporting
                     var result = File.ReadAllText(path);
                     Utilities.Log.Open(path);
                     return result;
-                }
-                catch (Exception e)
-                {
-                    return "failed to open: " + e.Message;
-                }
-            }
-        }
-
-        [JsonProperty]
-        public string MonoObjectInjectorLog
-        {
-            get
-            {
-                try
-                {
-                    var path = Path.Combine(AppData.Path, "MonoObjectInjector.log");
-                    return File.Exists(path) ? File.ReadAllText(path) : null;
                 }
                 catch (Exception e)
                 {

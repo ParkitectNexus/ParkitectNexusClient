@@ -5,6 +5,8 @@ using ParkitectNexus.Data;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.MacOSX;
+using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Reporting;
 
 namespace ParkitectNexus.Client.View
 {
@@ -24,6 +26,7 @@ namespace ParkitectNexus.Client.View
         public MainMenuView()
         {
             _parkitect = new MacOSXParkitect();
+            _parkitect.DetectInstallationPath();
             _parkitectNexusWebsite = new ParkitectNexusWebsite();
 
             _manageModsButton = new NSButton(new Rectangle(55, 249, 152, 32)) {
@@ -100,12 +103,30 @@ namespace ParkitectNexus.Client.View
             };
             _launchParkitectButton.Activated += (sender, e) =>
             {
-                _parkitect.Launch();
+                try
+                {
+                    _parkitect.Launch();
+                }
+                catch(Exception ex)
+                {
+                    Log.WriteLine("Failed to launch game", LogLevel.Fatal);
+                    Log.WriteException(ex);
+                    CrashReporter.Report("launch_from_menu", _parkitect, _parkitectNexusWebsite, ex);
+                }
                 Window.Terminate();
             };
             _visitParkitectNexusButton.Activated += (sender, e) =>
             {
-                _parkitectNexusWebsite.Launch();
+                try
+                {
+                    _parkitectNexusWebsite.Launch();
+                }
+                catch(Exception ex)
+                {
+                    Log.WriteLine("Failed to launch game", LogLevel.Fatal);
+                    Log.WriteException(ex);
+                    CrashReporter.Report("launch_pn_from_menu", _parkitect, _parkitectNexusWebsite, ex);
+                }
                 Window.Terminate();
             };
             _closeButton.Activated += (sender, e) =>
