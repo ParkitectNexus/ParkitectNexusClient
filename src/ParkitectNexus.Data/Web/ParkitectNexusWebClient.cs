@@ -4,7 +4,6 @@
 using System;
 using System.Net;
 using System.Reflection;
-using System.Net.Cache;
 
 namespace ParkitectNexus.Data.Web
 {
@@ -15,10 +14,11 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         public ParkitectNexusWebClient()
         {
+			
             // Workaround: disable certificate cache on MacOSX.
             if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
             {
-                CachePolicy = new System.Net.Cache.RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+               // CachePolicy = new System.Net.Cache.RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
             }
 
             // Add a version number header of requests.

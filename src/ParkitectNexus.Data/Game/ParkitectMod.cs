@@ -2,6 +2,7 @@
 // Copyright 2015 Parkitect, Tim Potze
 
 using System;
+using Microsoft.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
