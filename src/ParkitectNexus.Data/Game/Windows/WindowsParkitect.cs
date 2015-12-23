@@ -19,11 +19,11 @@ namespace ParkitectNexus.Data.Game.Windows
             Paths = new WindowsParkitectPaths(this);
         }
 
-        /// <summary>
-        ///     Gets a collection of paths.
-        /// </summary>
-        public override IParkitectPaths Paths { get; }
 
+		///<summary>
+		/// get a collection of paths
+		/// </summary>
+		public override IParkitectPaths Paths {get;protected set;}
 
         /// <summary>
         ///     Detects the installation path.

@@ -50,12 +50,16 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="Mono.C5" />
+    <Reference Include="CommandLine">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="..\images\dialog_banner.png" />
+    <EmbeddedResource Include="..\images\nexus.ico" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -63,12 +67,19 @@
     <Compile Include="gtk-gui\MainWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CommandLine.cs" />
+    <Compile Include="Settings\ClientSettings.cs" />
+    <Compile Include="ParkitectFindError.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ParkitectFindError.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Content Include="dialog_banner.png">
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="nexus.ico">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -80,5 +91,11 @@
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
       <Name>ParkitectNexus.Data-xamarin</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Settings\" />
   </ItemGroup>
 </Project>

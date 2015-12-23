@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
-using TwoPS.Processes;
+using System.Diagnostics;
 
 namespace ParkitectNexus.Data.Base
 {
@@ -53,7 +53,7 @@ namespace ParkitectNexus.Data.Base
         /// <summary>
         ///     Gets a collection of paths.
         /// </summary>
-        public abstract IParkitectPaths Paths { get; }
+		public abstract IParkitectPaths Paths { get;protected set; }
 
         /// <summary>
         ///     Gets a collection of assembly names provided by the game.

@@ -6,6 +6,7 @@ using System.IO;
 using ParkitectNexus.Data.Base;
 using ParkitectNexus.Data.Utilities;
 
+
 namespace ParkitectNexus.Data.Game.MacOSX
 {
     /// <summary>
@@ -18,10 +19,11 @@ namespace ParkitectNexus.Data.Game.MacOSX
             Paths = new MacOSXParkitectPaths(this);
         }
 
-        /// <summary>
-        ///     Gets a collection of paths.
-        /// </summary>
-        public override IParkitectPaths Paths { get; }
+
+		///<summary>
+		/// get a collection of paths
+		/// </summary>
+		public override IParkitectPaths Paths {get;protected set;}
 
         /// <summary>
         ///     Detects the installation path.

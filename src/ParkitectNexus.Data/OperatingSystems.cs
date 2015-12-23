@@ -38,6 +38,7 @@ namespace ParkitectNexus.Data
 
         public static SupportedOperatingSystem GetOperatingSystem()
         {
+			
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32NT:
@@ -47,10 +48,11 @@ namespace ParkitectNexus.Data
                     return SupportedOperatingSystem.Windows;
                 case PlatformID.MacOSX:
                     return SupportedOperatingSystem.MacOSX;
-			case PlatformID.Unix:
-				if (IsUnixMacOSXPlatform ())
-					return SupportedOperatingSystem.MacOSX;
-				break;
+			    case PlatformID.Unix:
+					if (IsUnixMacOSXPlatform ())
+						return SupportedOperatingSystem.MacOSX;
+					else
+						return SupportedOperatingSystem.Linux;
             }
 
 			throw new ApplicationException("unsupported platform " + Environment.OSVersion.Platform);

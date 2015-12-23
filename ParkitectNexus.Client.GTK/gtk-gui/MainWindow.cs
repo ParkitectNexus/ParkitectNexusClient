@@ -3,7 +3,15 @@
 
 public partial class MainWindow
 {
+	private global::Gtk.UIManager UIManager;
+	
+	private global::Gtk.Action helpAction;
+	
+	private global::Gtk.Action helpAction1;
+	
 	private global::Gtk.VBox vbox3;
+	
+	private global::Gtk.MenuBar menubar2;
 	
 	private global::Gtk.Image image2;
 	
@@ -25,6 +33,16 @@ public partial class MainWindow
 	{
 		global::Stetic.Gui.Initialize (this);
 		// Widget MainWindow
+		this.UIManager = new global::Gtk.UIManager ();
+		global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
+		this.helpAction = new global::Gtk.Action ("helpAction", global::Mono.Unix.Catalog.GetString ("help"), null, null);
+		this.helpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("help");
+		w1.Add (this.helpAction, null);
+		this.helpAction1 = new global::Gtk.Action ("helpAction1", global::Mono.Unix.Catalog.GetString ("help"), null, null);
+		this.helpAction1.ShortLabel = global::Mono.Unix.Catalog.GetString ("help");
+		w1.Add (this.helpAction1, null);
+		this.UIManager.InsertActionGroup (w1, 0);
+		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
 		this.Title = global::Mono.Unix.Catalog.GetString ("MainWindow");
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
@@ -34,14 +52,23 @@ public partial class MainWindow
 		this.vbox3.Name = "vbox3";
 		this.vbox3.Spacing = 6;
 		// Container child vbox3.Gtk.Box+BoxChild
+		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='helpAction1' action='helpAction1'/></menubar></ui>");
+		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
+		this.menubar2.Name = "menubar2";
+		this.vbox3.Add (this.menubar2);
+		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.menubar2]));
+		w2.Position = 0;
+		w2.Expand = false;
+		w2.Fill = false;
+		// Container child vbox3.Gtk.Box+BoxChild
 		this.image2 = new global::Gtk.Image ();
 		this.image2.Name = "image2";
 		this.image2.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("ParkitectNexus.Client.GTK.dialog_banner.png");
 		this.vbox3.Add (this.image2);
-		global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.image2]));
-		w1.Position = 0;
-		w1.Expand = false;
-		w1.Fill = false;
+		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.image2]));
+		w3.Position = 1;
+		w3.Expand = false;
+		w3.Fill = false;
 		// Container child vbox3.Gtk.Box+BoxChild
 		this.hpaned4 = new global::Gtk.HPaned ();
 		this.hpaned4.CanFocus = true;
@@ -57,8 +84,8 @@ public partial class MainWindow
 		this.Mods.Name = "Mods";
 		this.GtkScrolledWindow.Add (this.Mods);
 		this.hpaned4.Add (this.GtkScrolledWindow);
-		global::Gtk.Paned.PanedChild w3 = ((global::Gtk.Paned.PanedChild)(this.hpaned4 [this.GtkScrolledWindow]));
-		w3.Resize = false;
+		global::Gtk.Paned.PanedChild w5 = ((global::Gtk.Paned.PanedChild)(this.hpaned4 [this.GtkScrolledWindow]));
+		w5.Resize = false;
 		// Container child hpaned4.Gtk.Paned+PanedChild
 		this.vbox6 = new global::Gtk.VBox ();
 		this.vbox6.Name = "vbox6";
@@ -74,10 +101,10 @@ public partial class MainWindow
 		this.button5.UseUnderline = true;
 		this.button5.Label = global::Mono.Unix.Catalog.GetString ("GtkButton");
 		this.hbox2.Add (this.button5);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button5]));
-		w4.Position = 0;
-		w4.Expand = false;
-		w4.Fill = false;
+		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button5]));
+		w6.Position = 0;
+		w6.Expand = false;
+		w6.Fill = false;
 		// Container child hbox2.Gtk.Box+BoxChild
 		this.button6 = new global::Gtk.Button ();
 		this.button6.CanFocus = true;
@@ -85,19 +112,19 @@ public partial class MainWindow
 		this.button6.UseUnderline = true;
 		this.button6.Label = global::Mono.Unix.Catalog.GetString ("GtkButton");
 		this.hbox2.Add (this.button6);
-		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button6]));
-		w5.Position = 1;
-		w5.Expand = false;
-		w5.Fill = false;
+		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button6]));
+		w7.Position = 1;
+		w7.Expand = false;
+		w7.Fill = false;
 		this.vbox6.Add (this.hbox2);
-		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.hbox2]));
-		w6.Position = 2;
-		w6.Expand = false;
-		w6.Fill = false;
+		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.hbox2]));
+		w8.Position = 2;
+		w8.Expand = false;
+		w8.Fill = false;
 		this.hpaned4.Add (this.vbox6);
 		this.vbox3.Add (this.hpaned4);
-		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hpaned4]));
-		w8.Position = 1;
+		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hpaned4]));
+		w10.Position = 2;
 		this.Add (this.vbox3);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();

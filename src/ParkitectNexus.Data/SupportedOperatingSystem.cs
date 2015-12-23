@@ -16,6 +16,11 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     The Mac OSX operating system.
         /// </summary>
-        MacOSX
+        MacOSX,
+
+		/// <summary>
+		///  This Linux operating system
+		/// </summary>
+		Linux
     }
 }
