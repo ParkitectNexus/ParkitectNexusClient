@@ -17,6 +17,7 @@ namespace ParkitectNexus.Client.GTK
 			global::Stetic.Gui.Initialize (this);
 			// Widget ParkitectNexus.Client.GTK.ParkitectUpdate
 			this.Name = "ParkitectNexus.Client.GTK.ParkitectUpdate";
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("ParkitectNexus.Client.GTK.nexus.ico");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.Resizable = false;
 			// Internal child ParkitectNexus.Client.GTK.ParkitectUpdate.VBox

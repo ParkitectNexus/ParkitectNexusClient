@@ -50,23 +50,24 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="Mono.C5" />
-    <Reference Include="CommandLine">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Package>monodevelop</Package>
     </Reference>
     <Reference Include="System.Core">
       <HintPath>..\..\..\..\..\lib\mono\4.5\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel" />
+    <Reference Include="CommandLine">
+      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\images\dialog_banner.png" />
-    <EmbeddedResource Include="..\images\nexus.ico" />
+    <EmbeddedResource Include="..\..\images\dialog_banner.png" />
+    <EmbeddedResource Include="..\..\images\nexus.ico" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -94,11 +95,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
       <Name>ParkitectNexus.Data-xamarin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj">
+    <ProjectReference Include="..\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj">
       <Project>{3451EBAF-3D69-4019-92BE-10E331F32A6F}</Project>
       <Name>ParkitectNexus.Mod.ModLoader-xamarin</Name>
     </ProjectReference>

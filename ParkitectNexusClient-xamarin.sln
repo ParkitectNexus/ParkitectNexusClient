@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Mod.ModLoade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus Client", "src\ParkitectNexus.Client-mac\ParkitectNexus Client.csproj", "{7854E976-7E9F-4EC2-BDD4-0D90923501EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.GTK", "ParkitectNexus.Client.GTK\ParkitectNexus.Client.GTK.csproj", "{F0C6B7B0-9CE5-46E6-B4AC-498C9FE50E10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.GTK", "src\ParkitectNexus.Client.GTK\ParkitectNexus.Client.GTK.csproj", "{F0C6B7B0-9CE5-46E6-B4AC-498C9FE50E10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
