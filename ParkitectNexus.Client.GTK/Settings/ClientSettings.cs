@@ -1,5 +1,6 @@
 ﻿using System;
 using ParkitectNexus.Data.Settings;
+using Newtonsoft.Json.Linq;
 
 namespace ParkitectNexus.Client.GTK
 {
@@ -7,6 +8,9 @@ namespace ParkitectNexus.Client.GTK
 	{
 		public bool BootOnNextRun{get;set;}
 		public String DownloadOnNextRun{get;set;}
+
+
+	
 	}
 }
 

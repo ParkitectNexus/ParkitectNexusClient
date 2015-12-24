@@ -14,7 +14,7 @@ namespace ParkitectNexus.Data.Game.Windows
     /// </summary>
     public class WindowsParkitect : BaseParkitect
     {
-        public WindowsParkitect()
+		public WindowsParkitect()
         {
             Paths = new WindowsParkitectPaths(this);
         }

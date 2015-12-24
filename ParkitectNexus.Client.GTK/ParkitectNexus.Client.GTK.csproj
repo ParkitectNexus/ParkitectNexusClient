@@ -53,6 +53,13 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>..\..\..\..\..\lib\mono\4.5\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -71,6 +78,10 @@
     <Compile Include="Settings\ClientSettings.cs" />
     <Compile Include="ParkitectFindError.cs" />
     <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ParkitectFindError.cs" />
+    <Compile Include="ParkitectUpdate.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ParkitectUpdate.cs" />
+    <Compile Include="UpdateInfo.cs" />
+    <Compile Include="ParkitectNexusProtocol.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -83,13 +94,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj">
-      <Project>{3451EBAF-3D69-4019-92BE-10E331F32A6F}</Project>
-      <Name>ParkitectNexus.Mod.ModLoader-xamarin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\src\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
       <Name>ParkitectNexus.Data-xamarin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj">
+      <Project>{3451EBAF-3D69-4019-92BE-10E331F32A6F}</Project>
+      <Name>ParkitectNexus.Mod.ModLoader-xamarin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -42,11 +42,13 @@ namespace ParkitectNexus.Client.GTK
 					if (!this.parkitect.SetInstallationPathIfValid (fc.Filename)) {
 						Gtk.MessageDialog errorDialog = new MessageDialog (fc, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.YesNo, "the folder you selected does not contain Parkitect!\n Would you like to try again?");
 						if (errorDialog.Run () == (int)Gtk.ResponseType.No) {
+							
 							Environment.Exit (0);
 						} else {
 							errorDialog.Destroy ();
 						}
 					} else {
+						
 					}
 					break;
 				}

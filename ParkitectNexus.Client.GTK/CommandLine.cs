@@ -7,7 +7,7 @@ namespace ParkitectNexus.Client.GTK
 	/// <summary>
 	///     Represents a collection of command line options which can be set with the execution of the application.
 	/// </summary>
-	internal class CommandLineOptions
+	public class CommandLineOptions
 	{
 		/// <summary>
 		///     Gets the download URL of an asset file.

@@ -31,10 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -50,6 +48,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
       <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Core">
+      <HintPath>..\..\..\..\..\..\lib\mono\4.5\System.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +94,7 @@
     <Compile Include="Game\MacOSX\MacOSXParkitect.cs" />
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
     <Compile Include="Game\Linux\LinuxParkitectPath.cs" />
+    <Compile Include="Game\ModLoaderUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

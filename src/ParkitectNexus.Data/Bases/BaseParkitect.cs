@@ -41,7 +41,7 @@ namespace ParkitectNexus.Data.Base
                     throw new ArgumentException("invalid installation path", nameof(value));
 
                 _gameSettings.InstallationPath = value;
-                _gameSettings.Save();
+				_gameSettings.Save();
             }
         }
 
