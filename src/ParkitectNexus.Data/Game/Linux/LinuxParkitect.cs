@@ -59,6 +59,7 @@ namespace ParkitectNexus.Data
 				return running;
 			}
 
+			var t = Log.LoggingPath;
 			Log.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
 			// Start the game process.
 			return !IsInstalled

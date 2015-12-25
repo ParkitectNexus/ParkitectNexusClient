@@ -19,7 +19,7 @@ namespace ParkitectNexus.Client.GTK
 
 		private volatile bool isFinished = false;
 
-		public static void Download(ParkitectNexusUrl parkitectNexusUrl, IParkitect parkitect,
+		public static bool Download(ParkitectNexusUrl parkitectNexusUrl, IParkitect parkitect,
 			IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
 		{
 			// Run the download process in an installer form, for a nice visible process.
@@ -28,15 +28,14 @@ namespace ParkitectNexus.Client.GTK
 			switch (form.Run ()) {
 			case (int)Gtk.ResponseType.Apply:
 				form.Destroy ();
-				break;
+				return true;
 			default:
-				Environment.Exit (0);
-				break;
+				return false;
 			}
 
 		}
 
-		public static void Download(string url, IParkitect parkitect,
+		public static bool Download(string url, IParkitect parkitect,
 			IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
 		{
 			// Try to parse the specified download url. If parsing fails open ParkitectNexus. 
@@ -47,9 +46,9 @@ namespace ParkitectNexus.Client.GTK
 				Gtk.MessageDialog errorDialog = new MessageDialog (null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok,"The URL you opened is invalid!");
 				errorDialog.Run ();
 				errorDialog.Destroy();
-				return;
+				return false;
 			}
-			Download (parkitectNexusUrl, parkitect, parkitectOnlineAssetRepository);
+			return Download (parkitectNexusUrl, parkitect, parkitectOnlineAssetRepository);
 	
 		}
 
@@ -113,7 +112,6 @@ namespace ParkitectNexus.Client.GTK
 			} else {
 				Progress_Bar.Pulse ();
 
-				Progress_Label.Text = "Download...";
 			}
 			return true;
 		}
@@ -133,6 +131,7 @@ namespace ParkitectNexus.Client.GTK
 						Gtk.MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.YesNo, $"Failed to install {assetName}!\nPlease try again later.","ParkitectNexus Client");
 						errorDialog.Run ();	
 						this.Destroy();
+						this.Respond(ResponseType.Close);
 
 					});
 					return;
@@ -155,6 +154,7 @@ namespace ParkitectNexus.Client.GTK
 					Gtk.MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.YesNo, $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}");
 					errorDialog.Run ();	
 					this.Destroy();
+					this.Respond(ResponseType.Close);
 
 				});
 

@@ -57,6 +57,8 @@ namespace ParkitectNexus.Client.GTK
 			Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 			Log.MinimumLogLevel = options.LogLevel;
 
+			Log.MinimumLogLevel = LogLevel.Debug;
+
 			Application.Init ();
 		
 
@@ -76,7 +78,7 @@ namespace ParkitectNexus.Client.GTK
 				}
 					
 				
-				if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+
 					ParkitectNexusProtocol.Install();
 
 				//find the new location of where parkitect is installed
@@ -103,7 +105,8 @@ namespace ParkitectNexus.Client.GTK
 				// Install backlog.
 				if (!string.IsNullOrWhiteSpace(settings.DownloadOnNextRun))
 				{
-					ModDownload.Download(settings.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository);
+					if(!ModDownload.Download(settings.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository))
+						Environment.Exit(0);	
 					settings.DownloadOnNextRun = null;
 					settings.Save();
 				}

@@ -192,5 +192,13 @@ public partial class MainWindow: Gtk.Window
 
 
 	}
+		
+	protected void Install_Mod (object sender, EventArgs e)
+	{
+		ModUri installMod = new ModUri (_parkitect,_parkitectOnlineAssetRepository);
+		installMod.Run ();
+		installMod.Destroy ();
+	
+	}
 
 }
