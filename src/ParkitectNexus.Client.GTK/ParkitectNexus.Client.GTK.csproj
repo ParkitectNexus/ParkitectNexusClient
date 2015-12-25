@@ -83,17 +83,10 @@
     <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ParkitectUpdate.cs" />
     <Compile Include="UpdateInfo.cs" />
     <Compile Include="ParkitectNexusProtocol.cs" />
+    <Compile Include="ModDownload.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ModDownload.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Content Include="dialog_banner.png">
-      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="nexus.ico">
-      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
-    </Content>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>

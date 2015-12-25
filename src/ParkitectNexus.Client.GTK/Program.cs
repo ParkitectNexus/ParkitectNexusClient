@@ -50,6 +50,7 @@ namespace ParkitectNexus.Client.GTK
 			var options = new CommandLineOptions();
 			var settings = new ClientSettings();
 
+
 			//missing method for LINQ
 			Parser.Default.ParseArguments(args, options);
 
@@ -82,8 +83,14 @@ namespace ParkitectNexus.Client.GTK
 				if (!parkitect.IsInstalled) {
 					ParkitectFindError parkitectError = new ParkitectFindError (parkitect);
 					parkitectError.Show ();
-					if (parkitectError.Run () == (int)Gtk.ResponseType.Close) {
-						parkitectError.Destroy ();
+					switch(parkitectError.Run ())
+					{
+						case (int)Gtk.ResponseType.Ok:
+							parkitectError.Destroy();
+						break;
+						default:
+							Environment.Exit (0);
+						break;
 					}
 				}
 
@@ -96,7 +103,7 @@ namespace ParkitectNexus.Client.GTK
 				// Install backlog.
 				if (!string.IsNullOrWhiteSpace(settings.DownloadOnNextRun))
 				{
-					Download(settings.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository);
+					ModDownload.Download(settings.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository);
 					settings.DownloadOnNextRun = null;
 					settings.Save();
 				}
@@ -104,7 +111,7 @@ namespace ParkitectNexus.Client.GTK
 				// Process download option.
 				if (options.DownloadUrl != null)
 				{
-					Download(options.DownloadUrl, parkitect, parkitectOnlineAssetRepository);
+					ModDownload.Download(options.DownloadUrl, parkitect, parkitectOnlineAssetRepository);
 					return;
 				}
 
@@ -121,7 +128,7 @@ namespace ParkitectNexus.Client.GTK
 				settings.BootOnNextRun = false;
 				settings.Save();
 
-				MainWindow window = new MainWindow ();
+				MainWindow window = new MainWindow (parkitectNexusWebsite,parkitect,parkitectOnlineAssetRepository);
 				window.DeleteEvent += (o , arg) =>{
 					// Handle silent calls.
 					Log.Close();
@@ -146,28 +153,11 @@ namespace ParkitectNexus.Client.GTK
 			}
 
 			Application.Run ();
+
+
 		}
 
 
-		private static void Download(string url, IParkitect parkitect,
-			IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
-		{
-			// Try to parse the specified download url. If parsing fails open ParkitectNexus. 
-			ParkitectNexusUrl parkitectNexusUrl;
-			if (!ParkitectNexusUrl.TryParse(url, out parkitectNexusUrl))
-			{
-				// Create a form to allow the dialogs to have a owner with forced focus and an icon.
-
-				Gtk.MessageDialog errorDialog = new MessageDialog (null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok,"The URL you opened is invalid!");
-				errorDialog.Run ();
-				errorDialog.Destroy();
-				return;
-			}
-
-			// Run the download process in an installer form, for a nice visible process.
-			//var form = new WizardForm();
-			//form.Attach(new InstallAssetUserControl(parkitect, parkitectOnlineAssetRepository, parkitectNexusUrl, null));
-			//Application.Run(form);
-		}
+	
 	}
 }

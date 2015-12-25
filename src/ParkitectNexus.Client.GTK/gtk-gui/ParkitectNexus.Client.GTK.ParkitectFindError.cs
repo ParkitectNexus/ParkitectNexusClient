@@ -113,7 +113,7 @@ namespace ParkitectNexus.Client.GTK
 			this.buttonOk.UseStock = true;
 			this.buttonOk.UseUnderline = true;
 			this.buttonOk.Label = "gtk-ok";
-			this.AddActionWidget (this.buttonOk, -5);
+			w8.Add (this.buttonOk);
 			global::Gtk.ButtonBox.ButtonBoxChild w10 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.buttonOk]));
 			w10.Position = 1;
 			w10.Expand = false;

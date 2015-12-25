@@ -31,28 +31,37 @@ namespace ParkitectNexus.Client.GTK
 			fc.SelectionChanged += (o, args) => {
 				fc.StyleGetProperty("Select");
 			};
-
-			while (true) {
+			bool ask_user_again = true;
+			while (ask_user_again) {
+				
 				switch (fc.Run ()) {
 				case (int)Gtk.ResponseType.Cancel:
-					fc.Destroy ();
+					ask_user_again = false;
 					break;
 				case (int)Gtk.ResponseType.Ok:
-					string s = fc.Filename;
 					if (!this.parkitect.SetInstallationPathIfValid (fc.Filename)) {
 						Gtk.MessageDialog errorDialog = new MessageDialog (fc, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.YesNo, "the folder you selected does not contain Parkitect!\n Would you like to try again?");
-						if (errorDialog.Run () == (int)Gtk.ResponseType.No) {
-							
-							Environment.Exit (0);
-						} else {
+						switch (errorDialog.Run ()) {
+						case (int)ResponseType.Yes:
 							errorDialog.Destroy ();
+						break;
+						default:
+							Environment.Exit (0);
+							break;
 						}
 					} else {
-						
+						this.Respond (ResponseType.Ok);
+						ask_user_again = false;
 					}
-					break;
+				break;
+				 default:
+					Environment.Exit (0);
+				break;
+					
 				}
+
 			}
+			fc.Destroy ();
 
 			//throw new NotImplementedException ();
 		}
