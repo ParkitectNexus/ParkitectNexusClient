@@ -57,8 +57,6 @@ namespace ParkitectNexus.Client.GTK
 			Log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 			Log.MinimumLogLevel = options.LogLevel;
 
-			Log.MinimumLogLevel = LogLevel.Debug;
-
 			Application.Init ();
 		
 
