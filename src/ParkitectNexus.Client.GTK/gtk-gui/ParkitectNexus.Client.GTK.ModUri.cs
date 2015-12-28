@@ -12,7 +12,7 @@ namespace ParkitectNexus.Client.GTK
 		
 		private global::Gtk.Alignment alignment1;
 		
-		private global::Gtk.Entry Nexus_URI;
+		private global::Gtk.Entry txtNexusURI;
 		
 		private global::Gtk.Button buttonCancel;
 		
@@ -23,7 +23,10 @@ namespace ParkitectNexus.Client.GTK
 			global::Stetic.Gui.Initialize (this);
 			// Widget ParkitectNexus.Client.GTK.ModUri
 			this.Name = "ParkitectNexus.Client.GTK.ModUri";
+			this.Title = global::Mono.Unix.Catalog.GetString ("ParkitectNexus Client");
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("ParkitectNexus.Client.GTK.nexus.ico");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+			this.Resizable = false;
 			// Internal child ParkitectNexus.Client.GTK.ModUri.VBox
 			global::Gtk.VBox w1 = this.VBox;
 			w1.Name = "dialog1_VBox";
@@ -36,6 +39,7 @@ namespace ParkitectNexus.Client.GTK
 			this.alignment2 = new global::Gtk.Alignment (0.5F, 0.5F, 1F, 1F);
 			this.alignment2.Name = "alignment2";
 			this.alignment2.LeftPadding = ((uint)(30));
+			this.alignment2.RightPadding = ((uint)(30));
 			this.alignment2.BottomPadding = ((uint)(20));
 			// Container child alignment2.Gtk.Container+ContainerChild
 			this.label2 = new global::Gtk.Label ();
@@ -55,12 +59,12 @@ namespace ParkitectNexus.Client.GTK
 			this.alignment1.LeftPadding = ((uint)(20));
 			this.alignment1.RightPadding = ((uint)(20));
 			// Container child alignment1.Gtk.Container+ContainerChild
-			this.Nexus_URI = new global::Gtk.Entry ();
-			this.Nexus_URI.CanFocus = true;
-			this.Nexus_URI.Name = "Nexus_URI";
-			this.Nexus_URI.IsEditable = true;
-			this.Nexus_URI.InvisibleChar = '●';
-			this.alignment1.Add (this.Nexus_URI);
+			this.txtNexusURI = new global::Gtk.Entry ();
+			this.txtNexusURI.CanFocus = true;
+			this.txtNexusURI.Name = "txtNexusURI";
+			this.txtNexusURI.IsEditable = true;
+			this.txtNexusURI.InvisibleChar = '●';
+			this.alignment1.Add (this.txtNexusURI);
 			this.vbox2.Add (this.alignment1);
 			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.alignment1]));
 			w5.Position = 2;

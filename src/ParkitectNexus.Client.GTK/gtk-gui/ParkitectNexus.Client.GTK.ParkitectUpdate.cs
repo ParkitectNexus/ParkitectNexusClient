@@ -6,17 +6,18 @@ namespace ParkitectNexus.Client.GTK
 	{
 		private global::Gtk.Alignment alignment2;
 		
-		private global::Gtk.Label update_info;
+		private global::Gtk.Label updateInfo;
 		
-		private global::Gtk.Button buttonCancel;
+		private global::Gtk.Button btnCancel;
 		
-		private global::Gtk.Button buttonOk;
+		private global::Gtk.Button btnOk;
 
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget ParkitectNexus.Client.GTK.ParkitectUpdate
 			this.Name = "ParkitectNexus.Client.GTK.ParkitectUpdate";
+			this.Title = global::Mono.Unix.Catalog.GetString ("ParkitectNexus Client");
 			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("ParkitectNexus.Client.GTK.nexus.ico");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.Resizable = false;
@@ -31,12 +32,12 @@ namespace ParkitectNexus.Client.GTK
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(w1 [this.alignment2]));
 			w2.Position = 0;
 			// Container child dialog1_VBox.Gtk.Box+BoxChild
-			this.update_info = new global::Gtk.Label ();
-			this.update_info.Name = "update_info";
-			this.update_info.LabelProp = global::Mono.Unix.Catalog.GetString ("label4");
-			this.update_info.Wrap = true;
-			w1.Add (this.update_info);
-			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(w1 [this.update_info]));
+			this.updateInfo = new global::Gtk.Label ();
+			this.updateInfo.Name = "updateInfo";
+			this.updateInfo.LabelProp = global::Mono.Unix.Catalog.GetString ("label4");
+			this.updateInfo.Wrap = true;
+			w1.Add (this.updateInfo);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(w1 [this.updateInfo]));
 			w3.Position = 1;
 			w3.Expand = false;
 			w3.Fill = false;
@@ -47,27 +48,27 @@ namespace ParkitectNexus.Client.GTK
 			w4.BorderWidth = ((uint)(5));
 			w4.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
-			this.buttonCancel = new global::Gtk.Button ();
-			this.buttonCancel.CanDefault = true;
-			this.buttonCancel.CanFocus = true;
-			this.buttonCancel.Name = "buttonCancel";
-			this.buttonCancel.UseStock = true;
-			this.buttonCancel.UseUnderline = true;
-			this.buttonCancel.Label = "gtk-cancel";
-			this.AddActionWidget (this.buttonCancel, -6);
-			global::Gtk.ButtonBox.ButtonBoxChild w5 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w4 [this.buttonCancel]));
+			this.btnCancel = new global::Gtk.Button ();
+			this.btnCancel.CanDefault = true;
+			this.btnCancel.CanFocus = true;
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.UseStock = true;
+			this.btnCancel.UseUnderline = true;
+			this.btnCancel.Label = "gtk-cancel";
+			this.AddActionWidget (this.btnCancel, -6);
+			global::Gtk.ButtonBox.ButtonBoxChild w5 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w4 [this.btnCancel]));
 			w5.Expand = false;
 			w5.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
-			this.buttonOk = new global::Gtk.Button ();
-			this.buttonOk.CanDefault = true;
-			this.buttonOk.CanFocus = true;
-			this.buttonOk.Name = "buttonOk";
-			this.buttonOk.UseStock = true;
-			this.buttonOk.UseUnderline = true;
-			this.buttonOk.Label = "gtk-ok";
-			this.AddActionWidget (this.buttonOk, -5);
-			global::Gtk.ButtonBox.ButtonBoxChild w6 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w4 [this.buttonOk]));
+			this.btnOk = new global::Gtk.Button ();
+			this.btnOk.CanDefault = true;
+			this.btnOk.CanFocus = true;
+			this.btnOk.Name = "btnOk";
+			this.btnOk.UseStock = true;
+			this.btnOk.UseUnderline = true;
+			this.btnOk.Label = "gtk-ok";
+			this.AddActionWidget (this.btnOk, -5);
+			global::Gtk.ButtonBox.ButtonBoxChild w6 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w4 [this.btnOk]));
 			w6.Position = 1;
 			w6.Expand = false;
 			w6.Fill = false;
@@ -77,8 +78,8 @@ namespace ParkitectNexus.Client.GTK
 			this.DefaultWidth = 400;
 			this.DefaultHeight = 190;
 			this.Show ();
-			this.buttonCancel.Clicked += new global::System.EventHandler (this.Cancel);
-			this.buttonOk.Clicked += new global::System.EventHandler (this.Update);
+			this.btnCancel.Clicked += new global::System.EventHandler (this.Cancel);
+			this.btnOk.Clicked += new global::System.EventHandler (this.ProceedToUpdate);
 		}
 	}
 }

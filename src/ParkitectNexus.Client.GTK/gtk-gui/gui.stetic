@@ -31,10 +31,11 @@
       </action>
     </action-group>
     <property name="MemberName" />
-    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="Title" translatable="yes">ParkitectNexus Client</property>
+    <property name="Icon">resource:ParkitectNexus.Client.GTK.nexus.ico</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="BorderWidth">3</property>
-    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <signal name="DeleteEvent" handler="OnDeleteEvent" after="yes" />
     <child>
       <widget class="Gtk.VBox" id="vbox3">
         <property name="MemberName" />
@@ -73,13 +74,13 @@
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Button" id="button56">
+                  <widget class="Gtk.Button" id="btnInstallMod">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Install Mod</property>
                     <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="Install_Mod" after="yes" />
+                    <signal name="Clicked" handler="InstallMod" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -93,7 +94,7 @@
                     <property name="MemberName" />
                     <property name="ShadowType">In</property>
                     <child>
-                      <widget class="Gtk.NodeView" id="Mods">
+                      <widget class="Gtk.NodeView" id="listViewMods">
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="ShowScrollbars">True</property>
@@ -148,7 +149,7 @@
                                   <placeholder />
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="Mod_Name">
+                                  <widget class="Gtk.Label" id="lblModName">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">label10</property>
                                   </widget>
@@ -187,7 +188,7 @@
                                   <placeholder />
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Label" id="Mod_Version">
+                                  <widget class="Gtk.Label" id="lblModVersion">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">label10</property>
                                   </widget>
@@ -226,14 +227,14 @@
                                   <placeholder />
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Button" id="Mod_Website">
+                                  <widget class="Gtk.Button" id="btnModWebsite">
                                     <property name="MemberName" />
                                     <property name="CanFocus">True</property>
                                     <property name="Type">TextOnly</property>
                                     <property name="Label" translatable="yes">View on ParkitectNexus</property>
                                     <property name="UseUnderline">True</property>
                                     <property name="Relief">None</property>
-                                    <signal name="Clicked" handler="Visit_Mod_Website" after="yes" />
+                                    <signal name="Clicked" handler="VisitModWebsite" after="yes" />
                                   </widget>
                                   <packing>
                                     <property name="Position">2</property>
@@ -263,7 +264,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="Gtk.Label" id="Mov_Development_Status">
+                              <widget class="Gtk.Label" id="lblDevelopmentStatus">
                                 <property name="MemberName" />
                                 <property name="LabelProp" translatable="yes">MOD IN DEVELOPMENT</property>
                               </widget>
@@ -276,13 +277,13 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="Gtk.Button" id="Mod_Update">
+                              <widget class="Gtk.Button" id="btnCheckUpdate">
                                 <property name="MemberName" />
                                 <property name="CanFocus">True</property>
                                 <property name="Type">TextOnly</property>
                                 <property name="Label" translatable="yes">Check for Updates</property>
                                 <property name="UseUnderline">True</property>
-                                <signal name="Clicked" handler="Check_For_Update" after="yes" />
+                                <signal name="Clicked" handler="CheckForUpdates" after="yes" />
                               </widget>
                               <packing>
                                 <property name="Position">5</property>
@@ -292,13 +293,13 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="Gtk.Button" id="Mod_Uninstall">
+                              <widget class="Gtk.Button" id="btnUninstall">
                                 <property name="MemberName" />
                                 <property name="CanFocus">True</property>
                                 <property name="Type">TextOnly</property>
                                 <property name="Label" translatable="yes">Uninstall</property>
                                 <property name="UseUnderline">True</property>
-                                <signal name="Clicked" handler="Uninstall_Mod" after="yes" />
+                                <signal name="Clicked" handler="UninstallMod" after="yes" />
                               </widget>
                               <packing>
                                 <property name="Position">6</property>
@@ -406,7 +407,7 @@
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Button" id="button1523">
+                  <widget class="Gtk.Button" id="btnLaunchParkitect">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
@@ -420,9 +421,6 @@
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
                   </packing>
-                </child>
-                <child>
-                  <placeholder />
                 </child>
               </widget>
               <packing>
@@ -563,7 +561,7 @@
         <property name="Size">2</property>
         <property name="LayoutStyle">End</property>
         <child>
-          <widget class="Gtk.Button" id="buttonCancel">
+          <widget class="Gtk.Button" id="btnCancel">
             <property name="MemberName" />
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
@@ -580,7 +578,7 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Button" id="buttonOk">
+          <widget class="Gtk.Button" id="btnOk">
             <property name="MemberName" />
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
@@ -602,6 +600,7 @@
   </widget>
   <widget class="Gtk.Dialog" id="ParkitectNexus.Client.GTK.ParkitectUpdate" design-size="400 190">
     <property name="MemberName" />
+    <property name="Title" translatable="yes">ParkitectNexus Client</property>
     <property name="Icon">resource:ParkitectNexus.Client.GTK.nexus.ico</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Resizable">False</property>
@@ -624,7 +623,7 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Label" id="update_info">
+          <widget class="Gtk.Label" id="updateInfo">
             <property name="MemberName" />
             <property name="LabelProp" translatable="yes">label4</property>
             <property name="Wrap">True</property>
@@ -649,7 +648,7 @@
         <property name="Size">2</property>
         <property name="LayoutStyle">End</property>
         <child>
-          <widget class="Gtk.Button" id="buttonCancel">
+          <widget class="Gtk.Button" id="btnCancel">
             <property name="MemberName" />
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
@@ -666,7 +665,7 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Button" id="buttonOk">
+          <widget class="Gtk.Button" id="btnOk">
             <property name="MemberName" />
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
@@ -674,7 +673,7 @@
             <property name="Type">StockItem</property>
             <property name="StockId">gtk-ok</property>
             <property name="ResponseId">-5</property>
-            <signal name="Clicked" handler="Update" after="yes" />
+            <signal name="Clicked" handler="ProceedToUpdate" after="yes" />
             <property name="label">gtk-ok</property>
           </widget>
           <packing>
@@ -688,6 +687,8 @@
   </widget>
   <widget class="Gtk.Dialog" id="ParkitectNexus.Client.GTK.ModDownload" design-size="400 175">
     <property name="MemberName" />
+    <property name="Title" translatable="yes">ParkitectNexus Client</property>
+    <property name="Icon">resource:ParkitectNexus.Client.GTK.nexus.ico</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Buttons">1</property>
     <property name="HelpButton">False</property>
@@ -703,7 +704,7 @@
             <property name="RightPadding">20</property>
             <property name="BottomPadding">20</property>
             <child>
-              <widget class="Gtk.Label" id="Mod_Name">
+              <widget class="Gtk.Label" id="lblModName">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="LabelProp" translatable="yes">label2</property>
@@ -723,7 +724,7 @@
             <property name="LeftPadding">10</property>
             <property name="RightPadding">10</property>
             <child>
-              <widget class="Gtk.ProgressBar" id="Progress_Bar">
+              <widget class="Gtk.ProgressBar" id="installProgress">
                 <property name="MemberName" />
               </widget>
             </child>
@@ -742,7 +743,7 @@
             <property name="LeftPadding">20</property>
             <property name="TopPadding">10</property>
             <child>
-              <widget class="Gtk.Label" id="Progress_Label">
+              <widget class="Gtk.Label" id="lblProgressLabel">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="LabelProp" translatable="yes">label1</property>
@@ -769,7 +770,7 @@
         <property name="Size">1</property>
         <property name="LayoutStyle">End</property>
         <child>
-          <widget class="Gtk.Button" id="Finished">
+          <widget class="Gtk.Button" id="btnFinished">
             <property name="MemberName" />
             <property name="Sensitive">False</property>
             <property name="CanDefault">True</property>
@@ -790,7 +791,10 @@
   </widget>
   <widget class="Gtk.Dialog" id="ParkitectNexus.Client.GTK.ModUri" design-size="470 178">
     <property name="MemberName" />
+    <property name="Title" translatable="yes">ParkitectNexus Client</property>
+    <property name="Icon">resource:ParkitectNexus.Client.GTK.nexus.ico</property>
     <property name="WindowPosition">CenterOnParent</property>
+    <property name="Resizable">False</property>
     <property name="Buttons">2</property>
     <property name="HelpButton">False</property>
     <child internal-child="VBox">
@@ -808,6 +812,7 @@
               <widget class="Gtk.Alignment" id="alignment2">
                 <property name="MemberName" />
                 <property name="LeftPadding">30</property>
+                <property name="RightPadding">30</property>
                 <property name="BottomPadding">20</property>
                 <child>
                   <widget class="Gtk.Label" id="label2">
@@ -831,7 +836,7 @@
                 <property name="LeftPadding">20</property>
                 <property name="RightPadding">20</property>
                 <child>
-                  <widget class="Gtk.Entry" id="Nexus_URI">
+                  <widget class="Gtk.Entry" id="txtNexusURI">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>

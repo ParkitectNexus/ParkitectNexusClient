@@ -68,7 +68,7 @@ namespace ParkitectNexus.Client.GTK
 
 			// Format the "installing" label.
 			//installingLabel.Text = "Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
-			this.Mod_Name.Text = "Please wait while ParkitectNexus is installing "+_parkitectNexusUrl.AssetType+" \""+_parkitectNexusUrl.Name+"\".";
+			this.lblModName.Text = "Please wait while ParkitectNexus is installing "+_parkitectNexusUrl.AssetType+" \""+_parkitectNexusUrl.Name+"\".";
 
 			GLib.Timeout.Add (100, new GLib.TimeoutHandler (UpdateProgress));
 			GLib.Timeout.Add (100, new GLib.TimeoutHandler (DownloadLabelUpdate));
@@ -78,10 +78,13 @@ namespace ParkitectNexus.Client.GTK
 			download.Start ();
 		}
 
+		/// <summary>
+		/// update the download label
+		/// </summary>
 		private bool DownloadLabelUpdate()
 		{
 			if (isFinished == true) {
-				Progress_Label.Text = "Done!";
+				lblProgressLabel.Text = "Done!";
 				return false;
 			} else {
 				//Downloading... Effect. 
@@ -94,28 +97,34 @@ namespace ParkitectNexus.Client.GTK
 					_dotsDirection = -_dotsDirection;
 
 				// Update the status label.
-				Progress_Label.Text = _keyword + "." + string.Concat (Enumerable.Repeat (".", _dots));
+				lblProgressLabel.Text = _keyword + "." + string.Concat (Enumerable.Repeat (".", _dots));
 			}
 			return true;
 		}
 
+		/// <summary>
+		/// update the loading bar
+		/// </summary>
 		private bool UpdateProgress()
 		{
 			if (isFinished == true) {
-				if (!Finished.Sensitive) {
-					Progress_Bar.Activate ();
-					Finished.Sensitive = true;
+				if (!btnFinished.Sensitive) {
+					installProgress.Activate ();
+					btnFinished.Sensitive = true;
 				}
-				Progress_Bar.Fraction += 0.1;
-				if (Progress_Bar.Fraction >= 1)
+				installProgress.Fraction += 0.1;
+				if (installProgress.Fraction >= 1)
 					return false;
 			} else {
-				Progress_Bar.Pulse ();
+				installProgress.Pulse ();
 
 			}
 			return true;
 		}
 
+		/// <summary>
+		/// Process and install the mods
+		/// </summary>
 		private async void Process()
 		{
 

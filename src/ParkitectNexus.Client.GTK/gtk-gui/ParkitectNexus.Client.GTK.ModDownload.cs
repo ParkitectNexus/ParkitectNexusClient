@@ -6,23 +6,25 @@ namespace ParkitectNexus.Client.GTK
 	{
 		private global::Gtk.Alignment alignment3;
 		
-		private global::Gtk.Label Mod_Name;
+		private global::Gtk.Label lblModName;
 		
 		private global::Gtk.Alignment alignment1;
 		
-		private global::Gtk.ProgressBar Progress_Bar;
+		private global::Gtk.ProgressBar installProgress;
 		
 		private global::Gtk.Alignment alignment2;
 		
-		private global::Gtk.Label Progress_Label;
+		private global::Gtk.Label lblProgressLabel;
 		
-		private global::Gtk.Button Finished;
+		private global::Gtk.Button btnFinished;
 
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget ParkitectNexus.Client.GTK.ModDownload
 			this.Name = "ParkitectNexus.Client.GTK.ModDownload";
+			this.Title = global::Mono.Unix.Catalog.GetString ("ParkitectNexus Client");
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("ParkitectNexus.Client.GTK.nexus.ico");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Internal child ParkitectNexus.Client.GTK.ModDownload.VBox
 			global::Gtk.VBox w1 = this.VBox;
@@ -36,11 +38,11 @@ namespace ParkitectNexus.Client.GTK
 			this.alignment3.RightPadding = ((uint)(20));
 			this.alignment3.BottomPadding = ((uint)(20));
 			// Container child alignment3.Gtk.Container+ContainerChild
-			this.Mod_Name = new global::Gtk.Label ();
-			this.Mod_Name.Name = "Mod_Name";
-			this.Mod_Name.Xalign = 0F;
-			this.Mod_Name.LabelProp = global::Mono.Unix.Catalog.GetString ("label2");
-			this.alignment3.Add (this.Mod_Name);
+			this.lblModName = new global::Gtk.Label ();
+			this.lblModName.Name = "lblModName";
+			this.lblModName.Xalign = 0F;
+			this.lblModName.LabelProp = global::Mono.Unix.Catalog.GetString ("label2");
+			this.alignment3.Add (this.lblModName);
 			w1.Add (this.alignment3);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(w1 [this.alignment3]));
 			w3.Position = 0;
@@ -52,9 +54,9 @@ namespace ParkitectNexus.Client.GTK
 			this.alignment1.LeftPadding = ((uint)(10));
 			this.alignment1.RightPadding = ((uint)(10));
 			// Container child alignment1.Gtk.Container+ContainerChild
-			this.Progress_Bar = new global::Gtk.ProgressBar ();
-			this.Progress_Bar.Name = "Progress_Bar";
-			this.alignment1.Add (this.Progress_Bar);
+			this.installProgress = new global::Gtk.ProgressBar ();
+			this.installProgress.Name = "installProgress";
+			this.alignment1.Add (this.installProgress);
 			w1.Add (this.alignment1);
 			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(w1 [this.alignment1]));
 			w5.Position = 1;
@@ -66,11 +68,11 @@ namespace ParkitectNexus.Client.GTK
 			this.alignment2.LeftPadding = ((uint)(20));
 			this.alignment2.TopPadding = ((uint)(10));
 			// Container child alignment2.Gtk.Container+ContainerChild
-			this.Progress_Label = new global::Gtk.Label ();
-			this.Progress_Label.Name = "Progress_Label";
-			this.Progress_Label.Xalign = 0F;
-			this.Progress_Label.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
-			this.alignment2.Add (this.Progress_Label);
+			this.lblProgressLabel = new global::Gtk.Label ();
+			this.lblProgressLabel.Name = "lblProgressLabel";
+			this.lblProgressLabel.Xalign = 0F;
+			this.lblProgressLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
+			this.alignment2.Add (this.lblProgressLabel);
 			w1.Add (this.alignment2);
 			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(w1 [this.alignment2]));
 			w7.Position = 2;
@@ -83,18 +85,18 @@ namespace ParkitectNexus.Client.GTK
 			w8.BorderWidth = ((uint)(5));
 			w8.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
-			this.Finished = new global::Gtk.Button ();
-			this.Finished.Sensitive = false;
-			this.Finished.CanDefault = true;
-			this.Finished.CanFocus = true;
-			this.Finished.Name = "Finished";
-			this.Finished.UseUnderline = true;
-			this.Finished.Label = global::Mono.Unix.Catalog.GetString ("Finished");
+			this.btnFinished = new global::Gtk.Button ();
+			this.btnFinished.Sensitive = false;
+			this.btnFinished.CanDefault = true;
+			this.btnFinished.CanFocus = true;
+			this.btnFinished.Name = "btnFinished";
+			this.btnFinished.UseUnderline = true;
+			this.btnFinished.Label = global::Mono.Unix.Catalog.GetString ("Finished");
 			global::Gtk.Image w9 = new global::Gtk.Image ();
 			w9.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-ok", global::Gtk.IconSize.Menu);
-			this.Finished.Image = w9;
-			this.AddActionWidget (this.Finished, -10);
-			global::Gtk.ButtonBox.ButtonBoxChild w10 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.Finished]));
+			this.btnFinished.Image = w9;
+			this.AddActionWidget (this.btnFinished, -10);
+			global::Gtk.ButtonBox.ButtonBoxChild w10 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.btnFinished]));
 			w10.Expand = false;
 			w10.Fill = false;
 			if ((this.Child != null)) {

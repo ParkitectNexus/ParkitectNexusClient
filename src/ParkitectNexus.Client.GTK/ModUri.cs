@@ -16,9 +16,12 @@ namespace ParkitectNexus.Client.GTK
 			this._parkitect = parkitect;
 		}
 
+		/// <summary>
+		/// subit the URI and proceed with mod installation
+		/// </summary>
 		protected void Submit_URI (object sender, EventArgs e)
 		{
-			if (!ModDownload.Download (Nexus_URI.Text, _parkitect, _parkitectOnlineAssetRepository))
+			if (!ModDownload.Download (txtNexusURI.Text, _parkitect, _parkitectOnlineAssetRepository))
 				this.Respond (Gtk.ResponseType.Cancel);
 				
 

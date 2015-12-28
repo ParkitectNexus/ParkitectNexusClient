@@ -64,20 +64,22 @@ namespace ParkitectNexus.Client.GTK
 			{
 				Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
 
-				// Check for updates. If updates are available, do not resume usual logic.
-				var updateInfo = ParkitectUpdate.CheckForUpdates(parkitectNexusWebsite);
-				if (updateInfo != null)
+				//restrict update to windows. linux can use package manager to install updates
+				if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
 				{
-					ParkitectUpdate parkitectUpdate = new ParkitectUpdate(updateInfo,settings,options);
-					parkitectUpdate.Show();
-					if (parkitectUpdate.Run () == (int)Gtk.ResponseType.Close) {
-						parkitectUpdate.Destroy ();
+					// Check for updates. If updates are available, do not resume usual logic.
+					var updateInfo = ParkitectUpdate.CheckForUpdates(parkitectNexusWebsite);
+					if (updateInfo != null)
+					{
+						ParkitectUpdate parkitectUpdate = new ParkitectUpdate(updateInfo,settings,options);
+						parkitectUpdate.Show();
+						if (parkitectUpdate.Run () == (int)Gtk.ResponseType.Close) {
+							parkitectUpdate.Destroy ();
+						}
 					}
 				}
-					
-				
 
-					ParkitectNexusProtocol.Install();
+				ParkitectNexusProtocol.Install();
 
 				//find the new location of where parkitect is installed
 				if (!parkitect.IsInstalled) {

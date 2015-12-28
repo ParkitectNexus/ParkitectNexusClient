@@ -51,7 +51,7 @@ namespace ParkitectNexus.Client.GTK
 			this._updateinfo = updateInfo;
 			if (updateInfo != null)
 			{
-				this.update_info.Text = "A required update for the ParkitectNexus Client needs to be installed. Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n Would you like to install it now?\n\nYou are currently running v"+   Assembly.GetExecutingAssembly().GetName().Version +". The newest version is v" + updateInfo.Version + " ParkitectNexus Client";
+				this.updateInfo.Text = "A required update for the ParkitectNexus Client needs to be installed. Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n Would you like to install it now?\n\nYou are currently running v"+   Assembly.GetExecutingAssembly().GetName().Version +". The newest version is v" + updateInfo.Version + " ParkitectNexus Client";
 			}
 		}
 
@@ -94,13 +94,21 @@ namespace ParkitectNexus.Client.GTK
 			return null;
 		}
 
-
+		/// <summary>
+		/// on cancle the update utility will send a cancel response for the dialog
+		/// </summary>
+		/// <returns><c>true</c> if this instance cancel sender e; otherwise, <c>false</c>.</returns>
+		/// <param name="sender">Sender.</param>
+		/// <param name="e">E.</param>
 		protected void Cancel (object sender, EventArgs e)
 		{
-			Environment.Exit (0);
+			this.Respond(ResponseType.Cancel);
 		}
 
-		protected void Update (object sender, EventArgs e)
+		/// <summary>
+		/// Proceeds to update the client.
+		/// </summary>
+		protected void ProceedToUpdate (object sender, EventArgs e)
 		{
 			#if DEBUG
 			#else
@@ -118,7 +126,7 @@ namespace ParkitectNexus.Client.GTK
 				{
 					Gtk.MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "Failed installing the update! Please try again later.");
 					if (errorDialog.Run () == (int)Gtk.ResponseType.Ok) {
-						Environment.Exit (0);
+						this.Respond(ResponseType.Cancel);
 					}
 				}
 
@@ -140,7 +148,7 @@ namespace ParkitectNexus.Client.GTK
 			{
 				Gtk.MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "Failed installing the update! Please try again later.");
 				if (errorDialog.Run () == (int)Gtk.ResponseType.Ok) {
-					Environment.Exit (0);
+					this.Respond(ResponseType.Cancel);
 				}
 			}
 			#endif

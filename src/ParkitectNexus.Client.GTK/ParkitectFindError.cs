@@ -8,19 +8,25 @@ namespace ParkitectNexus.Client.GTK
 {
 	public partial class ParkitectFindError : Gtk.Dialog
 	{
-		private IParkitect parkitect;
+		private IParkitect _parkitect;
 		public ParkitectFindError (IParkitect parkitect)
 		{
-			this.parkitect = parkitect;
+			this._parkitect = parkitect;
 			this.Build ();
 		}
 
+		/// <summary>
+		/// cancel the application and respond with a cancle response
+		/// </summary>
 		protected void Cancel (object sender, EventArgs e)
 		{
 			//close the application
-			Environment.Exit (0);
+			this.Respond(ResponseType.Close);
 		}
 
+		/// <summary>
+		/// Select the director for parkitect
+		/// </summary>
 		protected void SelectDirectory (object sender, EventArgs e)
 		{
 
@@ -39,7 +45,7 @@ namespace ParkitectNexus.Client.GTK
 					ask_user_again = false;
 					break;
 				case (int)Gtk.ResponseType.Ok:
-					if (!this.parkitect.SetInstallationPathIfValid (fc.Filename)) {
+					if (!this._parkitect.SetInstallationPathIfValid (fc.Filename)) {
 						Gtk.MessageDialog errorDialog = new MessageDialog (fc, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.YesNo, "the folder you selected does not contain Parkitect!\n Would you like to try again?");
 						switch (errorDialog.Run ()) {
 						case (int)ResponseType.Yes:

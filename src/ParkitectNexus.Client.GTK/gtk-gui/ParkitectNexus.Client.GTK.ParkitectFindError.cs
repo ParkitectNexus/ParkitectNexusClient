@@ -16,9 +16,9 @@ namespace ParkitectNexus.Client.GTK
 		
 		private global::Gtk.Label label5;
 		
-		private global::Gtk.Button buttonCancel;
+		private global::Gtk.Button btnCancel;
 		
-		private global::Gtk.Button buttonOk;
+		private global::Gtk.Button btnOk;
 
 		protected virtual void Build ()
 		{
@@ -94,27 +94,27 @@ namespace ParkitectNexus.Client.GTK
 			w8.BorderWidth = ((uint)(5));
 			w8.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
-			this.buttonCancel = new global::Gtk.Button ();
-			this.buttonCancel.CanDefault = true;
-			this.buttonCancel.CanFocus = true;
-			this.buttonCancel.Name = "buttonCancel";
-			this.buttonCancel.UseStock = true;
-			this.buttonCancel.UseUnderline = true;
-			this.buttonCancel.Label = "gtk-cancel";
-			this.AddActionWidget (this.buttonCancel, -6);
-			global::Gtk.ButtonBox.ButtonBoxChild w9 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.buttonCancel]));
+			this.btnCancel = new global::Gtk.Button ();
+			this.btnCancel.CanDefault = true;
+			this.btnCancel.CanFocus = true;
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.UseStock = true;
+			this.btnCancel.UseUnderline = true;
+			this.btnCancel.Label = "gtk-cancel";
+			this.AddActionWidget (this.btnCancel, -6);
+			global::Gtk.ButtonBox.ButtonBoxChild w9 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.btnCancel]));
 			w9.Expand = false;
 			w9.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
-			this.buttonOk = new global::Gtk.Button ();
-			this.buttonOk.CanDefault = true;
-			this.buttonOk.CanFocus = true;
-			this.buttonOk.Name = "buttonOk";
-			this.buttonOk.UseStock = true;
-			this.buttonOk.UseUnderline = true;
-			this.buttonOk.Label = "gtk-ok";
-			w8.Add (this.buttonOk);
-			global::Gtk.ButtonBox.ButtonBoxChild w10 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.buttonOk]));
+			this.btnOk = new global::Gtk.Button ();
+			this.btnOk.CanDefault = true;
+			this.btnOk.CanFocus = true;
+			this.btnOk.Name = "btnOk";
+			this.btnOk.UseStock = true;
+			this.btnOk.UseUnderline = true;
+			this.btnOk.Label = "gtk-ok";
+			w8.Add (this.btnOk);
+			global::Gtk.ButtonBox.ButtonBoxChild w10 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w8 [this.btnOk]));
 			w10.Position = 1;
 			w10.Expand = false;
 			w10.Fill = false;
@@ -124,8 +124,8 @@ namespace ParkitectNexus.Client.GTK
 			this.DefaultWidth = 371;
 			this.DefaultHeight = 131;
 			this.Show ();
-			this.buttonCancel.Clicked += new global::System.EventHandler (this.Cancel);
-			this.buttonOk.Clicked += new global::System.EventHandler (this.SelectDirectory);
+			this.btnCancel.Clicked += new global::System.EventHandler (this.Cancel);
+			this.btnOk.Clicked += new global::System.EventHandler (this.SelectDirectory);
 		}
 	}
 }
