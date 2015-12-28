@@ -64,8 +64,6 @@ namespace ParkitectNexus.Client.GTK
 
 			this.Build ();
 		
-
-
 			// Format the "installing" label.
 			//installingLabel.Text = "Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
 			this.lblModName.Text = "Please wait while ParkitectNexus is installing "+_parkitectNexusUrl.AssetType+" \""+_parkitectNexusUrl.Name+"\".";
