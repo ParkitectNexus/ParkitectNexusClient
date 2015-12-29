@@ -32,6 +32,8 @@ namespace ParkitectNexus.Client.View
             _returnView = returnView;
 
             _parkitect = new MacOSXParkitect();
+            _parkitect.DetectInstallationPath();
+
             _parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(new ParkitectNexusWebsite());
 
             //493, 311
@@ -137,6 +139,7 @@ namespace ParkitectNexus.Client.View
             catch (Exception e)
             {
                 Log.WriteLine($"Failed to install {assetName}!");
+                Log.WriteLine($"Game: {_parkitect}");
                 Log.WriteException(e);
 
                 // If the asset has failed to download, show some feedback to the user.

@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 
 namespace ParkitectNexus.Data.Utilities
 {
@@ -37,10 +38,12 @@ namespace ParkitectNexus.Data.Utilities
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (IsOpened) Close();
 
+            var overwrite = File.Exists(path) && new FileInfo(path).Length > 10 * 1024;
+            
             try
             {
                 LoggingPath = path;
-                _streamWriter = File.AppendText(path);
+                _streamWriter = overwrite ? new StreamWriter(File.Open(path, FileMode.Create)) : File.AppendText(path);
                 _streamWriter.AutoFlush = true;
             }
             catch
