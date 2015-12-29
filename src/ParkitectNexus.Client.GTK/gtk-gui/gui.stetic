@@ -2,10 +2,11 @@
 <stetic-interface>
   <configuration>
     <images-root-path>..</images-root-path>
+    <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
-    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/ParkitectNexus.exe" internal="true" />
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="633 615">
     <action-group name="Default">
@@ -191,6 +192,7 @@
                                   <widget class="Gtk.Label" id="lblModVersion">
                                     <property name="MemberName" />
                                     <property name="LabelProp" translatable="yes">label10</property>
+                                    <property name="UseUnderline">True</property>
                                   </widget>
                                   <packing>
                                     <property name="Position">2</property>
@@ -227,14 +229,16 @@
                                   <placeholder />
                                 </child>
                                 <child>
-                                  <widget class="Gtk.Button" id="btnModWebsite">
+                                  <widget class="Gtk.EventBox" id="eventViewParkitectNexus">
                                     <property name="MemberName" />
-                                    <property name="CanFocus">True</property>
-                                    <property name="Type">TextOnly</property>
-                                    <property name="Label" translatable="yes">View on ParkitectNexus</property>
-                                    <property name="UseUnderline">True</property>
-                                    <property name="Relief">None</property>
-                                    <signal name="Clicked" handler="VisitModWebsite" after="yes" />
+                                    <signal name="ButtonPressEvent" handler="VisitModWebsite" after="yes" />
+                                    <child>
+                                      <widget class="Gtk.Label" id="lblViewOnParkitectNexusWebsite">
+                                        <property name="MemberName" />
+                                        <property name="LabelProp" translatable="yes">View on ParkitectNexus</property>
+                                        <property name="UseUnderline">True</property>
+                                      </widget>
+                                    </child>
                                   </widget>
                                   <packing>
                                     <property name="Position">2</property>

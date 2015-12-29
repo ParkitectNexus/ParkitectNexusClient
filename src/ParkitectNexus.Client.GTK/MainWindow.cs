@@ -72,6 +72,7 @@ public partial class MainWindow: Gtk.Window
 		_parkitectNexusWebsite = parkitectNexusWebsite;
 
 		Build ();
+	
 
 		//toggle even for checkboxes in tree list
 		CellRendererToggle toggle = new CellRendererToggle ();
@@ -122,10 +123,11 @@ public partial class MainWindow: Gtk.Window
 	{
 		lblModName.Text = "-";
 		lblModVersion.Text = "-";
-		lblDevelopmentStatus.Visible = false;
+		lblViewOnParkitectNexusWebsite.Text = "-";
+		lblViewOnParkitectNexusWebsite.ModifyFg (StateType.Normal, new Gdk.Color (0, 0, 0));
 
+		lblDevelopmentStatus.Visible = false;
 		btnCheckUpdate.Sensitive = false;
-		btnModWebsite.Sensitive = false;
 		btnUninstall.Sensitive = false;
 	}
 
@@ -138,8 +140,12 @@ public partial class MainWindow: Gtk.Window
 		lblModVersion.Text = mod.Tag;
 		lblDevelopmentStatus.Visible = mod.IsDevelopment;
 
+		lblViewOnParkitectNexusWebsite.ModifyFg (StateType.Normal, new Gdk.Color (0, 0, 255));
+		lblViewOnParkitectNexusWebsite.Text = "View on ParkitectNexus";
+		lblViewOnParkitectNexusWebsite.UseUnderline = true;
+		lblViewOnParkitectNexusWebsite.Pattern = "______________________";
+
 		btnCheckUpdate.Sensitive = !mod.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository);
-		btnModWebsite.Sensitive = !mod.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository);
 		btnUninstall.Sensitive = !mod.IsDevelopment;
 	}
 		
@@ -200,11 +206,7 @@ public partial class MainWindow: Gtk.Window
 	}
 		
 
-	protected void VisitModWebsite (object sender, EventArgs e)
-	{
-		if (_selectedMod == null) return;
-		Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.GetParkitectMod.Repository}");
-	}
+
 
 	protected void Launch_Parkitect (object sender, EventArgs e)
 	{
@@ -219,17 +221,23 @@ public partial class MainWindow: Gtk.Window
 		
 	protected void Donate (object sender, EventArgs e)
 	{
-		Gtk.MessageDialog donateInfo = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.YesNo, "Maintaining this client and adding new features takes a lot of time.\n" +
+		Gtk.MessageDialog donateInfo = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, "Maintaining this client and adding new features takes a lot of time.\n" +
 			"If you appreciate our work, please consider sending a donation our way!\n" +
 			"All donations will be used for further development of the ParkitectNexus Client and the website.\n" +
 			"\nSelect Yes to visit PayPal and send a donation.");
-		donateInfo.Run();
-		Process.Start("https://paypal.me/ikkentim");
+		if(donateInfo.Run() == (int)ResponseType.Yes)
+			Process.Start("https://paypal.me/ikkentim");
 		donateInfo.Destroy();
 
 
 	}
 		
 
+	protected void VisitModWebsite (object o, ButtonPressEventArgs args)
+	{
+		if (_selectedMod == null) return;
+		Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.GetParkitectMod.Repository}");
+	
+	}
 
 }

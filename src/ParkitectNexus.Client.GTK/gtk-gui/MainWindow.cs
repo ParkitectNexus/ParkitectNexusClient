@@ -53,7 +53,9 @@ public partial class MainWindow
 	
 	private global::Gtk.Label label13;
 	
-	private global::Gtk.Button btnModWebsite;
+	private global::Gtk.EventBox eventViewParkitectNexus;
+	
+	private global::Gtk.Label lblViewOnParkitectNexusWebsite;
 	
 	private global::Gtk.HSeparator hseparator3;
 	
@@ -223,6 +225,7 @@ public partial class MainWindow
 		this.lblModVersion = new global::Gtk.Label ();
 		this.lblModVersion.Name = "lblModVersion";
 		this.lblModVersion.LabelProp = global::Mono.Unix.Catalog.GetString ("label10");
+		this.lblModVersion.UseUnderline = true;
 		this.hbox7.Add (this.lblModVersion);
 		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox7 [this.lblModVersion]));
 		w12.Position = 2;
@@ -247,41 +250,43 @@ public partial class MainWindow
 		w14.Expand = false;
 		w14.Fill = false;
 		// Container child hbox8.Gtk.Box+BoxChild
-		this.btnModWebsite = new global::Gtk.Button ();
-		this.btnModWebsite.CanFocus = true;
-		this.btnModWebsite.Name = "btnModWebsite";
-		this.btnModWebsite.UseUnderline = true;
-		this.btnModWebsite.Relief = ((global::Gtk.ReliefStyle)(2));
-		this.btnModWebsite.Label = global::Mono.Unix.Catalog.GetString ("View on ParkitectNexus");
-		this.hbox8.Add (this.btnModWebsite);
-		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.btnModWebsite]));
-		w15.Position = 2;
-		w15.Expand = false;
-		w15.Fill = false;
-		this.vbox4.Add (this.hbox8);
-		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.hbox8]));
+		this.eventViewParkitectNexus = new global::Gtk.EventBox ();
+		this.eventViewParkitectNexus.Name = "eventViewParkitectNexus";
+		// Container child eventViewParkitectNexus.Gtk.Container+ContainerChild
+		this.lblViewOnParkitectNexusWebsite = new global::Gtk.Label ();
+		this.lblViewOnParkitectNexusWebsite.Name = "lblViewOnParkitectNexusWebsite";
+		this.lblViewOnParkitectNexusWebsite.LabelProp = global::Mono.Unix.Catalog.GetString ("View on ParkitectNexus");
+		this.lblViewOnParkitectNexusWebsite.UseUnderline = true;
+		this.eventViewParkitectNexus.Add (this.lblViewOnParkitectNexusWebsite);
+		this.hbox8.Add (this.eventViewParkitectNexus);
+		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.eventViewParkitectNexus]));
 		w16.Position = 2;
 		w16.Expand = false;
 		w16.Fill = false;
+		this.vbox4.Add (this.hbox8);
+		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.hbox8]));
+		w17.Position = 2;
+		w17.Expand = false;
+		w17.Fill = false;
 		// Container child vbox4.Gtk.Box+BoxChild
 		this.hseparator3 = new global::Gtk.HSeparator ();
 		this.hseparator3.Name = "hseparator3";
 		this.vbox4.Add (this.hseparator3);
-		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.hseparator3]));
-		w17.Position = 3;
-		w17.Expand = false;
-		w17.Fill = false;
-		w17.Padding = ((uint)(15));
+		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.hseparator3]));
+		w18.Position = 3;
+		w18.Expand = false;
+		w18.Fill = false;
+		w18.Padding = ((uint)(15));
 		// Container child vbox4.Gtk.Box+BoxChild
 		this.lblDevelopmentStatus = new global::Gtk.Label ();
 		this.lblDevelopmentStatus.Name = "lblDevelopmentStatus";
 		this.lblDevelopmentStatus.LabelProp = global::Mono.Unix.Catalog.GetString ("MOD IN DEVELOPMENT");
 		this.vbox4.Add (this.lblDevelopmentStatus);
-		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.lblDevelopmentStatus]));
-		w18.Position = 4;
-		w18.Expand = false;
-		w18.Fill = false;
-		w18.Padding = ((uint)(5));
+		global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.lblDevelopmentStatus]));
+		w19.Position = 4;
+		w19.Expand = false;
+		w19.Fill = false;
+		w19.Padding = ((uint)(5));
 		// Container child vbox4.Gtk.Box+BoxChild
 		this.btnCheckUpdate = new global::Gtk.Button ();
 		this.btnCheckUpdate.CanFocus = true;
@@ -289,10 +294,10 @@ public partial class MainWindow
 		this.btnCheckUpdate.UseUnderline = true;
 		this.btnCheckUpdate.Label = global::Mono.Unix.Catalog.GetString ("Check for Updates");
 		this.vbox4.Add (this.btnCheckUpdate);
-		global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.btnCheckUpdate]));
-		w19.Position = 5;
-		w19.Expand = false;
-		w19.Fill = false;
+		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.btnCheckUpdate]));
+		w20.Position = 5;
+		w20.Expand = false;
+		w20.Fill = false;
 		// Container child vbox4.Gtk.Box+BoxChild
 		this.btnUninstall = new global::Gtk.Button ();
 		this.btnUninstall.CanFocus = true;
@@ -300,10 +305,10 @@ public partial class MainWindow
 		this.btnUninstall.UseUnderline = true;
 		this.btnUninstall.Label = global::Mono.Unix.Catalog.GetString ("Uninstall");
 		this.vbox4.Add (this.btnUninstall);
-		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.btnUninstall]));
-		w20.Position = 6;
-		w20.Expand = false;
-		w20.Fill = false;
+		global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.btnUninstall]));
+		w21.Position = 6;
+		w21.Expand = false;
+		w21.Fill = false;
 		this.GtkAlignment2.Add (this.vbox4);
 		this.frame1.Add (this.GtkAlignment2);
 		this.GtkLabel6 = new global::Gtk.Label ();
@@ -312,14 +317,14 @@ public partial class MainWindow
 		this.GtkLabel6.UseMarkup = true;
 		this.frame1.LabelWidget = this.GtkLabel6;
 		this.vbox6.Add (this.frame1);
-		global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.frame1]));
-		w23.Position = 0;
-		w23.Expand = false;
-		w23.Fill = false;
+		global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.frame1]));
+		w24.Position = 0;
+		w24.Expand = false;
+		w24.Fill = false;
 		this.hpaned4.Add (this.vbox6);
 		this.vbox3.Add (this.hpaned4);
-		global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hpaned4]));
-		w25.Position = 2;
+		global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hpaned4]));
+		w26.Position = 2;
 		// Container child vbox3.Gtk.Box+BoxChild
 		this.hbox3 = new global::Gtk.HBox ();
 		this.hbox3.Name = "hbox3";
@@ -336,10 +341,10 @@ public partial class MainWindow
 		this.button1500.Relief = ((global::Gtk.ReliefStyle)(2));
 		this.button1500.Label = global::Mono.Unix.Catalog.GetString ("Visit ParkitectNexus");
 		this.vbox5.Add (this.button1500);
-		global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.button1500]));
-		w26.Position = 0;
-		w26.Expand = false;
-		w26.Fill = false;
+		global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.button1500]));
+		w27.Position = 0;
+		w27.Expand = false;
+		w27.Fill = false;
 		// Container child vbox5.Gtk.Box+BoxChild
 		this.button1499 = new global::Gtk.Button ();
 		this.button1499.CanFocus = true;
@@ -349,22 +354,22 @@ public partial class MainWindow
 		this.button1499.Xalign = 0F;
 		this.button1499.Label = global::Mono.Unix.Catalog.GetString ("Donate");
 		this.vbox5.Add (this.button1499);
-		global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.button1499]));
-		w27.Position = 1;
-		w27.Expand = false;
-		w27.Fill = false;
-		this.hbox3.Add (this.vbox5);
-		global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.vbox5]));
-		w28.Position = 0;
+		global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.button1499]));
+		w28.Position = 1;
 		w28.Expand = false;
 		w28.Fill = false;
-		w28.Padding = ((uint)(5));
+		this.hbox3.Add (this.vbox5);
+		global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.vbox5]));
+		w29.Position = 0;
+		w29.Expand = false;
+		w29.Fill = false;
+		w29.Padding = ((uint)(5));
 		// Container child hbox3.Gtk.Box+BoxChild
 		this.alignment5 = new global::Gtk.Alignment (0.5F, 0.5F, 1F, 1F);
 		this.alignment5.Name = "alignment5";
 		this.hbox3.Add (this.alignment5);
-		global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.alignment5]));
-		w29.Position = 1;
+		global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.alignment5]));
+		w30.Position = 1;
 		// Container child hbox3.Gtk.Box+BoxChild
 		this.vbox7 = new global::Gtk.VBox ();
 		this.vbox7.Name = "vbox7";
@@ -376,31 +381,31 @@ public partial class MainWindow
 		this.btnLaunchParkitect.UseUnderline = true;
 		this.btnLaunchParkitect.Label = global::Mono.Unix.Catalog.GetString ("Launch Parkitect");
 		this.vbox7.Add (this.btnLaunchParkitect);
-		global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.btnLaunchParkitect]));
-		w30.Position = 0;
-		w30.Expand = false;
-		w30.Fill = false;
-		this.hbox3.Add (this.vbox7);
-		global::Gtk.Box.BoxChild w31 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.vbox7]));
-		w31.Position = 2;
+		global::Gtk.Box.BoxChild w31 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.btnLaunchParkitect]));
+		w31.Position = 0;
 		w31.Expand = false;
 		w31.Fill = false;
-		this.vbox3.Add (this.hbox3);
-		global::Gtk.Box.BoxChild w32 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox3]));
-		w32.PackType = ((global::Gtk.PackType)(1));
-		w32.Position = 3;
+		this.hbox3.Add (this.vbox7);
+		global::Gtk.Box.BoxChild w32 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.vbox7]));
+		w32.Position = 2;
 		w32.Expand = false;
 		w32.Fill = false;
+		this.vbox3.Add (this.hbox3);
+		global::Gtk.Box.BoxChild w33 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox3]));
+		w33.PackType = ((global::Gtk.PackType)(1));
+		w33.Position = 3;
+		w33.Expand = false;
+		w33.Fill = false;
 		// Container child vbox3.Gtk.Box+BoxChild
 		this.hseparator2 = new global::Gtk.HSeparator ();
 		this.hseparator2.Name = "hseparator2";
 		this.vbox3.Add (this.hseparator2);
-		global::Gtk.Box.BoxChild w33 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hseparator2]));
-		w33.PackType = ((global::Gtk.PackType)(1));
-		w33.Position = 4;
-		w33.Expand = false;
-		w33.Fill = false;
-		w33.Padding = ((uint)(1));
+		global::Gtk.Box.BoxChild w34 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hseparator2]));
+		w34.PackType = ((global::Gtk.PackType)(1));
+		w34.Position = 4;
+		w34.Expand = false;
+		w34.Fill = false;
+		w34.Padding = ((uint)(1));
 		this.Add (this.vbox3);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -410,7 +415,7 @@ public partial class MainWindow
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.btnInstallMod.Clicked += new global::System.EventHandler (this.InstallMod);
-		this.btnModWebsite.Clicked += new global::System.EventHandler (this.VisitModWebsite);
+		this.eventViewParkitectNexus.ButtonPressEvent += new global::Gtk.ButtonPressEventHandler (this.VisitModWebsite);
 		this.btnCheckUpdate.Clicked += new global::System.EventHandler (this.CheckForUpdates);
 		this.btnUninstall.Clicked += new global::System.EventHandler (this.UninstallMod);
 		this.button1500.Clicked += new global::System.EventHandler (this.Visit_Home_Website);
