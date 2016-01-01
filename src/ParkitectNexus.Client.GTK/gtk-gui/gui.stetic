@@ -81,7 +81,6 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Install Mod</property>
                     <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="InstallMod" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -231,7 +230,6 @@
                                 <child>
                                   <widget class="Gtk.EventBox" id="eventViewParkitectNexus">
                                     <property name="MemberName" />
-                                    <signal name="ButtonPressEvent" handler="VisitModWebsite" after="yes" />
                                     <child>
                                       <widget class="Gtk.Label" id="lblViewOnParkitectNexusWebsite">
                                         <property name="MemberName" />
@@ -303,7 +301,6 @@
                                 <property name="Type">TextOnly</property>
                                 <property name="Label" translatable="yes">Uninstall</property>
                                 <property name="UseUnderline">True</property>
-                                <signal name="Clicked" handler="UninstallMod" after="yes" />
                               </widget>
                               <packing>
                                 <property name="Position">6</property>
@@ -358,7 +355,6 @@
                     <property name="Label" translatable="yes">Visit ParkitectNexus</property>
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
-                    <signal name="Clicked" handler="Visit_Home_Website" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -376,7 +372,6 @@
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
                     <property name="Xalign">0</property>
-                    <signal name="Clicked" handler="Donate" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -417,7 +412,6 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Launch Parkitect</property>
                     <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="Launch_Parkitect" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>

@@ -142,7 +142,6 @@ namespace ParkitectNexus.Client.GTK
 
 					});
 					return;
-						
 				}
 
 				_keyword = "Installing";

@@ -74,12 +74,17 @@
     <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ModDownload.cs" />
     <Compile Include="ModUri.cs" />
     <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ModUri.cs" />
+    <Compile Include="TreeNodeModContainer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj">
       <Project>{3451EBAF-3D69-4019-92BE-10E331F32A6F}</Project>
       <Name>ParkitectNexus.Mod.ModLoader-xamarin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
+      <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
+      <Name>ParkitectNexus.Data-xamarin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

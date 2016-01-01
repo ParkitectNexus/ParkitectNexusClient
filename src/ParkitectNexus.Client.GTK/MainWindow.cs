@@ -8,57 +8,17 @@ using ParkitectNexus.Data.Web;
 using System.Linq;
 using System.Diagnostics;
 using ParkitectNexus.Client.GTK;
+using System.Threading;
 
 public partial class MainWindow: Gtk.Window
 {
-	[Gtk.TreeNode (ListOnly=true)]
-	public class Mod : Gtk.TreeNode
-	{
-		private IParkitectMod _parkitectMod;
-		public Mod(IParkitectMod parkitectMod)
-		{
-			this._parkitectMod = parkitectMod;
-		}
-
-		public IParkitectMod GetParkitectMod{get{return _parkitectMod;}}
-
-		[Gtk.TreeNodeValue (Column=2)]
-		public string version
-		{ 
-			get
-			{ 
-				return _parkitectMod.Tag;
-			}
-		}
-
-		[Gtk.TreeNodeValue (Column=1)]
-		public string name
-		{ 
-			get
-			{ 
-				return _parkitectMod.Name;
-			}
-		}
-
-		[Gtk.TreeNodeValue (Column=0)]
-		public bool isActive{ 
-			get{ 
-				return _parkitectMod.IsEnabled;
-			} 
-			set
-			{ 
-				_parkitectMod.IsEnabled = value; 
-				_parkitectMod.Save ();
-			}
-		}
-	}
 		
 	private readonly IParkitect _parkitect;
 	private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
 	private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
-	private NodeStore _mods = new NodeStore(typeof(Mod));
+	private NodeStore _mods = new NodeStore(typeof(TreeNodeModContainer));
 
-	private Mod _selectedMod;
+	private TreeNodeModContainer _selectedMod;
 
 	public MainWindow (IParkitectNexusWebsite parkitectNexusWebsite,IParkitect parkitect,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository) :
 	base (Gtk.WindowType.Toplevel)
@@ -74,37 +34,77 @@ public partial class MainWindow: Gtk.Window
 		Build ();
 	
 
-		//toggle even for checkboxes in tree list
+		//toggle for checkboxes in tree list
 		CellRendererToggle toggle = new CellRendererToggle ();
 		toggle.Mode = CellRendererMode.Activatable;
 		toggle.Toggled += (o, args) => {
-			((Mod)_mods.GetNode(new TreePath(args.Path))).isActive = !((Mod)_mods.GetNode(new TreePath(args.Path))).isActive;
+			((TreeNodeModContainer)_mods.GetNode(new TreePath(args.Path))).IsActive = !((TreeNodeModContainer)_mods.GetNode(new TreePath(args.Path))).IsActive;
 		};
+
+
+		CellRendererText nameRenderText = new CellRendererText ();
 
 		//append the columns to the tree
 		listViewMods.AppendColumn ("", toggle, "active", 0);
-		listViewMods.AppendColumn ("Name", new CellRendererText (), "text", 1);
-		listViewMods.AppendColumn ("Version", new CellRendererText (), "text", 2);
+		listViewMods.AppendColumn ("Name", nameRenderText, "text", 1);
+		listViewMods.AppendColumn ("Current",new CellRendererText () , "text", 2);
+		listViewMods.AppendColumn ("New", new CellRendererText (), "text", 3);
+
+		//style the name column for the case when the current tag and avalible tag don't match
+		listViewMods.Columns [1].SetCellDataFunc (nameRenderText, new TreeCellDataFunc (nameRendering));
 
 		listViewMods.ShowAll ();
 
 		//update selected mod
 		listViewMods.NodeSelection.Changed += (sender, e) => {
 			Gtk.NodeSelection selection = (Gtk.NodeSelection) sender;
-			Mod mod = (Mod) selection.SelectedNode;
+			TreeNodeModContainer mod = (TreeNodeModContainer) selection.SelectedNode;
 			if(mod != null)
 			{
 				ShowMod(mod.GetParkitectMod);
 				_selectedMod = mod;
 			}
 		};
+			
+		listViewMods.NodeStore = _mods;
+
+		//update the tag information
+		listViewMods.Model.RowInserted += async (o, args) => {
+			try{
+				var mod = (TreeNodeModContainer)((NodeStore)o).GetNode(args.Path);
+				if (mod.GetParkitectMod.Repository != null && mod.GetParkitectMod.Name != null) {
+					var url = new ParkitectNexusUrl (mod.GetParkitectMod.Name, ParkitectAssetType.Mod, mod.GetParkitectMod.Repository);
+					var info = await _parkitectOnlineAssetRepository.ResolveDownloadInfo (url);	
+					mod.AvaliableVersion = info.Tag;
+					listViewMods.QueueDraw();	
+				}
+			}
+			catch (Exception)
+			{
+				
+			}
+		};
 
 		UpdateModList ();
 		HideModInfo ();
-
-		listViewMods.NodeStore = _mods;
-
 	}
+
+	/// <summary>
+	/// update tag styling
+	/// </summary>
+	private void nameRendering (Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
+	{
+		string currentVersion = (string)model.GetValue (iter, 2);
+		string avaliableVersion = (string)model.GetValue (iter, 3);
+
+		if (currentVersion!= avaliableVersion && avaliableVersion != "-") {
+			(cell as Gtk.CellRendererText).Foreground = "Red";
+		} else {
+			(cell as Gtk.CellRendererText).Foreground = "Black";
+		}
+	}
+
+
 	/// <summary>
 	/// Updates the mod list.
 	/// </summary>
@@ -112,7 +112,7 @@ public partial class MainWindow: Gtk.Window
 	{
 		_mods.Clear ();
 		foreach (IParkitectMod mod in _parkitect.InstalledMods) {
-			_mods.AddNode (new Mod (mod));
+			_mods.AddNode (new TreeNodeModContainer (mod));
 		}
 	}
 
@@ -149,13 +149,20 @@ public partial class MainWindow: Gtk.Window
 		btnUninstall.Sensitive = !mod.IsDevelopment;
 	}
 		
-
+	/// <summary>
+	/// Raises the delete event event.
+	/// </summary>
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
 		Application.Quit ();
 		a.RetVal = true;
 	}
 
+	/// <summary>
+	/// Check for updates and update the associated mod
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="e">E.</param>
 	protected void CheckForUpdates (object sender, EventArgs e)
 	{
 		if (_selectedMod == null) return;
@@ -171,12 +178,17 @@ public partial class MainWindow: Gtk.Window
 				MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, _selectedMod.GetParkitectMod.Name +" is already up to date!");
 				errorDialog.Run();
 				errorDialog.Destroy();
-
 			}
 			else
 			{
 				ModDownload.Download(url,_parkitect,_parkitectOnlineAssetRepository);
 
+				//update the tag info and update the mod info
+				_selectedMod.AvaliableVersion = info.Tag;
+				_selectedMod.GetParkitectMod.Tag = info.Tag;
+				ShowMod(_selectedMod.GetParkitectMod);
+
+				listViewMods.QueueDraw();
 			}
 		}
 		catch (Exception)
@@ -205,20 +217,27 @@ public partial class MainWindow: Gtk.Window
 
 	}
 		
-
-
-
-	protected void Launch_Parkitect (object sender, EventArgs e)
+	/// <summary>
+	/// Launche Parkitect.
+	/// </summary>
+	protected void LaunchParkitect (object sender, EventArgs e)
 	{
 		this.Hide ();
 		_parkitect.Launch ();
 	}
 
+	/// <summary>
+	/// launch a brower with the home site
+	/// </summary>
 	protected void Visit_Home_Website (object sender, EventArgs e)
 	{
 		_parkitectNexusWebsite.Launch();
 	}
 		
+
+	/// <summary>
+	/// open donate dialog
+	/// </summary>
 	protected void Donate (object sender, EventArgs e)
 	{
 		Gtk.MessageDialog donateInfo = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, "Maintaining this client and adding new features takes a lot of time.\n" +
@@ -233,6 +252,9 @@ public partial class MainWindow: Gtk.Window
 	}
 		
 
+	/// <summary>
+	/// Visit the associated mod on the website
+	/// </summary>
 	protected void VisitModWebsite (object o, ButtonPressEventArgs args)
 	{
 		if (_selectedMod == null) return;

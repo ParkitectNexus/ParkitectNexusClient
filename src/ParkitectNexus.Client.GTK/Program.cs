@@ -17,16 +17,8 @@ namespace ParkitectNexus.Client.GTK
 	public class MainClass
 	{
 
-		static void delete_event (object obj, DeleteEventArgs args)
-		{
-			
-		}
-
 		public static void Main (string[] args)
 		{
-
-
-			
 			IParkitect parkitect;
 			IParkitectNexusWebsite parkitectNexusWebsite;
 			IParkitectOnlineAssetRepository parkitectOnlineAssetRepository;

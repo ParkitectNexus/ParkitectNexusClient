@@ -414,12 +414,6 @@ public partial class MainWindow
 		this.DefaultHeight = 615;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
-		this.btnInstallMod.Clicked += new global::System.EventHandler (this.InstallMod);
-		this.eventViewParkitectNexus.ButtonPressEvent += new global::Gtk.ButtonPressEventHandler (this.VisitModWebsite);
 		this.btnCheckUpdate.Clicked += new global::System.EventHandler (this.CheckForUpdates);
-		this.btnUninstall.Clicked += new global::System.EventHandler (this.UninstallMod);
-		this.button1500.Clicked += new global::System.EventHandler (this.Visit_Home_Website);
-		this.button1499.Clicked += new global::System.EventHandler (this.Donate);
-		this.btnLaunchParkitect.Clicked += new global::System.EventHandler (this.Launch_Parkitect);
 	}
 }
