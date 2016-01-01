@@ -14,6 +14,7 @@ namespace ParkitectNexus.Mod.ModLoader
 {
     public class ModLoader : IMod
     {
+       
         /// <summary>
         ///     The mods loaded by the ParkitectNexus mod loader.
         /// </summary>

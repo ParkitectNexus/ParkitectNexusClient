@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F0C6B7B0-9CE5-46E6-B4AC-498C9FE50E10}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ParkitectNexus.Client.GTK</RootNamespace>
+    <AssemblyName>ParkitectNexus</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>1.2.2.0</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="Mono.C5" />
+    <Reference Include="System.Core">
+      <HintPath>..\..\..\..\..\lib\mono\4.5\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="CommandLine">
+      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\images\dialog_banner.png" />
+    <EmbeddedResource Include="..\..\images\nexus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CommandLine.cs" />
+    <Compile Include="Settings\ClientSettings.cs" />
+    <Compile Include="ParkitectFindError.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ParkitectFindError.cs" />
+    <Compile Include="ParkitectUpdate.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ParkitectUpdate.cs" />
+    <Compile Include="UpdateInfo.cs" />
+    <Compile Include="ParkitectNexusProtocol.cs" />
+    <Compile Include="ModDownload.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ModDownload.cs" />
+    <Compile Include="ModUri.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.GTK.ModUri.cs" />
+    <Compile Include="TreeNodeModContainer.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader-xamarin.csproj">
+      <Project>{3451EBAF-3D69-4019-92BE-10E331F32A6F}</Project>
+      <Name>ParkitectNexus.Mod.ModLoader-xamarin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
+      <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
+      <Name>ParkitectNexus.Data-xamarin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+</Project>

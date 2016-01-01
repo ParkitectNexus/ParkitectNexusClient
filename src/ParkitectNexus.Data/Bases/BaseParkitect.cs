@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -13,6 +12,7 @@ using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
+using System.Diagnostics;
 
 namespace ParkitectNexus.Data.Base
 {
@@ -41,7 +41,7 @@ namespace ParkitectNexus.Data.Base
                     throw new ArgumentException("invalid installation path", nameof(value));
 
                 _gameSettings.InstallationPath = value;
-                _gameSettings.Save();
+				_gameSettings.Save();
             }
         }
 
@@ -53,7 +53,7 @@ namespace ParkitectNexus.Data.Base
         /// <summary>
         ///     Gets a collection of paths.
         /// </summary>
-        public abstract IParkitectPaths Paths { get; }
+		public abstract IParkitectPaths Paths { get;protected set; }
 
         /// <summary>
         ///     Gets a collection of assembly names provided by the game.
@@ -131,7 +131,7 @@ namespace ParkitectNexus.Data.Base
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The launched process.</returns>
-        public abstract Process Launch(string arguments = "-single-instance");
+		public abstract Process Launch(string arguments = "-single-instance");
 
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.

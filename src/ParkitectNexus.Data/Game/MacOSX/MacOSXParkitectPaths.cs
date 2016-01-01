@@ -21,13 +21,22 @@ namespace ParkitectNexus.Data.Game.MacOSX
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
-            path = !Parkitect.IsInstalled
+			if(!Parkitect.IsInstalled)
+				path = null;
+			else if(path == null)
+				path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+					"Library/Application Support/Parkitect");
+			else 
+				path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+					"Library/Application Support/Parkitect", path);
+            
+			/*path = !Parkitect.IsInstalled
                 ? null
                 : path == null
                     ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                         "Library/Application Support/Parkitect")
                     : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        "Library/Application Support/Parkitect", path);
+                        "Library/Application Support/Parkitect", path);*/
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);
