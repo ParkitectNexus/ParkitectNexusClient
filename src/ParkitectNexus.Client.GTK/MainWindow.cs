@@ -193,7 +193,7 @@ public partial class MainWindow: Gtk.Window
 		}
 		catch (Exception)
 		{
-			Gtk.MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.YesNo, "Failed to check for updates. Please try again later.");
+			Gtk.MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "Failed to check for updates. Please try again later.");
 			errorDialog.Run();
 			errorDialog.Destroy();
 		}
