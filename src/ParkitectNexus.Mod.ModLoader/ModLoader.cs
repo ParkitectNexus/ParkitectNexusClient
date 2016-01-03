@@ -68,7 +68,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     continue;
 
                 if (_isEnabled)
-                    modEntry.disableMod();
+                    modEntry.setActive(false);
                 _modEntries.Remove(modEntry);
             }
 
@@ -143,7 +143,7 @@ namespace ParkitectNexus.Mod.ModLoader
                             {
                                 if (modEntry.mod == userMod)
                                 {
-                                    modEntry.enableMod();
+                                    modEntry.setActive(true);
                                     break;
                                 }
                             }
