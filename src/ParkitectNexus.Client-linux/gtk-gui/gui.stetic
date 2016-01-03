@@ -81,6 +81,7 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Install Mod</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="InstallMod" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -301,6 +302,7 @@
                                 <property name="Type">TextOnly</property>
                                 <property name="Label" translatable="yes">Uninstall</property>
                                 <property name="UseUnderline">True</property>
+                                <signal name="Clicked" handler="UninstallMod" after="yes" />
                               </widget>
                               <packing>
                                 <property name="Position">6</property>
@@ -355,6 +357,7 @@
                     <property name="Label" translatable="yes">Visit ParkitectNexus</property>
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
+                    <signal name="Clicked" handler="Visit_Home_Website" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -372,6 +375,7 @@
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
                     <property name="Xalign">0</property>
+                    <signal name="Clicked" handler="Donate" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -412,6 +416,7 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Launch Parkitect</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="LaunchParkitect" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
