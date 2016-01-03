@@ -48,7 +48,7 @@ namespace ParkitectNexus.Data.Game
         /// <summary>
         ///     Gets the stream.
         /// </summary>
-		public System.IO.Stream Stream { get; }
+        public System.IO.Stream Stream { get; }
 
         #region Implementation of IDisposable
 

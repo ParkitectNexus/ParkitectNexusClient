@@ -16,14 +16,14 @@ namespace ParkitectNexus.Clientmac
         {
             Initialize ();
         }
-		
+        
         // Called when created directly from a XIB file
         [Export ("initWithCoder:")]
         public TestWindow (NSCoder coder) : base (coder)
         {
             Initialize ();
         }
-		
+        
         // Shared initialization code
         void Initialize ()
         {
