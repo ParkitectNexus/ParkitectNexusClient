@@ -18,6 +18,7 @@ namespace ParkitectNexus.Data.Web
     public class ParkitectOnlineAssetRepository : IParkitectOnlineAssetRepository
     {
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
+        private readonly GitHubClient _gitClient = new GitHubClient(new ProductHeaderValue("parkitect-nexus-client"));
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
@@ -35,7 +36,7 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>Information about the download.</returns>
-        public async Task<DownloadInfo> ResolveDownloadInfo(ParkitectNexusUrl url)
+        public async Task<DownloadInfo> ResolveDownloadInfo(IParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
 
@@ -45,7 +46,7 @@ namespace ParkitectNexus.Data.Web
                 case ParkitectAssetType.Savegame:
                     return new DownloadInfo(_parkitectNexusWebsite.ResolveUrl($"download/{url.FileHash}"), null, null);
                 case ParkitectAssetType.Mod:
-                    var tag = await GetLatestModTag(url.FileHash);
+                    var tag = await GetLatestModTag(url.FileHash, _gitClient);
                     if (tag == null)
                         throw new Exception("mod has not yet been released(tagged)");
                     return new DownloadInfo(tag.ZipballUrl, url.FileHash, tag.Name);
@@ -59,7 +60,7 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>An instance which performs the requested task.</returns>
-        public async Task<IParkitectAsset> DownloadFile(ParkitectNexusUrl url)
+        public async Task<IParkitectAsset> DownloadFile(IParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
 
@@ -140,7 +141,7 @@ namespace ParkitectNexus.Data.Web
             }
         }
 
-        private async Task<RepositoryTag> GetLatestModTag(string mod)
+        protected virtual async Task<RepositoryTag> GetLatestModTag(string mod,IGitHubClient client)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             var p = mod.Split('/');
@@ -149,8 +150,6 @@ namespace ParkitectNexus.Data.Web
                 throw new ArgumentException(nameof(mod));
 
             Log.WriteLine($"Getting latest mod tag for '{mod}'.");
-
-            var client = new GitHubClient(new ProductHeaderValue("parkitect-nexus-client"));
             var release = (await client.Release.GetAll(p[0], p[1])).FirstOrDefault(r => !r.Prerelease);
 
             return release == null
