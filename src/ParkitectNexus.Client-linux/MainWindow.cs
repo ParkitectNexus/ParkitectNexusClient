@@ -224,6 +224,7 @@ public partial class MainWindow: Gtk.Window
     {
         this.Hide ();
         _parkitect.Launch ();
+		Environment.Exit (0);
     }
 
     /// <summary>
