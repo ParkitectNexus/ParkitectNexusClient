@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "src\Setup\Setup.cs
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F} = {3451EBAF-3D69-4019-92BE-10E331F32A6F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data.Test", "ParkitectNexus.Data.Test\ParkitectNexus.Data.Test.csproj", "{A940BE61-A6C6-49B4-945B-AC557B00CF6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data.Test", "src\ParkitectNexus.Data.Test\ParkitectNexus.Data.Test.csproj", "{A940BE61-A6C6-49B4-945B-AC557B00CF6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
