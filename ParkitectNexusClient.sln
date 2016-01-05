@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client", "src\ParkitectNexusClient\ParkitectNexus.Client.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "src\Setup\Setup.cs
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC} = {0CB13383-05D3-40F5-B0E1-3907A42872DC}
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F} = {3451EBAF-3D69-4019-92BE-10E331F32A6F}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data.Test", "ParkitectNexus.Data.Test\ParkitectNexus.Data.Test.csproj", "{A940BE61-A6C6-49B4-945B-AC557B00CF6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

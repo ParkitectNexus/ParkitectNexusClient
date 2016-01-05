@@ -11,7 +11,7 @@ namespace ParkitectNexus.Data.Web
     /// <summary>
     ///     Represents an URL with the parkitectnexus protocol.
     /// </summary>
-    public class ParkitectNexusUrl
+    public class ParkitectNexusUrl : IParkitectNexusUrl
     {
         private const string Protocol = "parkitectnexus:";
         private const string ProtocolInstructionSeparator = "/";
@@ -45,7 +45,7 @@ namespace ParkitectNexus.Data.Web
         /// <summary>
         ///     Gets the type of the asset.
         /// </summary>
-        public ParkitectAssetType AssetType { get; }
+        public ParkitectAssetType AssetType { get;  }
 
         /// <summary>
         ///     Gets the file hash.
