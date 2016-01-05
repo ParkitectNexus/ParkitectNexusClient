@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\ParkitectOnlineAssetRepositoryTest.cs" />
+    <Compile Include="Web\ParkitectNexusUrlTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
