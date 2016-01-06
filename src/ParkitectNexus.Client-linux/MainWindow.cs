@@ -224,7 +224,7 @@ public partial class MainWindow: Gtk.Window
     {
         this.Hide ();
         _parkitect.Launch ();
-		Environment.Exit (0);
+        Environment.Exit (0);
     }
 
     /// <summary>
@@ -260,7 +260,5 @@ public partial class MainWindow: Gtk.Window
     {
         if (_selectedMod == null) return;
         Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.GetParkitectMod.Repository}");
-    
     }
-
 }
