@@ -78,7 +78,7 @@ namespace ParkitectNexus.Data.Web
         {
             ParkitectNexusUrl output;
             if (!TryParse(input, out output))
-                throw new FormatException("invalid url format");
+                throw new FormatException("invalid url format: " + input);
             return output;
         }
 
