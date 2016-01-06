@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using ParkitectNexus.AssetMagic;
 
 namespace ParkitectNexus.Client.Windows.SliderPanels

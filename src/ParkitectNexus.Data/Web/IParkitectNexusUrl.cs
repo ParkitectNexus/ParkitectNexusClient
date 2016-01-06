@@ -1,4 +1,7 @@
-﻿using ParkitectNexus.Data.Game;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Web
 {

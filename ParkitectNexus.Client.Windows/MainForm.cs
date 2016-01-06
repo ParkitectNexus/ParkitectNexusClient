@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Client.Windows.TabPages;

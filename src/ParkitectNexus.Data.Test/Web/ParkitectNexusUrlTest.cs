@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
 

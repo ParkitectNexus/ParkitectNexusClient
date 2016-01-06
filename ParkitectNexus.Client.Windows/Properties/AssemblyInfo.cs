@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 
