@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "src\Setup\Setup.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data.Test", "src\ParkitectNexus.Data.Test\ParkitectNexus.Data.Test.csproj", "{A940BE61-A6C6-49B4-945B-AC557B00CF6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.Windows", "ParkitectNexus.Client.Windows\ParkitectNexus.Client.Windows.csproj", "{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.Windows", "src\ParkitectNexus.Client.Windows\ParkitectNexus.Client.Windows.csproj", "{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
