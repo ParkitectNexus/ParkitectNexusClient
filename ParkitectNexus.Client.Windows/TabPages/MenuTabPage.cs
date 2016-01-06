@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using MetroFramework;
 using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Properties;
-using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
 
@@ -27,7 +26,6 @@ namespace ParkitectNexus.Client.Windows.TabPages
             _website = website;
 
             Text = "Menu";
-
         }
 
         #region Overrides of LoadableTilesTabPage
@@ -36,34 +34,34 @@ namespace ParkitectNexus.Client.Windows.TabPages
 
         protected override Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken)
         {
-            var visit = new MetroTile()
+            var visit = new MetroTile
             {
                 Text = "Visit",
                 TextAlign = ContentAlignment.BottomCenter,
                 Style = MetroColorStyle.Orange,
                 TileImage = Resources.parkitectnexus_logo,
                 UseTileImage = true,
-                TileImageAlign = ContentAlignment.MiddleCenter,
+                TileImageAlign = ContentAlignment.MiddleCenter
             };
 
-            var launch = new MetroTile()
+            var launch = new MetroTile
             {
                 Text = "Launch",
                 TextAlign = ContentAlignment.BottomCenter,
                 Style = MetroColorStyle.Default,
                 TileImage = Resources.parkitect_logo,
                 UseTileImage = true,
-                TileImageAlign = ContentAlignment.MiddleCenter,
+                TileImageAlign = ContentAlignment.MiddleCenter
             };
 
-            var help = new MetroTile()
+            var help = new MetroTile
             {
                 Text = "Help",
                 TextAlign = ContentAlignment.BottomCenter,
                 Style = MetroColorStyle.Default,
                 TileImage = Resources.appbar_information,
                 UseTileImage = true,
-                TileImageAlign = ContentAlignment.MiddleCenter,
+                TileImageAlign = ContentAlignment.MiddleCenter
             };
 
             visit.Click += (sender, args) =>
@@ -76,11 +74,9 @@ namespace ParkitectNexus.Client.Windows.TabPages
                 _parkitect.Launch();
                 Application.Exit();
             };
-            help.Click += (sender, args) =>
-            {
-            };
+            help.Click += (sender, args) => { };
 
-            return Task.FromResult((IEnumerable<MetroTile>)new[]
+            return Task.FromResult((IEnumerable<MetroTile>) new[]
             {
                 visit, launch, help
             });

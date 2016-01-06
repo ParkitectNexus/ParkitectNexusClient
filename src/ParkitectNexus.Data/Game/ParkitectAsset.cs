@@ -25,9 +25,9 @@ namespace ParkitectNexus.Data.Game
             if (fileName == null) throw new ArgumentNullException(nameof(fileName));
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             FileName = fileName;
-            this.DownloadInfo = downloadInfo;
-            this.Stream = stream;
-            this.Type = type;
+            DownloadInfo = downloadInfo;
+            Stream = stream;
+            Type = type;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ParkitectNexus.Data.Game
         /// <summary>
         ///     Gets the stream.
         /// </summary>
-        public System.IO.Stream Stream { get; }
+        public Stream Stream { get; }
 
         #region Implementation of IDisposable
 

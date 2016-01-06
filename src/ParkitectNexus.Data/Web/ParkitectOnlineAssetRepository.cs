@@ -17,8 +17,8 @@ namespace ParkitectNexus.Data.Web
     /// </summary>
     public class ParkitectOnlineAssetRepository : IParkitectOnlineAssetRepository
     {
-        private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly GitHubClient _gitClient = new GitHubClient(new ProductHeaderValue("parkitect-nexus-client"));
+        private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
@@ -141,7 +141,7 @@ namespace ParkitectNexus.Data.Web
             }
         }
 
-        protected virtual async Task<RepositoryTag> GetLatestModTag(string mod,IGitHubClient client)
+        protected virtual async Task<RepositoryTag> GetLatestModTag(string mod, IGitHubClient client)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             var p = mod.Split('/');

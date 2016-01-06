@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
-using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;

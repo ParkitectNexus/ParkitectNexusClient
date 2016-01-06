@@ -5,10 +5,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using Newtonsoft.Json;
-using ParkitectNexus.Client.Properties;
-using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
 
@@ -140,7 +137,7 @@ namespace ParkitectNexus.Client
             MoveFilesAndDirectoriesInDirectory(parkitect.Paths.GetPathInGameFolder("pnmods"), parkitect.Paths.Mods);
             MoveFilesAndDirectoriesInDirectory(parkitect.Paths.GetPathInGameFolder("Mods"), parkitect.Paths.NativeMods);
         }
-        
+
         public static void MigrateMods(IParkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));

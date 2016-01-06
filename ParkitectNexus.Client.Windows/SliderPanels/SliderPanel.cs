@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
 using MetroFramework.Animation;
 using MetroFramework.Controls;
-using MetroFramework.Drawing;
 
 namespace ParkitectNexus.Client.Windows.SliderPanels
 {
     public partial class SliderPanel : MetroUserControl
     {
-        private MoveAnimation _currentAnimation;
-        private Control _parent;
-        private bool _isSlidedIn;
         private string _backText;
+        private MoveAnimation _currentAnimation;
+        private bool _isSlidedIn;
+        private Control _parent;
+
         public SliderPanel()
         {
             InitializeComponent();
@@ -28,18 +23,13 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
             UpdateText();
         }
 
-        private void metroLink_Click(object sender, EventArgs e)
-        {
-            IsSlidedIn = false;
-        }
-
         #region Overrides of Panel
 
         /// <summary>
-        /// This member is not meaningful for this control.
+        ///     This member is not meaningful for this control.
         /// </summary>
         /// <returns>
-        /// The text associated with this control.
+        ///     The text associated with this control.
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Always)]
         [Browsable(true)]
@@ -57,13 +47,38 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
 
         #endregion
 
+        public bool IsSlidedIn
+        {
+            get { return _isSlidedIn; }
+            set
+            {
+                if (_isSlidedIn == value || Parent == null)
+                    return;
+
+                _isSlidedIn = value;
+
+                if (_currentAnimation != null && _currentAnimation.IsRunning)
+                    _currentAnimation.Cancel();
+
+                _currentAnimation = new MoveAnimation();
+                _currentAnimation.Start(this, new Point(value ? Parent.Width - Width : Parent.Width, Top),
+                    TransitionType.EaseOutExpo, 22);
+                _currentAnimation.AnimationCompleted += CurrentAnimationOnAnimationCompleted;
+            }
+        }
+
+        private void metroLink_Click(object sender, EventArgs e)
+        {
+            IsSlidedIn = false;
+        }
+
         private void UpdateText()
         {
             int width;
             using (var b = new Bitmap(1, 1))
             using (var g = Graphics.FromImage(b))
             using (var f = MetroFonts.Link(MetroLinkSize.Tall, MetroLinkWeight.Light))
-                width = (int)g.MeasureString(BackText, f).Width;
+                width = (int) g.MeasureString(BackText, f).Width;
 
             metroLink.Width = 32 + 8 + width;
             metroLink.Text = BackText;
@@ -72,9 +87,9 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
         #region Overrides of Control
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.ParentChanged"/> event.
+        ///     Raises the <see cref="E:System.Windows.Forms.Control.ParentChanged" /> event.
         /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
         protected override void OnParentChanged(EventArgs e)
         {
             if (DesignMode)
@@ -106,7 +121,7 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
             FixSize();
         }
 
-        void FixSize()
+        private void FixSize()
         {
             if (Parent == null) return;
             Top = 30;
@@ -114,28 +129,9 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
             Height = Parent.Height - Top - 20;
         }
 
-        public bool IsSlidedIn
-        {
-            get { return _isSlidedIn; }
-            set
-            {
-                if (_isSlidedIn == value || Parent == null)
-                    return;
-
-                _isSlidedIn = value;
-
-                if (_currentAnimation != null && _currentAnimation.IsRunning)
-                    _currentAnimation.Cancel();
-
-                _currentAnimation = new MoveAnimation();
-                _currentAnimation.Start(this, new Point(value ? Parent.Width - Width : Parent.Width, Top),
-                    TransitionType.EaseOutExpo, 22);
-                _currentAnimation.AnimationCompleted += CurrentAnimationOnAnimationCompleted;
-            }
-        }
-
         public event EventHandler SlidedIn;
         public event EventHandler SlidedOut;
+
         private void CurrentAnimationOnAnimationCompleted(object sender, EventArgs eventArgs)
         {
             if (_isSlidedIn)

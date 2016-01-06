@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using ParkitectNexus.AssetMagic;
 
 namespace ParkitectNexus.Client.Windows.SliderPanels
@@ -19,8 +12,7 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
             InitializeComponent();
 
             nameLabel.Text = blueprint.Header.Name;
-            pictureBox.Image = Image.FromFile(path);// TODO: Check for exceptions (file deleted?)
-
+            pictureBox.Image = Image.FromFile(path); // TODO: Check for exceptions (file deleted?)
         }
     }
 }

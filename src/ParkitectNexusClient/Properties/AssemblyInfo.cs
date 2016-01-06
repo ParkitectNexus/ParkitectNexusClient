@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ParkitectNexus Client")]
 [assembly: AssemblyProduct("ParkitectNexus Client")]
-[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2015")]
+[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2016")]
 [assembly: AssemblyTrademark("ParkitectNexus")]
 [assembly: AssemblyCulture("")]
 

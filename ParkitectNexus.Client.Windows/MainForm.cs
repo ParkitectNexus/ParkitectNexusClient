@@ -1,4 +1,5 @@
-﻿using MetroFramework.Forms;
+﻿using System;
+using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Client.Windows.TabPages;
 using ParkitectNexus.Data.Game;
@@ -44,7 +45,7 @@ namespace ParkitectNexus.Client.Windows
             panel.IsSlidedIn = true;
         }
 
-        private void metroTabControl_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void metroTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             var tab = metroTabControl.SelectedTab as LoadableTilesTabPage;
             tab?.WasSelected();

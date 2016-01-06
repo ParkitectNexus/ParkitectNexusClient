@@ -45,7 +45,7 @@ namespace ParkitectNexus.Data.Web
         /// <summary>
         ///     Gets the type of the asset.
         /// </summary>
-        public ParkitectAssetType AssetType { get;  }
+        public ParkitectAssetType AssetType { get; }
 
         /// <summary>
         ///     Gets the file hash.

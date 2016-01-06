@@ -44,7 +44,6 @@ namespace ParkitectNexus.Client.Windows.TabPages
 
         protected override Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken)
         {
-
             return Task.Run(() =>
             {
                 var tiles = new List<MetroTile>();
@@ -72,16 +71,20 @@ namespace ParkitectNexus.Client.Windows.TabPages
                                 Style = MetroColorStyle.Default,
                                 TileImage = tileImage,
                                 UseTileImage = true,
-                                TileImageAlign = ContentAlignment.MiddleCenter,
+                                TileImageAlign = ContentAlignment.MiddleCenter
                             };
 
-                            tile.Click += (sender, args) => { (FindForm() as MainForm)?.SpawnSliderPanel(new SavegameSliderPanel(file, data)); };
+                            tile.Click +=
+                                (sender, args) =>
+                                {
+                                    (FindForm() as MainForm)?.SpawnSliderPanel(new SavegameSliderPanel(file, data));
+                                };
                             tiles.Add(tile);
                         }
                     }
-                    UpdateLoadingProgress((current++ * 100) / files.Length);
+                    UpdateLoadingProgress((current++*100)/files.Length);
                 }
-                return (IEnumerable<MetroTile>)tiles;
+                return (IEnumerable<MetroTile>) tiles;
             }, cancellationToken);
         }
 
