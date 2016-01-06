@@ -70,7 +70,7 @@
     <Compile Include="Web\ParkitectNexusUrlTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
       <Project>{0cb13383-05d3-40f5-b0e1-3907a42872dc}</Project>
       <Name>ParkitectNexus.Data</Name>
     </ProjectReference>
