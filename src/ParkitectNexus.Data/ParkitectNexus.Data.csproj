@@ -73,6 +73,10 @@
     <Compile Include="Game\IParkitectAsset.cs" />
     <Compile Include="Game\IParkitectMod.cs" />
     <Compile Include="PathResolver.cs" />
+    <Compile Include="Presenter\IPresenter.cs" />
+    <Compile Include="Presenter\IPresenterFactory.cs" />
+    <Compile Include="Presenter\PresenterFactory.cs" />
+    <Compile Include="Presenter\PresenterRegistry.cs" />
     <Compile Include="Reporting\ICrashReporterFactory.cs" />
     <Compile Include="Reporting\MacOSXCrashReport.cs" />
     <Compile Include="Settings\IRepository.cs" />

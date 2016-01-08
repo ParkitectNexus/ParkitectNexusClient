@@ -3,10 +3,11 @@
 
 using System;
 using ParkitectNexus.AssetMagic;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.SliderPanels
 {
-    public partial class SavegameSliderPanel : SliderPanel
+    public partial class SavegameSliderPanel : SliderPanel, IPresenter
     {
         public SavegameSliderPanel(string path, ISavegame savegame)
         {

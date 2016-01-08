@@ -1,4 +1,5 @@
 ﻿using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Web;
@@ -13,8 +14,10 @@ namespace ParkitectNexus.Data
         public static Registry ConfigureStructureMap()
         {
             var registry = new Registry();
+           
             registry.IncludeRegistry<WebRegistry>();
             registry.IncludeRegistry<GameRegistry>();
+            registry.IncludeRegistry<PresenterRegistry>();
 
             //create operating system
             registry.For<IOperatingSystem>().Use<OperatingSystems>();

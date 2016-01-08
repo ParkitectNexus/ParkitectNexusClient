@@ -13,10 +13,11 @@ using MetroFramework.Controls;
 using ParkitectNexus.AssetMagic.Readers;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.TabPages
 {
-    public class BlueprintsTabPage : LoadableTilesTabPage
+    public class BlueprintsTabPage : LoadableTilesTabPage, IPresenter
     {
         private readonly IParkitect _parkitect;
 

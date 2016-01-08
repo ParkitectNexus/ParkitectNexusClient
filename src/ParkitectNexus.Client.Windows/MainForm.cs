@@ -9,30 +9,22 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.Windows;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows
 {
-    public partial class MainForm : MetroForm
+    public partial class MainForm : MetroForm, IPresenter
     {
         private SliderPanel _currentPanel;
 
-        public MainForm()
+        public MainForm(IPresenterFactory presenterFactory)
         {
-            //configure map
-            StructureMap.Registry registry = ObjectFactory.ConfigureStructureMap();
-            ObjectFactory.SetUpContainer(registry);
-
-  
-            IParkitect parkitect = ObjectFactory.Container.GetInstance<IParkitect>();
-            IParkitectNexusWebsite website = new ParkitectNexusWebsite();
-            IParkitectOnlineAssetRepository assetRepository = ObjectFactory.Container.GetInstance<IParkitectOnlineAssetRepository>();
-
             InitializeComponent();
 
-            metroTabControl.TabPages.Add(new MenuTabPage(parkitect, website));
-            metroTabControl.TabPages.Add(new ModsTabPage(parkitect));
-            metroTabControl.TabPages.Add(new BlueprintsTabPage(parkitect));
-            metroTabControl.TabPages.Add(new SavegamesTabPage(parkitect));
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>() );
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<ModsTabPage>());
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<BlueprintsTabPage>());
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<SavegamesTabPage>());
         }
 
         public void SpawnSliderPanel(SliderPanel panel)

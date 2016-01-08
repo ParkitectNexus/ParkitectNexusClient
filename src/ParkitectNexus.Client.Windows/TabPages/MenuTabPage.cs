@@ -12,10 +12,11 @@ using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Properties;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.TabPages
 {
-    public class MenuTabPage : LoadableTilesTabPage
+    public class MenuTabPage : LoadableTilesTabPage, IPresenter
     {
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusWebsite _website;
