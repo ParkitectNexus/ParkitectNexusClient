@@ -260,7 +260,5 @@ public partial class MainWindow: Gtk.Window
     {
         if (_selectedMod == null) return;
         Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.GetParkitectMod.Repository}");
-    
     }
-
 }

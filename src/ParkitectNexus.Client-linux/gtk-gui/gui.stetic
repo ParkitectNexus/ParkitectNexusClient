@@ -231,6 +231,7 @@
                                 <child>
                                   <widget class="Gtk.EventBox" id="eventViewParkitectNexus">
                                     <property name="MemberName" />
+                                    <signal name="ButtonPressEvent" handler="VisitModWebsite" after="yes" />
                                     <child>
                                       <widget class="Gtk.Label" id="lblViewOnParkitectNexusWebsite">
                                         <property name="MemberName" />
