@@ -1,4 +1,4 @@
-﻿// ParkitectNexusClient
+// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
@@ -6,37 +6,37 @@ using System.Runtime.InteropServices;
 
 namespace ParkitectNexus.Data
 {
-    public static class OperatingSystems
+    public class OperatingSystems : IOperatingSystem
     {
-        [DllImport("libc")]
-        private static extern int uname(IntPtr buf);
+        [DllImport("libc")] 
+        private static extern int uname(IntPtr buf); 
 
         private static bool IsUnixMacOSXPlatform()
-        {
-            var buf = IntPtr.Zero;
+        { 
+            var buf = IntPtr.Zero; 
             try
-            {
-                buf = Marshal.AllocHGlobal(8192);
+            { 
+                buf = Marshal.AllocHGlobal (8192); 
                 // This is a hacktastic way of getting sysname from uname () 
-                if (uname(buf) == 0)
-                {
+                if (uname (buf) == 0)
+                { 
                     if (Marshal.PtrToStringAnsi(buf) == "Darwin")
-                        return true;
-                }
+                        return true; 
+                } 
             }
             catch
             {
             }
             finally
-            {
+            { 
                 if (buf != IntPtr.Zero)
-                    Marshal.FreeHGlobal(buf);
+                    Marshal.FreeHGlobal (buf); 
             }
 
-            return false;
+            return false; 
         }
 
-        public static SupportedOperatingSystem GetOperatingSystem()
+        public SupportedOperatingSystem GetOperatingSystem()
         {
             switch (Environment.OSVersion.Platform)
             {
@@ -47,11 +47,11 @@ namespace ParkitectNexus.Data
                     return SupportedOperatingSystem.Windows;
                 case PlatformID.MacOSX:
                     return SupportedOperatingSystem.MacOSX;
-                case PlatformID.Unix:
-                    if (IsUnixMacOSXPlatform())
-                        return SupportedOperatingSystem.MacOSX;
+            case PlatformID.Unix:
+                if (IsUnixMacOSXPlatform ())
+                    return SupportedOperatingSystem.MacOSX;
+                else
                     return SupportedOperatingSystem.Linux;
-                    break;
             }
 
             throw new ApplicationException("unsupported platform " + Environment.OSVersion.Platform);

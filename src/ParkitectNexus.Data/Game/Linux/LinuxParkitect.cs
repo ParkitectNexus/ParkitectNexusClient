@@ -5,13 +5,14 @@ using System.Diagnostics;
 using ParkitectNexus.Data.Utilities;
 using System.Linq;
 using System.IO;
+using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Data
 {
     public class LinuxParkitect : BaseParkitect
     {
 
-        public LinuxParkitect()
+        public LinuxParkitect(IRepositoryFactory repositoryFactory) : base(repositoryFactory)
         {
             Paths = new LinuxParkitectPath(this);
         }

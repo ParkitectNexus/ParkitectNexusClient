@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
@@ -17,15 +18,15 @@ namespace ParkitectNexus.Client.Wizard
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly ICrashReporterFactory _crashReporting;
 
-        public MenuUserControl(IParkitect parkitect, IParkitectNexusWebsite parkitectNexusWebsite,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
+        public MenuUserControl(IParkitect parkitect, IParkitectNexusWebsite parkitectNexusWebsite,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository,ICrashReporterFactory crashReporting)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             if (parkitectOnlineAssetRepository == null)
                 throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
-
+            _crashReporting = crashReporting;
             _parkitect = parkitect;
             _parkitectNexusWebsite = parkitectNexusWebsite;
             _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
@@ -42,8 +43,7 @@ namespace ParkitectNexus.Client.Wizard
                         MessageBox.Show(this, "Are you sure you wish to send us your log files?",
                             "ParkitectNexus Client",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        CrashReporter.Report("log_upload", _parkitect, _parkitectNexusWebsite,
-                            new Exception("log_upload"));
+                        _crashReporting.Report("log_upload",new Exception("log_upload"));
 
                     return true;
                 case (Keys.Control | Keys.Alt | Keys.D):

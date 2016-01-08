@@ -89,7 +89,6 @@
     <Compile Include="Reporting\MacOSXCrashReport.cs" />
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
     <Compile Include="Game\Linux\LinuxParkitectPath.cs" />
-    <Compile Include="Web\IParkitectNexusUrl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

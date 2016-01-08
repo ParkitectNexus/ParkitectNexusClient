@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting
 {
@@ -22,8 +25,8 @@ namespace ParkitectNexus.Data.Reporting
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
             _parkitect = parkitect;
-            Action = action;
-            Exception = exception;
+            this.Action = action;
+            this.Exception = exception;
         }
 
         [JsonProperty]
@@ -39,10 +42,8 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    var process = new Process
-                    {
-                        StartInfo = new ProcessStartInfo
-                        {
+                    var process = new Process {
+                        StartInfo = new ProcessStartInfo {
                             FileName = "w_vers",
                             Arguments = "-productVersion",
                             UseShellExecute = false,
@@ -53,9 +54,8 @@ namespace ParkitectNexus.Data.Reporting
 
                     string result = "";
                     process.Start();
-                    while (!process.StandardOutput.EndOfStream)
-                    {
-                        result += process.StandardOutput.ReadLine();
+                    while (!process.StandardOutput.EndOfStream) {
+                            result += process.StandardOutput.ReadLine();
                     }
                     return result;
                 }

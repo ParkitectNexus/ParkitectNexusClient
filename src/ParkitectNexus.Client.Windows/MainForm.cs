@@ -8,6 +8,7 @@ using ParkitectNexus.Client.Windows.TabPages;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.Windows;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data;
 
 namespace ParkitectNexus.Client.Windows
 {
@@ -17,9 +18,14 @@ namespace ParkitectNexus.Client.Windows
 
         public MainForm()
         {
-            IParkitect parkitect = new WindowsParkitect();
+            //configure map
+            StructureMap.Registry registry = ObjectFactory.ConfigureStructureMap();
+            ObjectFactory.SetUpContainer(registry);
+
+  
+            IParkitect parkitect = ObjectFactory.Container.GetInstance<IParkitect>();
             IParkitectNexusWebsite website = new ParkitectNexusWebsite();
-            IParkitectOnlineAssetRepository assetRepository = new ParkitectOnlineAssetRepository(website);
+            IParkitectOnlineAssetRepository assetRepository = ObjectFactory.Container.GetInstance<IParkitectOnlineAssetRepository>();
 
             InitializeComponent();
 

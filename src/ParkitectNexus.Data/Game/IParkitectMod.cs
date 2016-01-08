@@ -15,7 +15,7 @@ namespace ParkitectNexus.Data.Game
         ///     Gets the parkitect instance this mod was installed to.
         /// </summary>
         IParkitect Parkitect { get; }
-
+        
         /// <summary>
         ///     Gets or sets the base directory.
         /// </summary>

@@ -5,7 +5,7 @@ using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Client.Settings
 {
-    public class ClientSettings : SettingsBase
+    public class ClientSettings
     {
         public bool BootOnNextRun { get; set; }
         public string DownloadOnNextRun { get; set; }

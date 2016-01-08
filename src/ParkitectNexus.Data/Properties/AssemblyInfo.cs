@@ -1,4 +1,4 @@
-﻿// ParkitectNexusClient
+// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
 using System.Reflection;
@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ParkitectNexus")]
 [assembly: AssemblyProduct("ParkitectNexus.Data")]
-[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2016")]
+[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2015")]
 [assembly: AssemblyTrademark("ParkitectNexus")]
 [assembly: AssemblyCulture("")]
 

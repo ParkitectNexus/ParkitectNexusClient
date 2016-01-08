@@ -10,9 +10,11 @@ using System.Management;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting
 {
+
     [JsonObject(MemberSerialization.OptIn)]
     public class WindowsCrashReport
     {
@@ -24,8 +26,8 @@ namespace ParkitectNexus.Data.Reporting
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
             _parkitect = parkitect;
-            Action = action;
-            Exception = exception;
+            this.Action = action;
+            this.Exception = exception;
         }
 
         [JsonProperty]
@@ -40,7 +42,7 @@ namespace ParkitectNexus.Data.Reporting
                 (from x in
                     new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get()
                         .OfType<ManagementObject>()
-                    select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown (Windows)";
+            select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown (Windows)";
 
         [JsonProperty]
         public int ProcessBits => IntPtr.Size*8;

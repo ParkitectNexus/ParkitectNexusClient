@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Octokit;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Data.Web
 {
@@ -17,18 +18,20 @@ namespace ParkitectNexus.Data.Web
     /// </summary>
     public class ParkitectOnlineAssetRepository : IParkitectOnlineAssetRepository
     {
-        private readonly GitHubClient _gitClient = new GitHubClient(new ProductHeaderValue("parkitect-nexus-client"));
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
-
+        private readonly IGitHubClient _gitClient;
+        private IParkitectNexusWebFactory _nexusWebFactory;
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
         /// </summary>
         /// <param name="parkitectNexusWebsite">The parkitect nexus website.</param>
         /// <exception cref="ArgumentNullException">Thrown if parkitectNexusWebsite is null.</exception>
-        public ParkitectOnlineAssetRepository(IParkitectNexusWebsite parkitectNexusWebsite)
+        public ParkitectOnlineAssetRepository(IGitHubClient gitClient,IParkitectNexusWebsite parkitectNexusWebsite, IParkitectNexusWebFactory nexusWebFactory)
         {
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             _parkitectNexusWebsite = parkitectNexusWebsite;
+            _nexusWebFactory = nexusWebFactory;
+            _gitClient = gitClient;
         }
 
         /// <summary>
@@ -68,7 +71,7 @@ namespace ParkitectNexus.Data.Web
             var downloadInfo = await ResolveDownloadInfo(url);
 
             // Create a web client which will download the file.
-            using (var webClient = new ParkitectNexusWebClient())
+            using (var webClient = _nexusWebFactory.NexusClient())
             {
                 // Receive the content of the file.
                 using (var stream = await webClient.OpenReadTaskAsync(downloadInfo.Url))
@@ -141,7 +144,7 @@ namespace ParkitectNexus.Data.Web
             }
         }
 
-        protected virtual async Task<RepositoryTag> GetLatestModTag(string mod, IGitHubClient client)
+        protected virtual async Task<RepositoryTag> GetLatestModTag(string mod,IGitHubClient client)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             var p = mod.Split('/');

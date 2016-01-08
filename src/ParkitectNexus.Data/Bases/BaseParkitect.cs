@@ -1,4 +1,4 @@
-﻿// ParkitectNexusClient
+// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
@@ -11,8 +11,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Data.Base
 {
@@ -21,13 +21,12 @@ namespace ParkitectNexus.Data.Base
     /// </summary>
     public abstract class BaseParkitect : IParkitect
     {
-        private readonly GameSettings _gameSettings = new GameSettings();
+        protected IRepositoryFactory _repositoryFactory;
 
-        /// <summary>
-        ///     Gets a collection of enabled and development mods.
-        /// </summary>
-        public virtual IEnumerable<IParkitectMod> ActiveMods
-            => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
+        public BaseParkitect(IRepositoryFactory repositoryFactory)
+        {
+            this._repositoryFactory = repositoryFactory;
+        }
 
         /// <summary>
         ///     Gets or sets the installation path.
@@ -37,17 +36,19 @@ namespace ParkitectNexus.Data.Base
         {
             get
             {
-                return IsValidInstallationPath(_gameSettings.InstallationPath)
-                    ? _gameSettings.InstallationPath
+                var gameSettings = _repositoryFactory.Repository<GameSettings>();
+                return IsValidInstallationPath(gameSettings.Model.InstallationPath)
+                    ? gameSettings.Model.InstallationPath
                     : null;
             }
             set
             {
+                var gameSettings = _repositoryFactory.Repository<GameSettings>();
                 if (!IsValidInstallationPath(value))
                     throw new ArgumentException("invalid installation path", nameof(value));
 
-                _gameSettings.InstallationPath = value;
-                _gameSettings.Save();
+                gameSettings.Model.InstallationPath = value;
+                gameSettings.Save();
             }
         }
 
@@ -105,6 +106,12 @@ namespace ParkitectNexus.Data.Base
         }
 
         /// <summary>
+        ///     Gets a collection of enabled and development mods.
+        /// </summary>
+        public virtual IEnumerable<IParkitectMod> ActiveMods
+                    => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
+
+        /// <summary>
         ///     Sets the installation path if the specified path is a valid installation path.
         /// </summary>
         /// <param name="path">The path.</param>
@@ -158,8 +165,7 @@ namespace ParkitectNexus.Data.Base
                 case ParkitectAssetType.Blueprint:
                 case ParkitectAssetType.Savegame:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
-                    var storagePath =
-                        Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
+                var storagePath = Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
                     var assetPath = Path.Combine(storagePath, asset.FileName);
 
                     Directory.CreateDirectory(storagePath);

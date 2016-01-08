@@ -1,8 +1,5 @@
-﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
-
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Data.Test.Web
@@ -25,11 +22,11 @@ namespace ParkitectNexus.Data.Test.Web
             //assert
             Assert.IsTrue(result1.Name == "Ambient Occlusion");
             Assert.IsTrue(result1.FileHash == "ParkitectNexus/AmbientOcclusion");
-            Assert.IsTrue(result1.AssetType == ParkitectAssetType.Mod);
+            Assert.IsTrue(result1.AssetType == Game.ParkitectAssetType.Mod);
 
             Assert.IsTrue(result2.Name == "Cheat mod");
             Assert.IsTrue(result2.FileHash == "nozols/ParkitectCheats");
-            Assert.IsTrue(result2.AssetType == ParkitectAssetType.Mod);
+            Assert.IsTrue(result2.AssetType == Game.ParkitectAssetType.Mod);
         }
 
         [TestMethod]
@@ -47,11 +44,11 @@ namespace ParkitectNexus.Data.Test.Web
             //assert
             Assert.IsTrue(result1.Name == "Dropper");
             Assert.IsTrue(result1.FileHash == "3ed8ad1d70");
-            Assert.IsTrue(result1.AssetType == ParkitectAssetType.Blueprint);
+            Assert.IsTrue(result1.AssetType == Game.ParkitectAssetType.Blueprint);
 
             Assert.IsTrue(result2.Name == "Ski Racer");
             Assert.IsTrue(result2.FileHash == "2cfc80d929");
-            Assert.IsTrue(result2.AssetType == ParkitectAssetType.Blueprint);
+            Assert.IsTrue(result2.AssetType == Game.ParkitectAssetType.Blueprint);
         }
 
         [TestMethod]
@@ -69,11 +66,11 @@ namespace ParkitectNexus.Data.Test.Web
             //assert
             Assert.IsTrue(result1.Name == "Gigantic multi-themed park.");
             Assert.IsTrue(result1.FileHash == "a4a24d1acf");
-            Assert.IsTrue(result1.AssetType == ParkitectAssetType.Savegame);
+            Assert.IsTrue(result1.AssetType == Game.ParkitectAssetType.Savegame);
 
             Assert.IsTrue(result2.Name == "Log Hill");
             Assert.IsTrue(result2.FileHash == "03567c46bb");
-            Assert.IsTrue(result2.AssetType == ParkitectAssetType.Savegame);
+            Assert.IsTrue(result2.AssetType == Game.ParkitectAssetType.Savegame);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using ParkitectNexus.Data.Base;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Data.Game.MacOSX
 {
@@ -13,9 +14,10 @@ namespace ParkitectNexus.Data.Game.MacOSX
     /// </summary>
     public class MacOSXParkitect : BaseParkitect
     {
-        public MacOSXParkitect()
+
+        public MacOSXParkitect(IRepositoryFactory repositoryFactory) : base(repositoryFactory)
         {
-            Paths = new MacOSXParkitectPaths(this);
+            Paths =  new MacOSXParkitectPaths(this);
         }
 
         /// <summary>
