@@ -94,48 +94,55 @@ namespace ParkitectNexus.Client
                 Directory.Move(directory, target);
             }
         }
-
-        private static void MoveFilesAndDirectoriesInDirectory(string oldPath, string newPath)
+        
+        public static void MoveFolder(string sourceFolder, string destFolder)
         {
-            if (oldPath == null) throw new ArgumentNullException(nameof(oldPath));
-            if (newPath == null) throw new ArgumentNullException(nameof(newPath));
-
-            if (!Directory.Exists(oldPath))
-                return;
-
-            Directory.CreateDirectory(newPath);
-
-            foreach (var directory in Directory.GetDirectories(oldPath))
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
+            string[] files = Directory.GetFiles(sourceFolder);
+            foreach (string file in files)
             {
-                var target = Path.Combine(newPath, Path.GetFileName(directory));
+                string name = Path.GetFileName(file);
+                string dest = Path.Combine(destFolder, name);
 
-                if (Directory.Exists(target))
-                    continue;
-
-                Directory.Move(directory, target);
+                if(!File.Exists(dest))
+                    File.Copy(file, dest);
             }
-
-            foreach (var file in Directory.GetFiles(oldPath))
+            string[] folders = Directory.GetDirectories(sourceFolder);
+            foreach (string folder in folders)
             {
-                var target = Path.Combine(newPath, Path.GetFileName(file));
+                string name = Path.GetFileName(folder);
+                string dest = Path.Combine(destFolder, name);
 
-                if (File.Exists(target))
-                    continue;
-
-                Directory.Move(file, target);
+                if(!Directory.Exists(dest))
+                    MoveFolder(folder, dest);
             }
-
-            if (!Directory.GetDirectories(oldPath).Any() && !Directory.GetFiles(oldPath).Any())
-                Directory.Delete(oldPath);
         }
-
+        
         private static void MigrateModsPreAlpha5ToPreAlpha6(IParkitect parkitect)
         {
-            if (File.Exists(parkitect.Paths.GetPathInGameFolder("Mods/ParkitectNexus.Mod.ModLoader.dll")))
-                File.Delete(parkitect.Paths.GetPathInGameFolder("Mods/ParkitectNexus.Mod.ModLoader.dll"));
+            try
+            {
+                if (File.Exists(parkitect.Paths.GetPathInGameFolder("Mods/ParkitectNexus.Mod.ModLoader.dll")))
+                    File.Delete(parkitect.Paths.GetPathInGameFolder("Mods/ParkitectNexus.Mod.ModLoader.dll"));
 
-            MoveFilesAndDirectoriesInDirectory(parkitect.Paths.GetPathInGameFolder("pnmods"), parkitect.Paths.Mods);
-            MoveFilesAndDirectoriesInDirectory(parkitect.Paths.GetPathInGameFolder("Mods"), parkitect.Paths.NativeMods);
+                if (!File.Exists(Path.Combine(parkitect.Paths.GetPathInGameFolder("Mods"), "migrated.1.3.pn")))
+                {
+                    MoveFolder(parkitect.Paths.GetPathInGameFolder("Mods"), parkitect.Paths.NativeMods);
+
+                    File.Create(Path.Combine(parkitect.Paths.GetPathInGameFolder("Mods"), "migrated.1.3.pn"));
+                }
+
+                if (!File.Exists(Path.Combine(parkitect.Paths.GetPathInGameFolder("pnmods"), "migrated.1.3.pn")))
+                {
+                    MoveFolder(parkitect.Paths.GetPathInGameFolder("pnmods"), parkitect.Paths.Mods);
+                    File.Create(Path.Combine(parkitect.Paths.GetPathInGameFolder("pnmods"), "migrated.1.3.pn"));
+                }
+            }
+            catch (Exception)
+            {
+                // ignore
+            }
         }
 
         public static void MigrateMods(IParkitect parkitect)
