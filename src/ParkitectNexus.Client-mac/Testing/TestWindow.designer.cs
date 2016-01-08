@@ -9,18 +9,18 @@ using System.CodeDom.Compiler;
 
 namespace ParkitectNexus.Clientmac
 {
-	[Register ("TestWindow")]
-	partial class TestWindow
-	{
-		[Outlet]
-		MonoMac.AppKit.NSView kjhkjh { get; set; }
-		
-		void ReleaseDesignerOutlets ()
-		{
-			if (kjhkjh != null) {
-				kjhkjh.Dispose ();
-				kjhkjh = null;
-			}
-		}
-	}
+    [Register ("TestWindow")]
+    partial class TestWindow
+    {
+        [Outlet]
+        MonoMac.AppKit.NSView kjhkjh { get; set; }
+        
+        void ReleaseDesignerOutlets ()
+        {
+            if (kjhkjh != null) {
+                kjhkjh.Dispose ();
+                kjhkjh = null;
+            }
+        }
+    }
 }

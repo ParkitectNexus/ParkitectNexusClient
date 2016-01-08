@@ -55,13 +55,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Testing\" />
-    <Folder Include="Window\" />
-    <Folder Include="View\" />
-    <Folder Include="Settings\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="AppDelegate.designer.cs">
@@ -94,9 +87,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <BundleResource Include="..\..\bin\Release\ParkitectNexus.Mod.ModLoader.dll">
-      <Link>Resources\ParkitectNexus.Mod.ModLoader.dll</Link>
-    </BundleResource>
     <BundleResource Include="..\..\images\logo.icns">
       <Link>Resources\logo.icns</Link>
     </BundleResource>

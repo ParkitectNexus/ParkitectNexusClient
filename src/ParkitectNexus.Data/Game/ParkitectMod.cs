@@ -1,5 +1,5 @@
 ﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using System.CodeDom.Compiler;
@@ -74,9 +74,9 @@ namespace ParkitectNexus.Data.Game
             if (!IsInstalled) throw new Exception("mod not installed");
 
             Log.WriteLine($"Deleting mod '{this}'.");
-            
+
             Directory.Delete(InstallationPath, true);
-            
+
             InstallationPath = null;
         }
 
@@ -188,7 +188,6 @@ namespace ParkitectNexus.Data.Game
                         }
                         else
                         {
-
                             logFile.Log($"IGNORING assembly reference `{name}`");
                             Log.WriteLine($"IGNORING assembly reference `{name}`");
                         }
@@ -198,11 +197,12 @@ namespace ParkitectNexus.Data.Game
                     logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     Log.WriteLine($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     sourceFiles.AddRange(
-                        unresolvedSourceFiles.Select(file => {
+                        unresolvedSourceFiles.Select(file =>
+                        {
                             var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
                             return Path.Combine(codeDir, repl);
                         }));
-                    
+
                     // Compile.
                     var csCodeProvider =
                         new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
@@ -255,7 +255,7 @@ namespace ParkitectNexus.Data.Game
 
             if (SystemAssemblies.Contains(assemblyName))
                 return dllName;
-            
+
             if (IgnoredAssemblies.Contains(assemblyName))
                 return null;
 
@@ -296,7 +296,7 @@ namespace ParkitectNexus.Data.Game
         ///     Gets the parkitect instance this mod was installed to.
         /// </summary>
         public IParkitect Parkitect { get; }
-        
+
         /// <summary>
         ///     Gets or sets the base directory.
         /// </summary>

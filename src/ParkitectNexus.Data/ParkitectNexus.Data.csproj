@@ -58,6 +58,8 @@
     <Compile Include="Game\IParkitect.cs" />
     <Compile Include="Game\IParkitectAsset.cs" />
     <Compile Include="Game\IParkitectMod.cs" />
+    <Compile Include="Reporting\MacOSXCrashReport.cs" />
+    <Compile Include="Web\IParkitectNexusUrl.cs" />
     <Compile Include="Web\IParkitectNexusWebsite.cs" />
     <Compile Include="Web\IParkitectOnlineAssetRepository.cs" />
     <Compile Include="Reporting\CrashReporter.cs" />

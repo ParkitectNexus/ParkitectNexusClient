@@ -1,5 +1,5 @@
 ﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Base
 {
@@ -21,8 +21,14 @@ namespace ParkitectNexus.Data.Base
     /// </summary>
     public abstract class BaseParkitect : IParkitect
     {
-        private GameSettings _gameSettings = new GameSettings();
-        
+        private readonly GameSettings _gameSettings = new GameSettings();
+
+        /// <summary>
+        ///     Gets a collection of enabled and development mods.
+        /// </summary>
+        public virtual IEnumerable<IParkitectMod> ActiveMods
+            => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
+
         /// <summary>
         ///     Gets or sets the installation path.
         /// </summary>
@@ -99,12 +105,6 @@ namespace ParkitectNexus.Data.Base
         }
 
         /// <summary>
-        ///     Gets a collection of enabled and development mods.
-        /// </summary>
-        public virtual IEnumerable<IParkitectMod> ActiveMods
-                    => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
-
-        /// <summary>
         ///     Sets the installation path if the specified path is a valid installation path.
         /// </summary>
         /// <param name="path">The path.</param>
@@ -158,7 +158,8 @@ namespace ParkitectNexus.Data.Base
                 case ParkitectAssetType.Blueprint:
                 case ParkitectAssetType.Savegame:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
-                var storagePath = Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
+                    var storagePath =
+                        Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
                     var assetPath = Path.Combine(storagePath, asset.FileName);
 
                     Directory.CreateDirectory(storagePath);
