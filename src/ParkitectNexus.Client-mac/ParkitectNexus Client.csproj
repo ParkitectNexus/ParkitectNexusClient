@@ -93,6 +93,9 @@
     <BundleResource Include="..\..\images\dialog_banner.png">
       <Link>Resources\dialog_banner.png</Link>
     </BundleResource>
+    <BundleResource Include="..\..\bin\Release\ParkitectNexus.Mod.ModLoader.dll">
+      <Link>Resources\ParkitectNexus.Mod.ModLoader.dll</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data-xamarin.csproj">
