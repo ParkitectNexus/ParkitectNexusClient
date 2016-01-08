@@ -27,8 +27,8 @@ namespace ParkitectNexus.Client
             }
             catch (Exception e)
             {
-                Log.WriteLine("Failed to install parkitectnexus:// protocol.");
-                Log.WriteException(e);
+                Logger.WriteLine("Failed to install parkitectnexus:// protocol.");
+                Logger.WriteException(e);
             }
         }
     }

@@ -12,7 +12,7 @@ namespace ParkitectNexus.Data
     public class LinuxParkitect : BaseParkitect
     {
 
-        public LinuxParkitect(IRepositoryFactory repositoryFactory) : base(repositoryFactory)
+        public LinuxParkitect(IRepositoryFactory repositoryFactory,ILogger logger) : base(repositoryFactory, logger)
         {
             Paths = new LinuxParkitectPath(this);
         }
@@ -44,9 +44,9 @@ namespace ParkitectNexus.Data
         /// <returns>The launched process.</returns>
         public override Process Launch(string arguments = "-single-instance")
         {
-            Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            _logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
-            Log.WriteLine("Attempting to compile installed mods.");
+            _logger.WriteLine("Attempting to compile installed mods.");
             CompileActiveMods();
 
             // If the process is already running, push it to the foreground and return it.
@@ -54,14 +54,14 @@ namespace ParkitectNexus.Data
 
             if (running != null)
             {
-                Log.WriteLine(
+                _logger.WriteLine(
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
                 
                 return running;
             }
 
-            var t = Log.LoggingPath;
-            Log.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
+            var t = _logger.LoggingPath;
+            _logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
             // Start the game process.
             return !IsInstalled
                 ? null

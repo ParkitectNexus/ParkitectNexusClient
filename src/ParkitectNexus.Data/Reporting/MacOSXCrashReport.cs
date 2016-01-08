@@ -18,12 +18,13 @@ namespace ParkitectNexus.Data.Reporting
     public class MacOSXCrashReport
     {
         private readonly IParkitect _parkitect;
-
-        public MacOSXCrashReport(IParkitect parkitect, string action, Exception exception)
+        private readonly ILogger _logger;
+        public MacOSXCrashReport(IParkitect parkitect, string action, Exception exception,ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
+            _logger = logger;
             _parkitect = parkitect;
             this.Action = action;
             this.Exception = exception;
@@ -93,13 +94,13 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    if (!Utilities.Log.IsOpened)
+                    if (!_logger.IsOpened)
                         return "not opened";
 
-                    var path = Utilities.Log.LoggingPath;
-                    Utilities.Log.Close();
+                    var path = _logger.LoggingPath;
+                    _logger.Close();
                     var result = File.ReadAllText(path);
-                    Utilities.Log.Open(path);
+                    _logger.Open(path);
                     return result;
                 }
                 catch (Exception e)

@@ -19,12 +19,13 @@ namespace ParkitectNexus.Data.Reporting
     public class WindowsCrashReport
     {
         private readonly IParkitect _parkitect;
-
-        public WindowsCrashReport(IParkitect parkitect, string action, Exception exception)
+        private ILogger _logger;
+        public WindowsCrashReport(IParkitect parkitect, string action, Exception exception,ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
+            _logger = logger;
             _parkitect = parkitect;
             this.Action = action;
             this.Exception = exception;
@@ -78,13 +79,13 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    if (!Utilities.Log.IsOpened)
+                    if (!_logger.IsOpened)
                         return "not opened";
 
-                    var path = Utilities.Log.LoggingPath;
-                    Utilities.Log.Close();
+                    var path = _logger.LoggingPath;
+                    _logger.Close();
                     var result = File.ReadAllText(path);
-                    Utilities.Log.Open(path);
+                    _logger.Open(path);
                     return result;
                 }
                 catch (Exception e)

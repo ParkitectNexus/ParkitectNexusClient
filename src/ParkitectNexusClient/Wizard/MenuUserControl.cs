@@ -47,7 +47,7 @@ namespace ParkitectNexus.Client.Wizard
 
                     return true;
                 case (Keys.Control | Keys.Alt | Keys.D):
-                    Log.Close();
+                    Logger.Close();
                     WizardForm.Close();
 
                     var path = Assembly.GetEntryAssembly().Location;

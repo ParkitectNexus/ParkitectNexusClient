@@ -2,6 +2,7 @@
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using StructureMap;
 
@@ -22,15 +23,21 @@ namespace ParkitectNexus.Data
             //create operating system
             registry.For<IOperatingSystem>().Use<OperatingSystems>();
 
+            //only a single instance of the logger is needed
+            registry.For<ILogger>().Use<Logger>().Singleton();
+
             //repository settings
             registry.For(typeof(IRepository<>)).Use(typeof(Repository<>));
             registry.For<IRepositoryFactory>().Use<RepositoryFactory>();
 
+            //used to send crash reports
             registry.For<ICrashReporterFactory>().Use<CrashReporterFactory>();
 
+            //operating system
             registry.For<IOperatingSystem>().Use<OperatingSystems>();
-            registry.For<IPathResolver>().Use<PathResolver>();
 
+            //path resolver
+            registry.For<IPathResolver>().Use<PathResolver>();
 
             return registry;
            

@@ -50,8 +50,8 @@ namespace ParkitectNexus.Client
             }
             catch (Exception e)
             {
-                Log.WriteLine("Failed to install mod loader.", LogLevel.Warn);
-                Log.WriteException(e, LogLevel.Warn);
+                Logger.WriteLine("Failed to install mod loader.", LogLevel.Warn);
+                Logger.WriteException(e, LogLevel.Warn);
             }
         }
     }

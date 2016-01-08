@@ -16,13 +16,14 @@ namespace ParkitectNexus.Data.Reporting
         private IOperatingSystem _operatingSystem;
         private IParkitect _parkitect;
         private IParkitectNexusWebsite _website;
-        public CrashReporterFactory(IParkitectNexusWebFactory webFactory,IParkitectNexusWebsite website,IParkitect parkitect, IOperatingSystem operatingSystem)
+        private ILogger _logger;
+        public CrashReporterFactory(IParkitectNexusWebFactory webFactory,IParkitectNexusWebsite website,IParkitect parkitect, IOperatingSystem operatingSystem,ILogger logger)
         {
             _website = website;
             _parkitect = parkitect;
             _webFactory = webFactory;
             _operatingSystem = operatingSystem;
-
+            _logger = logger;
         }
 
         public void Report(string action, Exception exception)
@@ -51,9 +52,9 @@ namespace ParkitectNexus.Data.Reporting
                 switch (os)
                 {
                     case SupportedOperatingSystem.Windows:
-                        return new WindowsCrashReport(parkitect, action, exception);
+                        return new WindowsCrashReport(parkitect, action, exception, _logger);
                 case SupportedOperatingSystem.MacOSX:
-                    return new MacOSXCrashReport(parkitect, action, exception);
+                    return new MacOSXCrashReport(parkitect, action, exception, _logger);
                     default:
                         throw new Exception("unsupported operating system " + os);
                 }

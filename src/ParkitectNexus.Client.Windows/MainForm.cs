@@ -10,6 +10,8 @@ using ParkitectNexus.Data.Game.Windows;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Utilities;
+using System.IO;
 
 namespace ParkitectNexus.Client.Windows
 {
@@ -17,8 +19,10 @@ namespace ParkitectNexus.Client.Windows
     {
         private SliderPanel _currentPanel;
 
-        public MainForm(IPresenterFactory presenterFactory)
+        public MainForm(IPresenterFactory presenterFactory, ILogger logger, IPathResolver pathResolver)
         {
+            logger.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
+
             InitializeComponent();
 
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>() );

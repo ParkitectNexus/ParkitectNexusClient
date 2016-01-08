@@ -15,7 +15,7 @@ namespace ParkitectNexus.Data.Game.MacOSX
     public class MacOSXParkitect : BaseParkitect
     {
 
-        public MacOSXParkitect(IRepositoryFactory repositoryFactory) : base(repositoryFactory)
+        public MacOSXParkitect(IRepositoryFactory repositoryFactory,ILogger logger) : base(repositoryFactory,logger)
         {
             Paths =  new MacOSXParkitectPaths(this);
         }
@@ -44,9 +44,9 @@ namespace ParkitectNexus.Data.Game.MacOSX
         /// <returns>The launched process.</returns>
         public override Process Launch(string arguments = "-single-instance")
         {
-            Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            _logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
-            Log.WriteLine("Attempting to compile installed mods.");
+            _logger.WriteLine("Attempting to compile installed mods.");
             CompileActiveMods();
 
             return IsInstalled

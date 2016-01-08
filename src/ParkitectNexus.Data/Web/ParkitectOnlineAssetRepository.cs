@@ -21,17 +21,19 @@ namespace ParkitectNexus.Data.Web
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly IGitHubClient _gitClient;
         private IParkitectNexusWebFactory _nexusWebFactory;
+        private ILogger _logger;
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
         /// </summary>
         /// <param name="parkitectNexusWebsite">The parkitect nexus website.</param>
         /// <exception cref="ArgumentNullException">Thrown if parkitectNexusWebsite is null.</exception>
-        public ParkitectOnlineAssetRepository(IGitHubClient gitClient,IParkitectNexusWebsite parkitectNexusWebsite, IParkitectNexusWebFactory nexusWebFactory)
+        public ParkitectOnlineAssetRepository(IGitHubClient gitClient,IParkitectNexusWebsite parkitectNexusWebsite, IParkitectNexusWebFactory nexusWebFactory,ILogger logger)
         {
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             _parkitectNexusWebsite = parkitectNexusWebsite;
             _nexusWebFactory = nexusWebFactory;
             _gitClient = gitClient;
+            _logger = logger;
         }
 
         /// <summary>
@@ -152,7 +154,7 @@ namespace ParkitectNexus.Data.Web
             if (p.Length != 2 || string.IsNullOrWhiteSpace(p[0]) || string.IsNullOrWhiteSpace(p[1]))
                 throw new ArgumentException(nameof(mod));
 
-            Log.WriteLine($"Getting latest mod tag for '{mod}'.");
+            _logger.WriteLine($"Getting latest mod tag for '{mod}'.");
             var release = (await client.Release.GetAll(p[0], p[1])).FirstOrDefault(r => !r.Prerelease);
 
             return release == null

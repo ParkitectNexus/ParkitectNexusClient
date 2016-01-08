@@ -25,12 +25,12 @@ namespace ParkitectNexus.Client
             var settings = repositoryFactory.Repository<ClientSettings>();
             Parser.Default.ParseArguments(args, options);
 
-            Log.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
-            Log.MinimumLogLevel = options.LogLevel;
+            Logger.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
+            Logger.MinimumLogLevel = options.LogLevel;
 
             try
             {
-                Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
+                Logger.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -86,19 +86,19 @@ namespace ParkitectNexus.Client
             }
             catch (Exception e)
             {
-                Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
-                Log.WriteException(e);
+                Logger.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
+                Logger.WriteException(e);
                 reportingFactory.Report("global", e);
 
                 using (var focus = new FocusForm())
                 {
                     MessageBox.Show(focus,
-                        $"The application has crashed in an unusual way.\n\nThe error has been logged to:\n{Log.LoggingPath}",
+                        $"The application has crashed in an unusual way.\n\nThe error has been logged to:\n{Logger.LoggingPath}",
                         "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-            Log.Close();
+            Logger.Close();
         }
         private static bool EnsureParkitectInstalled(IParkitect parkitect, CommandLineOptions options)
         {
