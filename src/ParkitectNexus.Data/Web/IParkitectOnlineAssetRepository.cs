@@ -1,5 +1,5 @@
 // ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System.Threading.Tasks;
 using ParkitectNexus.Data.Game;
@@ -16,13 +16,13 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>Information about the download.</returns>
-        Task<DownloadInfo> ResolveDownloadInfo(ParkitectNexusUrl url);
+        Task<DownloadInfo> ResolveDownloadInfo(IParkitectNexusUrl url);
 
         /// <summary>
         ///     Downloads the file associated with the specified url.
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>An instance which performs the requested task.</returns>
-        Task<IParkitectAsset> DownloadFile(ParkitectNexusUrl url);
+        Task<IParkitectAsset> DownloadFile(IParkitectNexusUrl url);
     }
 }

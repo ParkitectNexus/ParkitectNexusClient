@@ -1,10 +1,9 @@
 ﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Data.Reporting
@@ -39,8 +38,8 @@ namespace ParkitectNexus.Data.Reporting
                 {
                     case SupportedOperatingSystem.Windows:
                         return new WindowsCrashReport(parkitect, action, exception);
-                case SupportedOperatingSystem.MacOSX:
-                    return new MacOSXCrashReport(parkitect, action, exception);
+                    case SupportedOperatingSystem.MacOSX:
+                        return new MacOSXCrashReport(parkitect, action, exception);
                     default:
                         throw new Exception("unsupported operating system " + os);
                 }

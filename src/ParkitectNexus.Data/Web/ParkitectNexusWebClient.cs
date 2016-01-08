@@ -1,24 +1,33 @@
 ﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using System.Net;
-using System.Reflection;
 using System.Net.Cache;
+using System.Reflection;
 
 namespace ParkitectNexus.Data.Web
 {
     public class ParkitectNexusWebClient : WebClient
     {
+        static ParkitectNexusWebClient()
+        {
+            // Workaround: bypass certificate checks on MacOSX.
+            if (OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
+            {
+                ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
+            }
+        }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Net.WebClient" /> class.
         /// </summary>
         public ParkitectNexusWebClient()
         {
             // Workaround: disable certificate cache on MacOSX.
-            if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
+            if (OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
             {
-                CachePolicy = new System.Net.Cache.RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+                CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
             }
 
             // Add a version number header of requests.
@@ -26,15 +35,6 @@ namespace ParkitectNexus.Data.Web
 
             Headers.Add("X-ParkitectNexusInstaller-Version", version);
             Headers.Add("user-agent", $"ParkitectNexus/{version}");
-        }
-
-        static ParkitectNexusWebClient()
-        {
-            // Workaround: bypass certificate checks on MacOSX.
-            if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
-            {
-                ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
-            }
         }
 
         /// <summary>

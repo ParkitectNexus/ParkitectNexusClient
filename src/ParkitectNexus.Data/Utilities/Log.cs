@@ -1,9 +1,8 @@
 ﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using System.IO;
-using System.Threading;
 
 namespace ParkitectNexus.Data.Utilities
 {
@@ -38,8 +37,8 @@ namespace ParkitectNexus.Data.Utilities
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (IsOpened) Close();
 
-            var overwrite = File.Exists(path) && new FileInfo(path).Length > 10 * 1024;
-            
+            var overwrite = File.Exists(path) && new FileInfo(path).Length > 10*1024;
+
             try
             {
                 LoggingPath = path;

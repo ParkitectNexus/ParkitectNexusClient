@@ -1,5 +1,5 @@
 ﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using System.Collections.Generic;
@@ -68,7 +68,7 @@ namespace ParkitectNexus.Mod.ModLoader
                     continue;
 
                 if (_isEnabled)
-                    modEntry.disableMod();
+                    modEntry.setActive(false);
                 _modEntries.Remove(modEntry);
             }
 
@@ -143,7 +143,7 @@ namespace ParkitectNexus.Mod.ModLoader
                             {
                                 if (modEntry.mod == userMod)
                                 {
-                                    modEntry.enableMod();
+                                    modEntry.setActive(true);
                                     break;
                                 }
                             }
@@ -186,6 +186,11 @@ namespace ParkitectNexus.Mod.ModLoader
         public string Description
         {
             get { return "A mod loader for mods distributed by ParkitectNexus.com."; }
+        }
+
+        public string Identifier
+        {
+            get { return "ParkitectNexus@ModLoader"; }
         }
 
         #endregion

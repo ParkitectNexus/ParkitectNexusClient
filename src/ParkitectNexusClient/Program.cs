@@ -1,5 +1,5 @@
 ﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using System.IO;
@@ -58,15 +58,15 @@ namespace ParkitectNexus.Client
                 // Check for updates. If updates are available, do not resume usual logic.
                 if (CheckForUpdates(parkitectNexusWebsite, options)) return;
 
-				if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
-                	ParkitectNexusProtocol.Install();
+                if (OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                    ParkitectNexusProtocol.Install();
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
                 if (!EnsureParkitectInstalled(parkitect, options))
                     return;
 
-				if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
-                	UpdateUtil.MigrateMods(parkitect);
+                if (OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                    UpdateUtil.MigrateMods(parkitect);
 
                 ModLoaderUtil.InstallModLoader(parkitect);
 

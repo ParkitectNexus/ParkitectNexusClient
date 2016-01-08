@@ -1,5 +1,5 @@
 // ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System.Diagnostics;
 using System.IO;
@@ -67,13 +67,13 @@ namespace ParkitectNexus.Data.Game.Windows
             // Start the game process.
             return !IsInstalled
                 ? null
-                    : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
+                : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
                 {
                     WorkingDirectory = InstallationPath,
                     Arguments = arguments
                 });
         }
-        
+
         protected override bool IsValidInstallationPath(string path)
         {
             // Path must exist and contain Parkitect.exe.

@@ -1,5 +1,5 @@
 // ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 using System;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace ParkitectNexus.Data.Web
     /// <summary>
     ///     Represents an URL with the parkitectnexus protocol.
     /// </summary>
-    public class ParkitectNexusUrl
+    public class ParkitectNexusUrl : IParkitectNexusUrl
     {
         private const string Protocol = "parkitectnexus:";
         private const string ProtocolInstructionSeparator = "/";
@@ -78,7 +78,7 @@ namespace ParkitectNexus.Data.Web
         {
             ParkitectNexusUrl output;
             if (!TryParse(input, out output))
-                throw new FormatException("invalid url format");
+                throw new FormatException("invalid url format: " + input);
             return output;
         }
 

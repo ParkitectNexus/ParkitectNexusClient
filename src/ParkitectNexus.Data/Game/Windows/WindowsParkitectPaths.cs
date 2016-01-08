@@ -1,6 +1,7 @@
 // ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
+using System;
 using System.IO;
 using ParkitectNexus.Data.Bases;
 
@@ -20,11 +21,14 @@ namespace ParkitectNexus.Data.Game.Windows
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
+            string documentsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Parkitect");
+
             path = !Parkitect.IsInstalled
                 ? null
                 : path == null
-                    ? Path.Combine(Parkitect.InstallationPath)
-                    : Path.Combine(Parkitect.InstallationPath, path);
+                    ? Path.Combine(documentsFolder)
+                    : Path.Combine(documentsFolder, path);
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);

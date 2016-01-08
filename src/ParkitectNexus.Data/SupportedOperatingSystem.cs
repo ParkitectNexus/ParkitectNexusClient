@@ -1,5 +1,5 @@
 // ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// Copyright 2016 Parkitect, Tim Potze
 
 namespace ParkitectNexus.Data
 {
@@ -16,6 +16,11 @@ namespace ParkitectNexus.Data
         /// <summary>
         ///     The Mac OSX operating system.
         /// </summary>
-        MacOSX
+        MacOSX,
+
+        /// <summary>
+        ///     The Mac OSX operating system.
+        /// </summary>
+        Linux
     }
 }

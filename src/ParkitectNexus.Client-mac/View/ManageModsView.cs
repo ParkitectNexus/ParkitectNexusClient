@@ -25,8 +25,8 @@ namespace ParkitectNexus.Client.View
         IParkitectMod _selectedMod;
 
         /**
-		 * Right side fields
-		 **/
+         * Right side fields
+         **/
         NSTextField _modName;
         NSTextField _version;
         NSTextField _inDevelopment;
