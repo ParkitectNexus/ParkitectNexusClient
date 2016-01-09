@@ -111,9 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="FormFactory.cs" />
-    <Compile Include="IClient.cs" />
-    <Compile Include="IFormFactory.cs" />
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="ParkitectNexusProtocol.cs" />
     <Compile Include="Settings\ClientSettings.cs" />
