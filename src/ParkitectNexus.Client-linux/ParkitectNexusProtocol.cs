@@ -15,8 +15,10 @@ namespace ParkitectNexus.Client.GTK
         /// </summary>
         public static void Install()
         {
+            IOperatingSystem operatingsystem = ObjectFactory.Container.GetInstance<IOperatingSystem> ();
+
             var appPath = Assembly.GetEntryAssembly ().Location;
-                switch (OperatingSystems.GetOperatingSystem ()) {
+            switch (operatingsystem.GetOperatingSystem ()) {
                     case SupportedOperatingSystem.Windows:
                         try {
                             

@@ -13,5 +13,11 @@ namespace ParkitectNexus.Data.Presenter
         {
             return ObjectFactory.Container.GetInstance<T>();
         }
+
+        public T InstantiatePresenter<T>(IPresenter parent)
+        {
+            return ObjectFactory.Container.With (parent).GetInstance<T> ();
+        }
+
     }
 }

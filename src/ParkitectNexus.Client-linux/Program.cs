@@ -19,26 +19,20 @@ namespace ParkitectNexus.Client.GTK
 
         public static void Main (string[] args)
         {
-            IParkitect parkitect;
-            IParkitectNexusWebsite parkitectNexusWebsite;
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository;
+            //configure map
+            StructureMap.Registry registry = ObjectFactory.ConfigureStructureMap();
+            ObjectFactory.SetUpContainer(registry);
 
 
-            switch (OperatingSystems.GetOperatingSystem())
-            {
-            case SupportedOperatingSystem.Windows:
-                parkitect = new WindowsParkitect();
-                parkitectNexusWebsite = new ParkitectNexusWebsite();
-                parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository(parkitectNexusWebsite);
-                break;
-            case SupportedOperatingSystem.Linux:
-                parkitect = new LinuxParkitect ();
-                parkitectNexusWebsite = new ParkitectNexusWebsite ();
-                parkitectOnlineAssetRepository = new ParkitectOnlineAssetRepository (parkitectNexusWebsite);
-                break;
-            default:
-                return;
-            }
+            IParkitect parkitect = ObjectFactory.Container.GetInstance<IParkitect> ();
+            IParkitectNexusWebsite parkitectNexusWebsite = ObjectFactory.Container.GetInstance<IParkitectNexusWebsite> ();
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository = ObjectFactory.Container.GetInstance<IParkitectOnlineAssetRepository> ();
+            IOperatingSystem operatingsystem = ObjectFactory.Container.GetInstance<IOperatingSystem> ();
+            ICrashReporterFactory crashReport = ObjectFactory.Container.GetInstance<ICrashReporterFactory> ();
+
+           
+
+          
             var options = new CommandLineOptions();
             var settings = new ClientSettings();
 
@@ -57,7 +51,7 @@ namespace ParkitectNexus.Client.GTK
                 Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
 
                 //restrict update to windows. linux can use package manager to install updates
-                if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                if(operatingsystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
                 {
                     // Check for updates. If updates are available, do not resume usual logic.
                     var updateInfo = ParkitectUpdate.CheckForUpdates(parkitectNexusWebsite);
@@ -89,7 +83,7 @@ namespace ParkitectNexus.Client.GTK
                 }
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
-                if(OperatingSystems.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                if(operatingsystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
                     ParkitectUpdate.MigrateMods(parkitect);
 
                 ModLoaderUtil.InstallModLoader(parkitect);
@@ -137,7 +131,7 @@ namespace ParkitectNexus.Client.GTK
             {
                 Log.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
                 Log.WriteException(e);
-                CrashReporter.Report("global", parkitect, parkitectNexusWebsite, e);
+                crashReport.Report("global", e);
 
                 Gtk.MessageDialog err = new MessageDialog (null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "The application has crashed in an unusual way.\n\nThe error has been logged to:\n"+ Log.LoggingPath);
                 err.Run();

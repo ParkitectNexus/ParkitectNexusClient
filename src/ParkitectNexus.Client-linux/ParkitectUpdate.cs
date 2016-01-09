@@ -64,33 +64,7 @@ namespace ParkitectNexus.Client.GTK
             #if DEBUG
                 return null;
             #endif
-            try
-            {
-                using (var webClient = new ParkitectNexusWebClient())
-                using (var stream = webClient.OpenRead(website.ResolveUrl("update-osx.json", "client")))
-                using (var streamReader = new StreamReader(stream))
-                using (var jsonTextReader = new JsonTextReader(streamReader))
-                {
-                    var serializer = new JsonSerializer();
-                    var updateInfo = (UpdateInfo) serializer.Deserialize(jsonTextReader, typeof (UpdateInfo));
-
-                    if (updateInfo != null)
-                    {
-                        var currentVersion = typeof (MainClass).Assembly.GetName().Version;
-                        var newestVersion = new Version(updateInfo.Version);
-
-                        currentVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build);
-                        newestVersion = new Version(newestVersion.Major, newestVersion.Minor, newestVersion.Build);
-
-                        if (newestVersion > currentVersion)
-                            return updateInfo;
-                    }
-                }
-            }
-            catch
-            {
-            }
-
+           
             return null;
         }
 
