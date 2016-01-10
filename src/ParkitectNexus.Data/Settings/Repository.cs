@@ -27,7 +27,7 @@ namespace ParkitectNexus.Data.Settings
             _pathResolver = pathResolver;
 
             _model = Activator.CreateInstance<T>();
-            _path = Path.Combine(pathResolver.AppData(),_model.GetType().Name + ".json");
+            _path = Path.Combine(_pathResolver.AppData(),_model.GetType().Name + ".json");
             Load();
         }
 

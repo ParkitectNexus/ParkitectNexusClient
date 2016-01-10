@@ -32,24 +32,6 @@
     <Reference Include="System">
       <HintPath>..\..\..\..\..\..\lib\mono\4.5\System.dll</HintPath>
     </Reference>
-    <Reference Include="gtk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="glade-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="pango-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="atk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="StructureMap">
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
@@ -66,28 +48,38 @@
     <Reference Include="libstetic">
       <HintPath>..\..\..\..\..\..\usr\lib\monodevelop\AddIns\MonoDevelop.GtkCore\libstetic.dll</HintPath>
     </Reference>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\ParkitectNexus.Client.Windows\Resources\parkitectnexus_logo_full.png" />
+    <EmbeddedResource Include="..\ParkitectNexus.Client.Windows\Resources\parkitect_logo.png" />
+    <EmbeddedResource Include="..\ParkitectNexus.Client.Windows\Resources\parkitectnexus_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\ParkitectNexus.Client.Windows\Resources\parkitectnexus_logo_full.png" />
-    <EmbeddedResource Include="..\ParkitectNexus.Client.Windows\Resources\parkitect_logo.png" />
-    <EmbeddedResource Include="..\ParkitectNexus.Client.Windows\Resources\parkitectnexus_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="MainWindow.cs" />
-    <Compile Include="gtk-gui\MainWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ModsPage.cs" />
-    <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.ModsPage.cs" />
     <Compile Include="ParkitectInstallDialog.cs" />
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="TreeNodeModContainer.cs" />
     <Compile Include="ModInstallDialog.cs" />
+    <Compile Include="AboutDialog.cs" />
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.ModsPage.cs" />
     <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.ModInstallDialog.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.AboutDialog.cs" />
+    <Compile Include="ProtocalInstallUtility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

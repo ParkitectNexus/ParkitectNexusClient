@@ -13,13 +13,12 @@ namespace ParkitectNexus.Data.Utilities
     public class Logger : ILogger
     {
         private StreamWriter _streamWriter;
-        private LogLevel _logLevel = LogLevel.Debug;
         private string _loggingPath;
 
         /// <summary>
         ///     Gets or sets the minimum log level.
         /// </summary>
-        public LogLevel MinimumLogLevel { get; set; }
+        public LogLevel MinimumLogLevel { get; set; } = LogLevel.Debug;
 
         /// <summary>
         ///     Gets the logging path.

@@ -6,22 +6,27 @@ using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data;
 using ParkitectNexus.Client;
 using ParkitectNexus.Data.Game;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 public partial class MainWindow: Gtk.Window, IPresenter
 {
     private readonly IParkitect _parkitect;
+    private readonly IPresenterFactory _presenterFactory;
 
     public MainWindow (IPresenterFactory presenterFactory,IParkitect parkitect,IPathResolver pathResolver, ILogger logger) : base (Gtk.WindowType.Toplevel)
     {
         _parkitect = parkitect;
+        _presenterFactory = presenterFactory;
 
         Build ();
         logger.Open(System.IO.Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
 
 
         presenterFactory.InstantiatePresenter<ParkitectInstallDialog> (this);
-        ModLoaderUtil.InstallModLoader (parkitect);
-
+        ModLoaderUtil.InstallModLoader (parkitect,logger);
+        new ProtocalInstallUtility ();
 
 
         //remove the default page
@@ -37,6 +42,7 @@ public partial class MainWindow: Gtk.Window, IPresenter
         label = new global::Gtk.Label ();
         label.Name = text;
         label.LabelProp = global::Mono.Unix.Catalog.GetString (text);
+
 
         Pages.Add (page);
         Pages.SetTabLabel (page,label);
@@ -57,4 +63,11 @@ public partial class MainWindow: Gtk.Window, IPresenter
         _parkitect.Launch ();
         Environment.Exit (0);
     }
+    protected void AboutDialog (object sender, EventArgs e)
+    {
+        var aboutDialog = _presenterFactory.InstantiatePresenter<ParkitectNexus.Client.Linux.AboutDialog> ();
+        aboutDialog.Run ();
+        aboutDialog.Destroy ();
+    }
+        
 }

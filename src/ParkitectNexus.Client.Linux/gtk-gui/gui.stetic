@@ -2,13 +2,48 @@
 <stetic-interface>
   <configuration>
     <images-root-path>..</images-root-path>
+    <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Debug/ParkitectNexus.Client.Linux.exe" internal="true" />
     <widget-library name="../../ParkitectNexus.Client-linux/bin/Debug/ParkitectNexus.exe" />
+    <widget-library name="../bin/Debug/ParkitectNexus.Client.Linux.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="460 370">
+    <action-group name="Default">
+      <action id="FileAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">File</property>
+        <property name="ShortLabel" translatable="yes">File</property>
+      </action>
+      <action id="DonateAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Donate</property>
+        <property name="ShortLabel" translatable="yes">Donate</property>
+      </action>
+      <action id="helpAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Help</property>
+        <property name="ShortLabel" translatable="yes">Help</property>
+        <property name="StockId">gtk-help</property>
+      </action>
+      <action id="AboutAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">About</property>
+        <property name="ShortLabel" translatable="yes">About</property>
+        <signal name="Activated" handler="AboutDialog" />
+      </action>
+      <action id="ParkitectFolderAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Parkitect folder</property>
+        <property name="ShortLabel" translatable="yes">Parkitect folder</property>
+      </action>
+      <action id="ConfigAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Config</property>
+        <property name="ShortLabel" translatable="yes">Config</property>
+      </action>
+    </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">Parkitect Nexus</property>
     <property name="Icon">resource:ParkitectNexus.Client.Linux.parkitectnexus_logo.png</property>
@@ -18,6 +53,22 @@
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
         <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.MenuBar" id="menubar1">
+            <property name="MemberName" />
+            <node name="menubar1" type="Menubar">
+              <node type="Menu" action="helpAction">
+                <node type="Menuitem" action="AboutAction" />
+              </node>
+            </node>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
         <child>
           <widget class="Gtk.HBox" id="hbox2">
             <property name="MemberName" />
@@ -46,7 +97,7 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">0</property>
+            <property name="Position">1</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -57,6 +108,7 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="CurrentPage">0</property>
+            <property name="BorderWidth">3</property>
             <child>
               <placeholder />
             </child>
@@ -71,7 +123,7 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">1</property>
+            <property name="Position">2</property>
             <property name="AutoSize">True</property>
           </packing>
         </child>
@@ -102,7 +154,6 @@
                 <property name="Label" translatable="yes" />
                 <property name="UseUnderline">True</property>
                 <property name="Relief">Half</property>
-                <signal name="Clicked" handler="LaunchParkitect" after="yes" />
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -114,7 +165,7 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">2</property>
+            <property name="Position">3</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -136,10 +187,10 @@
         <property name="RightPadding">10</property>
         <property name="BottomPadding">10</property>
         <child>
-          <widget class="Gtk.HPaned" id="hpaned4">
+          <widget class="Gtk.HPaned" id="OptionsPane">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="Position">303</property>
+            <property name="Position">330</property>
             <child>
               <widget class="Gtk.VBox" id="vbox2">
                 <property name="MemberName" />
@@ -187,7 +238,7 @@
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Frame" id="frame1">
+                  <widget class="Gtk.Frame" id="optionsFrame">
                     <property name="MemberName" />
                     <property name="ShadowType">None</property>
                     <child>
@@ -522,7 +573,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="ParkitectNexus.Client.Linux.DownloadModDialog" design-size="400 170">
+  <widget class="Gtk.Dialog" id="ParkitectNexus.Client.Linux.AboutDialog" design-size="359 200">
     <property name="MemberName" />
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Buttons">1</property>
@@ -532,22 +583,27 @@
         <property name="MemberName" />
         <property name="BorderWidth">2</property>
         <child>
-          <widget class="Gtk.VBox" id="dialog1_VBox1">
+          <widget class="Gtk.VBox" id="vbox2">
             <property name="MemberName" />
-            <property name="BorderWidth">2</property>
+            <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Alignment" id="alignment3">
+              <widget class="Gtk.HBox" id="hbox1">
                 <property name="MemberName" />
-                <property name="LeftPadding">20</property>
-                <property name="TopPadding">30</property>
-                <property name="RightPadding">20</property>
-                <property name="BottomPadding">20</property>
+                <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Label" id="lblModName">
+                  <widget class="Gtk.Image" id="image33">
                     <property name="MemberName" />
-                    <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">label2</property>
+                    <property name="Pixbuf">resource:ParkitectNexus.Client.Linux.parkitectnexus_logo_full.png</property>
                   </widget>
+                  <packing>
+                    <property name="Position">0</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder />
                 </child>
               </widget>
               <packing>
@@ -558,50 +614,70 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Alignment" id="alignment1">
+              <widget class="Gtk.Notebook" id="Pages">
                 <property name="MemberName" />
-                <property name="LeftPadding">10</property>
-                <property name="RightPadding">10</property>
+                <property name="CanFocus">True</property>
+                <property name="CurrentPage">1</property>
                 <child>
-                  <widget class="Gtk.ProgressBar" id="installProgress">
+                  <widget class="Gtk.Alignment" id="alignment1">
                     <property name="MemberName" />
+                    <property name="LeftPadding">15</property>
+                    <property name="TopPadding">5</property>
+                    <property name="RightPadding">5</property>
+                    <child>
+                      <widget class="Gtk.VBox" id="vbox3">
+                        <property name="MemberName" />
+                        <property name="Spacing">6</property>
+                        <child>
+                          <widget class="Gtk.Label" id="label3">
+                            <property name="MemberName" />
+                            <property name="Xalign">0</property>
+                            <property name="LabelProp" translatable="yes">Parkitect Nexus Client
+
+(c) 2016, Tim Potze</property>
+                          </widget>
+                          <packing>
+                            <property name="Position">0</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
                   </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="label1">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">About</property>
+                  </widget>
+                  <packing>
+                    <property name="type">tab</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder />
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="label4">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">Authors</property>
+                  </widget>
+                  <packing>
+                    <property name="type">tab</property>
+                  </packing>
                 </child>
               </widget>
               <packing>
                 <property name="Position">1</property>
                 <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Alignment" id="alignment2">
-                <property name="MemberName" />
-                <property name="Xalign">0</property>
-                <property name="LeftPadding">20</property>
-                <property name="TopPadding">10</property>
-                <child>
-                  <widget class="Gtk.Label" id="lblProgressLabel">
-                    <property name="MemberName" />
-                    <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">label1</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="Position">2</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
               </packing>
             </child>
           </widget>
           <packing>
             <property name="Position">0</property>
             <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>
@@ -614,15 +690,15 @@
         <property name="Size">1</property>
         <property name="LayoutStyle">End</property>
         <child>
-          <widget class="Gtk.Button" id="btnFinished">
+          <widget class="Gtk.Button" id="btnClose">
             <property name="MemberName" />
             <property name="CanDefault">True</property>
             <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-ok Menu</property>
-            <property name="Label" translatable="yes">Finished</property>
-            <property name="UseUnderline">True</property>
-            <property name="ResponseId">-5</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-close</property>
+            <property name="ResponseId">-7</property>
+            <property name="label">gtk-close</property>
           </widget>
           <packing>
             <property name="Expand">False</property>

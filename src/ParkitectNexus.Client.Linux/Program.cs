@@ -31,7 +31,7 @@ namespace ParkitectNexus.Client.Linux
                 logger.WriteException(e);
                 crashReport.Report("global", e);
 
-                Gtk.MessageDialog err = new MessageDialog (null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "The application has crashed in an unusual way.\n\nThe error has been logged to:\n"+ Log.LoggingPath);
+                Gtk.MessageDialog err = new MessageDialog (null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "The application has crashed in an unusual way.\n\nThe error has been logged to:\n"+ logger.LoggingPath);
                 err.Run();
 
                 Environment.Exit(0);

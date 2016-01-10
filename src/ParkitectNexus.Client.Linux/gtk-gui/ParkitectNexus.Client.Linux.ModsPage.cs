@@ -6,7 +6,7 @@ namespace ParkitectNexus.Client.Linux
 	{
 		private global::Gtk.Alignment alignment3;
 		
-		private global::Gtk.HPaned hpaned4;
+		private global::Gtk.HPaned OptionsPane;
 		
 		private global::Gtk.VBox vbox2;
 		
@@ -18,7 +18,7 @@ namespace ParkitectNexus.Client.Linux
 		
 		private global::Gtk.VBox vbox6;
 		
-		private global::Gtk.Frame frame1;
+		private global::Gtk.Frame optionsFrame;
 		
 		private global::Gtk.Alignment GtkAlignment2;
 		
@@ -70,11 +70,11 @@ namespace ParkitectNexus.Client.Linux
 			this.alignment3.RightPadding = ((uint)(10));
 			this.alignment3.BottomPadding = ((uint)(10));
 			// Container child alignment3.Gtk.Container+ContainerChild
-			this.hpaned4 = new global::Gtk.HPaned ();
-			this.hpaned4.CanFocus = true;
-			this.hpaned4.Name = "hpaned4";
-			this.hpaned4.Position = 303;
-			// Container child hpaned4.Gtk.Paned+PanedChild
+			this.OptionsPane = new global::Gtk.HPaned ();
+			this.OptionsPane.CanFocus = true;
+			this.OptionsPane.Name = "OptionsPane";
+			this.OptionsPane.Position = 330;
+			// Container child OptionsPane.Gtk.Paned+PanedChild
 			this.vbox2 = new global::Gtk.VBox ();
 			this.vbox2.Name = "vbox2";
 			this.vbox2.Spacing = 6;
@@ -101,18 +101,18 @@ namespace ParkitectNexus.Client.Linux
 			this.vbox2.Add (this.GtkScrolledWindow);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.GtkScrolledWindow]));
 			w3.Position = 1;
-			this.hpaned4.Add (this.vbox2);
-			global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.hpaned4 [this.vbox2]));
+			this.OptionsPane.Add (this.vbox2);
+			global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.OptionsPane [this.vbox2]));
 			w4.Resize = false;
-			// Container child hpaned4.Gtk.Paned+PanedChild
+			// Container child OptionsPane.Gtk.Paned+PanedChild
 			this.vbox6 = new global::Gtk.VBox ();
 			this.vbox6.Name = "vbox6";
 			this.vbox6.Spacing = 6;
 			// Container child vbox6.Gtk.Box+BoxChild
-			this.frame1 = new global::Gtk.Frame ();
-			this.frame1.Name = "frame1";
-			this.frame1.ShadowType = ((global::Gtk.ShadowType)(0));
-			// Container child frame1.Gtk.Container+ContainerChild
+			this.optionsFrame = new global::Gtk.Frame ();
+			this.optionsFrame.Name = "optionsFrame";
+			this.optionsFrame.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child optionsFrame.Gtk.Container+ContainerChild
 			this.GtkAlignment2 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
 			this.GtkAlignment2.Name = "GtkAlignment2";
 			this.GtkAlignment2.LeftPadding = ((uint)(12));
@@ -249,19 +249,19 @@ namespace ParkitectNexus.Client.Linux
 			w18.Expand = false;
 			w18.Fill = false;
 			this.GtkAlignment2.Add (this.vbox4);
-			this.frame1.Add (this.GtkAlignment2);
+			this.optionsFrame.Add (this.GtkAlignment2);
 			this.GtkLabel6 = new global::Gtk.Label ();
 			this.GtkLabel6.Name = "GtkLabel6";
 			this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Options</b>");
 			this.GtkLabel6.UseMarkup = true;
-			this.frame1.LabelWidget = this.GtkLabel6;
-			this.vbox6.Add (this.frame1);
-			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.frame1]));
+			this.optionsFrame.LabelWidget = this.GtkLabel6;
+			this.vbox6.Add (this.optionsFrame);
+			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.optionsFrame]));
 			w21.Position = 0;
 			w21.Expand = false;
 			w21.Fill = false;
-			this.hpaned4.Add (this.vbox6);
-			this.alignment3.Add (this.hpaned4);
+			this.OptionsPane.Add (this.vbox6);
+			this.alignment3.Add (this.OptionsPane);
 			this.Add (this.alignment3);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
