@@ -24,7 +24,7 @@ namespace ParkitectNexus.Client
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>
-        public static UpdateInfo CheckForUpdates(IParkitectNexusWebsite website, ParkitectNexusWebFactory webFactory)
+        public static UpdateInfo CheckForUpdates(IParkitectNexusWebsite website, IParkitectNexusWebFactory webFactory)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace ParkitectNexus.Client
             MoveFilesAndDirectoriesInDirectory(parkitect.Paths.GetPathInGameFolder("pnmods"), parkitect.Paths.Mods);
             MoveFilesAndDirectoriesInDirectory(parkitect.Paths.GetPathInGameFolder("Mods"), parkitect.Paths.NativeMods);
         }
-        
+
         public static void MigrateMods(IParkitect parkitect)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
