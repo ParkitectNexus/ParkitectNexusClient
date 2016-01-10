@@ -11,26 +11,31 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Client
 {
     public class Client : IClient
     {
-        public Client(string[] args, ICrashReporterFactory reportingFactory, IParkitect parkitect,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite, IOperatingSystem operatingSystem,IRepositoryFactory repositoryFactory,IPathResolver pathResolver)
+        private readonly ILogger _logger;
+
+        public Client(string[] args, ICrashReporterFactory reportingFactory, IParkitect parkitect,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite, IOperatingSystem operatingSystem,IRepositoryFactory repositoryFactory,IPathResolver pathResolver, ILogger logger)
         {
+            _logger = logger;
             var options = new CommandLineOptions();
             var settings = repositoryFactory.Repository<ClientSettings>();
             Parser.Default.ParseArguments(args, options);
 
-            Logger.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
-            Logger.MinimumLogLevel = options.LogLevel;
+            _logger.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
+            _logger.MinimumLogLevel = options.LogLevel;
 
             try
             {
-                Logger.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
+                _logger.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -39,7 +44,7 @@ namespace ParkitectNexus.Client
                 if (CheckForUpdates(parkitectNexusWebsite, options)) return;
 
                 if (operatingSystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
-                    ParkitectNexusProtocol.Install();
+                    ParkitectNexusProtocol.Install(_logger);
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
                 if (!EnsureParkitectInstalled(parkitect, options))
@@ -48,7 +53,7 @@ namespace ParkitectNexus.Client
                 if (operatingSystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
                     UpdateUtil.MigrateMods(parkitect);
 
-                ModLoaderUtil.InstallModLoader(parkitect);
+                ModLoaderUtil.InstallModLoader(parkitect, logger);
 
 
                 // Install backlog.
@@ -81,24 +86,24 @@ namespace ParkitectNexus.Client
                 settings.Save();
 
                 var form = new WizardForm();
-                form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository, reportingFactory));
+                form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository, reportingFactory, _logger));
                 Application.Run(form);
             }
             catch (Exception e)
             {
-                Logger.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
-                Logger.WriteException(e);
+                _logger.WriteLine("Application exited in an unusual way.", LogLevel.Fatal);
+                _logger.WriteException(e);
                 reportingFactory.Report("global", e);
 
                 using (var focus = new FocusForm())
                 {
                     MessageBox.Show(focus,
-                        $"The application has crashed in an unusual way.\n\nThe error has been logged to:\n{Logger.LoggingPath}",
+                        $"The application has crashed in an unusual way.\n\nThe error has been logged to:\n{_logger.LoggingPath}",
                         "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-            Logger.Close();
+            _logger.Close();
         }
         private static bool EnsureParkitectInstalled(IParkitect parkitect, CommandLineOptions options)
         {
@@ -145,10 +150,10 @@ namespace ParkitectNexus.Client
             return true;
         }
 
-        private static void Download(string url, IParkitect parkitect,
+        private void Download(string url, IParkitect parkitect,
             IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
-            // Try to parse the specified download url. If parsing fails open ParkitectNexus. 
+            // Try to parse the specified download url. If parsing fails open ParkitectNexus.
             ParkitectNexusUrl parkitectNexusUrl;
             if (!ParkitectNexusUrl.TryParse(url, out parkitectNexusUrl))
             {
@@ -164,24 +169,27 @@ namespace ParkitectNexus.Client
 
             // Run the download process in an installer form, for a nice visible process.
             var form = new WizardForm();
-            form.Attach(new InstallAssetUserControl(parkitect, parkitectOnlineAssetRepository, parkitectNexusUrl, null));
+            form.Attach(new InstallAssetUserControl(parkitect, parkitectOnlineAssetRepository, _logger, parkitectNexusUrl, null));
             Application.Run(form);
         }
 
-        private static bool CheckForUpdates(IParkitectNexusWebsite website, CommandLineOptions options)
+        private bool CheckForUpdates(IParkitectNexusWebsite website, CommandLineOptions options)
         {
 #if DEBUG
             return false;
 #else
-            var settings = new ClientSettings();
-            var updateInfo = UpdateUtil.CheckForUpdates(website);
+            var repositoryFactory = ObjectFactory.Container.GetInstance<IRepositoryFactory>();
+            var settings = repositoryFactory.Repository<ClientSettings>();
+            var webFactory = ObjectFactory.Container.GetInstance<IParkitectNexusWebFactory>();
+
+            var updateInfo = UpdateUtil.CheckForUpdates(website, webFactory);
             if (updateInfo != null)
             {
                 // Store download url so it can be downloaded after the update.
                 if (!string.IsNullOrEmpty(options.DownloadUrl))
-                    settings.DownloadOnNextRun = options.DownloadUrl;
+                    settings.Model.DownloadOnNextRun = options.DownloadUrl;
                 else
-                    settings.BootOnNextRun = !options.Silent;
+                    settings.Model.BootOnNextRun = !options.Silent;
 
                 settings.Save();
 
@@ -196,8 +204,7 @@ namespace ParkitectNexus.Client
                         DialogResult.Yes)
                         return true;
 
-
-                    if (!UpdateUtil.InstallUpdate(updateInfo))
+                    if (!UpdateUtil.InstallUpdate(updateInfo, webFactory))
                         MessageBox.Show(focus, "Failed installing the update! Please try again later.",
                             "ParkitectNexus Client",
                             MessageBoxButtons.OK);

@@ -13,7 +13,7 @@ namespace ParkitectNexus.Client
         /// <summary>
         ///     Installs the parkitectnexus:// protocol.
         /// </summary>
-        public static void Install()
+        public static void Install(ILogger logger)
         {
             try
             {
@@ -27,8 +27,8 @@ namespace ParkitectNexus.Client
             }
             catch (Exception e)
             {
-                Logger.WriteLine("Failed to install parkitectnexus:// protocol.");
-                Logger.WriteException(e);
+                logger.WriteLine("Failed to install parkitectnexus:// protocol.");
+                logger.WriteException(e);
             }
         }
     }
