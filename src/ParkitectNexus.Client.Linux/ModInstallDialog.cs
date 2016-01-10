@@ -1,82 +1,54 @@
 ﻿using System;
-using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
-using Gtk;
+using ParkitectNexus.Data.Game;
 using System.Threading;
-using ParkitectNexus.Data.Utilities;
 using System.Linq;
+using Gtk;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Presenter;
 
-namespace ParkitectNexus.Client.GTK
+namespace ParkitectNexus.Client.Linux
 {
-    public partial class ModDownload : Gtk.Dialog, IPresenter
+    public partial class ModInstallDialog : Gtk.Dialog
     {
-        private readonly IParkitect _parkitect;
-        private readonly ParkitectNexusUrl _parkitectNexusUrl;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        public ParkitectNexusUrl ParkitectNexusUrl{ get; set; } 
+        private IParkitect _parkitect;
+        private IParkitectOnlineAssetRepository _assetRepository;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
 
+        private ILogger _logger;
+
         private volatile bool isFinished = false;
 
-        public static bool Download(ParkitectNexusUrl parkitectNexusUrl, IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
+        public ModInstallDialog (IPresenter presenter,ILogger logger,IParkitect parkitect, IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
-            // Run the download process in an installer form, for a nice visible process.
-            var form = new ModDownload(parkitect,parkitectOnlineAssetRepository,parkitectNexusUrl);
-
-            switch (form.Run ()) {
-            case (int)Gtk.ResponseType.Apply:
-                form.Destroy ();
-                return true;
-            default:
-                return false;
-            }
-
-        }
-
-        public static bool Download(string url, IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
-        {
-            // Try to parse the specified download url. If parsing fails open ParkitectNexus. 
-            ParkitectNexusUrl parkitectNexusUrl;
-            if (!ParkitectNexusUrl.TryParse(url, out parkitectNexusUrl))
-            {
-                // Create a form to allow the dialogs to have a owner with forced focus and an icon.
-                Gtk.MessageDialog errorDialog = new MessageDialog (null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok,"The URL you opened is invalid!");
-                errorDialog.Run ();
-                errorDialog.Destroy();
-                return false;
-            }
-            return Download (parkitectNexusUrl, parkitect, parkitectOnlineAssetRepository);
-    
-        }
-
-        public ModDownload (IParkitect parkitect, IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ParkitectNexusUrl parkitectNexusUrl)
-        {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectOnlineAssetRepository == null)
-                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
-            if (parkitectNexusUrl == null) throw new ArgumentNullException(nameof(parkitectNexusUrl));
-            _parkitect = parkitect;
-            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
-            _parkitectNexusUrl = parkitectNexusUrl;
-
+            this._logger = logger;
+            this._parkitect = parkitect;
+            this._assetRepository = parkitectOnlineAssetRepository;
             this.Build ();
-        
+        }
+        protected override void OnRealized ()
+        {
+            if (_parkitect == null) throw new ArgumentNullException(nameof(_parkitect));
+            if (_assetRepository == null)
+                throw new ArgumentNullException(nameof(ParkitectNexusUrl));
+            if (ParkitectNexusUrl == null) throw new ArgumentNullException(nameof(ParkitectNexusUrl));
+
             // Format the "installing" label.
             //installingLabel.Text = "Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
-            this.lblModName.Text = "Please wait while ParkitectNexus is installing "+_parkitectNexusUrl.AssetType+" \""+_parkitectNexusUrl.Name+"\".";
+            this.lblModName.Text = "Please wait while ParkitectNexus is installing "+ParkitectNexusUrl.AssetType+" \""+ParkitectNexusUrl.Name+"\".";
 
             GLib.Timeout.Add (100, new GLib.TimeoutHandler (UpdateProgress));
             GLib.Timeout.Add (100, new GLib.TimeoutHandler (DownloadLabelUpdate));
 
-        
+
             Thread download = new Thread (new ThreadStart (Process));
             download.Start ();
-        }
 
+            base.OnRealized ();
+        }
         /// <summary>
         /// update the download label
         /// </summary>
@@ -127,11 +99,11 @@ namespace ParkitectNexus.Client.GTK
         private async void Process()
         {
 
-            var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
+            var assetName = ParkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
             try
             {
                 // Download the asset.
-                var asset = await _parkitectOnlineAssetRepository.DownloadFile(_parkitectNexusUrl);
+                var asset = await _assetRepository.DownloadFile(ParkitectNexusUrl);
 
                 if (asset == null)
                 {
@@ -153,8 +125,8 @@ namespace ParkitectNexus.Client.GTK
             }
             catch (Exception e)
             {
-                Log.WriteLine($"Failed to install {assetName}!");
-                Log.WriteException(e);
+                _logger.WriteLine($"Failed to install {assetName}!");
+                _logger.WriteException(e);
 
                 // If the asset has failed to download, show some feedback to the user.
                 Gtk.Application.Invoke (delegate {
@@ -169,11 +141,10 @@ namespace ParkitectNexus.Client.GTK
             finally
             {
                 isFinished = true;
-    
-            }
-        
-        }
 
+            }
+
+        }
 
     }
 }

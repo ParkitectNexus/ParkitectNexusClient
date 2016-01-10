@@ -19,7 +19,7 @@ namespace ParkitectNexus.Data.Game
 
             For<IParkitectMod>().Use<ParkitectMod>();
             For<IParkitectAsset>().Use<ParkitectAsset>();
-
+    
             switch(_operatingSystem.GetOperatingSystem())
             {
                 case SupportedOperatingSystem.Linux:

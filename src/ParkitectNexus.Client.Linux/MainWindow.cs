@@ -18,13 +18,16 @@ public partial class MainWindow: Gtk.Window, IPresenter
         Build ();
         logger.Open(System.IO.Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
 
+
         presenterFactory.InstantiatePresenter<ParkitectInstallDialog> (this);
         ModLoaderUtil.InstallModLoader (parkitect);
+
+
 
         //remove the default page
         Pages.RemovePage (0);
 
-        AddPageToPages("Mods", presenterFactory.InstantiatePresenter<ModsPage> ());
+        AddPageToPages("Mods", presenterFactory.InstantiatePresenter<ModsPage> (this));
 
     }
 

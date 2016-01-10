@@ -1,15 +1,15 @@
 ﻿using System;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Client.GTK;
 using Gtk;
 using System.Threading;
-using ParkitectNexus.Data.Utilities;
 using System.Linq;
-using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Utilities;
 
-namespace ParkitectNexus.Client.GTK
+namespace ParkitectNexus.Client.Linux
 {
-    public partial class ModDownload : Gtk.Dialog, IPresenter
+    public partial class DownloadModDialog : Gtk.Dialog
     {
         private readonly IParkitect _parkitect;
         private readonly ParkitectNexusUrl _parkitectNexusUrl;
@@ -19,10 +19,13 @@ namespace ParkitectNexus.Client.GTK
         private string _keyword = "Downloading";
 
         private volatile bool isFinished = false;
+        private ILogger _logger;
 
         public static bool Download(ParkitectNexusUrl parkitectNexusUrl, IParkitect parkitect,
             IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
         {
+ 
+
             // Run the download process in an installer form, for a nice visible process.
             var form = new ModDownload(parkitect,parkitectOnlineAssetRepository,parkitectNexusUrl);
 
@@ -50,10 +53,10 @@ namespace ParkitectNexus.Client.GTK
                 return false;
             }
             return Download (parkitectNexusUrl, parkitect, parkitectOnlineAssetRepository);
-    
+
         }
 
-        public ModDownload (IParkitect parkitect, IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ParkitectNexusUrl parkitectNexusUrl)
+        public DownloadModDialog (IParkitect parkitect, IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ParkitectNexusUrl parkitectNexusUrl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectOnlineAssetRepository == null)
@@ -64,7 +67,7 @@ namespace ParkitectNexus.Client.GTK
             _parkitectNexusUrl = parkitectNexusUrl;
 
             this.Build ();
-        
+
             // Format the "installing" label.
             //installingLabel.Text = "Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
             this.lblModName.Text = "Please wait while ParkitectNexus is installing "+_parkitectNexusUrl.AssetType+" \""+_parkitectNexusUrl.Name+"\".";
@@ -72,7 +75,7 @@ namespace ParkitectNexus.Client.GTK
             GLib.Timeout.Add (100, new GLib.TimeoutHandler (UpdateProgress));
             GLib.Timeout.Add (100, new GLib.TimeoutHandler (DownloadLabelUpdate));
 
-        
+
             Thread download = new Thread (new ThreadStart (Process));
             download.Start ();
         }
@@ -153,8 +156,8 @@ namespace ParkitectNexus.Client.GTK
             }
             catch (Exception e)
             {
-                Log.WriteLine($"Failed to install {assetName}!");
-                Log.WriteException(e);
+                _logger.WriteLine($"Failed to install {assetName}!");
+                _logger.WriteException(e);
 
                 // If the asset has failed to download, show some feedback to the user.
                 Gtk.Application.Invoke (delegate {
@@ -169,12 +172,10 @@ namespace ParkitectNexus.Client.GTK
             finally
             {
                 isFinished = true;
-    
+
             }
-        
+
         }
-
-
     }
 }
 

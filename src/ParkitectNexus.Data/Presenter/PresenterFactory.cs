@@ -16,7 +16,7 @@ namespace ParkitectNexus.Data.Presenter
 
         public T InstantiatePresenter<T>(IPresenter parent)
         {
-            return ObjectFactory.Container.With (parent).GetInstance<T> ();
+            return ObjectFactory.Container.With(parent).GetInstance<T> ();
         }
 
     }
