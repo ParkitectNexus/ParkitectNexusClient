@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
@@ -41,7 +42,7 @@ namespace ParkitectNexus.Client
             File.Copy(sourcePath, targetPath, true);
         }
 
-        public static void InstallModLoader(IParkitect parkitect)
+        public static void InstallModLoader(IParkitect parkitect, ILogger logger)
         {
             try
             {
@@ -49,8 +50,8 @@ namespace ParkitectNexus.Client
             }
             catch (Exception e)
             {
-                Log.WriteLine("Failed to install mod loader.", LogLevel.Warn);
-                Log.WriteException(e, LogLevel.Warn);
+                logger.WriteLine("Failed to install mod loader.", LogLevel.Warn);
+                logger.WriteException(e, LogLevel.Warn);
             }
         }
     }

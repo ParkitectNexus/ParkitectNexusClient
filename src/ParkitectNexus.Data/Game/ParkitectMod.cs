@@ -1,4 +1,4 @@
-﻿// ParkitectNexusClient
+// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
@@ -36,12 +36,15 @@ namespace ParkitectNexus.Data.Game
             "Microsoft.CSharp"
         };
 
+        private ILogger _logger;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        public ParkitectMod(IParkitect parkitect)
+        public ParkitectMod(IParkitect parkitect,ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            _logger = logger;
             Parkitect = parkitect;
         }
 
@@ -62,7 +65,7 @@ namespace ParkitectNexus.Data.Game
             if (!IsInstalled)
                 throw new Exception("Not installed");
 
-            Log.WriteLine("Saving mod configuration.");
+            _logger.WriteLine("Saving mod configuration.");
             File.WriteAllText(Path.Combine(InstallationPath, "mod.json"), JsonConvert.SerializeObject(this));
         }
 
@@ -73,10 +76,10 @@ namespace ParkitectNexus.Data.Game
         {
             if (!IsInstalled) throw new Exception("mod not installed");
 
-            Log.WriteLine($"Deleting mod '{this}'.");
-
+            _logger.WriteLine($"Deleting mod '{this}'.");
+            
             Directory.Delete(InstallationPath, true);
-
+            
             InstallationPath = null;
         }
 
@@ -88,7 +91,7 @@ namespace ParkitectNexus.Data.Game
         {
             if (!IsInstalled) throw new Exception("mod not installed");
 
-            Log.WriteLine($"Compiling mod '{this}'.");
+            _logger.WriteLine($"Compiling mod '{this}'.");
 
             using (var logFile = OpenLog())
             {
@@ -126,7 +129,7 @@ namespace ParkitectNexus.Data.Game
                     }
 
                     logFile.Log($"Compiling {Name} to {buildPath}...");
-                    Log.WriteLine($"Compiling {Name} to {buildPath}...");
+                    _logger.WriteLine($"Compiling {Name} to {buildPath}...");
 
                     var assemblyFiles = new List<string>();
                     var sourceFiles = new List<string>();
@@ -144,7 +147,7 @@ namespace ParkitectNexus.Data.Game
                     {
                         // Load source files and referenced assemblies from *.csproj file.
                         logFile.Log($"Compiling from `{Project}`.");
-                        Log.WriteLine($"Compiling from `{Project}`.");
+                        _logger.WriteLine($"Compiling from `{Project}`.");
 
                         // Open the .csproj file of the mod.
                         var document = new XmlDocument();
@@ -168,7 +171,7 @@ namespace ParkitectNexus.Data.Game
                     {
                         // Load source files and referenced assemblies from mod.json file.
                         logFile.Log("Compiling from `mod.json`.");
-                        Log.WriteLine("Compiling from `mod.json`.");
+                        _logger.WriteLine("Compiling from `mod.json`.");
 
                         unresolvedAssemblyReferences = ReferencedAssemblies.ToList();
                         unresolvedSourceFiles = CodeFiles.ToList();
@@ -184,25 +187,25 @@ namespace ParkitectNexus.Data.Game
                             assemblyFiles.Add(resolved);
 
                             logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
-                            Log.WriteLine($"Resolved assembly reference `{name}` to `{resolved}`");
+                            _logger.WriteLine($"Resolved assembly reference `{name}` to `{resolved}`");
                         }
                         else
                         {
+
                             logFile.Log($"IGNORING assembly reference `{name}`");
-                            Log.WriteLine($"IGNORING assembly reference `{name}`");
+                            _logger.WriteLine($"IGNORING assembly reference `{name}`");
                         }
                     }
 
                     // Resolve the source file paths.
                     logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
-                    Log.WriteLine($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
+                    _logger.WriteLine($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     sourceFiles.AddRange(
-                        unresolvedSourceFiles.Select(file =>
-                        {
+                        unresolvedSourceFiles.Select(file => {
                             var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
                             return Path.Combine(codeDir, repl);
                         }));
-
+                    
                     // Compile.
                     var csCodeProvider =
                         new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
@@ -217,7 +220,7 @@ namespace ParkitectNexus.Data.Game
                         logFile.Log(
                             $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
                             LogLevel.Error);
-                        Log.WriteLine(
+                        _logger.WriteLine(
                             $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
                             LogLevel.Error);
                     }
@@ -226,7 +229,7 @@ namespace ParkitectNexus.Data.Game
                 catch (Exception e)
                 {
                     logFile.Log(e.Message, LogLevel.Error);
-                    Log.WriteLine(e.Message, LogLevel.Error);
+                    _logger.WriteLine(e.Message, LogLevel.Error);
                     return false;
                 }
             }
@@ -255,7 +258,7 @@ namespace ParkitectNexus.Data.Game
 
             if (SystemAssemblies.Contains(assemblyName))
                 return dllName;
-
+            
             if (IgnoredAssemblies.Contains(assemblyName))
                 return null;
 
@@ -296,7 +299,7 @@ namespace ParkitectNexus.Data.Game
         ///     Gets the parkitect instance this mod was installed to.
         /// </summary>
         public IParkitect Parkitect { get; }
-
+        
         /// <summary>
         ///     Gets or sets the base directory.
         /// </summary>

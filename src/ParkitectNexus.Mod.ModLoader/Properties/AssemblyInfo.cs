@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ParkitectNexus")]
 [assembly: AssemblyProduct("ParkitectNexus.Mod.ModLoader")]
-[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2016")]
+[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2015")]
 [assembly: AssemblyTrademark("ParkitectNexus")]
 [assembly: AssemblyCulture("")]
 

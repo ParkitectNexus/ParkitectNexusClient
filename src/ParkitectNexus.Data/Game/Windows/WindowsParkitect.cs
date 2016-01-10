@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using ParkitectNexus.Data.Base;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Data.Game.Windows
 {
@@ -14,7 +15,8 @@ namespace ParkitectNexus.Data.Game.Windows
     /// </summary>
     public class WindowsParkitect : BaseParkitect
     {
-        public WindowsParkitect()
+
+        public WindowsParkitect(IRepositoryFactory repositoryFactory,ILogger logger) : base(repositoryFactory,logger)
         {
             Paths = new WindowsParkitectPaths(this);
         }
@@ -46,9 +48,9 @@ namespace ParkitectNexus.Data.Game.Windows
         /// <returns>The launched process.</returns>
         public override Process Launch(string arguments = "-single-instance")
         {
-            Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            _logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
-            Log.WriteLine("Attempting to compile installed mods.");
+            _logger.WriteLine("Attempting to compile installed mods.");
             CompileActiveMods();
 
             // If the process is already running, push it to the foreground and return it.
@@ -56,24 +58,24 @@ namespace ParkitectNexus.Data.Game.Windows
 
             if (running != null)
             {
-                Log.WriteLine(
+                _logger.WriteLine(
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
 
                 User32.SetForegroundWindow(running.MainWindowHandle);
                 return running;
             }
 
-            Log.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.exe")}'.");
+            _logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.exe")}'.");
             // Start the game process.
             return !IsInstalled
                 ? null
-                : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
+                    : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
                 {
                     WorkingDirectory = InstallationPath,
                     Arguments = arguments
                 });
         }
-
+        
         protected override bool IsValidInstallationPath(string path)
         {
             // Path must exist and contain Parkitect.exe.

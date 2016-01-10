@@ -4,10 +4,11 @@
 using System;
 using System.Drawing;
 using ParkitectNexus.AssetMagic;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.SliderPanels
 {
-    public partial class BlueprintSliderPanel : SliderPanel
+    public partial class BlueprintSliderPanel : SliderPanel, IPresenter
     {
         public BlueprintSliderPanel(string path, IBlueprint blueprint)
         {

@@ -8,25 +8,27 @@ using ParkitectNexus.Client.Windows.TabPages;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.Windows;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data;
+using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Utilities;
+using System.IO;
 
 namespace ParkitectNexus.Client.Windows
 {
-    public partial class MainForm : MetroForm
+    public partial class MainForm : MetroForm, IPresenter
     {
         private SliderPanel _currentPanel;
 
-        public MainForm()
+        public MainForm(IPresenterFactory presenterFactory, ILogger logger, IPathResolver pathResolver)
         {
-            IParkitect parkitect = new WindowsParkitect();
-            IParkitectNexusWebsite website = new ParkitectNexusWebsite();
-            IParkitectOnlineAssetRepository assetRepository = new ParkitectOnlineAssetRepository(website);
+            logger.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
 
             InitializeComponent();
 
-            metroTabControl.TabPages.Add(new MenuTabPage(parkitect, website));
-            metroTabControl.TabPages.Add(new ModsTabPage(parkitect));
-            metroTabControl.TabPages.Add(new BlueprintsTabPage(parkitect));
-            metroTabControl.TabPages.Add(new SavegamesTabPage(parkitect));
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>() );
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<ModsTabPage>());
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<BlueprintsTabPage>());
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<SavegamesTabPage>());
         }
 
         public void SpawnSliderPanel(SliderPanel panel)

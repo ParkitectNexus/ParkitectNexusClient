@@ -9,10 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Controls;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.TabPages
 {
-    public abstract class LoadableTilesTabPage : MetroTabPage
+    public abstract class LoadableTilesTabPage : MetroTabPage, IPresenter
     {
         private readonly MetroProgressSpinner _progressSpinner = new MetroProgressSpinner
         {

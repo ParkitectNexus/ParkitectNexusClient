@@ -8,10 +8,11 @@ using System.Windows.Forms;
 using MetroFramework;
 using MetroFramework.Animation;
 using MetroFramework.Controls;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.SliderPanels
 {
-    public partial class SliderPanel : MetroUserControl
+    public partial class SliderPanel : MetroUserControl, IPresenter
     {
         private string _backText;
         private MoveAnimation _currentAnimation;

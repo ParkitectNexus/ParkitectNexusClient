@@ -3,10 +3,11 @@
 
 using System;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.SliderPanels
 {
-    public partial class ModSliderPanel : SliderPanel
+    public partial class ModSliderPanel : SliderPanel, IPresenter
     {
         private readonly IParkitectMod _mod;
 

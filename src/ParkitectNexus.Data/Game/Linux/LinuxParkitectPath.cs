@@ -8,6 +8,7 @@ namespace ParkitectNexus.Data
     {
         public LinuxParkitectPath(LinuxParkitect parkitect) : base(parkitect)
         {
+            
         }
 
         public override string Data => GetPathInGameFolder("Parkitect_Data");

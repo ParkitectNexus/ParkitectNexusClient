@@ -1,6 +1,8 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data;
+using ParkitectNexus.Data.Presenter;
 using System;
 using System.Windows.Forms;
 
@@ -16,7 +18,14 @@ namespace ParkitectNexus.Client.Windows
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            //configure map
+            StructureMap.Registry registry = ObjectFactory.ConfigureStructureMap();
+            registry.IncludeRegistry(new PresenterRegistry());
+            ObjectFactory.SetUpContainer(registry);
+
+            var presenterFactory = ObjectFactory.Container.GetInstance<IPresenterFactory>();
+            Application.Run(presenterFactory.InstantiatePresenter<MainForm>());
         }
     }
 }

@@ -188,10 +188,7 @@ namespace ParkitectNexus.Mod.ModLoader
             get { return "A mod loader for mods distributed by ParkitectNexus.com."; }
         }
 
-        public string Identifier
-        {
-            get { return "ParkitectNexus@ModLoader"; }
-        }
+        public string Identifier { get { return "ParkitectNexus@ModLoader"; } }
 
         #endregion
     }

@@ -21,8 +21,7 @@ namespace ParkitectNexus.Data.Game.Windows
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
-            string documentsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "Parkitect");
+            string documentsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Parkitect");
 
             path = !Parkitect.IsInstalled
                 ? null

@@ -5,9 +5,13 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using Newtonsoft.Json;
+using ParkitectNexus.Client.Properties;
+using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Client
 {
@@ -20,11 +24,11 @@ namespace ParkitectNexus.Client
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>
-        public static UpdateInfo CheckForUpdates(IParkitectNexusWebsite website)
+        public static UpdateInfo CheckForUpdates(IParkitectNexusWebsite website, IParkitectNexusWebFactory webFactory)
         {
             try
             {
-                using (var webClient = new ParkitectNexusWebClient())
+                using (var webClient = webFactory.NexusClient())
                 using (var stream = webClient.OpenRead(website.ResolveUrl("update.json", "client")))
                 using (var streamReader = new StreamReader(stream))
                 using (var jsonTextReader = new JsonTextReader(streamReader))
@@ -57,13 +61,13 @@ namespace ParkitectNexus.Client
         /// </summary>
         /// <param name="update">The update.</param>
         /// <returns>true on success; false otherwise.</returns>
-        public static bool InstallUpdate(UpdateInfo update)
+        public static bool InstallUpdate(UpdateInfo update, IParkitectNexusWebFactory webFactory)
         {
             try
             {
                 var tempPath = Path.Combine(Path.GetTempPath(), "pncsetup.msi");
 
-                using (var webClient = new ParkitectNexusWebClient())
+                using (var webClient = webFactory.NexusClient())
                 {
                     webClient.DownloadFile(update.DownloadUrl, tempPath);
                     Process.Start(tempPath);

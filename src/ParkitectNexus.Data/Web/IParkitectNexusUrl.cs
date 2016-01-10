@@ -1,12 +1,15 @@
-﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
-
-using ParkitectNexus.Data.Game;
+﻿using ParkitectNexus.Data.Game;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data.Web
 {
     public interface IParkitectNexusUrl
     {
+
         /// <summary>
         ///     Gets the name.
         /// </summary>

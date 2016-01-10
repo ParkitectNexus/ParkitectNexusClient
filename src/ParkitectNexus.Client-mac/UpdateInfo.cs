@@ -1,5 +1,5 @@
-﻿// ParkitectNexusClient
-// Copyright 2015 Parkitect, Tim Potze
+// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
 
 using Newtonsoft.Json;
 

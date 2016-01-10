@@ -10,22 +10,25 @@ using System.Management;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting
 {
+
     [JsonObject(MemberSerialization.OptIn)]
     public class WindowsCrashReport
     {
         private readonly IParkitect _parkitect;
-
-        public WindowsCrashReport(IParkitect parkitect, string action, Exception exception)
+        private ILogger _logger;
+        public WindowsCrashReport(IParkitect parkitect, string action, Exception exception,ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
+            _logger = logger;
             _parkitect = parkitect;
-            Action = action;
-            Exception = exception;
+            this.Action = action;
+            this.Exception = exception;
         }
 
         [JsonProperty]
@@ -40,7 +43,7 @@ namespace ParkitectNexus.Data.Reporting
                 (from x in
                     new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get()
                         .OfType<ManagementObject>()
-                    select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown (Windows)";
+            select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown (Windows)";
 
         [JsonProperty]
         public int ProcessBits => IntPtr.Size*8;
@@ -76,13 +79,13 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    if (!Utilities.Log.IsOpened)
+                    if (!_logger.IsOpened)
                         return "not opened";
 
-                    var path = Utilities.Log.LoggingPath;
-                    Utilities.Log.Close();
+                    var path = _logger.LoggingPath;
+                    _logger.Close();
                     var result = File.ReadAllText(path);
-                    Utilities.Log.Open(path);
+                    _logger.Open(path);
                     return result;
                 }
                 catch (Exception e)
