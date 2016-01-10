@@ -10,7 +10,7 @@
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <AssemblyName>ParkitectNexus Client</AssemblyName>
     <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
-    <ReleaseVersion>1.2.2.0</ReleaseVersion>
+    <ReleaseVersion>1.3.2.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +92,9 @@
     </BundleResource>
     <BundleResource Include="..\..\images\dialog_banner.png">
       <Link>Resources\dialog_banner.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\bin\Release\ParkitectNexus.Mod.ModLoader.dll">
+      <Link>Resources\ParkitectNexus.Mod.ModLoader.dll</Link>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
