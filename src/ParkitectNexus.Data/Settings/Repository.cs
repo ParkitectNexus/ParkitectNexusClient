@@ -44,7 +44,7 @@ namespace ParkitectNexus.Data.Settings
 
         public void Save()
         {
-            File.WriteAllText(_path, JsonConvert.SerializeObject(this));
+            File.WriteAllText(_path, JsonConvert.SerializeObject(_model));
         }
     }
 }
