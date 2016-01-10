@@ -144,7 +144,7 @@ namespace ParkitectNexus.Client
             if (!parkitect.IsInstalled)
                 return;
 
-            MigrateModsPreAlpha4ToPreAlpha5(parkitect);
+            // MigrateModsPreAlpha4ToPreAlpha5(parkitect);
             MigrateModsPreAlpha5ToPreAlpha6(parkitect);
         }
     }
