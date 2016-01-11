@@ -24,7 +24,7 @@ namespace ParkitectNexus.Client
         {
             try
             {
-                using (var webClient = webFactory.NexusClient())
+                using (var webClient = webFactory.CreateWebClient())
                 using (var stream = webClient.OpenRead(website.ResolveUrl("update.json", "client")))
                 using (var streamReader = new StreamReader(stream))
                 using (var jsonTextReader = new JsonTextReader(streamReader))
@@ -63,7 +63,7 @@ namespace ParkitectNexus.Client
             {
                 var tempPath = Path.Combine(Path.GetTempPath(), "pncsetup.msi");
 
-                using (var webClient = webFactory.NexusClient())
+                using (var webClient = webFactory.CreateWebClient())
                 {
                     webClient.DownloadFile(update.DownloadUrl, tempPath);
                     Process.Start(tempPath);

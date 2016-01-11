@@ -7,12 +7,19 @@ using System.IO;
 namespace ParkitectNexus.Data.Utilities
 {
     /// <summary>
-    ///     Logging utility.
+    ///     Represents a logger streaming to a file.
     /// </summary>
     public class Logger : ILogger
     {
-        private LogLevel _logLevel = LogLevel.Debug;
         private StreamWriter _streamWriter;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Logger" /> class.
+        /// </summary>
+        public Logger()
+        {
+            MinimumLogLevel = LogLevel.Info;
+        }
 
         /// <summary>
         ///     Gets or sets the minimum log level.
@@ -27,10 +34,7 @@ namespace ParkitectNexus.Data.Utilities
         /// <summary>
         ///     Gets a value indicating whether this instance is opened.
         /// </summary>
-        public bool IsOpened
-        {
-            get { return _streamWriter != null; }
-        }
+        public bool IsOpened => _streamWriter != null;
 
         /// <summary>
         ///     Opens the logging stream at the specified path.

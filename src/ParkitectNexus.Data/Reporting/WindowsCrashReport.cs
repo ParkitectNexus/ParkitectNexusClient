@@ -63,7 +63,7 @@ namespace ParkitectNexus.Data.Reporting
                 try
                 {
                     return _parkitect.InstalledMods.Select(
-                        m => $"{m}(Enabled: {m.IsEnabled}, Directory: {m.InstallationPath})");
+                        m => $"{m}(Enabled: {m.IsEnabled}, Directory: {m.InstallationPath})").ToArray();
                 }
                 catch
                 {

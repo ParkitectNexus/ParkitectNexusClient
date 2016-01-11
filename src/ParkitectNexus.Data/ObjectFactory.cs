@@ -24,7 +24,7 @@ namespace ParkitectNexus.Data
             registry.IncludeRegistry<PresenterRegistry>();
 
             //create operating system
-            registry.For<IOperatingSystem>().Use<OperatingSystems>();
+            registry.For<IOperatingSystem>().Use<OperatingSystem>();
 
             //only a single instance of the logger is needed
             registry.For<ILogger>().Use<Logger>().Singleton();
@@ -37,7 +37,7 @@ namespace ParkitectNexus.Data
             registry.For<ICrashReporterFactory>().Use<CrashReporterFactory>();
 
             //operating system
-            registry.For<IOperatingSystem>().Use<OperatingSystems>();
+            registry.For<IOperatingSystem>().Use<OperatingSystem>();
 
             //path resolver
             registry.For<IPathResolver>().Use<PathResolver>();

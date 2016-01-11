@@ -36,7 +36,7 @@ namespace ParkitectNexus.Data.Reporting
             {
                 var data = JsonConvert.SerializeObject(Generate(action, _parkitect, exception));
 
-                using (var client = _webFactory.NexusClient())
+                using (var client = _webFactory.CreateWebClient())
                 {
                     client.UploadString(_website.ResolveUrl("report/crash", "client"), data);
                 }
@@ -50,7 +50,7 @@ namespace ParkitectNexus.Data.Reporting
         {
             try
             {
-                var os = _operatingSystem.GetOperatingSystem();
+                var os = _operatingSystem.Detect();
                 switch (os)
                 {
                     case SupportedOperatingSystem.Windows:

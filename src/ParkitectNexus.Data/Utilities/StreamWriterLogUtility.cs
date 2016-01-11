@@ -16,7 +16,7 @@ namespace ParkitectNexus.Data.Utilities
         /// </summary>
         /// <param name="streamWriter">The stream writer.</param>
         /// <param name="message">The message.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if streamWriter is null.</exception>
+        /// <exception cref="ArgumentNullException">streamWriter is null.</exception>
         public static void Log(this StreamWriter streamWriter, string message)
         {
             if (streamWriter == null) throw new ArgumentNullException(nameof(streamWriter));

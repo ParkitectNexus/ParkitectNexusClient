@@ -43,9 +43,9 @@ namespace ParkitectNexus.Data.Game.MacOSX
         /// <returns>The launched process.</returns>
         public override Process Launch(string arguments = "-single-instance")
         {
-            _logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
-            _logger.WriteLine("Attempting to compile installed mods.");
+            Logger.WriteLine("Attempting to compile installed mods.");
             CompileActiveMods();
 
             return IsInstalled

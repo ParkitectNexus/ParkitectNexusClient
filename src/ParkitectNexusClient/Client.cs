@@ -44,14 +44,14 @@ namespace ParkitectNexus.Client
                 // Check for updates. If updates are available, do not resume usual logic.
                 if (CheckForUpdates(parkitectNexusWebsite, options)) return;
 
-                if (operatingSystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                if (operatingSystem.Detect() == SupportedOperatingSystem.Windows)
                     ParkitectNexusProtocol.Install(_logger);
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
                 if (!EnsureParkitectInstalled(parkitect, options))
                     return;
 
-                if (operatingSystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                if (operatingSystem.Detect() == SupportedOperatingSystem.Windows)
                     UpdateUtil.MigrateMods(parkitect);
 
                 ModLoaderUtil.InstallModLoader(parkitect, logger);

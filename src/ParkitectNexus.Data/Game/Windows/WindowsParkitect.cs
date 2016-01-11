@@ -47,9 +47,9 @@ namespace ParkitectNexus.Data.Game.Windows
         /// <returns>The launched process.</returns>
         public override Process Launch(string arguments = "-single-instance")
         {
-            _logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
-            _logger.WriteLine("Attempting to compile installed mods.");
+            Logger.WriteLine("Attempting to compile installed mods.");
             CompileActiveMods();
 
             // If the process is already running, push it to the foreground and return it.
@@ -57,14 +57,14 @@ namespace ParkitectNexus.Data.Game.Windows
 
             if (running != null)
             {
-                _logger.WriteLine(
+                Logger.WriteLine(
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
 
                 User32.SetForegroundWindow(running.MainWindowHandle);
                 return running;
             }
 
-            _logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.exe")}'.");
+            Logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.exe")}'.");
             // Start the game process.
             return !IsInstalled
                 ? null

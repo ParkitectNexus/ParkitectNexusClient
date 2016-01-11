@@ -84,9 +84,8 @@
     <Compile Include="Settings\IRepositoryFactory.cs" />
     <Compile Include="Settings\Repository.cs" />
     <Compile Include="Settings\RepositoryFactory.cs" />
-    <Compile Include="Web\Client\IParkitectNexusWeb.cs" />
+    <Compile Include="Web\Client\IParkitectNexusWebClient.cs" />
     <Compile Include="Web\Client\IParkitectNexusWebFactory.cs" />
-    <Compile Include="Web\Client\ParkitectNexusWeb.cs" />
     <Compile Include="Web\Client\ParkitectNexusWebFactory.cs" />
     <Compile Include="Web\IParkitectNexusUrl.cs" />
     <Compile Include="Web\IParkitectNexusWebsite.cs" />
@@ -114,7 +113,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\OperatingSystems.cs" />
+    <Compile Include="Utilities\OperatingSystem.cs" />
     <Compile Include="Utilities\StreamWriterLogUtility.cs" />
     <Compile Include="SupportedOperatingSystem.cs" />
     <Compile Include="Game\MacOSX\MacOSXParkitect.cs" />

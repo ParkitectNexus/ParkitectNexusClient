@@ -39,11 +39,15 @@ namespace ParkitectNexus.Data.Game
         private readonly ILogger _logger;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
+        ///     Initializes a new instance of the <see cref="ParkitectMod"/> class.
         /// </summary>
+        /// <param name="parkitect">The parkitect.</param>
+        /// <param name="logger">The logger.</param>
+        /// <exception cref="ArgumentNullException">parkitect or logger is null.</exception>
         public ParkitectMod(IParkitect parkitect, ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
             _logger = logger;
             Parkitect = parkitect;
         }
@@ -208,7 +212,7 @@ namespace ParkitectNexus.Data.Game
 
                     // Compile.
                     var csCodeProvider =
-                        new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
+                        new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", CompilerVersion } });
                     var parameters = new CompilerParameters(assemblyFiles.ToArray(),
                         Path.Combine(InstallationPath, buildPath));
 

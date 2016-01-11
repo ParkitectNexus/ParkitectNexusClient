@@ -5,6 +5,6 @@ namespace ParkitectNexus.Data.Web.Client
 {
     public interface IParkitectNexusWebFactory
     {
-        IParkitectNexusWeb NexusClient();
+        IParkitectNexusWebClient CreateWebClient();
     }
 }

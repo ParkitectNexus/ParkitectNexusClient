@@ -4,13 +4,14 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Utilities
 {
-    public class OperatingSystems : IOperatingSystem
+    public class OperatingSystem : IOperatingSystem
     {
-        public SupportedOperatingSystem GetOperatingSystem()
+        public SupportedOperatingSystem Detect()
         {
-            switch (Environment.OSVersion.Platform)
+            var platform = Environment.OSVersion.Platform;
+            switch (platform)
             {
                 case PlatformID.Win32NT:
                 case PlatformID.Win32S:
@@ -20,12 +21,13 @@ namespace ParkitectNexus.Data
                 case PlatformID.MacOSX:
                     return SupportedOperatingSystem.MacOSX;
                 case PlatformID.Unix:
-                    if (IsUnixMacOSXPlatform())
-                        return SupportedOperatingSystem.MacOSX;
-                    return SupportedOperatingSystem.Linux;
+                    return IsUnixMacOSXPlatform()
+                        ? SupportedOperatingSystem.MacOSX
+                        : SupportedOperatingSystem.Linux;
+                default:
+                    throw new ApplicationException("unsupported platform " + platform);
             }
 
-            throw new ApplicationException("unsupported platform " + Environment.OSVersion.Platform);
         }
 
         [DllImport("libc")]
@@ -37,7 +39,7 @@ namespace ParkitectNexus.Data
             try
             {
                 buf = Marshal.AllocHGlobal(8192);
-                // This is a hacktastic way of getting sysname from uname () 
+                // This is a hacktastic way of getting sysname from uname ()
                 if (uname(buf) == 0)
                 {
                     if (Marshal.PtrToStringAnsi(buf) == "Darwin")

@@ -24,14 +24,20 @@ namespace ParkitectNexus.Data.Web
         private readonly IParkitectNexusWebFactory _nexusWebFactory;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
+        ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository"/> class.
         /// </summary>
+        /// <param name="gitClient">The git client.</param>
         /// <param name="parkitectNexusWebsite">The parkitect nexus website.</param>
-        /// <exception cref="ArgumentNullException">Thrown if parkitectNexusWebsite is null.</exception>
+        /// <param name="nexusWebFactory">The nexus web factory.</param>
+        /// <param name="logger">The logger.</param>
+        /// <exception cref="ArgumentNullException">gitClient, parkitectNexusWebsite, nexusWebFactory or logger is null.</exception>
         public ParkitectOnlineAssetRepository(IGitHubClient gitClient, IParkitectNexusWebsite parkitectNexusWebsite,
             IParkitectNexusWebFactory nexusWebFactory, ILogger logger)
         {
+            if (gitClient == null) throw new ArgumentNullException(nameof(gitClient));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
+            if (nexusWebFactory == null) throw new ArgumentNullException(nameof(nexusWebFactory));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
             _parkitectNexusWebsite = parkitectNexusWebsite;
             _nexusWebFactory = nexusWebFactory;
             _gitClient = gitClient;
@@ -75,7 +81,7 @@ namespace ParkitectNexus.Data.Web
             var downloadInfo = await ResolveDownloadInfo(url);
 
             // Create a web client which will download the file.
-            using (var webClient = _nexusWebFactory.NexusClient())
+            using (var webClient = _nexusWebFactory.CreateWebClient())
             {
                 // Receive the content of the file.
                 using (var stream = await webClient.OpenReadTaskAsync(downloadInfo.Url))

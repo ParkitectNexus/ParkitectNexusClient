@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    public interface IParkitectNexusWeb : IDisposable
+    public interface IParkitectNexusWebClient : IDisposable
     {
         WebHeaderCollection ResponseHeaders { get; }
         Task<Stream> OpenReadTaskAsync(string url);
-        void UploadString(string url, string data);
+        string UploadString(string url, string data);
         Stream OpenRead(string url);
         void DownloadFile(string url, string path);
     }

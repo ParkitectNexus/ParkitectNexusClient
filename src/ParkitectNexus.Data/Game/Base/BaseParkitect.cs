@@ -20,13 +20,13 @@ namespace ParkitectNexus.Data.Game.Base
     /// </summary>
     public abstract class BaseParkitect : IParkitect
     {
-        protected ILogger _logger;
-        protected IRepositoryFactory _repositoryFactory;
+        protected ILogger Logger { get; }
+        protected IRepositoryFactory Factory { get; }
 
-        public BaseParkitect(IRepositoryFactory repositoryFactory, ILogger logger)
+        protected BaseParkitect(IRepositoryFactory repositoryFactory, ILogger logger)
         {
-            _logger = logger;
-            _repositoryFactory = repositoryFactory;
+            Logger = logger;
+            Factory = repositoryFactory;
         }
 
         /// <summary>
@@ -43,14 +43,14 @@ namespace ParkitectNexus.Data.Game.Base
         {
             get
             {
-                var gameSettings = _repositoryFactory.Repository<GameSettings>();
+                var gameSettings = Factory.Repository<GameSettings>();
                 return IsValidInstallationPath(gameSettings.Model.InstallationPath)
                     ? gameSettings.Model.InstallationPath
                     : null;
             }
             set
             {
-                var gameSettings = _repositoryFactory.Repository<GameSettings>();
+                var gameSettings = Factory.Repository<GameSettings>();
                 if (!IsValidInstallationPath(value))
                     throw new ArgumentException("invalid installation path", nameof(value));
 
@@ -94,7 +94,7 @@ namespace ParkitectNexus.Data.Game.Base
                         Directory.GetDirectories(Paths.Mods).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
                 {
                     // Attempt to deserialize the mod.json file.
-                    var mod = new ParkitectMod(this, _logger);
+                    var mod = new ParkitectMod(this, Logger);
                     try
                     {
                         JsonConvert.PopulateObject(File.ReadAllText(Path.Combine(path, "mod.json")), mod);
@@ -153,7 +153,7 @@ namespace ParkitectNexus.Data.Game.Base
             if (!IsInstalled)
                 throw new Exception("parkitect is not installed");
 
-            _logger.WriteLine($"Storing asset {asset}.");
+            Logger.WriteLine($"Storing asset {asset}.");
 
             // Gather information about the asset type.
             var assetInfo = asset.Type.GetCustomAttribute<ParkitectAssetInfoAttribute>();
@@ -172,12 +172,12 @@ namespace ParkitectNexus.Data.Game.Base
 
                     Directory.CreateDirectory(storagePath);
 
-                    _logger.WriteLine($"Storing asset to {assetPath}.");
+                    Logger.WriteLine($"Storing asset to {assetPath}.");
 
                     // If the file already exists, add a number behind the file name.
                     if (File.Exists(assetPath))
                     {
-                        _logger.WriteLine("Asset already exists, comparing hashes.");
+                        Logger.WriteLine("Asset already exists, comparing hashes.");
 
                         var md5 = MD5.Create();
 
@@ -187,11 +187,11 @@ namespace ParkitectNexus.Data.Game.Base
 
                         if (validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
                         {
-                            _logger.WriteLine("Asset hashes match, aborting.");
+                            Logger.WriteLine("Asset hashes match, aborting.");
                             return;
                         }
 
-                        _logger.WriteLine("Asset hashes mismatch, computing new file name.");
+                        Logger.WriteLine("Asset hashes mismatch, computing new file name.");
                         // Separate the filename and the extension.
                         var attempt = 1;
                         var fileName = Path.GetFileNameWithoutExtension(asset.FileName);
@@ -207,10 +207,10 @@ namespace ParkitectNexus.Data.Game.Base
                                 return;
                         } while (File.Exists(assetPath));
 
-                        _logger.WriteLine($"Newly computed path is {assetPath}.");
+                        Logger.WriteLine($"Newly computed path is {assetPath}.");
                     }
 
-                    _logger.WriteLine("Writing asset to file.");
+                    Logger.WriteLine("Writing asset to file.");
                     // Write the stream to a file at the asset path.
                     using (var fileStream = File.Create(assetPath))
                     {
@@ -220,7 +220,7 @@ namespace ParkitectNexus.Data.Game.Base
                     break;
                 case ParkitectAssetType.Mod:
 
-                    _logger.WriteLine("Attempting to open mod stream.");
+                    Logger.WriteLine("Attempting to open mod stream.");
                     using (var zip = new ZipArchive(asset.Stream, ZipArchiveMode.Read))
                     {
                         // Compute name of main directory inside archive.
@@ -228,7 +228,7 @@ namespace ParkitectNexus.Data.Game.Base
                         if (mainFolder == null)
                             throw new Exception("invalid archive");
 
-                        _logger.WriteLine($"Mod archive main folder is {mainFolder}.");
+                        Logger.WriteLine($"Mod archive main folder is {mainFolder}.");
 
                         // Find the mod.json file. Yay for / \ path divider compatibility.
                         var modJsonPath = Path.Combine(mainFolder, "mod.json").Replace('/', '\\');
@@ -239,10 +239,10 @@ namespace ParkitectNexus.Data.Game.Base
                         using (var streamReader = new StreamReader(modJson.Open()))
                         {
                             var json = await streamReader.ReadToEndAsync();
-                            var mod = new ParkitectMod(this, _logger);
+                            var mod = new ParkitectMod(this, Logger);
                             JsonConvert.PopulateObject(json, mod);
 
-                            _logger.WriteLine($"mod.json was deserialized to mod object '{mod}'.");
+                            Logger.WriteLine($"mod.json was deserialized to mod object '{mod}'.");
 
                             // Set default mod properties.
                             mod.Tag = asset.DownloadInfo.Tag;
@@ -256,15 +256,15 @@ namespace ParkitectNexus.Data.Game.Base
                             var oldMod = InstalledMods.FirstOrDefault(m => m.Repository == mod.Repository);
                             if (oldMod != null)
                             {
-                                _logger.WriteLine("An installed version of this mod was detected.");
+                                Logger.WriteLine("An installed version of this mod was detected.");
                                 // This version was already installed.
                                 if (oldMod.IsDevelopment || oldMod.Tag == mod.Tag)
                                 {
-                                    _logger.WriteLine("Installed version is already up to date. Aborting.");
+                                    Logger.WriteLine("Installed version is already up to date. Aborting.");
                                     return;
                                 }
 
-                                _logger.WriteLine("Deleting installed version.");
+                                Logger.WriteLine("Deleting installed version.");
                                 oldMod.Delete();
 
                                 // Deleting is stupid.
@@ -273,7 +273,7 @@ namespace ParkitectNexus.Data.Game.Base
                             }
 
                             // Install mod.
-                            _logger.WriteLine("Copying mod to mods folder.");
+                            Logger.WriteLine("Copying mod to mods folder.");
                             foreach (var entry in zip.Entries)
                             {
                                 if (!entry.FullName.StartsWith(mainFolder))
@@ -285,12 +285,12 @@ namespace ParkitectNexus.Data.Game.Base
 
                                 if (string.IsNullOrEmpty(entry.Name))
                                 {
-                                    _logger.WriteLine($"Creating directory '{path}'.");
+                                    Logger.WriteLine($"Creating directory '{path}'.");
                                     Directory.CreateDirectory(path);
                                 }
                                 else
                                 {
-                                    _logger.WriteLine($"Storing mod file '{path}'.");
+                                    Logger.WriteLine($"Storing mod file '{path}'.");
                                     using (var openStream = entry.Open())
                                     using (var fileStream = File.OpenWrite(path))
                                         await openStream.CopyToAsync(fileStream);

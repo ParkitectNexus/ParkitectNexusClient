@@ -1,10 +1,10 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Utilities
 {
     public interface IOperatingSystem
     {
-        SupportedOperatingSystem GetOperatingSystem();
+        SupportedOperatingSystem Detect();
     }
 }
