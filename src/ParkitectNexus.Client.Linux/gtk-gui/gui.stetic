@@ -154,6 +154,7 @@
                 <property name="Label" translatable="yes" />
                 <property name="UseUnderline">True</property>
                 <property name="Relief">Half</property>
+                <signal name="Clicked" handler="LaunchParkitect" after="yes" />
               </widget>
               <packing>
                 <property name="Position">1</property>

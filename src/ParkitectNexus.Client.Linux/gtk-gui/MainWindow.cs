@@ -163,5 +163,6 @@ public partial class MainWindow
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.AboutAction.Activated += new global::System.EventHandler (this.AboutDialog);
+		this.btnLaunchParkitect.Clicked += new global::System.EventHandler (this.LaunchParkitect);
 	}
 }
