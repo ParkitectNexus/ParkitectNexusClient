@@ -1,4 +1,5 @@
-﻿using ParkitectNexus.Data.Game;
+﻿
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
@@ -27,7 +28,7 @@ namespace ParkitectNexus.Data
             registry.For<ILogger>().Use<Logger>().Singleton();
 
             //repository settings
-            registry.For(typeof(IRepository<>)).Use(typeof(Repository<>));
+            registry.For(typeof(IRepository<>)).Singleton().Use(typeof(Repository<>)) ;
             registry.For<IRepositoryFactory>().Use<RepositoryFactory>();
 
             //used to send crash reports
