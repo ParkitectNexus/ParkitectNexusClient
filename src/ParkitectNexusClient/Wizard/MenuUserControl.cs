@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
-using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
@@ -15,13 +14,15 @@ namespace ParkitectNexus.Client.Wizard
 {
     internal partial class MenuUserControl : BaseWizardUserControl
     {
+        private readonly ICrashReporterFactory _crashReporting;
+        private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
-        private readonly ICrashReporterFactory _crashReporting;
-        private readonly ILogger _logger;
 
-        public MenuUserControl(IParkitect parkitect, IParkitectNexusWebsite parkitectNexusWebsite,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository,ICrashReporterFactory crashReporting, ILogger logger)
+        public MenuUserControl(IParkitect parkitect, IParkitectNexusWebsite parkitectNexusWebsite,
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ICrashReporterFactory crashReporting,
+            ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
@@ -45,7 +46,7 @@ namespace ParkitectNexus.Client.Wizard
                         MessageBox.Show(this, "Are you sure you wish to send us your log files?",
                             "ParkitectNexus Client",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        _crashReporting.Report("log_upload",new Exception("log_upload"));
+                        _crashReporting.Report("log_upload", new Exception("log_upload"));
 
                     return true;
                 case (Keys.Control | Keys.Alt | Keys.D):

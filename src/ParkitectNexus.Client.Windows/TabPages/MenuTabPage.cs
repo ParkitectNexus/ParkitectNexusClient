@@ -11,8 +11,8 @@ using MetroFramework;
 using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Properties;
 using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.Windows.TabPages
 {

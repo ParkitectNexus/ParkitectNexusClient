@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
 
 namespace ParkitectNexus.Data.Web.Client
 {
     public class ParkitectNexusWebFactory : IParkitectNexusWebFactory
     {
-        public IParkitectNexusWeb NexusClient()
+        public IParkitectNexusWebClient CreateWebClient()
         {
-            return ObjectFactory.Container.GetInstance<IParkitectNexusWeb>();
+            return ObjectFactory.GetInstance<IParkitectNexusWebClient>();
         }
-        
     }
 }

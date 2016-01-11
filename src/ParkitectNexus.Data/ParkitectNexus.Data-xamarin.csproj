@@ -59,33 +59,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bases\BaseParkitect.cs" />
-    <Compile Include="Bases\BaseParkitectPaths.cs" />
+    <Compile Include="Game\Base\BaseParkitect.cs" />
+    <Compile Include="Game\Base\BaseParkitectPaths.cs" />
     <Compile Include="Game\GameRegistry.cs" />
     <Compile Include="Game\IParkitect.cs" />
-    <Compile Include="Game\IParkitectAsset.cs" />
+    <Compile Include="Game\IParkitectDownloadedAsset.cs" />
     <Compile Include="Game\IParkitectMod.cs" />
-    <Compile Include="IPathResolver.cs" />
+    <Compile Include="Game\ParkitectDownloadedAsset.cs" />
     <Compile Include="ObjectFactory.cs" />
-    <Compile Include="PathResolver.cs" />
     <Compile Include="Presenter\IPresenter.cs" />
     <Compile Include="Presenter\IPresenterFactory.cs" />
     <Compile Include="Presenter\PresenterFactory.cs" />
     <Compile Include="Presenter\PresenterRegistry.cs" />
     <Compile Include="Reporting\CrashReporterFactory.cs" />
     <Compile Include="Reporting\ICrashReporterFactory.cs" />
-    <Compile Include="Settings\IRepository.cs" />
-    <Compile Include="Settings\IRepositoryFactory.cs" />
+    <Compile Include="Settings\ISettingsRepository.cs" />
+    <Compile Include="Settings\ISettingsRepositoryFactory.cs" />
     <Compile Include="Settings\Models\GameSettings.cs" />
-    <Compile Include="Settings\Repository.cs" />
-    <Compile Include="Settings\RepositoryFactory.cs" />
+    <Compile Include="Settings\SettingsRepository.cs" />
+    <Compile Include="Settings\SettingsRepositoryFactory.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\IOperatingSystem.cs" />
     <Compile Include="Utilities\Logger.cs" />
-    <Compile Include="Utilities\OperatingSystems.cs" />
-    <Compile Include="Web\Client\IParkitectNexusWeb.cs" />
+    <Compile Include="Utilities\OperatingSystem.cs" />
+    <Compile Include="Web\Client\IParkitectNexusWebClient.cs" />
     <Compile Include="Web\Client\IParkitectNexusWebFactory.cs" />
-    <Compile Include="Web\Client\ParkitectNexusWeb.cs" />
     <Compile Include="Web\Client\ParkitectNexusWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -102,7 +100,6 @@
     <Compile Include="Utilities\EnumUtility.cs" />
     <Compile Include="Utilities\LogLevel.cs" />
     <Compile Include="Game\Windows\WindowsParkitect.cs" />
-    <Compile Include="Game\ParkitectAsset.cs" />
     <Compile Include="Game\ParkitectAssetInfoAttribute.cs" />
     <Compile Include="Game\ParkitectAssetType.cs" />
     <Compile Include="Game\ParkitectMod.cs" />

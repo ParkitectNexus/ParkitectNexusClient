@@ -12,12 +12,14 @@ namespace ParkitectNexus.Data.Reporting
 {
     public class CrashReporterFactory : ICrashReporterFactory
     {
-        private IParkitectNexusWebFactory _webFactory;
-        private IOperatingSystem _operatingSystem;
-        private IParkitect _parkitect;
-        private IParkitectNexusWebsite _website;
-        private ILogger _logger;
-        public CrashReporterFactory(IParkitectNexusWebFactory webFactory,IParkitectNexusWebsite website,IParkitect parkitect, IOperatingSystem operatingSystem,ILogger logger)
+        private readonly ILogger _logger;
+        private readonly IOperatingSystem _operatingSystem;
+        private readonly IParkitect _parkitect;
+        private readonly IParkitectNexusWebFactory _webFactory;
+        private readonly IParkitectNexusWebsite _website;
+
+        public CrashReporterFactory(IParkitectNexusWebFactory webFactory, IParkitectNexusWebsite website,
+            IParkitect parkitect, IOperatingSystem operatingSystem, ILogger logger)
         {
             _website = website;
             _parkitect = parkitect;
@@ -34,7 +36,7 @@ namespace ParkitectNexus.Data.Reporting
             {
                 var data = JsonConvert.SerializeObject(Generate(action, _parkitect, exception));
 
-                using (var client = _webFactory.NexusClient())
+                using (var client = _webFactory.CreateWebClient())
                 {
                     client.UploadString(_website.ResolveUrl("report/crash", "client"), data);
                 }
@@ -48,13 +50,13 @@ namespace ParkitectNexus.Data.Reporting
         {
             try
             {
-                var os = _operatingSystem.GetOperatingSystem();
+                var os = _operatingSystem.Detect();
                 switch (os)
                 {
                     case SupportedOperatingSystem.Windows:
                         return new WindowsCrashReport(parkitect, action, exception, _logger);
-                case SupportedOperatingSystem.MacOSX:
-                    return new MacOSXCrashReport(parkitect, action, exception, _logger);
+                    case SupportedOperatingSystem.MacOSX:
+                        return new MacOSXCrashReport(parkitect, action, exception, _logger);
                     default:
                         throw new Exception("unsupported operating system " + os);
                 }

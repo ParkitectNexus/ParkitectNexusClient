@@ -18,10 +18,10 @@ namespace ParkitectNexus.Client.GTK
             IOperatingSystem operatingsystem = ObjectFactory.Container.GetInstance<IOperatingSystem> ();
 
             var appPath = Assembly.GetEntryAssembly ().Location;
-            switch (operatingsystem.GetOperatingSystem ()) {
+            switch (operatingsystem.Detect ()) {
                     case SupportedOperatingSystem.Windows:
                         try {
-                            
+
 
                             var parkitectNexus = Registry.CurrentUser?.CreateSubKey (@"Software\Classes\parkitectnexus");
                             parkitectNexus?.SetValue ("", "ParkitectNexus Client");
@@ -42,7 +42,7 @@ namespace ParkitectNexus.Client.GTK
                             "Exec="+appPath+" %u --download \"%1\" \n" +
                             "Terminal=false \n" +
                             "Type=Application \n"+
-                            "MimeType=x-scheme-handler/parkitectnexus;");   
+                            "MimeType=x-scheme-handler/parkitectnexus;");
                         break;
                 }
 

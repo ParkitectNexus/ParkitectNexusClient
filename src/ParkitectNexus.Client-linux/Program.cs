@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace ParkitectNexus.Client.GTK
 {
-    
+
     public class MainClass
     {
 
@@ -30,9 +30,9 @@ namespace ParkitectNexus.Client.GTK
             IOperatingSystem operatingsystem = ObjectFactory.Container.GetInstance<IOperatingSystem> ();
             ICrashReporterFactory crashReport = ObjectFactory.Container.GetInstance<ICrashReporterFactory> ();
 
-           
 
-          
+
+
             var options = new CommandLineOptions();
             var settings = new ClientSettings();
 
@@ -44,14 +44,14 @@ namespace ParkitectNexus.Client.GTK
             Log.MinimumLogLevel = options.LogLevel;
 
             Application.Init ();
-        
+
 
             try
             {
                 Log.WriteLine($"Application was launched with arguments '{string.Join(" ", args)}'.", LogLevel.Info);
 
                 //restrict update to windows. linux can use package manager to install updates
-                if(operatingsystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                if(operatingsystem.Detect() == SupportedOperatingSystem.Windows)
                 {
                     // Check for updates. If updates are available, do not resume usual logic.
                     var updateInfo = ParkitectUpdate.CheckForUpdates(parkitectNexusWebsite);
@@ -83,7 +83,7 @@ namespace ParkitectNexus.Client.GTK
                 }
 
                 // Ensure parkitect has been installed. If it has not been installed, quit the application.
-                if(operatingsystem.GetOperatingSystem() == SupportedOperatingSystem.Windows)
+                if(operatingsystem.Detect() == SupportedOperatingSystem.Windows)
                     ParkitectUpdate.MigrateMods(parkitect);
 
                 ModLoaderUtil.InstallModLoader(parkitect);
@@ -92,7 +92,7 @@ namespace ParkitectNexus.Client.GTK
                 if (!string.IsNullOrWhiteSpace(settings.DownloadOnNextRun))
                 {
                     if(!ModDownload.Download(settings.DownloadOnNextRun, parkitect, parkitectOnlineAssetRepository))
-                        Environment.Exit(0);    
+                        Environment.Exit(0);
                     settings.DownloadOnNextRun = null;
                     settings.Save();
                 }
@@ -121,10 +121,10 @@ namespace ParkitectNexus.Client.GTK
                 window.DeleteEvent += (o , arg) =>{
                     // Handle silent calls.
                     Log.Close();
-            
+
                 };
-            
-            
+
+
 
             }
             catch (Exception e)
@@ -137,7 +137,7 @@ namespace ParkitectNexus.Client.GTK
                 err.Run();
 
                 Environment.Exit(0);
-        
+
 
             }
 
@@ -147,6 +147,6 @@ namespace ParkitectNexus.Client.GTK
         }
 
 
-    
+
     }
 }

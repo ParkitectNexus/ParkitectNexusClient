@@ -1,27 +1,28 @@
-﻿using System;
-using ParkitectNexus.Data.Base;
-using ParkitectNexus.Data.Game;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
 using System.Diagnostics;
-using ParkitectNexus.Data.Utilities;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data
 {
     public class LinuxParkitect : BaseParkitect
     {
-
-        public LinuxParkitect(IRepositoryFactory repositoryFactory,ILogger logger) : base(repositoryFactory, logger)
+        public LinuxParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger) : base(settingsRepositoryFactory, logger)
         {
             Paths = new LinuxParkitectPath(this);
         }
 
 
-        ///<summary>
-        /// get a collection of paths
+        /// <summary>
+        ///     get a collection of paths
         /// </summary>
-        public override IParkitectPaths Paths {get;}
+        public override IParkitectPaths Paths { get; }
 
         /// <summary>
         ///     Detects the installation path.
@@ -44,9 +45,9 @@ namespace ParkitectNexus.Data
         /// <returns>The launched process.</returns>
         public override Process Launch(string arguments = "-single-instance")
         {
-            _logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
-            _logger.WriteLine("Attempting to compile installed mods.");
+            Logger.WriteLine("Attempting to compile installed mods.");
             CompileActiveMods();
 
             // If the process is already running, push it to the foreground and return it.
@@ -54,30 +55,28 @@ namespace ParkitectNexus.Data
 
             if (running != null)
             {
-                _logger.WriteLine(
+                Logger.WriteLine(
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
-                
+
                 return running;
             }
 
-            var t = _logger.LoggingPath;
-            _logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
+            var t = Logger.LoggingPath;
+            Logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
             // Start the game process.
             return !IsInstalled
                 ? null
-                    : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.x86_64"))
-                        {
-                            WorkingDirectory = InstallationPath,
-                            Arguments = arguments
-                        });
+                : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.x86_64"))
+                {
+                    WorkingDirectory = InstallationPath,
+                    Arguments = arguments
+                });
         }
 
         protected override bool IsValidInstallationPath(string path)
         {
-            
             // Path must exist and contain Parkitect.exe.
             return !string.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "Parkitect.x86_64"));
         }
     }
 }
-

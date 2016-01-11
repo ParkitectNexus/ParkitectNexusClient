@@ -3,12 +3,13 @@
 
 using System;
 using System.Net;
-using System.Reflection;
 using System.Net.Cache;
+using System.Reflection;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    class ParkitectNexusWebClient : WebClient
+    internal class ParkitectNexusWebClient : WebClient, IParkitectNexusWebClient
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Net.WebClient" /> class.
@@ -16,32 +17,23 @@ namespace ParkitectNexus.Data.Web.Client
         public ParkitectNexusWebClient(IOperatingSystem operatingSystem)
         {
             // Workaround: disable certificate cache on MacOSX.
-            if(operatingSystem.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
+            if (operatingSystem.Detect() == SupportedOperatingSystem.MacOSX)
             {
-                CachePolicy = new System.Net.Cache.RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+                CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
             }
 
-            if (operatingSystem.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
+            if (operatingSystem.Detect() == SupportedOperatingSystem.MacOSX)
             {
                 ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
             }
 
 
             // Add a version number header of requests.
-            var version = $"{Assembly.GetEntryAssembly().GetName().Version}-{operatingSystem.GetOperatingSystem()}";
+            var version = $"{Assembly.GetEntryAssembly().GetName().Version}-{operatingSystem.Detect()}";
 
             Headers.Add("X-ParkitectNexusInstaller-Version", version);
             Headers.Add("user-agent", $"ParkitectNexus/{version}");
         }
-
-      /*  static ParkitectNexusWebClient()
-        {
-            // Workaround: bypass certificate checks on MacOSX.
-            if(operatingSystem.GetOperatingSystem() == SupportedOperatingSystem.MacOSX)
-            {
-                ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
-            }
-        }*/
 
         /// <summary>
         ///     Returns a <see cref="T:System.Net.WebRequest" /> object for the specified resource.

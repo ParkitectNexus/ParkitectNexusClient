@@ -1,6 +1,8 @@
-﻿using System;
-using ParkitectNexus.Data.Bases;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
 using System.IO;
+using ParkitectNexus.Data.Game.Base;
 
 namespace ParkitectNexus.Data
 {
@@ -8,7 +10,6 @@ namespace ParkitectNexus.Data
     {
         public LinuxParkitectPath(LinuxParkitect parkitect) : base(parkitect)
         {
-            
         }
 
         public override string Data => GetPathInGameFolder("Parkitect_Data");
@@ -16,20 +17,12 @@ namespace ParkitectNexus.Data
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
-            if(!Parkitect.IsInstalled)
-                path = null;
-            else if(path == null)
-                path = Path.Combine(Parkitect.InstallationPath);
-            else
-                path = Path.Combine(Parkitect.InstallationPath, path);
+            if (!Parkitect.IsInstalled)
+                return null;
 
-            /*path = !Parkitect.IsInstalled
-                ? null
-                : path == null
-                    ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        "Library/Application Support/Parkitect")
-                    : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        "Library/Application Support/Parkitect", path);*/
+            path = path == null
+                ? Parkitect.InstallationPath
+                : Path.Combine(Parkitect.InstallationPath, path);
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);
@@ -38,4 +31,3 @@ namespace ParkitectNexus.Data
         }
     }
 }
-

@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -15,10 +14,10 @@ namespace ParkitectNexus.Client.Wizard
 {
     internal partial class ManageModsUserControl : BaseWizardUserControl
     {
+        private readonly ILogger _logger;
         private readonly MenuUserControl _menu;
         private readonly IParkitect _parkitect;
         private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
-        private readonly ILogger _logger;
 
         private bool _disableChecking = true;
 
@@ -135,7 +134,8 @@ namespace ParkitectNexus.Client.Wizard
                 }
                 else
                 {
-                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger, url, this));
+                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger,
+                        url, this));
                 }
             }
             catch (Exception)

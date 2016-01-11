@@ -3,7 +3,7 @@
 
 using System;
 using System.IO;
-using ParkitectNexus.Data.Bases;
+using ParkitectNexus.Data.Game.Base;
 
 namespace ParkitectNexus.Data.Game.Windows
 {
@@ -21,12 +21,13 @@ namespace ParkitectNexus.Data.Game.Windows
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
-            string documentsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Parkitect");
+            if (!Parkitect.IsInstalled)
+                return null;
+            string documentsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Parkitect");
 
-            path = !Parkitect.IsInstalled
-                ? null
-                : path == null
-                    ? Path.Combine(documentsFolder)
+            path = path == null
+                    ? documentsFolder
                     : Path.Combine(documentsFolder, path);
 
             if (path != null && createIfNotExists)

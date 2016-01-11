@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management;
-using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
@@ -17,17 +15,18 @@ namespace ParkitectNexus.Data.Reporting
     [JsonObject(MemberSerialization.OptIn)]
     public class MacOSXCrashReport
     {
-        private readonly IParkitect _parkitect;
         private readonly ILogger _logger;
-        public MacOSXCrashReport(IParkitect parkitect, string action, Exception exception,ILogger logger)
+        private readonly IParkitect _parkitect;
+
+        public MacOSXCrashReport(IParkitect parkitect, string action, Exception exception, ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
             _logger = logger;
             _parkitect = parkitect;
-            this.Action = action;
-            this.Exception = exception;
+            Action = action;
+            Exception = exception;
         }
 
         [JsonProperty]
@@ -43,8 +42,10 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    var process = new Process {
-                        StartInfo = new ProcessStartInfo {
+                    var process = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
                             FileName = "w_vers",
                             Arguments = "-productVersion",
                             UseShellExecute = false,
@@ -55,8 +56,9 @@ namespace ParkitectNexus.Data.Reporting
 
                     string result = "";
                     process.Start();
-                    while (!process.StandardOutput.EndOfStream) {
-                            result += process.StandardOutput.ReadLine();
+                    while (!process.StandardOutput.EndOfStream)
+                    {
+                        result += process.StandardOutput.ReadLine();
                     }
                     return result;
                 }

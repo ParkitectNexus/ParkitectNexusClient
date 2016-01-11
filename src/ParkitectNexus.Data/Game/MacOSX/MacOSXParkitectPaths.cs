@@ -3,7 +3,7 @@
 
 using System;
 using System.IO;
-using ParkitectNexus.Data.Bases;
+using ParkitectNexus.Data.Game.Base;
 
 namespace ParkitectNexus.Data.Game.MacOSX
 {
@@ -21,13 +21,15 @@ namespace ParkitectNexus.Data.Game.MacOSX
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
-            path = !Parkitect.IsInstalled
-                ? null
-                : path == null
-                    ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        "Library/Application Support/Parkitect")
-                    : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        "Library/Application Support/Parkitect", path);
+            if (!Parkitect.IsInstalled)
+                return null;
+
+            var parkitectFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                "Library/Application Support/Parkitect");
+
+            path = path == null
+                    ? parkitectFolder
+                    : Path.Combine(parkitectFolder, path);
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);

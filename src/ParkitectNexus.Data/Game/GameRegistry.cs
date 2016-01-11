@@ -1,26 +1,24 @@
-﻿using ParkitectNexus.Data.Base;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Game.Windows;
 using StructureMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
 namespace ParkitectNexus.Data.Game
 {
     public class GameRegistry : Registry
     {
-        private IOperatingSystem _operatingSystem = new OperatingSystems();
 
-       public GameRegistry()
+        public GameRegistry()
         {
-
+            var operatingSystem = new OperatingSystem();
             For<IParkitectMod>().Use<ParkitectMod>();
-            For<IParkitectAsset>().Use<ParkitectAsset>();
-    
-            switch(_operatingSystem.GetOperatingSystem())
+            For<IParkitectDownloadedAsset>().Use<ParkitectDownloadedAsset>();
+
+            switch (operatingSystem.Detect())
             {
                 case SupportedOperatingSystem.Linux:
                     For<IParkitect>().Use<LinuxParkitect>();
@@ -31,6 +29,8 @@ namespace ParkitectNexus.Data.Game
                 case SupportedOperatingSystem.Windows:
                     For<IParkitect>().Use<WindowsParkitect>();
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException("operating system not supported");
             }
         }
     }

@@ -3,9 +3,9 @@
 
 using System.Diagnostics;
 using System.IO;
-using ParkitectNexus.Data.Base;
-using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Game.MacOSX
 {
@@ -14,10 +14,9 @@ namespace ParkitectNexus.Data.Game.MacOSX
     /// </summary>
     public class MacOSXParkitect : BaseParkitect
     {
-
-        public MacOSXParkitect(IRepositoryFactory repositoryFactory,ILogger logger) : base(repositoryFactory,logger)
+        public MacOSXParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger) : base(settingsRepositoryFactory, logger)
         {
-            Paths =  new MacOSXParkitectPaths(this);
+            Paths = new MacOSXParkitectPaths(this);
         }
 
         /// <summary>
@@ -44,9 +43,9 @@ namespace ParkitectNexus.Data.Game.MacOSX
         /// <returns>The launched process.</returns>
         public override Process Launch(string arguments = "-single-instance")
         {
-            _logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
 
-            _logger.WriteLine("Attempting to compile installed mods.");
+            Logger.WriteLine("Attempting to compile installed mods.");
             CompileActiveMods();
 
             return IsInstalled

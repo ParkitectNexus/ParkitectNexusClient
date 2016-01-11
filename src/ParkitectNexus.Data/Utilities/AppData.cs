@@ -10,7 +10,6 @@ namespace ParkitectNexus.Data.Utilities
     /// <summary>
     ///     Contains the path to the app data storage.
     /// </summary>
-    [Obsolete("Replaced with Path Resolver",false)]
     public static class AppData
     {
         /// <summary>

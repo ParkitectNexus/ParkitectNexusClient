@@ -15,13 +15,13 @@ public partial class MainWindow: Gtk.Window, IPresenter
     private readonly IParkitect _parkitect;
     private readonly IPresenterFactory _presenterFactory;
 
-    public MainWindow (IPresenterFactory presenterFactory,IParkitect parkitect,IPathResolver pathResolver, ILogger logger) : base (Gtk.WindowType.Toplevel)
+    public MainWindow (IPresenterFactory presenterFactory,IParkitect parkitect, ILogger logger) : base (Gtk.WindowType.Toplevel)
     {
         _parkitect = parkitect;
         _presenterFactory = presenterFactory;
 
         Build ();
-        logger.Open(System.IO.Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
+        logger.Open(System.IO.Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 
 
         presenterFactory.InstantiatePresenter<ParkitectInstallDialog> (this);
@@ -56,7 +56,7 @@ public partial class MainWindow: Gtk.Window, IPresenter
         Application.Quit ();
         a.RetVal = true;
     }
-        
+
     protected void LaunchParkitect (object sender, EventArgs e)
     {
         //launch parkitect and close the application
@@ -69,5 +69,5 @@ public partial class MainWindow: Gtk.Window, IPresenter
         aboutDialog.Run ();
         aboutDialog.Destroy ();
     }
-        
+
 }

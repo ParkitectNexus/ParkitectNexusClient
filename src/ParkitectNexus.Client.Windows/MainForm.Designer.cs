@@ -35,10 +35,11 @@ namespace ParkitectNexus.Client.Windows
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroToggle1 = new MetroFramework.Controls.MetroToggle();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.developmentLabel = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
-            //
+            // 
             // metroTabControl
-            //
+            // 
             this.metroTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl.Location = new System.Drawing.Point(20, 70);
             this.metroTabControl.Name = "metroTabControl";
@@ -46,18 +47,18 @@ namespace ParkitectNexus.Client.Windows
             this.metroTabControl.TabIndex = 0;
             this.metroTabControl.UseSelectable = true;
             this.metroTabControl.SelectedIndexChanged += new System.EventHandler(this.metroTabControl_SelectedIndexChanged);
-            //
+            // 
             // metroLabel2
-            //
+            // 
             this.metroLabel2.AutoSize = true;
             this.metroLabel2.Location = new System.Drawing.Point(23, 85);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(53, 19);
             this.metroLabel2.TabIndex = 4;
             this.metroLabel2.Text = "Enabed";
-            //
+            // 
             // metroToggle1
-            //
+            // 
             this.metroToggle1.AutoSize = true;
             this.metroToggle1.Location = new System.Drawing.Point(132, 86);
             this.metroToggle1.Name = "metroToggle1";
@@ -65,9 +66,9 @@ namespace ParkitectNexus.Client.Windows
             this.metroToggle1.TabIndex = 3;
             this.metroToggle1.Text = "Off";
             this.metroToggle1.UseSelectable = true;
-            //
+            // 
             // metroLabel1
-            //
+            // 
             this.metroLabel1.AutoSize = true;
             this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Regular;
@@ -76,15 +77,29 @@ namespace ParkitectNexus.Client.Windows
             this.metroLabel1.Size = new System.Drawing.Size(113, 25);
             this.metroLabel1.TabIndex = 2;
             this.metroLabel1.Text = "Coaster Cam";
-            //
+            // 
+            // developmentLabel
+            // 
+            this.developmentLabel.AutoSize = true;
+            this.developmentLabel.Enabled = false;
+            this.developmentLabel.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.developmentLabel.Location = new System.Drawing.Point(486, 15);
+            this.developmentLabel.Name = "developmentLabel";
+            this.developmentLabel.Size = new System.Drawing.Size(152, 19);
+            this.developmentLabel.Style = MetroFramework.MetroColorStyle.Red;
+            this.developmentLabel.TabIndex = 1;
+            this.developmentLabel.Text = "DEVELOPMENT BUILD";
+            this.developmentLabel.UseStyleColors = true;
+            // 
             // MainForm
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackImage = global::ParkitectNexus.Client.Windows.Properties.Resources.parkitectnexus_logo_full;
             this.BackImagePadding = new System.Windows.Forms.Padding(20, 15, 5, 5);
             this.BackMaxSize = 100;
             this.ClientSize = new System.Drawing.Size(722, 448);
+            this.Controls.Add(this.developmentLabel);
             this.Controls.Add(this.metroTabControl);
             this.DisplayHeader = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -98,6 +113,7 @@ namespace ParkitectNexus.Client.Windows
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Right;
             this.Theme = MetroFramework.MetroThemeStyle.Default;
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -107,6 +123,7 @@ namespace ParkitectNexus.Client.Windows
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroToggle metroToggle1;
+        private MetroFramework.Controls.MetroLabel developmentLabel;
     }
 }
 

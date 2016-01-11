@@ -62,8 +62,8 @@ namespace ParkitectNexus.Data.Game
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.
         /// </summary>
-        /// <param name="asset">The asset.</param>
+        /// <param name="downloadedAsset">The asset.</param>
         /// <returns>A task which performs the requested action.</returns>
-        Task StoreAsset(IParkitectAsset asset);
+        Task StoreAsset(IParkitectDownloadedAsset downloadedAsset);
     }
 }

@@ -3,32 +3,38 @@
 
 using System;
 using System.IO;
-using System.Threading;
 
 namespace ParkitectNexus.Data.Utilities
 {
     /// <summary>
-    ///     Logging utility.
+    ///     Represents a logger streaming to a file.
     /// </summary>
     public class Logger : ILogger
     {
         private StreamWriter _streamWriter;
-        private string _loggingPath;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Logger" /> class.
+        /// </summary>
+        public Logger()
+        {
+            MinimumLogLevel = LogLevel.Info;
+        }
 
         /// <summary>
         ///     Gets or sets the minimum log level.
         /// </summary>
-        public LogLevel MinimumLogLevel { get; set; } = LogLevel.Debug;
+        public LogLevel MinimumLogLevel { get; set; }
 
         /// <summary>
         ///     Gets the logging path.
         /// </summary>
-        public string LoggingPath { get  { return _loggingPath;}  }
+        public string LoggingPath { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating whether this instance is opened.
         /// </summary>
-        public bool IsOpened {  get{return _streamWriter != null;} }
+        public bool IsOpened => _streamWriter != null;
 
         /// <summary>
         ///     Opens the logging stream at the specified path.
@@ -39,17 +45,17 @@ namespace ParkitectNexus.Data.Utilities
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (IsOpened) Close();
 
-            var overwrite = File.Exists(path) && new FileInfo(path).Length > 10 * 1024;
-            
+            var overwrite = File.Exists(path) && new FileInfo(path).Length > 10*1024;
+
             try
             {
-                _loggingPath = path;
+                LoggingPath = path;
                 _streamWriter = overwrite ? new StreamWriter(File.Open(path, FileMode.Create)) : File.AppendText(path);
                 _streamWriter.AutoFlush = true;
             }
             catch
             {
-                _loggingPath = null;
+                LoggingPath = null;
                 _streamWriter = null;
             }
         }
@@ -61,7 +67,7 @@ namespace ParkitectNexus.Data.Utilities
         {
             if (IsOpened)
             {
-                _loggingPath = null;
+                LoggingPath = null;
                 _streamWriter.Flush();
                 _streamWriter.Dispose();
                 _streamWriter = null;

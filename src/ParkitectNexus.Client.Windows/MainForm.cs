@@ -2,16 +2,13 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.IO;
 using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Client.Windows.TabPages;
-using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Game.Windows;
-using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
-using System.IO;
 
 namespace ParkitectNexus.Client.Windows
 {
@@ -19,16 +16,21 @@ namespace ParkitectNexus.Client.Windows
     {
         private SliderPanel _currentPanel;
 
-        public MainForm(IPresenterFactory presenterFactory, ILogger logger, IPathResolver pathResolver)
+        public MainForm(IPresenterFactory presenterFactory, ILogger logger)
         {
-            logger.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
+            logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 
             InitializeComponent();
 
-            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>() );
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<ModsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<BlueprintsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<SavegamesTabPage>());
+
+#if DEBUG
+            Text += " (DEVELOPMENT BUILD)";
+            developmentLabel.Enabled = true;
+#endif
         }
 
         public void SpawnSliderPanel(SliderPanel panel)

@@ -18,18 +18,26 @@ namespace ParkitectNexus.Data.Web
     /// </summary>
     public class ParkitectOnlineAssetRepository : IParkitectOnlineAssetRepository
     {
-        private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly IGitHubClient _gitClient;
-        private IParkitectNexusWebFactory _nexusWebFactory;
-        private ILogger _logger;
+        private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
+        private readonly ILogger _logger;
+        private readonly IParkitectNexusWebFactory _nexusWebFactory;
+
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository" /> class.
+        ///     Initializes a new instance of the <see cref="ParkitectOnlineAssetRepository"/> class.
         /// </summary>
+        /// <param name="gitClient">The git client.</param>
         /// <param name="parkitectNexusWebsite">The parkitect nexus website.</param>
-        /// <exception cref="ArgumentNullException">Thrown if parkitectNexusWebsite is null.</exception>
-        public ParkitectOnlineAssetRepository(IGitHubClient gitClient,IParkitectNexusWebsite parkitectNexusWebsite, IParkitectNexusWebFactory nexusWebFactory,ILogger logger)
+        /// <param name="nexusWebFactory">The nexus web factory.</param>
+        /// <param name="logger">The logger.</param>
+        /// <exception cref="ArgumentNullException">gitClient, parkitectNexusWebsite, nexusWebFactory or logger is null.</exception>
+        public ParkitectOnlineAssetRepository(IGitHubClient gitClient, IParkitectNexusWebsite parkitectNexusWebsite,
+            IParkitectNexusWebFactory nexusWebFactory, ILogger logger)
         {
+            if (gitClient == null) throw new ArgumentNullException(nameof(gitClient));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
+            if (nexusWebFactory == null) throw new ArgumentNullException(nameof(nexusWebFactory));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
             _parkitectNexusWebsite = parkitectNexusWebsite;
             _nexusWebFactory = nexusWebFactory;
             _gitClient = gitClient;
@@ -65,7 +73,7 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>An instance which performs the requested task.</returns>
-        public async Task<IParkitectAsset> DownloadFile(IParkitectNexusUrl url)
+        public async Task<IParkitectDownloadedAsset> DownloadFile(IParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
 
@@ -73,7 +81,7 @@ namespace ParkitectNexus.Data.Web
             var downloadInfo = await ResolveDownloadInfo(url);
 
             // Create a web client which will download the file.
-            using (var webClient = _nexusWebFactory.NexusClient())
+            using (var webClient = _nexusWebFactory.CreateWebClient())
             {
                 // Receive the content of the file.
                 using (var stream = await webClient.OpenReadTaskAsync(downloadInfo.Url))
@@ -117,7 +125,7 @@ namespace ParkitectNexus.Data.Web
                         throw new Exception("unexpected end of stream");
 
                     // Create an instance of ParkitectAsset with the received content and data.
-                    return new ParkitectAsset(fileName, downloadInfo, url.AssetType, memoryStream);
+                    return new ParkitectDownloadedAsset(fileName, downloadInfo, url.AssetType, memoryStream);
                 }
             }
         }
@@ -146,7 +154,7 @@ namespace ParkitectNexus.Data.Web
             }
         }
 
-        protected virtual async Task<RepositoryTag> GetLatestModTag(string mod,IGitHubClient client)
+        protected virtual async Task<RepositoryTag> GetLatestModTag(string mod, IGitHubClient client)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             var p = mod.Split('/');

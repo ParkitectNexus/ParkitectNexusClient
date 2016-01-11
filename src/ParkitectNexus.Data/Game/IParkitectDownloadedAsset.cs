@@ -10,7 +10,7 @@ namespace ParkitectNexus.Data.Game
     /// <summary>
     ///     Provides the functionality of a Parkitect asset.
     /// </summary>
-    public interface IParkitectAsset : IDisposable
+    public interface IParkitectDownloadedAsset : IDisposable
     {
         /// <summary>
         ///     Gets the name of the file.
