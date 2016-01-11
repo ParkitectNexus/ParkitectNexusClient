@@ -1,6 +1,6 @@
 ﻿using System;
-using ParkitectNexus.Data.Bases;
 using System.IO;
+using ParkitectNexus.Data.Game.Base;
 
 namespace ParkitectNexus.Data
 {
@@ -8,7 +8,7 @@ namespace ParkitectNexus.Data
     {
         public LinuxParkitectPath(LinuxParkitect parkitect) : base(parkitect)
         {
-            
+
         }
 
         public override string Data => GetPathInGameFolder("Parkitect_Data");

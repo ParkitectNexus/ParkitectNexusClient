@@ -1,10 +1,10 @@
 ﻿using System;
-using ParkitectNexus.Data.Base;
 using ParkitectNexus.Data.Game;
 using System.Diagnostics;
 using ParkitectNexus.Data.Utilities;
 using System.Linq;
 using System.IO;
+using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
 
 namespace ParkitectNexus.Data
@@ -56,7 +56,7 @@ namespace ParkitectNexus.Data
             {
                 _logger.WriteLine(
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
-                
+
                 return running;
             }
 
@@ -74,7 +74,7 @@ namespace ParkitectNexus.Data
 
         protected override bool IsValidInstallationPath(string path)
         {
-            
+
             // Path must exist and contain Parkitect.exe.
             return !string.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "Parkitect.x86_64"));
         }

@@ -3,9 +3,8 @@
 
 using System;
 using System.IO;
-using ParkitectNexus.Data.Game;
 
-namespace ParkitectNexus.Data.Bases
+namespace ParkitectNexus.Data.Game.Base
 {
     public abstract class BaseParkitectPaths : IParkitectPaths
     {

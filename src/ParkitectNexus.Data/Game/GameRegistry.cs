@@ -1,12 +1,6 @@
-﻿using ParkitectNexus.Data.Base;
-using ParkitectNexus.Data.Game.MacOSX;
+﻿using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Game.Windows;
 using StructureMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data.Game
 {

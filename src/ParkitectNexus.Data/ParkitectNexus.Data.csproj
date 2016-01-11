@@ -61,8 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bases\BaseParkitect.cs" />
-    <Compile Include="Bases\BaseParkitectPaths.cs" />
+    <Compile Include="Game\Base\BaseParkitect.cs" />
+    <Compile Include="Game\Base\BaseParkitectPaths.cs" />
     <Compile Include="Game\GameRegistry.cs" />
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
     <Compile Include="Game\Linux\LinuxParkitectPath.cs" />
@@ -128,7 +128,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

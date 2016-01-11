@@ -10,11 +10,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Utilities;
 
-namespace ParkitectNexus.Data.Base
+namespace ParkitectNexus.Data.Game.Base
 {
     /// <summary>
     ///     Represents the Parkitect game.
