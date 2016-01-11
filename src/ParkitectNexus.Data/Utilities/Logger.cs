@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using System.Threading;
 
 namespace ParkitectNexus.Data.Utilities
 {
@@ -12,9 +11,8 @@ namespace ParkitectNexus.Data.Utilities
     /// </summary>
     public class Logger : ILogger
     {
-        private StreamWriter _streamWriter;
         private LogLevel _logLevel = LogLevel.Debug;
-        private string _loggingPath;
+        private StreamWriter _streamWriter;
 
         /// <summary>
         ///     Gets or sets the minimum log level.
@@ -24,12 +22,15 @@ namespace ParkitectNexus.Data.Utilities
         /// <summary>
         ///     Gets the logging path.
         /// </summary>
-        public string LoggingPath { get  { return _loggingPath;}  }
+        public string LoggingPath { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating whether this instance is opened.
         /// </summary>
-        public bool IsOpened {  get{return _streamWriter != null;} }
+        public bool IsOpened
+        {
+            get { return _streamWriter != null; }
+        }
 
         /// <summary>
         ///     Opens the logging stream at the specified path.
@@ -40,17 +41,17 @@ namespace ParkitectNexus.Data.Utilities
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (IsOpened) Close();
 
-            var overwrite = File.Exists(path) && new FileInfo(path).Length > 10 * 1024;
-            
+            var overwrite = File.Exists(path) && new FileInfo(path).Length > 10*1024;
+
             try
             {
-                _loggingPath = path;
+                LoggingPath = path;
                 _streamWriter = overwrite ? new StreamWriter(File.Open(path, FileMode.Create)) : File.AppendText(path);
                 _streamWriter.AutoFlush = true;
             }
             catch
             {
-                _loggingPath = null;
+                LoggingPath = null;
                 _streamWriter = null;
             }
         }
@@ -62,7 +63,7 @@ namespace ParkitectNexus.Data.Utilities
         {
             if (IsOpened)
             {
-                _loggingPath = null;
+                LoggingPath = null;
                 _streamWriter.Flush();
                 _streamWriter.Dispose();
                 _streamWriter = null;

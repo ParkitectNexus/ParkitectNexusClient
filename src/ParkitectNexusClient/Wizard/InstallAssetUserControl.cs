@@ -4,7 +4,6 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -13,17 +12,18 @@ namespace ParkitectNexus.Client.Wizard
 {
     internal partial class InstallAssetUserControl : BaseWizardUserControl
     {
+        private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusUrl _parkitectNexusUrl;
         private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
-        private readonly ILogger _logger;
         private readonly BaseWizardUserControl _returnControl;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
 
         public InstallAssetUserControl(IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ILogger logger, IParkitectNexusUrl parkitectNexusUrl,
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ILogger logger,
+            IParkitectNexusUrl parkitectNexusUrl,
             BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));

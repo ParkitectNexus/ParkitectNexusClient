@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 
 namespace ParkitectNexus.Data.Utilities
 {
@@ -20,6 +19,5 @@ namespace ParkitectNexus.Data.Utilities
 
         void WriteException(Exception exception);
         void WriteException(Exception exception, LogLevel logLevel);
-
     }
 }

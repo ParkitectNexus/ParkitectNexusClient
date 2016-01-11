@@ -1,4 +1,10 @@
-﻿using CommandLine;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
+using System.IO;
+using System.Windows.Forms;
+using CommandLine;
 using ParkitectNexus.Client.Settings;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
@@ -7,14 +13,6 @@ using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Client
@@ -23,7 +21,10 @@ namespace ParkitectNexus.Client
     {
         private readonly ILogger _logger;
 
-        public Client(string[] args, ICrashReporterFactory reportingFactory, IParkitect parkitect,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite, IOperatingSystem operatingSystem,IRepositoryFactory repositoryFactory,IPathResolver pathResolver, ILogger logger)
+        public Client(string[] args, ICrashReporterFactory reportingFactory, IParkitect parkitect,
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite,
+            IOperatingSystem operatingSystem, IRepositoryFactory repositoryFactory, IPathResolver pathResolver,
+            ILogger logger)
         {
             _logger = logger;
             var options = new CommandLineOptions();
@@ -86,7 +87,8 @@ namespace ParkitectNexus.Client
                 settings.Save();
 
                 var form = new WizardForm();
-                form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository, reportingFactory, _logger));
+                form.Attach(new MenuUserControl(parkitect, parkitectNexusWebsite, parkitectOnlineAssetRepository,
+                    reportingFactory, _logger));
                 Application.Run(form);
             }
             catch (Exception e)
@@ -105,6 +107,7 @@ namespace ParkitectNexus.Client
 
             _logger.Close();
         }
+
         private static bool EnsureParkitectInstalled(IParkitect parkitect, CommandLineOptions options)
         {
             // Detect Parkitect. If it could not be found ask the user to locate it.
@@ -169,7 +172,8 @@ namespace ParkitectNexus.Client
 
             // Run the download process in an installer form, for a nice visible process.
             var form = new WizardForm();
-            form.Attach(new InstallAssetUserControl(parkitect, parkitectOnlineAssetRepository, _logger, parkitectNexusUrl, null));
+            form.Attach(new InstallAssetUserControl(parkitect, parkitectOnlineAssetRepository, _logger,
+                parkitectNexusUrl, null));
             Application.Run(form);
         }
 

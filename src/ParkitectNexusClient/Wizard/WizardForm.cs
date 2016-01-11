@@ -42,7 +42,8 @@ namespace ParkitectNexus.Client.Wizard
             if (MessageBox.Show(this, "Maintaining this client and adding new features takes a lot of time.\n" +
                                       "If you appreciate our work, please consider sending a donation our way!\n" +
                                       "All donations will be used for further development of the ParkitectNexus Client and the website.\n" +
-                                      "\nSelect Yes to visit PayPal and send a donation.", "ParkitectNexus Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                      "\nSelect Yes to visit PayPal and send a donation.", "ParkitectNexus Client",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Process.Start("https://paypal.me/ikkentim");
             }

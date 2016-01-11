@@ -1,10 +1,11 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
-using ParkitectNexus.Data;
-using ParkitectNexus.Data.Presenter;
 using System;
 using System.Windows.Forms;
+using ParkitectNexus.Data;
+using ParkitectNexus.Data.Presenter;
+using StructureMap;
 
 namespace ParkitectNexus.Client.Windows
 {
@@ -20,7 +21,7 @@ namespace ParkitectNexus.Client.Windows
             Application.SetCompatibleTextRenderingDefault(false);
 
             //configure map
-            StructureMap.Registry registry = ObjectFactory.ConfigureStructureMap();
+            Registry registry = ObjectFactory.ConfigureStructureMap();
             registry.IncludeRegistry(new PresenterRegistry());
             ObjectFactory.SetUpContainer(registry);
 

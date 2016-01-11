@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 
 namespace ParkitectNexus.Data.Settings
 {
     public interface IRepository<T> : IDisposable
     {
+        T Model { get; }
         void Load();
         void Save();
-        T Model { get; }
     }
 }

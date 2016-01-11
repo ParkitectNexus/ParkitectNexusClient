@@ -20,13 +20,20 @@ namespace ParkitectNexus.Data.Game.Base
     /// </summary>
     public abstract class BaseParkitect : IParkitect
     {
-        protected IRepositoryFactory _repositoryFactory;
         protected ILogger _logger;
-        public BaseParkitect(IRepositoryFactory repositoryFactory,ILogger logger)
+        protected IRepositoryFactory _repositoryFactory;
+
+        public BaseParkitect(IRepositoryFactory repositoryFactory, ILogger logger)
         {
-            this._logger = logger;
-            this._repositoryFactory = repositoryFactory;
+            _logger = logger;
+            _repositoryFactory = repositoryFactory;
         }
+
+        /// <summary>
+        ///     Gets a collection of enabled and development mods.
+        /// </summary>
+        public virtual IEnumerable<IParkitectMod> ActiveMods
+            => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
 
         /// <summary>
         ///     Gets or sets the installation path.
@@ -87,7 +94,7 @@ namespace ParkitectNexus.Data.Game.Base
                         Directory.GetDirectories(Paths.Mods).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
                 {
                     // Attempt to deserialize the mod.json file.
-                    var mod = new ParkitectMod(this,_logger);
+                    var mod = new ParkitectMod(this, _logger);
                     try
                     {
                         JsonConvert.PopulateObject(File.ReadAllText(Path.Combine(path, "mod.json")), mod);
@@ -104,12 +111,6 @@ namespace ParkitectNexus.Data.Game.Base
                 }
             }
         }
-
-        /// <summary>
-        ///     Gets a collection of enabled and development mods.
-        /// </summary>
-        public virtual IEnumerable<IParkitectMod> ActiveMods
-                    => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
 
         /// <summary>
         ///     Sets the installation path if the specified path is a valid installation path.
@@ -165,7 +166,8 @@ namespace ParkitectNexus.Data.Game.Base
                 case ParkitectAssetType.Blueprint:
                 case ParkitectAssetType.Savegame:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
-                var storagePath = Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
+                    var storagePath =
+                        Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
                     var assetPath = Path.Combine(storagePath, asset.FileName);
 
                     Directory.CreateDirectory(storagePath);
@@ -237,7 +239,7 @@ namespace ParkitectNexus.Data.Game.Base
                         using (var streamReader = new StreamReader(modJson.Open()))
                         {
                             var json = await streamReader.ReadToEndAsync();
-                            var mod = new ParkitectMod(this,_logger);
+                            var mod = new ParkitectMod(this, _logger);
                             JsonConvert.PopulateObject(json, mod);
 
                             _logger.WriteLine($"mod.json was deserialized to mod object '{mod}'.");

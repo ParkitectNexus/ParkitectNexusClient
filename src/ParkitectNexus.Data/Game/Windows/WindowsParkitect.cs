@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ParkitectNexus.Data.Game.Base;
-using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Game.Windows
 {
@@ -15,8 +15,7 @@ namespace ParkitectNexus.Data.Game.Windows
     /// </summary>
     public class WindowsParkitect : BaseParkitect
     {
-
-        public WindowsParkitect(IRepositoryFactory repositoryFactory,ILogger logger) : base(repositoryFactory,logger)
+        public WindowsParkitect(IRepositoryFactory repositoryFactory, ILogger logger) : base(repositoryFactory, logger)
         {
             Paths = new WindowsParkitectPaths(this);
         }
@@ -69,13 +68,13 @@ namespace ParkitectNexus.Data.Game.Windows
             // Start the game process.
             return !IsInstalled
                 ? null
-                    : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
+                : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
                 {
                     WorkingDirectory = InstallationPath,
                     Arguments = arguments
                 });
         }
-        
+
         protected override bool IsValidInstallationPath(string path)
         {
             // Path must exist and contain Parkitect.exe.

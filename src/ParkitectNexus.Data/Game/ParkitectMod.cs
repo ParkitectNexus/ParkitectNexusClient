@@ -36,12 +36,12 @@ namespace ParkitectNexus.Data.Game
             "Microsoft.CSharp"
         };
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        public ParkitectMod(IParkitect parkitect,ILogger logger)
+        public ParkitectMod(IParkitect parkitect, ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             _logger = logger;
@@ -77,9 +77,9 @@ namespace ParkitectNexus.Data.Game
             if (!IsInstalled) throw new Exception("mod not installed");
 
             _logger.WriteLine($"Deleting mod '{this}'.");
-            
+
             Directory.Delete(InstallationPath, true);
-            
+
             InstallationPath = null;
         }
 
@@ -191,7 +191,6 @@ namespace ParkitectNexus.Data.Game
                         }
                         else
                         {
-
                             logFile.Log($"IGNORING assembly reference `{name}`");
                             _logger.WriteLine($"IGNORING assembly reference `{name}`");
                         }
@@ -201,11 +200,12 @@ namespace ParkitectNexus.Data.Game
                     logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     _logger.WriteLine($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                     sourceFiles.AddRange(
-                        unresolvedSourceFiles.Select(file => {
+                        unresolvedSourceFiles.Select(file =>
+                        {
                             var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
                             return Path.Combine(codeDir, repl);
                         }));
-                    
+
                     // Compile.
                     var csCodeProvider =
                         new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", CompilerVersion}});
@@ -258,7 +258,7 @@ namespace ParkitectNexus.Data.Game
 
             if (SystemAssemblies.Contains(assemblyName))
                 return dllName;
-            
+
             if (IgnoredAssemblies.Contains(assemblyName))
                 return null;
 
@@ -299,7 +299,7 @@ namespace ParkitectNexus.Data.Game
         ///     Gets the parkitect instance this mod was installed to.
         /// </summary>
         public IParkitect Parkitect { get; }
-        
+
         /// <summary>
         ///     Gets or sets the base directory.
         /// </summary>

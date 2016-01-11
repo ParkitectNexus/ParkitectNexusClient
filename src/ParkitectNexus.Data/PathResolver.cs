@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data
 {
@@ -12,13 +11,12 @@ namespace ParkitectNexus.Data
     {
         public string AppData()
         {
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Assembly.GetEntryAssembly().GetName().Name);
 
-                var path = System.IO.Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    Assembly.GetEntryAssembly().GetName().Name);
-
-                Directory.CreateDirectory(path);
-                return path;
+            Directory.CreateDirectory(path);
+            return path;
         }
 
         public bool IsParkitectInstalled()

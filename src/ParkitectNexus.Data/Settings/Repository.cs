@@ -1,50 +1,41 @@
-﻿
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
 
-using ParkitectNexus.Data.Settings;
-using System.IO;
 using System;
+using System.IO;
 using Newtonsoft.Json;
-using StructureMap.TypeRules;
-using System.Collections.Generic;
 
 namespace ParkitectNexus.Data.Settings
 {
     public class Repository<T> : IRepository<T>
     {
         private readonly string _path;
-        private IPathResolver _pathResolver;
-        private T _model;
-
-        public T Model
-        {
-            get
-            {
-                return _model;
-            }
-        }
 
         public Repository(IPathResolver pathResolver, T model)
         {
-            _model = model;
-            _pathResolver = pathResolver;
-            _path = Path.Combine(pathResolver.AppData(), _model.GetType().Name + ".json");
+            if (pathResolver == null) throw new ArgumentNullException(nameof(pathResolver));
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            Model = model;
+            _path = Path.Combine(pathResolver.AppData(), Model.GetType().Name + ".json");
             Load();
         }
 
+        public T Model { get; }
+
         public void Dispose()
         {
-            this.Save();
+            Save();
         }
 
         public void Load()
         {
             if (File.Exists(_path))
-                JsonConvert.PopulateObject(File.ReadAllText(_path), _model);
+                JsonConvert.PopulateObject(File.ReadAllText(_path), Model);
         }
 
         public void Save()
         {
-            File.WriteAllText(_path, JsonConvert.SerializeObject(_model));
+            File.WriteAllText(_path, JsonConvert.SerializeObject(Model));
         }
     }
 }

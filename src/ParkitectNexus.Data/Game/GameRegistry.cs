@@ -1,4 +1,7 @@
-﻿using ParkitectNexus.Data.Game.MacOSX;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Game.Windows;
 using StructureMap;
 
@@ -6,15 +9,14 @@ namespace ParkitectNexus.Data.Game
 {
     public class GameRegistry : Registry
     {
-        private IOperatingSystem _operatingSystem = new OperatingSystems();
+        private readonly IOperatingSystem _operatingSystem = new OperatingSystems();
 
-       public GameRegistry()
+        public GameRegistry()
         {
-
             For<IParkitectMod>().Use<ParkitectMod>();
             For<IParkitectAsset>().Use<ParkitectAsset>();
 
-            switch(_operatingSystem.GetOperatingSystem())
+            switch (_operatingSystem.GetOperatingSystem())
             {
                 case SupportedOperatingSystem.Linux:
                     For<IParkitect>().Use<LinuxParkitect>();

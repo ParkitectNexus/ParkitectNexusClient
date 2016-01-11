@@ -4,11 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
 using Newtonsoft.Json;
-using ParkitectNexus.Client.Properties;
-using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Client;
@@ -98,7 +94,7 @@ namespace ParkitectNexus.Client
                 Directory.Move(directory, target);
             }
         }
-        
+
         public static void MoveFolder(string sourceFolder, string destFolder)
         {
             if (!Directory.Exists(destFolder))
@@ -109,7 +105,7 @@ namespace ParkitectNexus.Client
                 string name = Path.GetFileName(file);
                 string dest = Path.Combine(destFolder, name);
 
-                if(!File.Exists(dest))
+                if (!File.Exists(dest))
                     File.Copy(file, dest);
             }
             string[] folders = Directory.GetDirectories(sourceFolder);
@@ -118,11 +114,11 @@ namespace ParkitectNexus.Client
                 string name = Path.GetFileName(folder);
                 string dest = Path.Combine(destFolder, name);
 
-                if(!Directory.Exists(dest))
+                if (!Directory.Exists(dest))
                     MoveFolder(folder, dest);
             }
         }
-        
+
         private static void MigrateModsPreAlpha5ToPreAlpha6(IParkitect parkitect)
         {
             try

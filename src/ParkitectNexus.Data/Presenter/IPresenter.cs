@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
 
 namespace ParkitectNexus.Data.Presenter
 {
-    public interface IPresenter{}
+    public interface IPresenter
+    {
+    }
 }

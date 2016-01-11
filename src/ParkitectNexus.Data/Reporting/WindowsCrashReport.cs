@@ -14,21 +14,21 @@ using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting
 {
-
     [JsonObject(MemberSerialization.OptIn)]
     public class WindowsCrashReport
     {
         private readonly IParkitect _parkitect;
-        private ILogger _logger;
-        public WindowsCrashReport(IParkitect parkitect, string action, Exception exception,ILogger logger)
+        private readonly ILogger _logger;
+
+        public WindowsCrashReport(IParkitect parkitect, string action, Exception exception, ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
             _logger = logger;
             _parkitect = parkitect;
-            this.Action = action;
-            this.Exception = exception;
+            Action = action;
+            Exception = exception;
         }
 
         [JsonProperty]
@@ -43,7 +43,7 @@ namespace ParkitectNexus.Data.Reporting
                 (from x in
                     new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get()
                         .OfType<ManagementObject>()
-            select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown (Windows)";
+                    select x.GetPropertyValue("Caption")).FirstOrDefault()?.ToString() ?? "Unknown (Windows)";
 
         [JsonProperty]
         public int ProcessBits => IntPtr.Size*8;

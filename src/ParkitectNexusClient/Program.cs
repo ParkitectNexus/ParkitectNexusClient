@@ -2,17 +2,8 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.IO;
-using System.Windows.Forms;
-using CommandLine;
-using ParkitectNexus.Client.Settings;
-using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
-using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Game.Windows;
-using ParkitectNexus.Data.Reporting;
-using ParkitectNexus.Data.Utilities;
-using ParkitectNexus.Data.Web;
+using StructureMap;
 
 namespace ParkitectNexus.Client
 {
@@ -27,16 +18,12 @@ namespace ParkitectNexus.Client
         [STAThread]
         private static void Main(string[] args)
         {
-
             //configure map
-            StructureMap.Registry registry = ObjectFactory.ConfigureStructureMap();
+            Registry registry = ObjectFactory.ConfigureStructureMap();
             registry.For<IClient>().Use<Client>();
             ObjectFactory.SetUpContainer(registry);
 
             ObjectFactory.Container.GetInstance<IClient>();
-            
         }
-
-       
     }
 }

@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    class ParkitectNexusWeb : IParkitectNexusWeb
+    internal class ParkitectNexusWeb : IParkitectNexusWeb
     {
-        private ParkitectNexusWebClient _webClient;
+        private readonly ParkitectNexusWebClient _webClient;
 
         public ParkitectNexusWeb(IOperatingSystem operatingSystem)
         {
@@ -19,10 +18,7 @@ namespace ParkitectNexus.Data.Web.Client
 
         public WebHeaderCollection ResponseHeaders
         {
-            get
-            {
-                return _webClient.ResponseHeaders;
-            }
+            get { return _webClient.ResponseHeaders; }
         }
 
         public void Dispose()
@@ -42,10 +38,10 @@ namespace ParkitectNexus.Data.Web.Client
 
         public Task<Stream> OpenReadTaskAsync(string url)
         {
-           return _webClient.OpenReadTaskAsync(url);
+            return _webClient.OpenReadTaskAsync(url);
         }
 
-        public void UploadString(string url,string data)
+        public void UploadString(string url, string data)
         {
             _webClient.UploadString(url, data);
         }
