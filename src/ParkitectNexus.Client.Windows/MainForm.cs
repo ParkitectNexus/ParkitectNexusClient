@@ -16,9 +16,9 @@ namespace ParkitectNexus.Client.Windows
     {
         private SliderPanel _currentPanel;
 
-        public MainForm(IPresenterFactory presenterFactory, ILogger logger, IPathResolver pathResolver)
+        public MainForm(IPresenterFactory presenterFactory, ILogger logger)
         {
-            logger.Open(Path.Combine(pathResolver.AppData(), "ParkitectNexusLauncher.log"));
+            logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 
             InitializeComponent();
 
