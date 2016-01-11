@@ -19,6 +19,10 @@ namespace ParkitectNexus.Client.Wizard
 
             // Set the client size to make the baner fit snugly.
             ClientSize = new Size(493, 360);
+
+#if DEBUG
+            Text += " (DEVELOPMENT BUILD)";
+#endif
         }
 
         /// <summary>

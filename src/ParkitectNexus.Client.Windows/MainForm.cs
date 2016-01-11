@@ -26,6 +26,11 @@ namespace ParkitectNexus.Client.Windows
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<ModsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<BlueprintsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<SavegamesTabPage>());
+
+#if DEBUG
+            Text += " (DEVELOPMENT BUILD)";
+            developmentLabel.Enabled = true;
+#endif
         }
 
         public void SpawnSliderPanel(SliderPanel panel)
