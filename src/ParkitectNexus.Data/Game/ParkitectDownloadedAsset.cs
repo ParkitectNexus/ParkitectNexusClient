@@ -10,17 +10,17 @@ namespace ParkitectNexus.Data.Game
     /// <summary>
     ///     Represents a Parkitect asset.
     /// </summary>
-    public class ParkitectAsset : IParkitectAsset
+    public class ParkitectDownloadedAsset : IParkitectDownloadedAsset
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ParkitectAsset" /> class.
+        ///     Initializes a new instance of the <see cref="ParkitectDownloadedAsset" /> class.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="downloadInfo">The download info.</param>
         /// <param name="type">The type.</param>
         /// <param name="stream">The stream.</param>
         /// <exception cref="ArgumentNullException">Thrown if fileName or stream is null.</exception>
-        public ParkitectAsset(string fileName, DownloadInfo downloadInfo, ParkitectAssetType type, Stream stream)
+        public ParkitectDownloadedAsset(string fileName, DownloadInfo downloadInfo, ParkitectAssetType type, Stream stream)
         {
             if (fileName == null) throw new ArgumentNullException(nameof(fileName));
             if (stream == null) throw new ArgumentNullException(nameof(stream));
@@ -64,9 +64,9 @@ namespace ParkitectNexus.Data.Game
         #endregion
 
         /// <summary>
-        ///     Finalizes an instance of the <see cref="ParkitectAsset" /> class.
+        ///     Finalizes an instance of the <see cref="ParkitectDownloadedAsset" /> class.
         /// </summary>
-        ~ParkitectAsset()
+        ~ParkitectDownloadedAsset()
         {
             Dispose(false);
         }

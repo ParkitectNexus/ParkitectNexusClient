@@ -23,6 +23,6 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>An instance which performs the requested task.</returns>
-        Task<IParkitectAsset> DownloadFile(IParkitectNexusUrl url);
+        Task<IParkitectDownloadedAsset> DownloadFile(IParkitectNexusUrl url);
     }
 }

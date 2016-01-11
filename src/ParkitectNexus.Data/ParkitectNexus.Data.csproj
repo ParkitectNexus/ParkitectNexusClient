@@ -70,7 +70,7 @@
     <Compile Include="Utilities\IOperatingSystem.cs" />
     <Compile Include="ObjectFactory.cs" />
     <Compile Include="Game\IParkitect.cs" />
-    <Compile Include="Game\IParkitectAsset.cs" />
+    <Compile Include="Game\IParkitectDownloadedAsset.cs" />
     <Compile Include="Game\IParkitectMod.cs" />
     <Compile Include="Presenter\IPresenter.cs" />
     <Compile Include="Presenter\IPresenterFactory.cs" />
@@ -101,7 +101,7 @@
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\LogLevel.cs" />
     <Compile Include="Game\Windows\WindowsParkitect.cs" />
-    <Compile Include="Game\ParkitectAsset.cs" />
+    <Compile Include="Game\ParkitectDownloadedAsset.cs" />
     <Compile Include="Game\ParkitectAssetInfoAttribute.cs" />
     <Compile Include="Game\ParkitectAssetType.cs" />
     <Compile Include="Game\ParkitectMod.cs" />

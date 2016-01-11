@@ -16,7 +16,7 @@ namespace ParkitectNexus.Data.Game
         {
             var operatingSystem = new OperatingSystem();
             For<IParkitectMod>().Use<ParkitectMod>();
-            For<IParkitectAsset>().Use<ParkitectAsset>();
+            For<IParkitectDownloadedAsset>().Use<ParkitectDownloadedAsset>();
 
             switch (operatingSystem.Detect())
             {

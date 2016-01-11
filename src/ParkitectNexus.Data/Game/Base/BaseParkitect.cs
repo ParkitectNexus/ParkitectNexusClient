@@ -144,31 +144,31 @@ namespace ParkitectNexus.Data.Game.Base
         /// <summary>
         ///     Stores the specified asset in the game's correct directory.
         /// </summary>
-        /// <param name="asset">The asset.</param>
+        /// <param name="downloadedAsset">The asset.</param>
         /// <returns>A task which performs the requested action.</returns>
-        public virtual async Task StoreAsset(IParkitectAsset asset)
+        public virtual async Task StoreAsset(IParkitectDownloadedAsset downloadedAsset)
         {
-            if (asset == null) throw new ArgumentNullException(nameof(asset));
+            if (downloadedAsset == null) throw new ArgumentNullException(nameof(downloadedAsset));
 
             if (!IsInstalled)
                 throw new Exception("parkitect is not installed");
 
-            Logger.WriteLine($"Storing asset {asset}.");
+            Logger.WriteLine($"Storing asset {downloadedAsset}.");
 
             // Gather information about the asset type.
-            var assetInfo = asset.Type.GetCustomAttribute<ParkitectAssetInfoAttribute>();
+            var assetInfo = downloadedAsset.Type.GetCustomAttribute<ParkitectAssetInfoAttribute>();
 
             if (assetInfo == null)
                 throw new Exception("invalid asset type");
 
-            switch (asset.Type)
+            switch (downloadedAsset.Type)
             {
                 case ParkitectAssetType.Blueprint:
                 case ParkitectAssetType.Savegame:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
                     var storagePath =
                         Paths.GetPathInSavesFolder(assetInfo.StorageFolder.Replace('\\', Path.DirectorySeparatorChar));
-                    var assetPath = Path.Combine(storagePath, asset.FileName);
+                    var assetPath = Path.Combine(storagePath, downloadedAsset.FileName);
 
                     Directory.CreateDirectory(storagePath);
 
@@ -182,8 +182,8 @@ namespace ParkitectNexus.Data.Game.Base
                         var md5 = MD5.Create();
 
                         // Compute hash of downloaded asset to match with installed hash.
-                        asset.Stream.Seek(0, SeekOrigin.Begin);
-                        var validHash = md5.ComputeHash(asset.Stream);
+                        downloadedAsset.Stream.Seek(0, SeekOrigin.Begin);
+                        var validHash = md5.ComputeHash(downloadedAsset.Stream);
 
                         if (validHash.SequenceEqual(md5.ComputeHash(File.OpenRead(assetPath))))
                         {
@@ -194,8 +194,8 @@ namespace ParkitectNexus.Data.Game.Base
                         Logger.WriteLine("Asset hashes mismatch, computing new file name.");
                         // Separate the filename and the extension.
                         var attempt = 1;
-                        var fileName = Path.GetFileNameWithoutExtension(asset.FileName);
-                        var fileExtension = Path.GetExtension(asset.FileName);
+                        var fileName = Path.GetFileNameWithoutExtension(downloadedAsset.FileName);
+                        var fileExtension = Path.GetExtension(downloadedAsset.FileName);
 
                         // Update the path to where the the asset should be stored by adding a number behind the name until an available filename has been found.
                         do
@@ -214,14 +214,14 @@ namespace ParkitectNexus.Data.Game.Base
                     // Write the stream to a file at the asset path.
                     using (var fileStream = File.Create(assetPath))
                     {
-                        asset.Stream.Seek(0, SeekOrigin.Begin);
-                        await asset.Stream.CopyToAsync(fileStream);
+                        downloadedAsset.Stream.Seek(0, SeekOrigin.Begin);
+                        await downloadedAsset.Stream.CopyToAsync(fileStream);
                     }
                     break;
                 case ParkitectAssetType.Mod:
 
                     Logger.WriteLine("Attempting to open mod stream.");
-                    using (var zip = new ZipArchive(asset.Stream, ZipArchiveMode.Read))
+                    using (var zip = new ZipArchive(downloadedAsset.Stream, ZipArchiveMode.Read))
                     {
                         // Compute name of main directory inside archive.
                         var mainFolder = zip.Entries.FirstOrDefault()?.FullName;
@@ -245,10 +245,10 @@ namespace ParkitectNexus.Data.Game.Base
                             Logger.WriteLine($"mod.json was deserialized to mod object '{mod}'.");
 
                             // Set default mod properties.
-                            mod.Tag = asset.DownloadInfo.Tag;
-                            mod.Repository = asset.DownloadInfo.Repository;
+                            mod.Tag = downloadedAsset.DownloadInfo.Tag;
+                            mod.Repository = downloadedAsset.DownloadInfo.Repository;
                             mod.InstallationPath = Path.Combine(Paths.Mods,
-                                asset.DownloadInfo.Repository.Replace('/', '@'));
+                                downloadedAsset.DownloadInfo.Repository.Replace('/', '@'));
                             mod.IsEnabled = true;
                             mod.IsDevelopment = false;
 

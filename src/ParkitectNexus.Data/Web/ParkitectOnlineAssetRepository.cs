@@ -73,7 +73,7 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>An instance which performs the requested task.</returns>
-        public async Task<IParkitectAsset> DownloadFile(IParkitectNexusUrl url)
+        public async Task<IParkitectDownloadedAsset> DownloadFile(IParkitectNexusUrl url)
         {
             if (url == null) throw new ArgumentNullException(nameof(url));
 
@@ -125,7 +125,7 @@ namespace ParkitectNexus.Data.Web
                         throw new Exception("unexpected end of stream");
 
                     // Create an instance of ParkitectAsset with the received content and data.
-                    return new ParkitectAsset(fileName, downloadInfo, url.AssetType, memoryStream);
+                    return new ParkitectDownloadedAsset(fileName, downloadInfo, url.AssetType, memoryStream);
                 }
             }
         }
