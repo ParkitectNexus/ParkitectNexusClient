@@ -3,7 +3,8 @@
 
 namespace ParkitectNexus.Client
 {
-    public interface IClient
+    public interface IApp
     {
+        void Run();
     }
 }

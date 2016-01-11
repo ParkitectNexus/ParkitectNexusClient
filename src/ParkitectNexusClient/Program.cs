@@ -2,8 +2,10 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Collections.Generic;
 using ParkitectNexus.Data;
 using StructureMap;
+using StructureMap.Pipeline;
 
 namespace ParkitectNexus.Client
 {
@@ -20,10 +22,12 @@ namespace ParkitectNexus.Client
         {
             //configure map
             Registry registry = ObjectFactory.ConfigureStructureMap();
-            registry.For<IClient>().Use<Client>();
+            registry.For<IApp>().Use<App>();
             ObjectFactory.SetUpContainer(registry);
 
-            ObjectFactory.Container.GetInstance<IClient>();
+            var app = ObjectFactory.Container.GetInstance<IApp>(
+                new ExplicitArguments(new Dictionary<string, object>() {["args"] = args}));
+            app.Run();
         }
     }
 }

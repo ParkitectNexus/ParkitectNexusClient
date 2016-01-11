@@ -13,7 +13,7 @@ namespace ParkitectNexus.Data
 {
     public static class ObjectFactory
     {
-        public static IContainer Container;
+        public static IContainer Container { get; private set; }
 
         public static Registry ConfigureStructureMap()
         {
@@ -30,8 +30,8 @@ namespace ParkitectNexus.Data
             registry.For<ILogger>().Use<Logger>().Singleton();
 
             //repository settings
-            registry.For(typeof (IRepository<>)).Singleton().Use(typeof (Repository<>));
-            registry.For<IRepositoryFactory>().Use<RepositoryFactory>();
+            registry.For(typeof (ISettingsRepository<>)).Singleton().Use(typeof (SettingsRepository<>));
+            registry.For<ISettingsRepositoryFactory>().Use<SettingsRepositoryFactory>();
 
             //used to send crash reports
             registry.For<ICrashReporterFactory>().Use<CrashReporterFactory>();
@@ -39,10 +39,12 @@ namespace ParkitectNexus.Data
             //operating system
             registry.For<IOperatingSystem>().Use<OperatingSystem>();
 
-            //path resolver
-            registry.For<IPathResolver>().Use<PathResolver>();
-
             return registry;
+        }
+
+        public static T GetInstance<T>()
+        {
+            return Container.GetInstance<T>();
         }
 
         public static void SetUpContainer(Registry registry)

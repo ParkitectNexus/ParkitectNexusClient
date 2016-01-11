@@ -5,7 +5,7 @@ using System;
 
 namespace ParkitectNexus.Data.Settings
 {
-    public interface IRepository<T> : IDisposable
+    public interface ISettingsRepository<T> : IDisposable
     {
         T Model { get; }
         void Load();

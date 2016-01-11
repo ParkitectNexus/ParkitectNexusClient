@@ -15,7 +15,7 @@ namespace ParkitectNexus.Data.Game.Windows
     /// </summary>
     public class WindowsParkitect : BaseParkitect
     {
-        public WindowsParkitect(IRepositoryFactory repositoryFactory, ILogger logger) : base(repositoryFactory, logger)
+        public WindowsParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger) : base(settingsRepositoryFactory, logger)
         {
             Paths = new WindowsParkitectPaths(this);
         }

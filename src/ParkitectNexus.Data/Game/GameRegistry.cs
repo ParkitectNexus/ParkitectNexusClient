@@ -4,7 +4,6 @@
 using System;
 using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Game.Windows;
-using ParkitectNexus.Data.Utilities;
 using StructureMap;
 using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
@@ -15,8 +14,8 @@ namespace ParkitectNexus.Data.Game
 
         public GameRegistry()
         {
-         var operatingSystem = new OperatingSystem();
-        For<IParkitectMod>().Use<ParkitectMod>();
+            var operatingSystem = new OperatingSystem();
+            For<IParkitectMod>().Use<ParkitectMod>();
             For<IParkitectAsset>().Use<ParkitectAsset>();
 
             switch (operatingSystem.Detect())

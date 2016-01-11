@@ -4,19 +4,19 @@
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Settings
 {
-    public class Repository<T> : IRepository<T>
+    public class SettingsRepository<T> : ISettingsRepository<T>
     {
         private readonly string _path;
 
-        public Repository(IPathResolver pathResolver, T model)
+        public SettingsRepository(T model)
         {
-            if (pathResolver == null) throw new ArgumentNullException(nameof(pathResolver));
             if (model == null) throw new ArgumentNullException(nameof(model));
             Model = model;
-            _path = Path.Combine(pathResolver.AppData(), Model.GetType().Name + ".json");
+            _path = Path.Combine(AppData.Path, Model.GetType().Name + ".json");
             Load();
         }
 

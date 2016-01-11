@@ -3,8 +3,8 @@
 
 namespace ParkitectNexus.Data.Settings
 {
-    public interface IRepositoryFactory
+    public interface ISettingsRepositoryFactory
     {
-        IRepository<T> Repository<T>();
+        ISettingsRepository<T> Repository<T>();
     }
 }

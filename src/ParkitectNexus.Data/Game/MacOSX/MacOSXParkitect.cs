@@ -14,7 +14,7 @@ namespace ParkitectNexus.Data.Game.MacOSX
     /// </summary>
     public class MacOSXParkitect : BaseParkitect
     {
-        public MacOSXParkitect(IRepositoryFactory repositoryFactory, ILogger logger) : base(repositoryFactory, logger)
+        public MacOSXParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger) : base(settingsRepositoryFactory, logger)
         {
             Paths = new MacOSXParkitectPaths(this);
         }

@@ -21,12 +21,12 @@ namespace ParkitectNexus.Data.Game.Base
     public abstract class BaseParkitect : IParkitect
     {
         protected ILogger Logger { get; }
-        protected IRepositoryFactory Factory { get; }
+        protected ISettingsRepositoryFactory Factory { get; }
 
-        protected BaseParkitect(IRepositoryFactory repositoryFactory, ILogger logger)
+        protected BaseParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger)
         {
             Logger = logger;
-            Factory = repositoryFactory;
+            Factory = settingsRepositoryFactory;
         }
 
         /// <summary>

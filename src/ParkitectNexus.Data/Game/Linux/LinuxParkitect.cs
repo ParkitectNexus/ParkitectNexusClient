@@ -13,7 +13,7 @@ namespace ParkitectNexus.Data
 {
     public class LinuxParkitect : BaseParkitect
     {
-        public LinuxParkitect(IRepositoryFactory repositoryFactory, ILogger logger) : base(repositoryFactory, logger)
+        public LinuxParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger) : base(settingsRepositoryFactory, logger)
         {
             Paths = new LinuxParkitectPath(this);
         }

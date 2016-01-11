@@ -25,7 +25,7 @@ namespace ParkitectNexus.Client.Windows
             registry.IncludeRegistry(new PresenterRegistry());
             ObjectFactory.SetUpContainer(registry);
 
-            var presenterFactory = ObjectFactory.Container.GetInstance<IPresenterFactory>();
+            var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
             Application.Run(presenterFactory.InstantiatePresenter<MainForm>());
         }
     }

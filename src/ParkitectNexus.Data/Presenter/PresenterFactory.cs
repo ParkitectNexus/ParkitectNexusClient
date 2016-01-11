@@ -7,7 +7,7 @@ namespace ParkitectNexus.Data.Presenter
     {
         public T InstantiatePresenter<T>()
         {
-            return ObjectFactory.Container.GetInstance<T>();
+            return ObjectFactory.GetInstance<T>();
         }
     }
 }

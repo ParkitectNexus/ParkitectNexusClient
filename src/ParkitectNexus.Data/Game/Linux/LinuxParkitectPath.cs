@@ -18,19 +18,11 @@ namespace ParkitectNexus.Data
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {
             if (!Parkitect.IsInstalled)
-                path = null;
-            else if (path == null)
-                path = Path.Combine(Parkitect.InstallationPath);
-            else
-                path = Path.Combine(Parkitect.InstallationPath, path);
+                return null;
 
-            /*path = !Parkitect.IsInstalled
-                ? null
-                : path == null
-                    ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        "Library/Application Support/Parkitect")
-                    : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        "Library/Application Support/Parkitect", path);*/
+            path = path == null
+                ? Parkitect.InstallationPath
+                : Path.Combine(Parkitect.InstallationPath, path);
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);

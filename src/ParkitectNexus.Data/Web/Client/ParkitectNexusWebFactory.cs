@@ -7,7 +7,7 @@ namespace ParkitectNexus.Data.Web.Client
     {
         public IParkitectNexusWebClient CreateWebClient()
         {
-            return ObjectFactory.Container.GetInstance<IParkitectNexusWebClient>();
+            return ObjectFactory.GetInstance<IParkitectNexusWebClient>();
         }
     }
 }
