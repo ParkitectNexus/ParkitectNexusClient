@@ -4,6 +4,8 @@ using ParkitectNexus.Data.Settings;
 using System.IO;
 using System;
 using Newtonsoft.Json;
+using StructureMap.TypeRules;
+using System.Collections.Generic;
 
 namespace ParkitectNexus.Data.Settings
 {
@@ -21,13 +23,11 @@ namespace ParkitectNexus.Data.Settings
             }
         }
 
-        public Repository(IPathResolver pathResolver)
+        public Repository(IPathResolver pathResolver, T model)
         {
-            
+            _model = model;
             _pathResolver = pathResolver;
-
-            _model = Activator.CreateInstance<T>();
-            _path = Path.Combine(pathResolver.AppData(),_model.GetType().Name + ".json");
+            _path = Path.Combine(pathResolver.AppData(), _model.GetType().Name + ".json");
             Load();
         }
 
