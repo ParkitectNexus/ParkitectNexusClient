@@ -42,7 +42,7 @@ namespace ParkitectNexus.Client
             File.Copy(sourcePath, targetPath, true);
         }
 
-        public static void InstallModLoader(IParkitect parkitect)
+        public static void InstallModLoader(IParkitect parkitect, ILogger logger)
         {
             try
             {
@@ -50,8 +50,8 @@ namespace ParkitectNexus.Client
             }
             catch (Exception e)
             {
-                Logger.WriteLine("Failed to install mod loader.", LogLevel.Warn);
-                Logger.WriteException(e, LogLevel.Warn);
+                logger.WriteLine("Failed to install mod loader.", LogLevel.Warn);
+                logger.WriteException(e, LogLevel.Warn);
             }
         }
     }

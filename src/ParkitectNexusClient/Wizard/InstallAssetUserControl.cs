@@ -14,23 +14,26 @@ namespace ParkitectNexus.Client.Wizard
     internal partial class InstallAssetUserControl : BaseWizardUserControl
     {
         private readonly IParkitect _parkitect;
-        private readonly ParkitectNexusUrl _parkitectNexusUrl;
+        private readonly IParkitectNexusUrl _parkitectNexusUrl;
         private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly ILogger _logger;
         private readonly BaseWizardUserControl _returnControl;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
 
         public InstallAssetUserControl(IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ParkitectNexusUrl parkitectNexusUrl,
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ILogger logger, IParkitectNexusUrl parkitectNexusUrl,
             BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectOnlineAssetRepository == null)
                 throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
             if (parkitectNexusUrl == null) throw new ArgumentNullException(nameof(parkitectNexusUrl));
             _parkitect = parkitect;
             _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _logger = logger;
             _parkitectNexusUrl = parkitectNexusUrl;
             _returnControl = returnControl;
 
@@ -67,8 +70,8 @@ namespace ParkitectNexus.Client.Wizard
             }
             catch (Exception e)
             {
-                Logger.WriteLine($"Failed to install {assetName}!");
-                Logger.WriteException(e);
+                _logger.WriteLine($"Failed to install {assetName}!");
+                _logger.WriteException(e);
 
                 // If the asset has failed to download, show some feedback to the user.
                 MessageBox.Show(this,
@@ -100,7 +103,7 @@ namespace ParkitectNexus.Client.Wizard
 
         private void downloadingTimer_Tick(object sender, EventArgs e)
         {
-            //Downloading... Effect. 
+            //Downloading... Effect.
 
             // Add or subtract dots.
             _dots += _dotsDirection;

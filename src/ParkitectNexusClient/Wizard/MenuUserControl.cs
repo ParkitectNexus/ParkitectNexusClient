@@ -19,14 +19,16 @@ namespace ParkitectNexus.Client.Wizard
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
         private readonly ICrashReporterFactory _crashReporting;
+        private readonly ILogger _logger;
 
-        public MenuUserControl(IParkitect parkitect, IParkitectNexusWebsite parkitectNexusWebsite,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository,ICrashReporterFactory crashReporting)
+        public MenuUserControl(IParkitect parkitect, IParkitectNexusWebsite parkitectNexusWebsite,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository,ICrashReporterFactory crashReporting, ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             if (parkitectOnlineAssetRepository == null)
                 throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
             _crashReporting = crashReporting;
+            _logger = logger;
             _parkitect = parkitect;
             _parkitectNexusWebsite = parkitectNexusWebsite;
             _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
@@ -47,7 +49,7 @@ namespace ParkitectNexus.Client.Wizard
 
                     return true;
                 case (Keys.Control | Keys.Alt | Keys.D):
-                    Logger.Close();
+                    _logger.Close();
                     WizardForm.Close();
 
                     var path = Assembly.GetEntryAssembly().Location;
@@ -63,7 +65,7 @@ namespace ParkitectNexus.Client.Wizard
 
         private void manageModsButton_Click(object sender, EventArgs e)
         {
-            WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _parkitectOnlineAssetRepository));
+            WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _parkitectOnlineAssetRepository, _logger));
         }
 
         private void launchParkitectButton_Click(object sender, EventArgs e)

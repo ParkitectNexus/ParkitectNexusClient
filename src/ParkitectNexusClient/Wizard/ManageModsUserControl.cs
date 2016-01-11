@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.Wizard
@@ -17,20 +18,23 @@ namespace ParkitectNexus.Client.Wizard
         private readonly MenuUserControl _menu;
         private readonly IParkitect _parkitect;
         private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly ILogger _logger;
 
         private bool _disableChecking = true;
 
         public ManageModsUserControl(MenuUserControl menu, IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
+            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ILogger logger)
         {
             if (menu == null) throw new ArgumentNullException(nameof(menu));
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectOnlineAssetRepository == null)
                 throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
 
             _menu = menu;
             _parkitect = parkitect;
             _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _logger = logger;
 
             InitializeComponent();
         }
@@ -131,7 +135,7 @@ namespace ParkitectNexus.Client.Wizard
                 }
                 else
                 {
-                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, url, this));
+                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger, url, this));
                 }
             }
             catch (Exception)
