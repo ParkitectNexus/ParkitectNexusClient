@@ -8,6 +8,7 @@ using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using StructureMap;
+using ParkitectNexus.Data.AssetMagic;
 
 namespace ParkitectNexus.Data
 {
@@ -22,6 +23,7 @@ namespace ParkitectNexus.Data
             registry.IncludeRegistry<WebRegistry>();
             registry.IncludeRegistry<GameRegistry>();
             registry.IncludeRegistry<PresenterRegistry>();
+            registry.IncludeRegistry<AssetMagicRegistry> ();
 
             //create operating system
             registry.For<IOperatingSystem>().Use<OperatingSystem>();

@@ -41,6 +41,10 @@
       <HintPath>..\..\packages\Octokit.0.17.0\lib\net45\Octokit.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.1.1\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -51,6 +55,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +66,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetMagic\AssetMagicFactory.cs" />
+    <Compile Include="AssetMagic\AssetMagicRegistry.cs" />
+    <Compile Include="AssetMagic\BlueprintContainer.cs" />
+    <Compile Include="AssetMagic\IAssetMagicFactory.cs" />
     <Compile Include="Game\Base\BaseParkitect.cs" />
     <Compile Include="Game\Base\BaseParkitectPaths.cs" />
     <Compile Include="Game\GameRegistry.cs" />
