@@ -21,7 +21,8 @@ namespace ParkitectNexus.Data.Game.Base
         public abstract string DataManaged { get; }
         public virtual string Mods => GetPathInSavesFolder("pnmods", true);
         public virtual string NativeMods => GetPathInSavesFolder("Mods", true);
-
+        public virtual string Blueprints => GetPathInSavesFolder("Saves\\Blueprints", true);
+        public virtual string Savegames => GetPathInSavesFolder("Saves\\Savegames", true);
         public string GetPathInSavesFolder(string path)
         {
             return GetPathInSavesFolder(path, false);

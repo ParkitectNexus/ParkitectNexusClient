@@ -4,6 +4,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -345,6 +346,15 @@ namespace ParkitectNexus.Data.Game
         /// </summary>
         [JsonProperty]
         public string Name { get; set; }
+
+        public Image Thumbnail { get; } = null;
+
+        public Stream Open()
+        {
+            throw new NotImplementedException("Can't open a mod");
+        }
+
+        public ParkitectAssetType Type { get; } = ParkitectAssetType.Mod;
 
         /// <summary>
         ///     Gets or sets the installation path.

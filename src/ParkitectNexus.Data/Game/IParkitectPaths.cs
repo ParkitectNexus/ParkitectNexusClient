@@ -13,6 +13,8 @@ namespace ParkitectNexus.Data.Game
         string Installation { get; }
         string Mods { get; }
         string NativeMods { get; }
+        string Blueprints { get; }
+        string Savegames { get; }
 
         string GetPathInSavesFolder(string path);
         string GetPathInSavesFolder(string path, bool createIfNotExists);

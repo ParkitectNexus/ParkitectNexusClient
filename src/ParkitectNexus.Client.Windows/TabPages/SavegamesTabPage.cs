@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetroFramework;
 using MetroFramework.Controls;
-using ParkitectNexus.AssetMagic.Readers;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
@@ -46,49 +45,42 @@ namespace ParkitectNexus.Client.Windows.TabPages
 
         #endregion
 
+
         protected override Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken)
         {
             return Task.Run(() =>
             {
                 var tiles = new List<MetroTile>();
-                var files = Directory.GetFiles(_parkitect.Paths.GetPathInSavesFolder("Saves/Savegames", true), "*.txt");
+
                 var current = 0;
-                foreach (var file in files)
+                var fileCount = _parkitect.GetAssetCount(ParkitectAssetType.Savegame);
+                foreach (var sg in _parkitect.GetAssets(ParkitectAssetType.Savegame))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
+                    var name = sg.Name;
 
-                    var r = new SavegameReader();
-                    using (var stream = File.OpenRead(file))
+                    if (name != null)
                     {
-                        var data = r.Deserialize(stream);
-                        var name = data.Header.Name;
-
-                        if (name != null)
+                        var tile = new MetroTile
                         {
-                            var tileImage = new Bitmap(data.Screenshot, 100, 100);
+                            Text = name,
+                            TextAlign = ContentAlignment.BottomCenter,
+                            Style = MetroColorStyle.Default,
+                            TileImage = sg.Thumbnail,
+                            UseTileImage = true,
+                            TileImageAlign = ContentAlignment.MiddleCenter
+                        };
 
-                            var tile = new MetroTile
-                            {
-                                Text = name,
-                                TextAlign = ContentAlignment.BottomCenter,
-                                Style = MetroColorStyle.Default,
-                                TileImage = tileImage,
-                                UseTileImage = true,
-                                TileImageAlign = ContentAlignment.MiddleCenter
-                            };
-
-                            tile.Click +=
-                                (sender, args) =>
-                                {
-                                    (FindForm() as MainForm)?.SpawnSliderPanel(new SavegameSliderPanel(file, data));
-                                };
-                            tiles.Add(tile);
-                        }
+                        tile.Click +=
+                            (sender, args) =>
+                                (FindForm() as MainForm)?.SpawnSliderPanel(new SavegameSliderPanel(sg));
+                        tiles.Add(tile);
                     }
-                    UpdateLoadingProgress((current++*100)/files.Length);
+
+                    UpdateLoadingProgress((current++*100)/fileCount);
                 }
-                return (IEnumerable<MetroTile>) tiles;
+                return (IEnumerable<MetroTile>)tiles;
             }, cancellationToken);
         }
 

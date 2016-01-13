@@ -11,16 +11,16 @@ namespace ParkitectNexus.Data.Game
         /// <summary>
         ///     A savegame.
         /// </summary>
-        [ParkitectAssetInfo("text/plain", "Savegame", "Saves\\Savegames")] Savegame,
+        [ParkitectAssetInfo("text/plain", "Savegame", "Saves\\Savegames", ParkitectAssetStorageType.File)] Savegame,
 
         /// <summary>
         ///     A blueprint.
         /// </summary>
-        [ParkitectAssetInfo("image/png", "Blueprint", "Saves\\Blueprints")] Blueprint,
+        [ParkitectAssetInfo("image/png", "Blueprint", "Saves\\Blueprints", ParkitectAssetStorageType.File)] Blueprint,
 
         /// <summary>
         ///     A mod.
         /// </summary>
-        [ParkitectAssetInfo("application/zip", "Mod", "pnmods")] Mod
+        [ParkitectAssetInfo("application/zip", "Mod", "pnmods", ParkitectAssetStorageType.Folder)] Mod
     }
 }

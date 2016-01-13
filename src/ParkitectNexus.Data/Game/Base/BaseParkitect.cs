@@ -3,13 +3,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ParkitectNexus.AssetMagic.Readers;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Utilities;
 
@@ -305,6 +308,111 @@ namespace ParkitectNexus.Data.Game.Base
                     break;
                 default:
                     throw new Exception("unsupported asset type");
+            }
+        }
+
+        /// <summary>
+        ///     Gets the installed assets of the specified type.
+        /// </summary>
+        /// <param name="assetType">Type of the asset.</param>
+        /// <returns>A collection of installed assets.</returns>
+        public virtual IEnumerable<IParkitectAsset> GetAssets(ParkitectAssetType assetType)
+        {
+
+            var dataCacheFactory = ObjectFactory.GetInstance<IParkitectAssetDataCacheFactory>();
+            var info = assetType.GetCustomAttribute<ParkitectAssetInfoAttribute>();
+            switch (assetType)
+            {
+                case ParkitectAssetType.Mod:
+                    foreach (var mod in InstalledMods)
+                        yield return mod;
+                    break;
+                case ParkitectAssetType.Blueprint:
+                {
+                    var dataCache = dataCacheFactory.GetBlueprintCache();
+                    var storagePath = Paths.GetPathInSavesFolder(info.StorageFolder);
+
+                    var fileNames = new List<string>();
+                    foreach (var path in Directory.GetFiles(storagePath, "*.png", SearchOption.AllDirectories))
+                    {
+                        var fileName = PathUtility.MakeRelativePath(storagePath, path);
+                        fileNames.Add(fileName);
+
+                        var data = dataCache.GetCachedData(fileName, ResolveBlueprintData);
+                        yield return new ParkitectAsset(data.Name, path, data.Thumbnail, ParkitectAssetType.Blueprint);
+                    }
+
+                    dataCache.ClearCachedData(fileNames);
+                    dataCache.Save();
+                    
+                    break;
+                }
+                case ParkitectAssetType.Savegame:
+                {
+                    var dataCache = dataCacheFactory.GetSavegameCache();
+                    var storagePath = Paths.GetPathInSavesFolder(info.StorageFolder);
+
+                    var fileNames = new List<string>();
+                    foreach (var path in Directory.GetFiles(storagePath, "*.txt", SearchOption.AllDirectories))
+                    {
+                        var fileName = PathUtility.MakeRelativePath(storagePath, path);
+                        fileNames.Add(fileName);
+
+                        var data = dataCache.GetCachedData(fileName, ResolveSavegameData);
+                        yield return new ParkitectAsset(data.Name, path, data.Thumbnail, ParkitectAssetType.Blueprint);
+                    }
+
+                    dataCache.ClearCachedData(fileNames);
+                    dataCache.Save();
+
+                    break;
+                }
+            }
+        }
+
+        public virtual int GetAssetCount(ParkitectAssetType assetType)
+        {
+            switch (assetType)
+            {
+                case ParkitectAssetType.Blueprint:
+                    return Directory.GetFiles(Paths.Blueprints, "*.png", SearchOption.AllDirectories).Length;
+                case ParkitectAssetType.Mod:
+                    return InstalledMods.Count();
+                case ParkitectAssetType.Savegame:
+                    return Directory.GetFiles(Paths.Savegames, "*.txt", SearchOption.AllDirectories).Length;
+                default:
+                    throw new Exception("unsupported asset type");
+            }
+        }
+
+        private AssetCacheData ResolveBlueprintData(string fileName)
+        {
+            try
+            {
+                using (var im = (Bitmap) Image.FromFile(Path.Combine(Paths.Blueprints, fileName)))
+                {
+                    var reader = new BlueprintReader();
+                    var data = reader.Read(im);
+                    return new AssetCacheData {Name = data?.Header.Name, Thumbnail = new Bitmap(im, 100, 100)};
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private AssetCacheData ResolveSavegameData(string fileName)
+        {
+            try
+            {
+                var reader = new SavegameReader();
+                var data = reader.Deserialize(File.ReadAllText(Path.Combine(Paths.Savegames, fileName)));
+                return new AssetCacheData {Name = data?.Header.Name, Thumbnail = new Bitmap(data.Screenshot, 100, 100)};
+            }
+            catch
+            {
+                return null;
             }
         }
 

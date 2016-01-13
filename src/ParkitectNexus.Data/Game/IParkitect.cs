@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -65,5 +66,19 @@ namespace ParkitectNexus.Data.Game
         /// <param name="downloadedAsset">The asset.</param>
         /// <returns>A task which performs the requested action.</returns>
         Task StoreAsset(IParkitectDownloadedAsset downloadedAsset);
+
+        /// <summary>
+        ///     Gets the installed assets of the specified type.
+        /// </summary>
+        /// <param name="assetType">Type of the asset.</param>
+        /// <returns>A collection of installed assets.</returns>
+        IEnumerable<IParkitectAsset> GetAssets(ParkitectAssetType assetType);
+
+        /// <summary>
+        ///     Gets the count of installed assets of the specified type.
+        /// </summary>
+        /// <param name="assetType">Type of the asset.</param>
+        /// <returns>The count of installed assets.</returns>
+        int GetAssetCount(ParkitectAssetType assetType);
     }
 }

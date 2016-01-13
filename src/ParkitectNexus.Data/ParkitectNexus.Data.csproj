@@ -41,6 +41,10 @@
       <HintPath>..\..\packages\Octokit.0.17.0\lib\net45\Octokit.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.1.1\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -51,6 +55,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
@@ -64,8 +69,15 @@
     <Compile Include="Game\Base\BaseParkitect.cs" />
     <Compile Include="Game\Base\BaseParkitectPaths.cs" />
     <Compile Include="Game\GameRegistry.cs" />
+    <Compile Include="Game\IParkitectAsset.cs" />
+    <Compile Include="Game\IParkitectAssetDataCache.cs" />
+    <Compile Include="Game\IParkitectAssetDataCacheFactory.cs" />
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
     <Compile Include="Game\Linux\LinuxParkitectPath.cs" />
+    <Compile Include="Game\ParkitectAsset.cs" />
+    <Compile Include="Game\ParkitectAssetDataCache.cs" />
+    <Compile Include="Game\ParkitectAssetDataCacheFactory.cs" />
+    <Compile Include="Game\ParkitectAssetStorageType.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\IOperatingSystem.cs" />
     <Compile Include="ObjectFactory.cs" />
@@ -82,6 +94,7 @@
     <Compile Include="Settings\ISettingsRepositoryFactory.cs" />
     <Compile Include="Settings\SettingsRepository.cs" />
     <Compile Include="Settings\SettingsRepositoryFactory.cs" />
+    <Compile Include="Utilities\PathUtility.cs" />
     <Compile Include="Web\Client\IParkitectNexusWebClient.cs" />
     <Compile Include="Web\Client\IParkitectNexusWebFactory.cs" />
     <Compile Include="Web\Client\ParkitectNexusWebFactory.cs" />
