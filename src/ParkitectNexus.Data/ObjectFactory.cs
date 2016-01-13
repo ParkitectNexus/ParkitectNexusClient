@@ -22,12 +22,7 @@ namespace ParkitectNexus.Data
             registry.IncludeRegistry<WebRegistry>();
             registry.IncludeRegistry<GameRegistry>();
             registry.IncludeRegistry<PresenterRegistry>();
-
-            //create operating system
-            registry.For<IOperatingSystem>().Use<OperatingSystem>();
-
-            //only a single instance of the logger is needed
-            registry.For<ILogger>().Use<Logger>().Singleton();
+            registry.IncludeRegistry<UtilityRegistry>();
 
             //repository settings
             registry.For(typeof (ISettingsRepository<>)).Singleton().Use(typeof (SettingsRepository<>));
@@ -36,8 +31,6 @@ namespace ParkitectNexus.Data
             //used to send crash reports
             registry.For<ICrashReporterFactory>().Use<CrashReporterFactory>();
 
-            //operating system
-            registry.For<IOperatingSystem>().Use<OperatingSystem>();
 
             return registry;
         }
