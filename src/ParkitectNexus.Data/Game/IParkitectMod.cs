@@ -9,7 +9,7 @@ namespace ParkitectNexus.Data.Game
     /// <summary>
     ///     Provides the functionality of a Parkitect mod provided by ParkitectNexus.
     /// </summary>
-    public interface IParkitectMod
+    public interface IParkitectMod : IParkitectAsset
     {
         /// <summary>
         ///     Gets the parkitect instance this mod was installed to.

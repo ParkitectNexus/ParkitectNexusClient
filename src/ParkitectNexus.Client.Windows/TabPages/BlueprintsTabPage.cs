@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetroFramework;
 using MetroFramework.Controls;
-using ParkitectNexus.AssetMagic.Readers;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
@@ -51,18 +50,16 @@ namespace ParkitectNexus.Client.Windows.TabPages
             return Task.Run(() =>
             {
                 var tiles = new List<MetroTile>();
-                var files = Directory.GetFiles(_parkitect.Paths.GetPathInSavesFolder("Saves/Blueprints", true), "*.png");
+
                 var current = 0;
-                foreach (var file in files)
+                var fileCount = _parkitect.GetAssetCount(ParkitectAssetType.Blueprint);
+                foreach (var bp in _parkitect.GetAssets(ParkitectAssetType.Blueprint))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-
-                    var r = new BlueprintReader();
-                    using (var bitmap = (Bitmap) Image.FromFile(file))
+                    using (var bitmap = Image.FromStream(bp.Open()))
                     {
-                        var data = r.Read(bitmap);
-                        var name = data.Header.Name;
+                        var name = bp.Name;
 
                         if (name != null)
                         {
@@ -80,67 +77,12 @@ namespace ParkitectNexus.Client.Windows.TabPages
 
                             tile.Click +=
                                 (sender, args) =>
-                                {
-                                    (FindForm() as MainForm)?.SpawnSliderPanel(new BlueprintSliderPanel(file, data));
-                                };
+                                    (FindForm() as MainForm)?.SpawnSliderPanel(new BlueprintSliderPanel(bp));
                             tiles.Add(tile);
                         }
                     }
 
-                    UpdateLoadingProgress((current++*100)/files.Length);
-                }
-                return (IEnumerable<MetroTile>) tiles;
-            }, cancellationToken);
-        }
-
-        #endregion
-    }
-
-    public class ModsTabPage : LoadableTilesTabPage
-    {
-        private readonly IParkitect _parkitect;
-
-        public ModsTabPage(IParkitect parkitect)
-        {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            _parkitect = parkitect;
-
-            Text = "Mods";
-        }
-
-        #region Overrides of LoadableTilesTabPage
-
-        protected override bool ReloadOnEnter { get; } = true;
-
-        protected override Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken)
-        {
-            return Task.Run(() =>
-            {
-                var tiles = new List<MetroTile>();
-                var mods = _parkitect.InstalledMods.ToArray();
-                var current = 0;
-
-                foreach (var mod in mods)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    var tile = new MetroTile
-                    {
-                        Text = mod.Name,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        //TextAlign = ContentAlignment.BottomCenter,
-                        Style = MetroColorStyle.Default
-                        //TileImage = tileImage,
-                        //UseTileImage = true,
-                        //TileImageAlign = ContentAlignment.MiddleCenter,
-                    };
-
-                    tile.Click +=
-                        (sender, args) => { (FindForm() as MainForm)?.SpawnSliderPanel(new ModSliderPanel(mod)); };
-                    tiles.Add(tile);
-
-
-                    UpdateLoadingProgress((current++*100)/mods.Length);
+                    UpdateLoadingProgress((current++*100)/fileCount);
                 }
                 return (IEnumerable<MetroTile>) tiles;
             }, cancellationToken);

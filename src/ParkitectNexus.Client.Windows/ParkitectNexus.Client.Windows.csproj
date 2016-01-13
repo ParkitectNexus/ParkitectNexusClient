@@ -49,10 +49,6 @@
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.1.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.1.1\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -115,6 +111,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TabPages\ModsTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TabPages\SavegamesTabPage.cs">
       <SubType>Component</SubType>
     </Compile>

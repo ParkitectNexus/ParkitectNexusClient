@@ -57,6 +57,10 @@
     <Reference Include="Octokit">
       <HintPath>..\..\packages\Octokit.0.17.0\lib\net45\Octokit.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="ParkitectNexus.AssetMagic">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.1.1\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Base\BaseParkitect.cs" />
@@ -118,6 +122,15 @@
     <Compile Include="Web\IParkitectNexusUrl.cs" />
     <Compile Include="Web\WebRegistry.cs" />
     <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Game\IParkitectAsset.cs" />
+    <Compile Include="Game\IParkitectAssetDataCache.cs" />
+    <Compile Include="Game\IParkitectAssetDataCacheFactory.cs" />
+    <Compile Include="Game\ParkitectAsset.cs" />
+    <Compile Include="Game\ParkitectAssetDataCache.cs" />
+    <Compile Include="Game\ParkitectAssetDataCacheFactory.cs" />
+    <Compile Include="Game\ParkitectAssetStorageType.cs" />
+    <Compile Include="Utilities\PathUtility.cs" />
+    <Compile Include="Utilities\UtilityRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
