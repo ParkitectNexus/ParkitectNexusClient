@@ -3,8 +3,8 @@ using ParkitectNexus.Data.Presenter;
 using Gtk;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
-using ParkitectNexus.Client.GTK;
 using System.Diagnostics;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -17,10 +17,10 @@ namespace ParkitectNexus.Client.Linux
         private TreeNodeModContainer _selectedMod;
         private Window _parentwindow;
         private IPresenterFactory _presenterFactory;
-
-        public ModsPage (IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect, IParkitectOnlineAssetRepository assetRepository)
+        private ILogger _logger;
+        public ModsPage (ILogger logger,IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect, IParkitectOnlineAssetRepository assetRepository)
         {
-
+            this._logger = logger;
             this._presenterFactory = presenterFactory;
             this._parentwindow = (Window)parentWindow;
             this._parkitectAssetRepository = assetRepository;
@@ -146,7 +146,7 @@ namespace ParkitectNexus.Client.Linux
 
         protected void InstallMod (object sender, EventArgs e)
         {
-            ModUri installMod = new ModUri (_parkitect,_parkitectAssetRepository);
+            ModUri installMod = _presenterFactory.InstantiatePresenter<ModUri> ();
             installMod.Run ();
             installMod.Destroy ();
             UpdateModList ();
@@ -170,9 +170,9 @@ namespace ParkitectNexus.Client.Linux
                 }
                 else
                 {
-                    //ModDownload.Download(url,_parkitect,_parkitectAssetRepository);
-                    _presenterFactory.InstantiatePresenter<ModDownload>().Run();
-
+                    var installDialog = new ModInstallDialog(url, this, _logger, _parkitect, _parkitectAssetRepository);
+                    installDialog.Run();
+                    installDialog.Destroy();
                     //update the tag info and update the mod info
                     _selectedMod.AvaliableVersion = info.Tag;
                     _selectedMod.ParkitectMod.Tag = info.Tag;

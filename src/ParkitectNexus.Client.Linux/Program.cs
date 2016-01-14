@@ -20,6 +20,10 @@ namespace ParkitectNexus.Client.Linux
             var presenterFactory = ObjectFactory.Container.GetInstance<IPresenterFactory>();
             var crashReport = ObjectFactory.Container.GetInstance<ICrashReporterFactory> ();
             var logger = ObjectFactory.Container.GetInstance<ILogger> ();
+#if DEBUG
+            presenterFactory.InstantiatePresenter<MainWindow>().Show();
+            Application.Run();
+#else
             try
             {
                 presenterFactory.InstantiatePresenter<MainWindow> ().Show ();
@@ -38,6 +42,8 @@ namespace ParkitectNexus.Client.Linux
 
 
             }
+#endif
+
         }
     }
 }

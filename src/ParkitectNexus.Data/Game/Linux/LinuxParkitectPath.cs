@@ -14,6 +14,8 @@ namespace ParkitectNexus.Data
 
         public override string Data => GetPathInGameFolder("Parkitect_Data");
         public override string DataManaged => GetPathInGameFolder(@"Parkitect_Data/Managed");
+        public override string Blueprints => GetPathInSavesFolder("Saves/Blueprints", true);
+        public override string Savegames => GetPathInSavesFolder("Saves/Savegames", true);
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
         {

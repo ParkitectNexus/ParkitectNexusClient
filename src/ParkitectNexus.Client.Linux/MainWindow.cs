@@ -3,12 +3,8 @@ using Gtk;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Client.Linux;
 using ParkitectNexus.Data.Utilities;
-using ParkitectNexus.Data;
 using ParkitectNexus.Client;
 using ParkitectNexus.Data.Game;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 
 public partial class MainWindow: Gtk.Window, IPresenter
 {
@@ -26,13 +22,15 @@ public partial class MainWindow: Gtk.Window, IPresenter
 
         presenterFactory.InstantiatePresenter<ParkitectInstallDialog> (this);
         ModLoaderUtil.InstallModLoader (parkitect,logger);
-        new ProtocalInstallUtility ();
+       presenterFactory.InstantiatePresenter<ProtocalInstallUtility>();
 
 
         //remove the default page
         Pages.RemovePage (0);
 
         AddPageToPages("Mods", presenterFactory.InstantiatePresenter<ModsPage> (this));
+        AddPageToPages("Savegames", presenterFactory.InstantiatePresenter<SavegamePage> (this));
+        AddPageToPages("Blueprints", presenterFactory.InstantiatePresenter<BlueprintPage> (this));
 
     }
 

@@ -330,7 +330,7 @@ namespace ParkitectNexus.Data.Game.Base
                 case ParkitectAssetType.Blueprint:
                 {
                     var dataCache = dataCacheFactory.GetBlueprintCache();
-                    var storagePath = Paths.GetPathInSavesFolder(info.StorageFolder);
+                    var storagePath = Paths.Blueprints;
 
                     var fileNames = new List<string>();
                     foreach (var path in Directory.GetFiles(storagePath, "*.png", SearchOption.AllDirectories))
@@ -350,7 +350,7 @@ namespace ParkitectNexus.Data.Game.Base
                 case ParkitectAssetType.Savegame:
                 {
                     var dataCache = dataCacheFactory.GetSavegameCache();
-                    var storagePath = Paths.GetPathInSavesFolder(info.StorageFolder);
+                    var storagePath = Paths.Savegames;
 
                     var fileNames = new List<string>();
                     foreach (var path in Directory.GetFiles(storagePath, "*.txt", SearchOption.AllDirectories))
@@ -396,8 +396,9 @@ namespace ParkitectNexus.Data.Game.Base
                     return new AssetCacheData {Name = data?.Header.Name, Thumbnail = new Bitmap(im, 100, 100)};
                 }
             }
-            catch
+            catch(Exception e)
             {
+                Logger.WriteException(e);
                 return null;
             }
         }
@@ -410,8 +411,9 @@ namespace ParkitectNexus.Data.Game.Base
                 var data = reader.Deserialize(File.ReadAllText(Path.Combine(Paths.Savegames, fileName)));
                 return new AssetCacheData {Name = data?.Header.Name, Thumbnail = new Bitmap(data.Screenshot, 100, 100)};
             }
-            catch
+            catch (Exception e)
             {
+                Logger.WriteException(e);
                 return null;
             }
         }
