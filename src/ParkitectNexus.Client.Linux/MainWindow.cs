@@ -10,6 +10,8 @@ public partial class MainWindow: Gtk.Window, IPresenter
 {
     private readonly IParkitect _parkitect;
     private readonly IPresenterFactory _presenterFactory;
+    private IPresenter[] _presenterPages;
+    private int _previousPage = -1;
 
     public MainWindow (IPresenterFactory presenterFactory,IParkitect parkitect, ILogger logger) : base (Gtk.WindowType.Toplevel)
     {
@@ -24,14 +26,28 @@ public partial class MainWindow: Gtk.Window, IPresenter
         ModLoaderUtil.InstallModLoader (parkitect,logger);
        presenterFactory.InstantiatePresenter<ProtocalInstallUtility>();
 
+        _presenterPages = new IPresenter[] { presenterFactory.InstantiatePresenter<ModsPage>(this), presenterFactory.InstantiatePresenter<SavegamePage>(this), presenterFactory.InstantiatePresenter<BlueprintPage>(this) };
 
         //remove the default page
         Pages.RemovePage (0);
 
-        AddPageToPages("Mods", presenterFactory.InstantiatePresenter<ModsPage> (this));
-        AddPageToPages("Savegames", presenterFactory.InstantiatePresenter<SavegamePage> (this));
-        AddPageToPages("Blueprints", presenterFactory.InstantiatePresenter<BlueprintPage> (this));
+        AddPageToPages("Mods", (Widget)_presenterPages[0]);
+        AddPageToPages("Savegames", (Widget)_presenterPages[1]);
+        AddPageToPages("Blueprints", (Widget)_presenterPages[2]);
 
+        Pages.SwitchPage += Pages_SwitchPage;
+
+    }
+
+    private void Pages_SwitchPage(object o, SwitchPageArgs args)
+    {
+        if (args.PageNum >= 0 && _presenterPages.Length > args.PageNum)
+        {
+            if(_previousPage != -1)
+            ((IPage)_presenterPages[_previousPage]).OnClose();
+            _previousPage = (int)args.PageNum;
+            ((IPage)_presenterPages[args.PageNum]).OnOpen();
+        }
     }
 
     private void AddPageToPages(string text,Widget page)

@@ -9,7 +9,7 @@ using ParkitectNexus.Data.Utilities;
 namespace ParkitectNexus.Client.Linux
 {
     [System.ComponentModel.ToolboxItem (true)]
-    public partial class ModsPage : Gtk.Bin, IPresenter
+    public partial class ModsPage : Gtk.Bin, IPresenter, IPage
     {
         private NodeStore _mods = new NodeStore(typeof(TreeNodeModContainer));
         private IParkitect _parkitect;
@@ -202,6 +202,14 @@ namespace ParkitectNexus.Client.Linux
         {
             if (_selectedMod == null) return;
             Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.ParkitectMod.Repository}");
+        }
+
+        public void OnOpen()
+        {
+        }
+
+        public void OnClose()
+        {
         }
     }
 }

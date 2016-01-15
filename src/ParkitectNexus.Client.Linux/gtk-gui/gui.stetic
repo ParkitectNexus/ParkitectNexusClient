@@ -844,9 +844,17 @@
             <property name="CanFocus">True</property>
             <property name="Position">282</property>
             <child>
-              <widget class="Gtk.IconView" id="blueprints">
+              <widget class="Gtk.ScrolledWindow" id="scrolledwindow2">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
+                <property name="HscrollbarPolicy">Never</property>
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.IconView" id="blueprints">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                  </widget>
+                </child>
               </widget>
               <packing>
                 <property name="Resize">False</property>
@@ -898,8 +906,6 @@
                             <child>
                               <widget class="Gtk.Image" id="blueprintImage">
                                 <property name="MemberName" />
-                                <property name="WidthRequest">175</property>
-                                <property name="HeightRequest">175</property>
                                 <property name="Pixbuf">resource:ParkitectNexus.Client.Linux.parkitect_logo.png</property>
                               </widget>
                             </child>
@@ -945,9 +951,17 @@
             <property name="CanFocus">True</property>
             <property name="Position">367</property>
             <child>
-              <widget class="Gtk.IconView" id="savegames">
+              <widget class="Gtk.ScrolledWindow" id="scrolledwindow2">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
+                <property name="HscrollbarPolicy">Never</property>
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.IconView" id="savegames">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                  </widget>
+                </child>
               </widget>
               <packing>
                 <property name="Resize">False</property>
@@ -999,8 +1013,6 @@
                             <child>
                               <widget class="Gtk.Image" id="savegameImage">
                                 <property name="MemberName" />
-                                <property name="WidthRequest">175</property>
-                                <property name="HeightRequest">175</property>
                                 <property name="Pixbuf">resource:ParkitectNexus.Client.Linux.parkitect_logo.png</property>
                               </widget>
                             </child>

@@ -4,11 +4,12 @@ using ParkitectNexus.Data.Game;
 using Gdk;
 using System.IO;
 using System.Drawing.Imaging;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Linux
 {
     [System.ComponentModel.ToolboxItem (true)]
-    public partial class SavegamePage : Gtk.Bin
+    public partial class SavegamePage : Gtk.Bin, IPresenter, IPage
     {
 
         const int NAME = 0;
@@ -30,7 +31,6 @@ namespace ParkitectNexus.Client.Linux
             //blueprintName.ModifyFont(fontdesc);
 
             savegames.Model = _blueprintListStore;
-            UpdateListStore();
             _blueprintListStore.SetSortColumnId(NAME, SortType.Ascending);
 
             savegames.TextColumn = NAME;
@@ -89,6 +89,7 @@ namespace ParkitectNexus.Client.Linux
 
         public void UpdateListStore()
         {
+            _blueprintListStore.Clear();
             foreach (var savegame in _parkitect.GetAssets(ParkitectAssetType.Savegame))
             {
 
@@ -101,6 +102,15 @@ namespace ParkitectNexus.Client.Linux
                     _blueprintListStore.AppendValues(savegame.Name, pixbuf,savegame);
                 }
             }
+        }
+
+        public void OnOpen()
+        {
+            UpdateListStore();
+        }
+
+        public void OnClose()
+        {
         }
     }
 }

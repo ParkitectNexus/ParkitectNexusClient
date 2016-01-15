@@ -10,11 +10,12 @@ namespace ParkitectNexus.Client.Linux
 {
   
     [System.ComponentModel.ToolboxItem (true)]
-    public partial class BlueprintPage : Gtk.Bin, IPresenter
+    public partial class BlueprintPage : Gtk.Bin, IPresenter, IPage
     {
-        const int NAME = 0;
-        const int IMAGE = 1;
-        const int PARKITECT_ASSET = 2;
+        private const int NAME = 0;
+        private const int IMAGE = 1;
+        private const int PARKITECT_ASSET = 2;
+
         private ListStore _blueprintListStore = new ListStore(typeof(string),typeof(Pixbuf),typeof(IParkitectAsset));
         private IParkitect _parkitect;
         private IParkitectAsset _selectedAsset;
@@ -26,16 +27,18 @@ namespace ParkitectNexus.Client.Linux
             this.Build();
 
             blueprints.Model = _blueprintListStore;
-            UpdateListStore();
+            
             _blueprintListStore.SetSortColumnId(NAME, SortType.Ascending);
 
             blueprints.TextColumn = NAME;
             blueprints.PixbufColumn = IMAGE;
             
             blueprints.SelectionChanged += Blueprints_SelectionChanged;
+            
             GLib.Timeout.Add(100, new GLib.TimeoutHandler(ImageUpdate));
 
         }
+
 
         private void Blueprints_SelectionChanged(object sender, EventArgs e)
         {
@@ -82,6 +85,7 @@ namespace ParkitectNexus.Client.Linux
 
         public void UpdateListStore()
         {
+            _blueprintListStore.Clear();
             foreach (var blueprint in _parkitect.GetAssets(ParkitectAssetType.Blueprint))
             {
 
@@ -96,8 +100,14 @@ namespace ParkitectNexus.Client.Linux
             }
         }
 
-        
-    
+        public void OnOpen()
+        {
+            UpdateListStore();
+        }
+
+        public void OnClose()
+        {
+        }
     }
 }
 
