@@ -25,5 +25,5 @@ Pull Requests *should*:
 - focus on resolving a single issue on the issue tracker -or- add a single feature/bugfix
 - not consist of commits with bad descriptions
 - not consist of useless commits
-- consist of a minimal number of commits
+- consist of a minimal number of commits. If your Pull Request contains more commits than you'd like, check out the [Git rebase User Documentation on GitHub](https://help.github.com/articles/about-git-rebase/)
 - comply with the [.editorconfig](.editorconfig) which can be found within this project
