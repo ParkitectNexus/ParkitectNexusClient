@@ -80,6 +80,7 @@ namespace ParkitectNexus.Client.Windows
             // 
             // developmentLabel
             // 
+            this.developmentLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.developmentLabel.AutoSize = true;
             this.developmentLabel.Enabled = false;
             this.developmentLabel.FontWeight = MetroFramework.MetroLabelWeight.Bold;

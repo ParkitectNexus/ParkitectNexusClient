@@ -95,6 +95,7 @@
     <Compile Include="Settings\SettingsRepository.cs" />
     <Compile Include="Settings\SettingsRepositoryFactory.cs" />
     <Compile Include="Utilities\PathUtility.cs" />
+    <Compile Include="Utilities\UtilityRegistry.cs" />
     <Compile Include="Web\Client\IParkitectNexusWebClient.cs" />
     <Compile Include="Web\Client\IParkitectNexusWebFactory.cs" />
     <Compile Include="Web\Client\ParkitectNexusWebFactory.cs" />
