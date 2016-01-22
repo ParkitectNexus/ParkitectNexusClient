@@ -4,7 +4,8 @@
 using System;
 using System.Linq;
 using System.Net;
-using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Web
 {
@@ -19,54 +20,14 @@ namespace ParkitectNexus.Data.Web
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectNexusUrl" /> class.
         /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="assetType">Type of the asset.</param>
-        /// <param name="fileHash">The file hash.</param>
-        /// <exception cref="ArgumentNullException">
-        /// </exception>
-        /// <exception cref="ArgumentException">invalid file hash</exception>
-        public ParkitectNexusUrl(string name, ParkitectAssetType assetType, string fileHash)
+        public ParkitectNexusUrl(ParkitectNexusUrlAction action, IParkitectNexusUrlAction data)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (fileHash == null) throw new ArgumentNullException(nameof(fileHash));
-            if (!ParkitectOnlineAssetRepository.IsValidFileHash(fileHash, assetType))
-                throw new ArgumentException("invalid file hash", nameof(fileHash));
-
-            Name = name;
-            AssetType = assetType;
-            FileHash = fileHash;
+            Action = action;
+            Data = data;
         }
 
-        /// <summary>
-        ///     Gets the name.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        ///     Gets the type of the asset.
-        /// </summary>
-        public ParkitectAssetType AssetType { get; }
-
-        /// <summary>
-        ///     Gets the file hash.
-        /// </summary>
-        public string FileHash { get; }
-
-        #region Overrides of Object
-
-        /// <summary>
-        ///     Returns a <see cref="string" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        ///     A <see cref="string" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return
-                $"{Protocol}//{WebUtility.UrlEncode(Name)}{ProtocolInstructionSeparator}{AssetType}{ProtocolInstructionSeparator}{WebUtility.UrlEncode(FileHash)}";
-        }
-
-        #endregion
+        public ParkitectNexusUrlAction Action { get; set; }
+        public IParkitectNexusUrlAction Data { get; set; }
 
         /// <summary>
         ///     Parses the specified input to an instance of <see cref="ParkitectNexusUrl" />
@@ -97,35 +58,45 @@ namespace ParkitectNexus.Data.Web
             output = null;
 
             // Make sure the input url starts with the parkitect: protocol.
-            if (!input.StartsWith(Protocol) || input.Length < Protocol.Length + 4)
+            if (!input.StartsWith(Protocol) || input.Length < Protocol.Length + 2)
                 return false;
 
             // Trim off the protocol and any number of slashes.
             input = input.Substring(Protocol.Length).Trim('/');
 
-            var parts = input.Split(new[] {ProtocolInstructionSeparator}, StringSplitOptions.None);
+            // Split parameters and url decode them.
+            var parameters =
+                input.Split(new[] {ProtocolInstructionSeparator}, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(WebUtility.UrlDecode)
+                    .ToArray();
 
-            // Make sure the url consists of 3 parts.
-            if (parts.Length != 3)
+            // Find the type asociated with the parameters.
+            var action =
+                typeof (ParkitectNexusUrlAction).GetEnumValues()
+                    .OfType<ParkitectNexusUrlAction>()
+                    .FirstOrDefault(v => v.ToString().ToLower() == parameters[0]);
+
+            // Get data attribute from action enum value
+            var attribute = action.GetCustomAttribute<ParkitectNexusUrlActionAttribute>();
+
+            if (attribute == null)
                 return false;
 
-            // Parse the asset type.
-            var assetTypeString =
-                Enum.GetNames(typeof (ParkitectAssetType)).FirstOrDefault(n => n.ToLower() == parts[1].ToLower());
-            ParkitectAssetType assetType;
-            if (!Enum.TryParse(assetTypeString, out assetType))
+            // Find the proper constructor for the data container
+            var constructors = attribute.Type.GetConstructors();
+
+            var constructor =
+                constructors
+                    .OrderByDescending(c => c.GetParameters().Length)
+                    .FirstOrDefault(c => c.GetParameters().All(p => p.ParameterType == typeof (string)) &&
+                                         c.GetParameters().Length <= parameters.Length - 1);
+
+            var data = constructor?.Invoke(parameters.Skip(1).ToArray()) as IParkitectNexusUrlAction;
+
+            if (data == null)
                 return false;
 
-            // Decode HTML entities in the name of the asset.
-            var name = WebUtility.UrlDecode(parts[0]);
-
-            // Make sure the file hash is valid.
-            var fileHash = WebUtility.UrlDecode(parts[2]);
-            if (!ParkitectOnlineAssetRepository.IsValidFileHash(fileHash, assetType))
-                return false;
-
-            // Return an instance of the url.
-            output = new ParkitectNexusUrl(name, assetType, fileHash);
+            output = new ParkitectNexusUrl(action, data);
             return true;
         }
     }

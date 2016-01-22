@@ -2,8 +2,8 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Test.Web
 {
@@ -11,69 +11,30 @@ namespace ParkitectNexus.Data.Test.Web
     public class ParkitectNexusUrlTest
     {
         [TestMethod]
-        public void TryParseTestMod()
+        public void TryParseInstallTest()
         {
-            //arrange
-            string mod1 = "parkitectnexus://Ambient+Occlusion/mod/ParkitectNexus%2FAmbientOcclusion";
-            string mod2 = "parkitectnexus://Cheat+mod/mod/nozols%2FParkitectCheats";
+            // arrange
+            string url1 = "parkitectnexus://install/testidentifier";
 
-            //act
+            // act
+            var result1 = ParkitectNexusUrl.Parse(url1);
 
-            var result1 = ParkitectNexusUrl.Parse(mod1);
-            var result2 = ParkitectNexusUrl.Parse(mod2);
-
-            //assert
-            Assert.IsTrue(result1.Name == "Ambient Occlusion");
-            Assert.IsTrue(result1.FileHash == "ParkitectNexus/AmbientOcclusion");
-            Assert.IsTrue(result1.AssetType == ParkitectAssetType.Mod);
-
-            Assert.IsTrue(result2.Name == "Cheat mod");
-            Assert.IsTrue(result2.FileHash == "nozols/ParkitectCheats");
-            Assert.IsTrue(result2.AssetType == ParkitectAssetType.Mod);
+            Assert.AreEqual(ParkitectNexusUrlAction.Install, result1.Action);
+            Assert.IsInstanceOfType(result1.Data, typeof(ParkitectNexusInstallUrlAction));
+            Assert.AreEqual("testidentifier", (result1.Data as ParkitectNexusInstallUrlAction)?.Id);
         }
-
         [TestMethod]
-        public void TryParseBlueprint()
+        public void TryParseAuthTest()
         {
-            //arrange
-            string blueprint1 = "parkitectnexus://Dropper/blueprint/3ed8ad1d70";
-            string blueprint2 = "parkitectnexus://Ski+Racer/blueprint/2cfc80d929";
+            // arrange
+            string url1 = "parkitectnexus://auth/myauthkey";
 
-            //act
+            // act
+            var result1 = ParkitectNexusUrl.Parse(url1);
 
-            var result1 = ParkitectNexusUrl.Parse(blueprint1);
-            var result2 = ParkitectNexusUrl.Parse(blueprint2);
-
-            //assert
-            Assert.IsTrue(result1.Name == "Dropper");
-            Assert.IsTrue(result1.FileHash == "3ed8ad1d70");
-            Assert.IsTrue(result1.AssetType == ParkitectAssetType.Blueprint);
-
-            Assert.IsTrue(result2.Name == "Ski Racer");
-            Assert.IsTrue(result2.FileHash == "2cfc80d929");
-            Assert.IsTrue(result2.AssetType == ParkitectAssetType.Blueprint);
-        }
-
-        [TestMethod]
-        public void TryParseSaveGame()
-        {
-            //arrange
-            string saveGame1 = "parkitectnexus://Gigantic+multi-themed+park./savegame/a4a24d1acf";
-            string saveGame2 = "parkitectnexus://Log+Hill/savegame/03567c46bb";
-
-            //act
-
-            var result1 = ParkitectNexusUrl.Parse(saveGame1);
-            var result2 = ParkitectNexusUrl.Parse(saveGame2);
-
-            //assert
-            Assert.IsTrue(result1.Name == "Gigantic multi-themed park.");
-            Assert.IsTrue(result1.FileHash == "a4a24d1acf");
-            Assert.IsTrue(result1.AssetType == ParkitectAssetType.Savegame);
-
-            Assert.IsTrue(result2.Name == "Log Hill");
-            Assert.IsTrue(result2.FileHash == "03567c46bb");
-            Assert.IsTrue(result2.AssetType == ParkitectAssetType.Savegame);
+            Assert.AreEqual(ParkitectNexusUrlAction.Auth, result1.Action);
+            Assert.IsInstanceOfType(result1.Data, typeof(ParkitectNexusAuthUrlAction));
+            Assert.AreEqual("myauthkey", (result1.Data as ParkitectNexusAuthUrlAction)?.Key);
         }
     }
 }

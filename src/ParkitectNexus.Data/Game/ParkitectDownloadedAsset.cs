@@ -16,16 +16,14 @@ namespace ParkitectNexus.Data.Game
         ///     Initializes a new instance of the <see cref="ParkitectDownloadedAsset" /> class.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <param name="downloadInfo">The download info.</param>
         /// <param name="type">The type.</param>
         /// <param name="stream">The stream.</param>
         /// <exception cref="ArgumentNullException">Thrown if fileName or stream is null.</exception>
-        public ParkitectDownloadedAsset(string fileName, DownloadInfo downloadInfo, ParkitectAssetType type, Stream stream)
+        public ParkitectDownloadedAsset(string fileName, ParkitectAssetType type, Stream stream)
         {
             if (fileName == null) throw new ArgumentNullException(nameof(fileName));
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             FileName = fileName;
-            DownloadInfo = downloadInfo;
             Stream = stream;
             Type = type;
         }
@@ -34,11 +32,6 @@ namespace ParkitectNexus.Data.Game
         ///     Gets the name of the file.
         /// </summary>
         public string FileName { get; }
-
-        /// <summary>
-        ///     Gets the download info of the file.
-        /// </summary>
-        public DownloadInfo DownloadInfo { get; }
 
         /// <summary>
         ///     Gets the type.

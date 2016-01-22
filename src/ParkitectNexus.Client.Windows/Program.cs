@@ -21,7 +21,7 @@ namespace ParkitectNexus.Client.Windows
             Application.SetCompatibleTextRenderingDefault(false);
 
             //configure map
-            Registry registry = ObjectFactory.ConfigureStructureMap();
+            var registry = ObjectFactory.ConfigureStructureMap();
             registry.IncludeRegistry(new PresenterRegistry());
             ObjectFactory.SetUpContainer(registry);
 

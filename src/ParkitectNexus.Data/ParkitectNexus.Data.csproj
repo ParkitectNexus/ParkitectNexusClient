@@ -32,6 +32,42 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -78,6 +114,7 @@
     <Compile Include="Game\ParkitectAssetDataCache.cs" />
     <Compile Include="Game\ParkitectAssetDataCacheFactory.cs" />
     <Compile Include="Game\ParkitectAssetStorageType.cs" />
+    <Compile Include="Settings\Models\AuthSettings.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\IOperatingSystem.cs" />
     <Compile Include="ObjectFactory.cs" />
@@ -103,8 +140,12 @@
     <Compile Include="Web\IParkitectNexusWebsite.cs" />
     <Compile Include="Web\IParkitectOnlineAssetRepository.cs" />
     <Compile Include="Reporting\CrashReporterFactory.cs" />
-    <Compile Include="Web\DownloadInfo.cs" />
     <Compile Include="Game\IParkitectPaths.cs" />
+    <Compile Include="Web\Models\IParkitectNexusUrlAction.cs" />
+    <Compile Include="Web\Models\ParkitectNexusAuthUrlAction.cs" />
+    <Compile Include="Web\Models\ParkitectNexusInstallUrlAction.cs" />
+    <Compile Include="Web\ParkitectNexusUrlAction.cs" />
+    <Compile Include="Web\ParkitectNexusUrlActionAttribute.cs" />
     <Compile Include="Web\ParkitectOnlineAssetRepository.cs" />
     <Compile Include="Settings\Models\GameSettings.cs" />
     <Compile Include="Game\Windows\WindowsParkitectPaths.cs" />

@@ -14,10 +14,15 @@ namespace ParkitectNexus.Client.Windows
 {
     public partial class MainForm : MetroForm, IPresenter
     {
+        private readonly IPresenterFactory _presenterFactory;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger)
         {
+            if (presenterFactory == null) throw new ArgumentNullException(nameof(presenterFactory));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
+            _presenterFactory = presenterFactory;
+
             logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 
             InitializeComponent();
@@ -31,6 +36,7 @@ namespace ParkitectNexus.Client.Windows
             Text += " (DEVELOPMENT BUILD)";
             developmentLabel.Enabled = true;
 #endif
+
         }
 
         public void SpawnSliderPanel(SliderPanel panel)

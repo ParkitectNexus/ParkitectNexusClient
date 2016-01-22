@@ -18,11 +18,6 @@ namespace ParkitectNexus.Data.Game
         string FileName { get; }
 
         /// <summary>
-        ///     Gets the download info of the file.
-        /// </summary>
-        DownloadInfo DownloadInfo { get; }
-
-        /// <summary>
         ///     Gets the type.
         /// </summary>
         ParkitectAssetType Type { get; }

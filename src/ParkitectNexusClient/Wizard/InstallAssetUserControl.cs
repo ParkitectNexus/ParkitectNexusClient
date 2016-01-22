@@ -41,53 +41,54 @@ namespace ParkitectNexus.Client.Wizard
 
             // Format the "installing" label.
             installingLabel.Text =
-                $"Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
+                $"Please wait while ParkitectNexus is installing your asset.";
         }
 
         private async void InstallAsset()
         {
-            var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
-            try
-            {
-                // Download the asset.
-                var asset = await _parkitectOnlineAssetRepository.DownloadFile(_parkitectNexusUrl);
-
-                if (asset == null)
-                {
-                    // If the asset has failed to download, show some feedback to the user.
-                    MessageBox.Show(this,
-                        $"Failed to install {assetName}!\nPlease try again later.",
-                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    WizardForm.Close();
-                    return;
-                }
-
-                _keyword = "Installing";
-
-                await _parkitect.StoreAsset(asset);
-
-                asset.Dispose();
-            }
-            catch (Exception e)
-            {
-                _logger.WriteLine($"Failed to install {assetName}!");
-                _logger.WriteException(e);
-
-                // If the asset has failed to download, show some feedback to the user.
-                MessageBox.Show(this,
-                    $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}",
-                    "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                downloadingTimer.Enabled = false;
-                statusLabel.Text = "Done!";
-                progressBar.Style = ProgressBarStyle.Continuous;
-                progressBar.Value = 100;
-                WizardForm.Cursor = DefaultCursor;
-                finishButton.Enabled = true;
-                closeTimer.Enabled = true;
-            }
+            throw new NotImplementedException();
+//            var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
+//            try
+//            {
+//                // Download the asset.
+//                var asset = await _parkitectOnlineAssetRepository.DownloadFile(_parkitectNexusUrl);
+//
+//                if (asset == null)
+//                {
+//                    // If the asset has failed to download, show some feedback to the user.
+//                    MessageBox.Show(this,
+//                        $"Failed to install {assetName}!\nPlease try again later.",
+//                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//                    WizardForm.Close();
+//                    return;
+//                }
+//
+//                _keyword = "Installing";
+//
+//                await _parkitect.StoreAsset(asset);
+//
+//                asset.Dispose();
+//            }
+//            catch (Exception e)
+//            {
+//                _logger.WriteLine($"Failed to install {assetName}!");
+//                _logger.WriteException(e);
+//
+//                // If the asset has failed to download, show some feedback to the user.
+//                MessageBox.Show(this,
+//                    $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}",
+//                    "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//            }
+//            finally
+//            {
+//                downloadingTimer.Enabled = false;
+//                statusLabel.Text = "Done!";
+//                progressBar.Style = ProgressBarStyle.Continuous;
+//                progressBar.Value = 100;
+//                WizardForm.Cursor = DefaultCursor;
+//                finishButton.Enabled = true;
+//                closeTimer.Enabled = true;
+//            }
         }
 
         #region Overrides of BaseWizardUserControl

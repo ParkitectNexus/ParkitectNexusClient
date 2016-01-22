@@ -115,35 +115,36 @@ namespace ParkitectNexus.Client.Wizard
 
         private async void updateButton_Click(object sender, EventArgs e)
         {
-            if (SelectedMod == null) return;
-            WizardForm.Cursor = Cursors.WaitCursor;
-            Enabled = false;
-
-            try
-            {
-                var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
-                var info = await _parkitectOnlineAssetRepository.ResolveDownloadInfo(url);
-
-                WizardForm.Cursor = Cursors.Default;
-                Enabled = true;
-
-                if (info.Tag == SelectedMod.Tag)
-                {
-                    MessageBox.Show(this, $"{SelectedMod} is already up to date!", "ParkitectNexus Client",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger,
-                        url, this));
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(this, "Failed to check for updates. Please try again later.", "ParitectNexus Client",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            throw new NotImplementedException();
+//            if (SelectedMod == null) return;
+//            WizardForm.Cursor = Cursors.WaitCursor;
+//            Enabled = false;
+//
+//            try
+//            {
+//                var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
+//                var info = await _parkitectOnlineAssetRepository.ResolveDownloadInfo(url);
+//
+//                WizardForm.Cursor = Cursors.Default;
+//                Enabled = true;
+//
+//                if (info.Tag == SelectedMod.Tag)
+//                {
+//                    MessageBox.Show(this, $"{SelectedMod} is already up to date!", "ParkitectNexus Client",
+//                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+//                }
+//                else
+//                {
+//                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger,
+//                        url, this));
+//                }
+//            }
+//            catch (Exception)
+//            {
+//                MessageBox.Show(this, "Failed to check for updates. Please try again later.", "ParitectNexus Client",
+//                    MessageBoxButtons.OK,
+//                    MessageBoxIcon.Error);
+//            }
         }
 
         private async void uninstallButton_Click(object sender, EventArgs e)

@@ -12,13 +12,6 @@ namespace ParkitectNexus.Data.Web
     public interface IParkitectOnlineAssetRepository
     {
         /// <summary>
-        ///     Resolves the download info for the specified url.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>Information about the download.</returns>
-        Task<DownloadInfo> ResolveDownloadInfo(IParkitectNexusUrl url);
-
-        /// <summary>
         ///     Downloads the file associated with the specified url.
         /// </summary>
         /// <param name="url">The URL.</param>
