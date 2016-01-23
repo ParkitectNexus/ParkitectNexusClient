@@ -1,6 +1,8 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data.Web.API;
+
 namespace ParkitectNexus.Data.Web
 {
     /// <summary>
@@ -27,5 +29,7 @@ namespace ParkitectNexus.Data.Web
         /// <param name="path">The path.</param>
         /// <returns>The URL.</returns>
         string ResolveUrl(string path);
+
+        IParkitectNexusAPI API { get; }
     }
 }

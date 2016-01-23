@@ -2,6 +2,8 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System.Diagnostics;
+using ParkitectNexus.Data.Web.API;
+using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Data.Web
 {
@@ -15,6 +17,14 @@ namespace ParkitectNexus.Data.Web
 #else
         private const string WebsiteUrl = "http://{0}parkitectnexus.com/{1}";
 #endif
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public ParkitectNexusWebsite(IParkitectNexusWebClientFactory webClientFactory)
+        {
+            API = new ParkitectNexusAPI(this, webClientFactory);
+        }
 
         /// <summary>
         ///     Launches the nexus.
@@ -44,5 +54,10 @@ namespace ParkitectNexus.Data.Web
         {
             return ResolveUrl(path, null);
         }
+
+        /// <summary>
+        /// Gets the API.
+        /// </summary>
+        public IParkitectNexusAPI API { get; }
     }
 }

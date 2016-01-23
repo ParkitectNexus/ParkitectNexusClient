@@ -20,11 +20,11 @@ namespace ParkitectNexus.Client
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>
-        public static UpdateInfo CheckForUpdates(IParkitectNexusWebsite website, IParkitectNexusWebFactory webFactory)
+        public static UpdateInfo CheckForUpdates(IParkitectNexusWebsite website, IParkitectNexusWebClientFactory webClientFactory)
         {
             try
             {
-                using (var webClient = webFactory.CreateWebClient())
+                using (var webClient = webClientFactory.CreateWebClient())
                 using (var stream = webClient.OpenRead(website.ResolveUrl("update.json", "client")))
                 using (var streamReader = new StreamReader(stream))
                 using (var jsonTextReader = new JsonTextReader(streamReader))
@@ -57,13 +57,13 @@ namespace ParkitectNexus.Client
         /// </summary>
         /// <param name="update">The update.</param>
         /// <returns>true on success; false otherwise.</returns>
-        public static bool InstallUpdate(UpdateInfo update, IParkitectNexusWebFactory webFactory)
+        public static bool InstallUpdate(UpdateInfo update, IParkitectNexusWebClientFactory webClientFactory)
         {
             try
             {
                 var tempPath = Path.Combine(Path.GetTempPath(), "pncsetup.msi");
 
-                using (var webClient = webFactory.CreateWebClient())
+                using (var webClient = webClientFactory.CreateWebClient())
                 {
                     webClient.DownloadFile(update.DownloadUrl, tempPath);
                     Process.Start(tempPath);

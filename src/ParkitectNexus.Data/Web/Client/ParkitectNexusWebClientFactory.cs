@@ -3,7 +3,7 @@
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    public class ParkitectNexusWebFactory : IParkitectNexusWebFactory
+    public class ParkitectNexusWebClientFactory : IParkitectNexusWebClientFactory
     {
         public IParkitectNexusWebClient CreateWebClient()
         {

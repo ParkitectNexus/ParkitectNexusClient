@@ -26,7 +26,6 @@ namespace ParkitectNexus.Data
 
             //repository settings
             registry.For(typeof (ISettingsRepository<>)).Singleton().Use(typeof (SettingsRepository<>));
-            registry.For<ISettingsRepositoryFactory>().Use<SettingsRepositoryFactory>();
 
             //used to send crash reports
             registry.For<ICrashReporterFactory>().Use<CrashReporterFactory>();

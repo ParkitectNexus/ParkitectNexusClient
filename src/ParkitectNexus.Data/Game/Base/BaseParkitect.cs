@@ -25,12 +25,12 @@ namespace ParkitectNexus.Data.Game.Base
     public abstract class BaseParkitect : IParkitect
     {
         protected ILogger Logger { get; }
-        protected ISettingsRepositoryFactory Factory { get; }
+        protected ISettingsRepository<GameSettings> GameSettings { get; }
 
-        protected BaseParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger)
+        protected BaseParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger)
         {
             Logger = logger;
-            Factory = settingsRepositoryFactory;
+            GameSettings = gameSettingsRepository;
         }
 
         /// <summary>
@@ -47,19 +47,17 @@ namespace ParkitectNexus.Data.Game.Base
         {
             get
             {
-                var gameSettings = Factory.Repository<GameSettings>();
-                return IsValidInstallationPath(gameSettings.Model.InstallationPath)
-                    ? gameSettings.Model.InstallationPath
+                return IsValidInstallationPath(GameSettings.Model.InstallationPath)
+                    ? GameSettings.Model.InstallationPath
                     : null;
             }
             set
             {
-                var gameSettings = Factory.Repository<GameSettings>();
                 if (!IsValidInstallationPath(value))
                     throw new ArgumentException("invalid installation path", nameof(value));
 
-                gameSettings.Model.InstallationPath = value;
-                gameSettings.Save();
+                GameSettings.Model.InstallationPath = value;
+                GameSettings.Save();
             }
         }
 

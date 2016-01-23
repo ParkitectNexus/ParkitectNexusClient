@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data.Test", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.Windows", "src\ParkitectNexus.Client.Windows\ParkitectNexus.Client.Windows.csproj", "{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Debug", "ParkitectNexus.Debug\ParkitectNexus.Debug.csproj", "{32195047-6BF6-49DA-9423-CD82EA9A3B33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,18 @@ Global
 		{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}.Release|x64.Build.0 = Release|x64
 		{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}.Release|x86.ActiveCfg = Release|x86
 		{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}.Release|x86.Build.0 = Release|x86
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|x64.Build.0 = Debug|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|x86.Build.0 = Debug|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|x64.ActiveCfg = Release|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|x64.Build.0 = Release|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|x86.ActiveCfg = Release|Any CPU
+		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,15 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
 namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Contains parkitect asset types supported by the client.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ParkitectAssetType
     {
         /// <summary>

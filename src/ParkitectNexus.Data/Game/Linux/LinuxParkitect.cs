@@ -7,13 +7,14 @@ using System.Linq;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Settings.Models;
 using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data
 {
     public class LinuxParkitect : BaseParkitect
     {
-        public LinuxParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger) : base(settingsRepositoryFactory, logger)
+        public LinuxParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger) : base(gameSettingsRepository, logger)
         {
             Paths = new LinuxParkitectPath(this);
         }
