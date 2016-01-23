@@ -31,7 +31,26 @@ namespace ParkitectNexus.Data.Web
         /// </summary>
         public void Launch()
         {
-            Process.Start(ResolveUrl(null));
+            Launch(null, null);
+        }
+
+        /// <summary>
+        ///     Launches the website at the specified path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        public void Launch(string path)
+        {
+            Launch(path, null);
+        }
+
+        /// <summary>
+        ///     Launches the website at the specified path and sub domain.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="subdomain">The sub domain.</param>
+        public void Launch(string path, string subdomain)
+        {
+            Process.Start(ResolveUrl(path, subdomain));
         }
 
         /// <summary>

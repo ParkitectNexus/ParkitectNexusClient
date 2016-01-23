@@ -131,12 +131,14 @@
     <Compile Include="Settings\SettingsRepository.cs" />
     <Compile Include="Utilities\PathUtility.cs" />
     <Compile Include="Utilities\UtilityRegistry.cs" />
+    <Compile Include="Web\API\ApiUser.cs" />
     <Compile Include="Web\API\ApiAlbumImage.cs" />
     <Compile Include="Web\API\ApiAlbumImagePromise.cs" />
     <Compile Include="Web\API\ApiResourcePromise.cs" />
     <Compile Include="Web\API\ApiAsset.cs" />
     <Compile Include="Web\API\ApiBlueprintResource.cs" />
     <Compile Include="Web\API\ApiDataContainer.cs" />
+    <Compile Include="Web\API\ApiSubscription.cs" />
     <Compile Include="Web\API\IParkitectNexusAPI.cs" />
     <Compile Include="Web\API\IApiResource.cs" />
     <Compile Include="Web\API\ApiMixedResource.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Web\Models\IParkitectNexusUrlAction.cs" />
     <Compile Include="Web\Models\ParkitectNexusAuthUrlAction.cs" />
     <Compile Include="Web\Models\ParkitectNexusInstallUrlAction.cs" />
+    <Compile Include="Web\ParkitectNexusAuthManager.cs" />
     <Compile Include="Web\ParkitectNexusUrlAction.cs" />
     <Compile Include="Web\ParkitectNexusUrlActionAttribute.cs" />
     <Compile Include="Web\ParkitectOnlineAssetRepository.cs" />

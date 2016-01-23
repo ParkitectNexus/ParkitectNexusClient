@@ -83,6 +83,16 @@ namespace ParkitectNexus.Client.Windows.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap appbar_user_tie {
+            get {
+                object obj = ResourceManager.GetObject("appbar.user.tie", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap parkitect_logo {
             get {
                 object obj = ResourceManager.GetObject("parkitect_logo", resourceCulture);

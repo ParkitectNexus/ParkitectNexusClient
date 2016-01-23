@@ -81,7 +81,7 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
             int width;
             using (var b = new Bitmap(1, 1))
             using (var g = Graphics.FromImage(b))
-            using (var f = MetroFonts.Link(MetroLinkSize.Tall, MetroLinkWeight.Light))
+            using (var f = MetroFonts.Link(metroLink.FontSize, metroLink.FontWeight))
                 width = (int) g.MeasureString(BackText, f).Width;
 
             metroLink.Width = 32 + 8 + width;

@@ -75,6 +75,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MetroFramework, Version=1.3.5.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MetroModernUI.1.3.5.0\lib\net45\MetroFramework.dll</HintPath>
       <Private>True</Private>
@@ -112,7 +116,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCommandLineOptions.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="ParkitectNexusProtocol.cs" />
     <Compile Include="SliderPanels\SavegameSliderPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -219,6 +225,9 @@
       <Project>{0cb13383-05d3-40f5-b0e1-3907a42872dc}</Project>
       <Name>ParkitectNexus.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.user.tie.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,6 +20,7 @@ namespace ParkitectNexus.Data.Web
 
             For<IGitHubClient>().Use(() => new GitHubClient(new ProductHeaderValue("parkitect-nexus-client")));
 
+            For<IParkitectNexusAuthManager>().Use<ParkitectNexusAuthManager>();
             For<IParkitectNexusAPI>().Use<ParkitectNexusAPI>();
         }
     }

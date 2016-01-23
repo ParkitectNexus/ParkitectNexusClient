@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using ParkitectNexus.Data;
@@ -24,6 +25,17 @@ namespace ParkitectNexus.Debug
 
             var website = ObjectFactory.GetInstance<IParkitectNexusWebsite>();
 
+            try
+            {
+                website.API.GetSubscriptions("a352a74f1e868cdaf248211c81bef141").Wait();
+            }
+            catch (AggregateException e)
+            {
+                var f = e.InnerExceptions.FirstOrDefault();
+
+                var w = f as WebException;
+                System.Diagnostics.Debug.WriteLine(w.Response);
+            }
             var asset = website.API.GetAsset("25c6fda0c7").Result;
 
             if (asset.Type == ParkitectAssetType.Blueprint)

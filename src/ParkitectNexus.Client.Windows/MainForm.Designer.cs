@@ -36,6 +36,7 @@ namespace ParkitectNexus.Client.Windows
             this.metroToggle1 = new MetroFramework.Controls.MetroToggle();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.developmentLabel = new MetroFramework.Controls.MetroLabel();
+            this.authLink = new MetroFramework.Controls.MetroLink();
             this.SuspendLayout();
             // 
             // metroTabControl
@@ -92,6 +93,20 @@ namespace ParkitectNexus.Client.Windows
             this.developmentLabel.Text = "DEVELOPMENT BUILD";
             this.developmentLabel.UseStyleColors = true;
             // 
+            // authLink
+            // 
+            this.authLink.Image = global::ParkitectNexus.Client.Windows.Properties.Resources.appbar_user_tie;
+            this.authLink.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.authLink.ImageSize = 32;
+            this.authLink.Location = new System.Drawing.Point(584, 37);
+            this.authLink.Name = "authLink";
+            this.authLink.Size = new System.Drawing.Size(129, 27);
+            this.authLink.TabIndex = 2;
+            this.authLink.Text = "DEFAULT_VALUE";
+            this.authLink.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.authLink.UseSelectable = true;
+            this.authLink.Click += new System.EventHandler(this.authLink_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -100,6 +115,7 @@ namespace ParkitectNexus.Client.Windows
             this.BackImagePadding = new System.Windows.Forms.Padding(20, 15, 5, 5);
             this.BackMaxSize = 100;
             this.ClientSize = new System.Drawing.Size(722, 448);
+            this.Controls.Add(this.authLink);
             this.Controls.Add(this.developmentLabel);
             this.Controls.Add(this.metroTabControl);
             this.DisplayHeader = false;
@@ -125,6 +141,7 @@ namespace ParkitectNexus.Client.Windows
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroToggle metroToggle1;
         private MetroFramework.Controls.MetroLabel developmentLabel;
+        private MetroFramework.Controls.MetroLink authLink;
     }
 }
 

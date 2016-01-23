@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -47,6 +48,21 @@ namespace ParkitectNexus.Data.Web.API
             using (var reader = new StreamReader(stream))
                 return
                     JsonConvert.DeserializeObject<ApiDataContainer<ApiAsset>>(await reader.ReadToEndAsync()).Data;
+        }
+
+        public async Task<ApiSubscription[]> GetSubscriptions(string authKey)
+        {
+            var url = _website.ResolveUrl("api/subscriptions");
+
+            using (var client = _webClientFactory.CreateWebClient())
+            {
+                client.Authorize(authKey);
+                using (var stream = client.OpenRead(url))
+                using (var reader = new StreamReader(stream))
+                    return
+                        JsonConvert.DeserializeObject<ApiDataContainer<ApiSubscription[]>>(await reader.ReadToEndAsync())
+                            .Data;
+            }
         }
     }
 }

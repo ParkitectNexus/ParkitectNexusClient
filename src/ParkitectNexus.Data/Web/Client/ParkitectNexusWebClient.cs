@@ -60,5 +60,14 @@ namespace ParkitectNexus.Data.Web.Client
             request.Timeout = 10*60*1000;
             return request;
         }
+
+        #region Implementation of IParkitectNexusWebClient
+
+        public void Authorize(string key)
+        {
+            Headers.Add("Authorization", key);
+        }
+
+        #endregion
     }
 }

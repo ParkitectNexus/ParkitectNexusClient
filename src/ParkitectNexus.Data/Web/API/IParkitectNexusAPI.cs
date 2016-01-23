@@ -16,5 +16,7 @@ namespace ParkitectNexus.Data.Web.API
         /// <param name="id">The identifier.</param>
         /// <returns>The asset.</returns>
         Task<ApiAsset> GetAsset(string id);
+
+        Task<ApiSubscription[]> GetSubscriptions(string authKey);
     }
 }

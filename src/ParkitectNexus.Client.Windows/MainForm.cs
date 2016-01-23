@@ -2,27 +2,39 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using CommandLine;
+using MetroFramework;
 using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Client.Windows.TabPages;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Client.Windows
 {
     public partial class MainForm : MetroForm, IPresenter
     {
+        private readonly IParkitectNexusAuthManager _authManager;
         private SliderPanel _currentPanel;
 
-        public MainForm(IPresenterFactory presenterFactory, ILogger logger)
+        public MainForm(IPresenterFactory presenterFactory, ILogger logger,
+            IParkitectNexusAuthManager authManager)
         {
             if (presenterFactory == null) throw new ArgumentNullException(nameof(presenterFactory));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
+            if (authManager == null) throw new ArgumentNullException(nameof(authManager));
+
+            _authManager = authManager;
 
             logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
+
+            ParkitectNexusProtocol.Install(logger);
 
             TopLevel = true;
             InitializeComponent();
@@ -36,11 +48,64 @@ namespace ParkitectNexus.Client.Windows
             Text += " (DEVELOPMENT BUILD)";
             developmentLabel.Enabled = true;
 #endif
+
+            if (_authManager.IsAuthenticated)
+            {
+                // TODO show actual user information, such as name and avatar
+                SetUserName(_authManager.Key);
+            }
+            else
+            {
+                SetUserName("Log in");
+            }
+        }
+
+        private void SetUserName(string name)
+        {
+            int width;
+            using (var b = new Bitmap(1, 1))
+            using (var g = Graphics.FromImage(b))
+            using (var f = MetroFonts.Link(authLink.FontSize, authLink.FontWeight))
+                width = (int)g.MeasureString(name, f).Width;
+
+            authLink.Width = 32 + 8 + width;
+            authLink.Text = name;
+            authLink.Left = Width - authLink.Width - 7;
         }
 
         public void ProcessArguments(string[] args)
         {
-            //
+            var options = new AppCommandLineOptions();
+            Parser.Default.ParseArguments(args, options);
+
+            if (options.Url != null)
+            {
+                ParkitectNexusUrl url;
+                if (ParkitectNexusUrl.TryParse(options.Url, out url))
+                {
+                    switch (url.Action)
+                    {
+                        case ParkitectNexusUrlAction.Auth:
+                            ProcessAuthUrl(url.Data as ParkitectNexusAuthUrlAction);
+                            break;
+                        case ParkitectNexusUrlAction.Install:
+                            ProcessInstallUrl(url.Data as ParkitectNexusInstallUrlAction);
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void ProcessAuthUrl(ParkitectNexusAuthUrlAction data)
+        {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+
+            _authManager.Key = data.Key;
+            SetUserName(data.Key);
+        }
+        private void ProcessInstallUrl(ParkitectNexusInstallUrlAction data)
+        {
+            if (data == null) throw new ArgumentNullException(nameof(data));
         }
 
         public void SpawnSliderPanel(SliderPanel panel)
@@ -104,6 +169,20 @@ namespace ParkitectNexus.Client.Windows
 
             // Force to top
             NativeMethods.SetForegroundWindow(Handle);
+        }
+
+        private void authLink_Click(object sender, EventArgs e)
+        {
+            if (!_authManager.IsAuthenticated)
+            {
+                _authManager.OpenLoginPage();
+            }
+            else
+            {
+                // TODO refresh subscriptions instead of logging out
+                _authManager.Logout();
+                SetUserName("Log in");
+            }
         }
     }
 }
