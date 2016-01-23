@@ -2,15 +2,12 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Client.Windows.TabPages;
-using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
 
@@ -18,14 +15,12 @@ namespace ParkitectNexus.Client.Windows
 {
     public partial class MainForm : MetroForm, IPresenter
     {
-        private readonly IPresenterFactory _presenterFactory;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger)
         {
             if (presenterFactory == null) throw new ArgumentNullException(nameof(presenterFactory));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
-            _presenterFactory = presenterFactory;
 
             logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 
@@ -41,12 +36,11 @@ namespace ParkitectNexus.Client.Windows
             Text += " (DEVELOPMENT BUILD)";
             developmentLabel.Enabled = true;
 #endif
-
         }
 
         public void ProcessArguments(string[] args)
         {
-            MessageBox.Show(this, "Process args: " + string.Join(", ", args));
+            //
         }
 
         public void SpawnSliderPanel(SliderPanel panel)
@@ -83,7 +77,7 @@ namespace ParkitectNexus.Client.Windows
                 try
                 {
                     var ipcPath = Path.Combine(AppData.Path, "ipc.dat");
-                    if ((int)m.WParam == 1 && File.Exists(ipcPath))
+                    if ((int) m.WParam == 1 && File.Exists(ipcPath))
                     {
                         ProcessArguments(File.ReadAllLines(ipcPath).Where(l => !string.IsNullOrWhiteSpace(l)).ToArray());
 
@@ -92,7 +86,6 @@ namespace ParkitectNexus.Client.Windows
                 }
                 catch (IOException)
                 {
-
                 }
 
                 ShowMe();
@@ -111,8 +104,6 @@ namespace ParkitectNexus.Client.Windows
 
             // Force to top
             NativeMethods.SetForegroundWindow(Handle);
-
-
         }
     }
 }

@@ -2,17 +2,13 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
-using StructureMap;
 
 namespace ParkitectNexus.Client.Windows
 {
@@ -74,7 +70,8 @@ namespace ParkitectNexus.Client.Windows
                     }
                 }
 
-                NativeMethods.SendNotifyMessage((IntPtr)NativeMethods.HWND_BROADCAST, (uint)NativeMethods.WM_GIVEFOCUS, ipc, 0);
+                NativeMethods.SendNotifyMessage((IntPtr) NativeMethods.HWND_BROADCAST, (uint) NativeMethods.WM_GIVEFOCUS,
+                    ipc, 0);
             }
         }
     }
