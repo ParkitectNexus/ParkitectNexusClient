@@ -2,7 +2,11 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.SliderPanels;
 using ParkitectNexus.Client.Windows.TabPages;
@@ -25,6 +29,7 @@ namespace ParkitectNexus.Client.Windows
 
             logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 
+            TopLevel = true;
             InitializeComponent();
 
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>());
@@ -37,6 +42,11 @@ namespace ParkitectNexus.Client.Windows
             developmentLabel.Enabled = true;
 #endif
 
+        }
+
+        public void ProcessArguments(string[] args)
+        {
+            MessageBox.Show(this, "Process args: " + string.Join(", ", args));
         }
 
         public void SpawnSliderPanel(SliderPanel panel)
@@ -62,6 +72,47 @@ namespace ParkitectNexus.Client.Windows
         {
             var tab = metroTabControl.SelectedTab as LoadableTilesTabPage;
             tab?.WasSelected();
+        }
+
+        #region Overrides of MetroForm
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == NativeMethods.WM_GIVEFOCUS)
+            {
+                try
+                {
+                    var ipcPath = Path.Combine(AppData.Path, "ipc.dat");
+                    if ((int)m.WParam == 1 && File.Exists(ipcPath))
+                    {
+                        ProcessArguments(File.ReadAllLines(ipcPath).Where(l => !string.IsNullOrWhiteSpace(l)).ToArray());
+
+                        File.Delete(ipcPath);
+                    }
+                }
+                catch (IOException)
+                {
+
+                }
+
+                ShowMe();
+            }
+            base.WndProc(ref m);
+        }
+
+        #endregion
+
+        private void ShowMe()
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                WindowState = FormWindowState.Normal;
+            }
+
+            // Force to top
+            NativeMethods.SetForegroundWindow(Handle);
+
+
         }
     }
 }

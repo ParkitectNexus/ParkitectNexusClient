@@ -2,9 +2,16 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Utilities;
 using StructureMap;
 
 namespace ParkitectNexus.Client.Windows
@@ -15,18 +22,60 @@ namespace ParkitectNexus.Client.Windows
         ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        private static void Main()
+        private static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            var mutex = new Mutex(false, "com.ParkitectNexus.Client");
 
-            //configure map
-            var registry = ObjectFactory.ConfigureStructureMap();
-            registry.IncludeRegistry(new PresenterRegistry());
-            ObjectFactory.SetUpContainer(registry);
+            if (mutex.WaitOne(0, true))
+            {
+                try
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
 
-            var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
-            Application.Run(presenterFactory.InstantiatePresenter<MainForm>());
+                    //configure map
+                    var registry = ObjectFactory.ConfigureStructureMap();
+                    registry.IncludeRegistry(new PresenterRegistry());
+                    ObjectFactory.SetUpContainer(registry);
+
+                    var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
+                    var form = presenterFactory.InstantiatePresenter<MainForm>();
+
+                    if (args.Any())
+                        form.ProcessArguments(args);
+
+                    Application.Run(form);
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
+                }
+            }
+            else
+            {
+                var ipc = 0;
+
+                if (args.Any())
+                {
+                    try
+                    {
+                        using (var fileStream = File.OpenWrite(Path.Combine(AppData.Path, "ipc.dat")))
+                        using (var streamWriter = new StreamWriter(fileStream))
+                        {
+                            foreach (var arg in args)
+                                streamWriter.WriteLine(arg);
+                        }
+
+                        ipc = 1;
+                    }
+                    catch (IOException)
+                    {
+                        ipc = -1;
+                    }
+                }
+
+                NativeMethods.SendNotifyMessage((IntPtr)NativeMethods.HWND_BROADCAST, (uint)NativeMethods.WM_GIVEFOCUS, ipc, 0);
+            }
         }
     }
 }

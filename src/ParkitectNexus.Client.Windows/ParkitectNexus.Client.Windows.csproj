@@ -112,6 +112,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="SliderPanels\SavegameSliderPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
