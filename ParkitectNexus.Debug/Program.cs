@@ -12,9 +12,9 @@ using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Debug
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //configure map
             var registry = ObjectFactory.ConfigureStructureMap();
@@ -25,23 +25,23 @@ namespace ParkitectNexus.Debug
 
             var website = ObjectFactory.GetInstance<IParkitectNexusWebsite>();
 
-            try
-            {
-                website.API.GetSubscriptions("a352a74f1e868cdaf248211c81bef141").Wait();
-            }
-            catch (AggregateException e)
-            {
-                var f = e.InnerExceptions.FirstOrDefault();
+            var authManager = ObjectFactory.GetInstance<IParkitectNexusAuthManager>();
 
-                var w = f as WebException;
-                System.Diagnostics.Debug.WriteLine(w.Response);
+            authManager.Key = "a352a74f1e868cdaf248211c81bef141";
+            foreach (var sub in authManager.GetSubscribedAssets().Result)
+            {
+                Console.WriteLine("sub: " + sub);
             }
+
+            Console.WriteLine();
+
             var asset = website.API.GetAsset("25c6fda0c7").Result;
 
             if (asset.Type == ParkitectAssetType.Blueprint)
             {
                 Console.WriteLine("Blueprint:");
-                Console.WriteLine("File name of resource: {0}", (asset.GetResource().Result as ApiBlueprintResource).FileName);
+                Console.WriteLine("File name of resource: {0}",
+                    (asset.GetResource().Result as ApiBlueprintResource).FileName);
             }
             if (asset.Type == ParkitectAssetType.Mod)
             {

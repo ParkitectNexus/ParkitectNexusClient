@@ -50,6 +50,13 @@ namespace ParkitectNexus.Data.Web.API
                     JsonConvert.DeserializeObject<ApiDataContainer<ApiAsset>>(await reader.ReadToEndAsync()).Data;
         }
 
+        /// <summary>
+        /// Gets the subscriptions of the authenticated user.
+        /// </summary>
+        /// <param name="authKey">The authentication key.</param>
+        /// <returns>
+        /// The subscriptions.
+        /// </returns>
         public async Task<ApiSubscription[]> GetSubscriptions(string authKey)
         {
             var url = _website.ResolveUrl("api/subscriptions");
@@ -61,6 +68,26 @@ namespace ParkitectNexus.Data.Web.API
                 using (var reader = new StreamReader(stream))
                     return
                         JsonConvert.DeserializeObject<ApiDataContainer<ApiSubscription[]>>(await reader.ReadToEndAsync())
+                            .Data;
+            }
+        }
+
+        /// <summary>
+        ///     Gets user info of the authenticated user.
+        /// </summary>
+        /// <param name="authKey">The authentication key.</param>
+        /// <returns>The user information.</returns>
+        public async Task<ApiUser> GetUserInfo(string authKey)
+        {
+            var url = _website.ResolveUrl("api/users/me");
+
+            using (var client = _webClientFactory.CreateWebClient())
+            {
+                client.Authorize(authKey);
+                using (var stream = client.OpenRead(url))
+                using (var reader = new StreamReader(stream))
+                    return
+                        JsonConvert.DeserializeObject<ApiDataContainer<ApiUser>>(await reader.ReadToEndAsync())
                             .Data;
             }
         }

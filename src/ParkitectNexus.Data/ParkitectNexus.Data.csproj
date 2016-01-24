@@ -116,6 +116,7 @@
     <Compile Include="Game\ParkitectAssetStorageType.cs" />
     <Compile Include="Settings\Models\AuthSettings.cs" />
     <Compile Include="Utilities\ILogger.cs" />
+    <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\IOperatingSystem.cs" />
     <Compile Include="ObjectFactory.cs" />
     <Compile Include="Game\IParkitect.cs" />
@@ -133,7 +134,6 @@
     <Compile Include="Utilities\UtilityRegistry.cs" />
     <Compile Include="Web\API\ApiUser.cs" />
     <Compile Include="Web\API\ApiAlbumImage.cs" />
-    <Compile Include="Web\API\ApiAlbumImagePromise.cs" />
     <Compile Include="Web\API\ApiResourcePromise.cs" />
     <Compile Include="Web\API\ApiAsset.cs" />
     <Compile Include="Web\API\ApiBlueprintResource.cs" />

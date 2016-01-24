@@ -54,4 +54,10 @@ namespace ParkitectNexus.Data.Web.API
                     JsonConvert.DeserializeObject<ApiDataContainer<T>>(await reader.ReadToEndAsync()).Data;
         }
     }
+
+    public class ApiResourcePromiseWithUrl<T> : ApiResourcePromise<T> where T : class
+    {
+        [JsonProperty("url")]
+        public string Url { get; set; }
+    }
 }

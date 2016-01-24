@@ -2,6 +2,8 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Settings.Models;
@@ -15,6 +17,7 @@ namespace ParkitectNexus.Data.Web
         string Key { get; set; }
         Task<ApiUser> GetUser();
         Task<ApiSubscription[]> GetSubscriptions();
+        Task<ApiAsset[]> GetSubscribedAssets();
         void OpenLoginPage();
         void ReloadKey();
         void Logout();
@@ -45,16 +48,31 @@ namespace ParkitectNexus.Data.Web
                 _authSettingsRepository.Save();
             }
         }
-        public Task<ApiUser> GetUser()
+        public async Task<ApiUser> GetUser()
         {
             AssertAuthenticated();
-            throw new NotImplementedException("not implemented in API yet");
+            return await _website.API.GetUserInfo(Key);
         }
 
         public async Task<ApiSubscription[]> GetSubscriptions()
         {
             AssertAuthenticated();
             return await _website.API.GetSubscriptions(_authSettingsRepository.Model.APIKey);
+        }
+
+        public async Task<ApiAsset[]> GetSubscribedAssets()
+        {
+            var assets = new List<ApiAsset>();
+            var subscriptions = await GetSubscriptions();
+
+            foreach (var subscription in subscriptions)
+            {
+                var asset = await subscription.GetAsset();
+                if (asset != null)
+                    assets.Add(asset);
+            }
+
+            return assets.ToArray();
         }
 
         public void OpenLoginPage()

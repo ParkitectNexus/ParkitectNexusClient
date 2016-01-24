@@ -43,13 +43,13 @@ namespace ParkitectNexus.Data.Web.API
         ///     Gets or sets the thumbnail.
         /// </summary>
         [JsonProperty("thumbnail")]
-        public ApiAlbumImagePromise Thumbnail { get; set; }
+        public ApiResourcePromiseWithUrl<ApiAlbumImage> Thumbnail { get; set; }
 
         /// <summary>
         ///     Gets or sets the album.
         /// </summary>
         [JsonProperty("album")]
-        public IEnumerable<ApiAlbumImagePromise> Album { get; set; }
+        public IEnumerable<ApiResourcePromiseWithUrl<ApiAlbumImage>> Album { get; set; }
 
         /// <summary>
         ///     Gets or sets the tags.
@@ -120,5 +120,20 @@ namespace ParkitectNexus.Data.Web.API
                     return null;
             }
         }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Asset{Type}({Name}; {Id})";
+        }
+
+        #endregion
     }
 }

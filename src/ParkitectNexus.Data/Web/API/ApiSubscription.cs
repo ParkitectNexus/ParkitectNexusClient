@@ -10,25 +10,22 @@ namespace ParkitectNexus.Data.Web.API
     [JsonObject]
     public class ApiSubscription
     {
+        [JsonProperty("id")]
         public int Id { get; set; }
+        [JsonProperty("subscribable_id")]
         public int SubscribableId { get; set; }
-        public ParkitectAssetType SubscribableType { get; set; }
-        public string ApiUrl { get; set; }
+        [JsonProperty("subscribable_type")]
+        public string SubscribableType { get; set; }
 
-        public async Task<IApiResource> GetResource()
+        [JsonProperty("subscribable")]
+        public ApiResourcePromiseWithUrl<ApiAsset> Subscribable { get; set; }
+
+        public async Task<ApiAsset> GetAsset()
         {
             switch (SubscribableType)
             {
-                case ParkitectAssetType.Blueprint:
-                    return await new ApiResourcePromise<ApiBlueprintResource>
-                    {
-                        ApiUrl = ApiUrl
-                    }.GetResource();
-                case ParkitectAssetType.Mod:
-                    return await new ApiResourcePromise<ApiModResource>
-                    {
-                        ApiUrl = ApiUrl
-                    }.GetResource();
+                case "asset":
+                    return await Subscribable?.GetResource();
                 default:
                     return null;
             }

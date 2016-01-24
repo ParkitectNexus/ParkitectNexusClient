@@ -100,6 +100,7 @@ namespace ParkitectNexus.Client.Windows
             this.authLink.ImageSize = 32;
             this.authLink.Location = new System.Drawing.Point(584, 37);
             this.authLink.Name = "authLink";
+            this.authLink.NoFocusImage = global::ParkitectNexus.Client.Windows.Properties.Resources.appbar_user_tie;
             this.authLink.Size = new System.Drawing.Size(129, 27);
             this.authLink.TabIndex = 2;
             this.authLink.Text = "DEFAULT_VALUE";

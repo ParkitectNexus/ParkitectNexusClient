@@ -52,11 +52,32 @@ namespace ParkitectNexus.Client.Windows
             if (_authManager.IsAuthenticated)
             {
                 // TODO show actual user information, such as name and avatar
-                SetUserName(_authManager.Key);
+                FetchUserInfo();
             }
             else
             {
                 SetUserName("Log in");
+            }
+        }
+
+        private async void FetchUserInfo()
+        {
+            try
+            {
+                SetUserName("Loading...");
+
+                var user = await _authManager.GetUser();
+
+                SetUserName(user.Name);
+                using (var av = await user.GetAvatar())
+                {
+                    if (av != null)
+                        authLink.NoFocusImage = authLink.Image = ImageUtility.ResizeImage(av, 32, 32);
+                }
+            }
+            catch (Exception e)
+            {
+                // todo handle exceptions properly
             }
         }
 
@@ -101,7 +122,7 @@ namespace ParkitectNexus.Client.Windows
             if (data == null) throw new ArgumentNullException(nameof(data));
 
             _authManager.Key = data.Key;
-            SetUserName(data.Key);
+            FetchUserInfo();
         }
         private void ProcessInstallUrl(ParkitectNexusInstallUrlAction data)
         {
@@ -180,8 +201,8 @@ namespace ParkitectNexus.Client.Windows
             else
             {
                 // TODO refresh subscriptions instead of logging out
-                _authManager.Logout();
-                SetUserName("Log in");
+                // _authManager.Logout();
+                // SetUserName("Log in");
             }
         }
     }
