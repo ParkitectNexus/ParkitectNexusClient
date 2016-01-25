@@ -7,7 +7,7 @@ using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 
-namespace ParkitectNexus.Client.Windows.SliderPanels
+namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
     public partial class SavegameSliderPanel : SliderPanel
     {

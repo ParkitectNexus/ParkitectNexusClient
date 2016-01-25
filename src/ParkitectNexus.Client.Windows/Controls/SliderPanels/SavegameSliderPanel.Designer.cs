@@ -1,6 +1,6 @@
-﻿namespace ParkitectNexus.Client.Windows.SliderPanels
+﻿namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
-    partial class BlueprintSliderPanel
+    partial class SavegameSliderPanel
     {
         /// <summary>
         /// Required designer variable.
@@ -34,29 +34,29 @@
             this.deleteButton = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // nameLabel
-            // 
+            //
             this.nameLabel.AutoSize = true;
             this.nameLabel.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.nameLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
             this.nameLabel.Location = new System.Drawing.Point(23, 59);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(134, 25);
+            this.nameLabel.Size = new System.Drawing.Size(146, 25);
             this.nameLabel.TabIndex = 5;
-            this.nameLabel.Text = "Blueprint Name";
-            // 
+            this.nameLabel.Text = "Savegame Name";
+            //
             // pictureBox
-            // 
+            //
             this.pictureBox.Location = new System.Drawing.Point(23, 87);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(233, 233);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 6;
             this.pictureBox.TabStop = false;
-            // 
+            //
             // uploadButton
-            // 
+            //
             this.uploadButton.Location = new System.Drawing.Point(23, 326);
             this.uploadButton.Name = "uploadButton";
             this.uploadButton.Size = new System.Drawing.Size(233, 23);
@@ -64,26 +64,26 @@
             this.uploadButton.Text = "Upload";
             this.uploadButton.Theme = MetroFramework.MetroThemeStyle.Light;
             this.uploadButton.UseSelectable = true;
-            // 
+            //
             // deleteButton
-            // 
+            //
             this.deleteButton.Location = new System.Drawing.Point(23, 355);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(233, 23);
             this.deleteButton.TabIndex = 8;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseSelectable = true;
-            // 
-            // BlueprintSliderPanel
-            // 
+            //
+            // SavegameSliderPanel
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackText = "Blueprint";
+            this.BackText = "Savegame";
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.uploadButton);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.nameLabel);
-            this.Name = "BlueprintSliderPanel";
+            this.Name = "SavegameSliderPanel";
             this.Size = new System.Drawing.Size(279, 483);
             this.Controls.SetChildIndex(this.nameLabel, 0);
             this.Controls.SetChildIndex(this.pictureBox, 0);

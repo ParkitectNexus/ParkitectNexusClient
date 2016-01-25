@@ -14,7 +14,7 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Web;
 
-namespace ParkitectNexus.Client.Windows.TabPages
+namespace ParkitectNexus.Client.Windows.Controls.TabPages
 {
     public class MenuTabPage : LoadableTilesTabPage
     {

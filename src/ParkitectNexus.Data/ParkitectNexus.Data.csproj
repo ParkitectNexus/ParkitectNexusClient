@@ -123,6 +123,13 @@
     <Compile Include="Game\ParkitectAsset.cs" />
     <Compile Include="Game\ParkitectAssetStorageType.cs" />
     <Compile Include="Settings\Models\AuthSettings.cs" />
+    <Compile Include="Tasks\IQueueableTask.cs" />
+    <Compile Include="Tasks\IQueueableTaskManager.cs" />
+    <Compile Include="Tasks\QueueableTask.cs" />
+    <Compile Include="Tasks\QueueableTaskEventArgs.cs" />
+    <Compile Include="Tasks\QueueableTaskManager.cs" />
+    <Compile Include="Tasks\TaskStatus.cs" />
+    <Compile Include="Tasks\TestWaitQueueableTask.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\IOperatingSystem.cs" />

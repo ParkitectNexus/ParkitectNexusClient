@@ -5,9 +5,9 @@ using System;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 
-namespace ParkitectNexus.Client.Windows.SliderPanels
+namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
-    public partial class ModSliderPanel : SliderPanel, IPresenter
+    public partial class ModSliderPanel : SliderPanel
     {
         private readonly IParkitectMod _mod;
 

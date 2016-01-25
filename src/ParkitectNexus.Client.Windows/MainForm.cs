@@ -9,8 +9,8 @@ using System.Windows.Forms;
 using CommandLine;
 using MetroFramework;
 using MetroFramework.Forms;
-using ParkitectNexus.Client.Windows.SliderPanels;
-using ParkitectNexus.Client.Windows.TabPages;
+using ParkitectNexus.Client.Windows.Controls.SliderPanels;
+using ParkitectNexus.Client.Windows.Controls.TabPages;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -43,6 +43,7 @@ namespace ParkitectNexus.Client.Windows
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<ModsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<BlueprintsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<SavegamesTabPage>());
+            metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<TasksTabPage>());
 
 #if DEBUG
             Text += " (DEVELOPMENT BUILD)";

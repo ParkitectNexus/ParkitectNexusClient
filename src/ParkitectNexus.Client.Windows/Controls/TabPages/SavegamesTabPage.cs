@@ -10,11 +10,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetroFramework;
 using MetroFramework.Controls;
-using ParkitectNexus.Client.Windows.SliderPanels;
+using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 
-namespace ParkitectNexus.Client.Windows.TabPages
+namespace ParkitectNexus.Client.Windows.Controls.TabPages
 {
     public class SavegamesTabPage : LoadableTilesTabPage
     {

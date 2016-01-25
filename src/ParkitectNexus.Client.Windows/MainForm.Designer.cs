@@ -1,4 +1,4 @@
-﻿using ParkitectNexus.Client.Windows.SliderPanels;
+﻿using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 
 namespace ParkitectNexus.Client.Windows
 {

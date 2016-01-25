@@ -26,6 +26,8 @@ namespace ParkitectNexus.Client.Windows
             {
                 try
                 {
+                    ThreadPool.SetMaxThreads(16, 16);
+
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 

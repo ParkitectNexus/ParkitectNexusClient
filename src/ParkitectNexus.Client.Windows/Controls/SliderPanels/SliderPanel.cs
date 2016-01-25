@@ -10,7 +10,7 @@ using MetroFramework.Animation;
 using MetroFramework.Controls;
 using ParkitectNexus.Data.Presenter;
 
-namespace ParkitectNexus.Client.Windows.SliderPanels
+namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
     public partial class SliderPanel : MetroUserControl, IPresenter
     {

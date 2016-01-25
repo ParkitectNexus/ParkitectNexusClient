@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using MetroFramework.Controls;
 using ParkitectNexus.Data.Presenter;
 
-namespace ParkitectNexus.Client.Windows.TabPages
+namespace ParkitectNexus.Client.Windows.Controls.TabPages
 {
     public abstract class LoadableTilesTabPage : MetroTabPage, IPresenter
     {

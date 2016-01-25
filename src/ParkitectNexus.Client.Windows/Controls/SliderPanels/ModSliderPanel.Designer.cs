@@ -1,4 +1,4 @@
-﻿namespace ParkitectNexus.Client.Windows.SliderPanels
+﻿namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
     partial class ModSliderPanel
     {

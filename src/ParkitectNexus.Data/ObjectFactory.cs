@@ -6,6 +6,7 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using StructureMap;
@@ -34,6 +35,7 @@ namespace ParkitectNexus.Data
             // caching
             registry.For<ICacheManager>().Use<CacheManager>();
 
+            registry.For<IQueueableTaskManager>().Use<QueueableTaskManager>();
             return registry;
         }
 

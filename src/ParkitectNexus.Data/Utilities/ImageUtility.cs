@@ -24,5 +24,20 @@ namespace ParkitectNexus.Data.Utilities
 
             return result;
         }
+
+        public static Bitmap RecolorImage(Image input, Color color)
+        {
+            var image = (Bitmap) input;
+
+            for (var y = 0; y < image.Height; y++)
+                for (var x = 0; x < image.Height; x++)
+                {
+                    var currentColor = image.GetPixel(x, y);
+                    image.SetPixel(x, y, Color.FromArgb(currentColor.A, color));
+
+                }
+
+            return image;
+        }
     }
 }
