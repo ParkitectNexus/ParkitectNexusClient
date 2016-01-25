@@ -16,7 +16,7 @@ using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.TabPages
 {
-    public class SavegamesTabPage : LoadableTilesTabPage, IPresenter
+    public class SavegamesTabPage : LoadableTilesTabPage
     {
         private readonly IParkitect _parkitect;
 
@@ -32,8 +32,6 @@ namespace ParkitectNexus.Client.Windows.TabPages
 
         protected override bool ReloadOnEnter { get; } = true;
 
-        #region Overrides of LoadableTilesTabPage
-
         protected override void ClearTiles()
         {
             foreach (var tile in Controls.OfType<MetroTile>().ToArray())
@@ -43,9 +41,6 @@ namespace ParkitectNexus.Client.Windows.TabPages
             }
         }
 
-        #endregion
-
-
         protected override Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken)
         {
             return Task.Run(() =>
@@ -53,8 +48,8 @@ namespace ParkitectNexus.Client.Windows.TabPages
                 var tiles = new List<MetroTile>();
 
                 var current = 0;
-                var fileCount = _parkitect.GetAssetCount(ParkitectAssetType.Savegame);
-                foreach (var sg in _parkitect.GetAssets(ParkitectAssetType.Savegame))
+                var fileCount = _parkitect.Assets.GetSavegamesCount();
+                foreach (var sg in _parkitect.Assets.GetSavegames())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
@@ -67,7 +62,7 @@ namespace ParkitectNexus.Client.Windows.TabPages
                             Text = name,
                             TextAlign = ContentAlignment.BottomCenter,
                             Style = MetroColorStyle.Default,
-                            TileImage = sg.Thumbnail,
+                            TileImage = sg.GetThumbnail().Result,
                             UseTileImage = true,
                             TileImageAlign = ContentAlignment.MiddleCenter
                         };

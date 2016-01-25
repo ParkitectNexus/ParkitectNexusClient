@@ -1,6 +1,7 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
@@ -24,12 +25,14 @@ namespace ParkitectNexus.Data
             registry.IncludeRegistry<PresenterRegistry>();
             registry.IncludeRegistry<UtilityRegistry>();
 
-            //repository settings
+            // repository settings
             registry.For(typeof (ISettingsRepository<>)).Singleton().Use(typeof (SettingsRepository<>));
 
-            //used to send crash reports
+            // used to send crash reports
             registry.For<ICrashReporterFactory>().Use<CrashReporterFactory>();
 
+            // caching
+            registry.For<ICacheManager>().Use<CacheManager>();
 
             return registry;
         }

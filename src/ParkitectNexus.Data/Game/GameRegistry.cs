@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Game.Windows;
 using StructureMap;
@@ -18,8 +19,7 @@ namespace ParkitectNexus.Data.Game
             For<IParkitectMod>().Use<ParkitectMod>();
             For<IParkitectDownloadedAsset>().Use<ParkitectDownloadedAsset>();
             For<IParkitectAsset>().Use<ParkitectAsset>();
-            For(typeof(IParkitectAssetDataCache<>)).Use(typeof(ParkitectAssetDataCache<>));
-            For<IParkitectAssetDataCacheFactory>().Use<ParkitectAssetDataCacheFactory>();
+            For<IAssetsRepository>().Use<AssetsRepository>();
 
             switch (operatingSystem.Detect())
             {

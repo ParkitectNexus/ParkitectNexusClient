@@ -3,6 +3,7 @@
 
 using System;
 using System.Drawing;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 
@@ -10,7 +11,7 @@ namespace ParkitectNexus.Client.Windows.SliderPanels
 {
     public partial class BlueprintSliderPanel : SliderPanel, IPresenter
     {
-        public BlueprintSliderPanel(IParkitectAsset blueprint)
+        public BlueprintSliderPanel(IAsset blueprint)
         {
             if (blueprint == null) throw new ArgumentNullException(nameof(blueprint));
             InitializeComponent();

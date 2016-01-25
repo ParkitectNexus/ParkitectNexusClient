@@ -4,6 +4,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
@@ -14,7 +15,7 @@ namespace ParkitectNexus.Data
 {
     public class LinuxParkitect : BaseParkitect
     {
-        public LinuxParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger) : base(gameSettingsRepository, logger)
+        public LinuxParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger, ICacheManager cacheManager) : base(gameSettingsRepository, logger, cacheManager)
         {
             Paths = new LinuxParkitectPath(this);
         }

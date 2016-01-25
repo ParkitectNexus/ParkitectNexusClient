@@ -16,7 +16,7 @@ using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.TabPages
 {
-    public class BlueprintsTabPage : LoadableTilesTabPage, IPresenter
+    public class BlueprintsTabPage : LoadableTilesTabPage
     {
         private readonly IParkitect _parkitect;
 
@@ -32,8 +32,6 @@ namespace ParkitectNexus.Client.Windows.TabPages
 
         protected override bool ReloadOnEnter { get; } = true;
 
-        #region Overrides of LoadableTilesTabPage
-
         protected override void ClearTiles()
         {
             foreach (var tile in Controls.OfType<MetroTile>().ToArray())
@@ -43,8 +41,6 @@ namespace ParkitectNexus.Client.Windows.TabPages
             }
         }
 
-        #endregion
-
         protected override Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken)
         {
             return Task.Run(() =>
@@ -52,34 +48,27 @@ namespace ParkitectNexus.Client.Windows.TabPages
                 var tiles = new List<MetroTile>();
 
                 var current = 0;
-                var fileCount = _parkitect.GetAssetCount(ParkitectAssetType.Blueprint);
-                foreach (var bp in _parkitect.GetAssets(ParkitectAssetType.Blueprint))
+                var fileCount = _parkitect.Assets.GetBlueprintsCount();
+                foreach (var bp in _parkitect.Assets.GetBlueprints())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    using (var bitmap = Image.FromStream(bp.Open()))
+                    if (bp.Name != null)
                     {
-                        var name = bp.Name;
-
-                        if (name != null)
+                        var tile = new MetroTile
                         {
-                            var tileImage = new Bitmap(bitmap, 100, 100);
+                            Text = bp.Name,
+                            TextAlign = ContentAlignment.BottomCenter,
+                            Style = MetroColorStyle.Default,
+                            TileImage = bp.GetThumbnail().Result,
+                            UseTileImage = true,
+                            TileImageAlign = ContentAlignment.MiddleCenter
+                        };
 
-                            var tile = new MetroTile
-                            {
-                                Text = name,
-                                TextAlign = ContentAlignment.BottomCenter,
-                                Style = MetroColorStyle.Default,
-                                TileImage = tileImage,
-                                UseTileImage = true,
-                                TileImageAlign = ContentAlignment.MiddleCenter
-                            };
-
-                            tile.Click +=
-                                (sender, args) =>
-                                    (FindForm() as MainForm)?.SpawnSliderPanel(new BlueprintSliderPanel(bp));
-                            tiles.Add(tile);
-                        }
+                        tile.Click +=
+                            (sender, args) =>
+                                (FindForm() as MainForm)?.SpawnSliderPanel(new BlueprintSliderPanel(bp));
+                        tiles.Add(tile);
                     }
 
                     UpdateLoadingProgress((current++*100)/fileCount);

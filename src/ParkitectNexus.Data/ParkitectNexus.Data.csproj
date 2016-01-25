@@ -102,17 +102,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CachedFile.cs" />
+    <Compile Include="Caching\CachedFileJsonConverter.cs" />
+    <Compile Include="Caching\CacheManager.cs" />
+    <Compile Include="Caching\ICachedFile.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Assets\Asset.cs" />
+    <Compile Include="Assets\AssetCachedData.cs" />
+    <Compile Include="Assets\AssetCachedDataCollection.cs" />
+    <Compile Include="Assets\AssetsRepository.cs" />
+    <Compile Include="Assets\IAsset.cs" />
+    <Compile Include="Assets\IAssetsRepository.cs" />
     <Compile Include="Game\Base\BaseParkitect.cs" />
     <Compile Include="Game\Base\BaseParkitectPaths.cs" />
     <Compile Include="Game\GameRegistry.cs" />
+    <Compile Include="Assets\ModAsset.cs" />
     <Compile Include="Game\IParkitectAsset.cs" />
-    <Compile Include="Game\IParkitectAssetDataCache.cs" />
-    <Compile Include="Game\IParkitectAssetDataCacheFactory.cs" />
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
     <Compile Include="Game\Linux\LinuxParkitectPath.cs" />
     <Compile Include="Game\ParkitectAsset.cs" />
-    <Compile Include="Game\ParkitectAssetDataCache.cs" />
-    <Compile Include="Game\ParkitectAssetDataCacheFactory.cs" />
     <Compile Include="Game\ParkitectAssetStorageType.cs" />
     <Compile Include="Settings\Models\AuthSettings.cs" />
     <Compile Include="Utilities\ILogger.cs" />

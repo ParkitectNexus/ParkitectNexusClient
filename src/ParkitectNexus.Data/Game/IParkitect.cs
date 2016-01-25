@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ParkitectNexus.Data.Assets;
 
 namespace ParkitectNexus.Data.Game
 {
@@ -41,6 +42,11 @@ namespace ParkitectNexus.Data.Game
         IParkitectPaths Paths { get; }
 
         /// <summary>
+        ///     Gets the assets repository.
+        /// </summary>
+        IAssetsRepository Assets { get; }
+
+        /// <summary>
         ///     Detects the installation path.
         /// </summary>
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
@@ -66,19 +72,5 @@ namespace ParkitectNexus.Data.Game
         /// <param name="downloadedAsset">The asset.</param>
         /// <returns>A task which performs the requested action.</returns>
         Task StoreAsset(IParkitectDownloadedAsset downloadedAsset);
-
-        /// <summary>
-        ///     Gets the installed assets of the specified type.
-        /// </summary>
-        /// <param name="assetType">Type of the asset.</param>
-        /// <returns>A collection of installed assets.</returns>
-        IEnumerable<IParkitectAsset> GetAssets(ParkitectAssetType assetType);
-
-        /// <summary>
-        ///     Gets the count of installed assets of the specified type.
-        /// </summary>
-        /// <param name="assetType">Type of the asset.</param>
-        /// <returns>The count of installed assets.</returns>
-        int GetAssetCount(ParkitectAssetType assetType);
     }
 }

@@ -44,7 +44,7 @@ namespace ParkitectNexus.Client.Windows
             this.metroTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl.Location = new System.Drawing.Point(20, 70);
             this.metroTabControl.Name = "metroTabControl";
-            this.metroTabControl.Size = new System.Drawing.Size(682, 358);
+            this.metroTabControl.Size = new System.Drawing.Size(682, 360);
             this.metroTabControl.TabIndex = 0;
             this.metroTabControl.UseSelectable = true;
             this.metroTabControl.SelectedIndexChanged += new System.EventHandler(this.metroTabControl_SelectedIndexChanged);
@@ -95,6 +95,7 @@ namespace ParkitectNexus.Client.Windows
             // 
             // authLink
             // 
+            this.authLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.authLink.Image = global::ParkitectNexus.Client.Windows.Properties.Resources.appbar_user_tie;
             this.authLink.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.authLink.ImageSize = 32;
@@ -115,14 +116,14 @@ namespace ParkitectNexus.Client.Windows
             this.BackImage = global::ParkitectNexus.Client.Windows.Properties.Resources.parkitectnexus_logo_full;
             this.BackImagePadding = new System.Windows.Forms.Padding(20, 15, 5, 5);
             this.BackMaxSize = 100;
-            this.ClientSize = new System.Drawing.Size(722, 448);
+            this.ClientSize = new System.Drawing.Size(722, 450);
             this.Controls.Add(this.authLink);
             this.Controls.Add(this.developmentLabel);
             this.Controls.Add(this.metroTabControl);
             this.DisplayHeader = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(400, 300);
+            this.MinimumSize = new System.Drawing.Size(450, 450);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 70, 20, 20);
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;

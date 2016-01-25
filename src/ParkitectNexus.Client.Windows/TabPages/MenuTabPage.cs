@@ -16,7 +16,7 @@ using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.Windows.TabPages
 {
-    public class MenuTabPage : LoadableTilesTabPage, IPresenter
+    public class MenuTabPage : LoadableTilesTabPage
     {
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusWebsite _website;
