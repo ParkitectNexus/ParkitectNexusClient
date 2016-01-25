@@ -75,13 +75,13 @@ namespace ParkitectNexus.Data.Assets
             using (var bitmap = (Bitmap) Image.FromStream(stream))
             {
                 data.Name = reader.Read(bitmap).Header.Name;
-                
+
                 using (var resized = ImageUtility.ResizeImage(bitmap, 100, 100))
                 using (var memory = new MemoryStream())
                 using (var fileStream = data.ThumbnailFile.Open(FileMode.OpenOrCreate))
                 {
                     fileStream.SetLength(0);
-                    resized.Save(memory, ImageFormat.Jpeg);
+                    resized.Save(memory, ImageFormat.Bmp);
                     memory.Position = 0;
                     memory.CopyTo(fileStream);
                 }
@@ -102,12 +102,12 @@ namespace ParkitectNexus.Data.Assets
                 var screenshot = savegame.Screenshot;
 
                 data.Name = savegame.Header.Name;
-                
+
                 using (var memory = new MemoryStream())
                 using (var fileStream = data.ImageFile.Open(FileMode.OpenOrCreate))
                 {
                     fileStream.SetLength(0);
-                    screenshot.Save(memory, ImageFormat.Jpeg);
+                    screenshot.Save(memory, ImageFormat.Bmp);
                     memory.Position = 0;
                     memory.CopyTo(fileStream);
                 }
@@ -117,7 +117,7 @@ namespace ParkitectNexus.Data.Assets
                     using(var fileStream = data.ThumbnailFile.Open(FileMode.OpenOrCreate))
                 {
                     fileStream.SetLength(0);
-                    resized.Save(memory, ImageFormat.Jpeg);
+                    resized.Save(memory, ImageFormat.Bmp);
                     memory.Position = 0;
                     memory.CopyTo(fileStream);
                 }

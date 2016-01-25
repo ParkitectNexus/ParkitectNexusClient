@@ -40,9 +40,16 @@ namespace ParkitectNexus.Data.Caching
         public void SetItem<T>(string name, T item) where T : class
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
-            if (item == null) throw new ArgumentNullException(nameof(item));
 
             var path = GetFullPath(name);
+
+            if (item == null)
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+
+                return;
+            }
 
             File.WriteAllText(path, JsonConvert.SerializeObject(item, _converter));
         }

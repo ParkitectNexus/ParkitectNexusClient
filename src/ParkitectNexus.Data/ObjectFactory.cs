@@ -1,6 +1,7 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
@@ -36,6 +37,9 @@ namespace ParkitectNexus.Data
             registry.For<ICacheManager>().Use<CacheManager>();
 
             registry.For<IQueueableTaskManager>().Use<QueueableTaskManager>();
+
+            registry.For<IParkitectNexusAuthManager>().Use<ParkitectNexusAuthManager>();
+
             return registry;
         }
 

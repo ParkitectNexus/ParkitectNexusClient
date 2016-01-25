@@ -11,6 +11,7 @@ using MetroFramework;
 using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Client.Windows.Controls.TabPages;
+using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -68,13 +69,11 @@ namespace ParkitectNexus.Client.Windows
                 SetUserName("Loading...");
 
                 var user = await _authManager.GetUser();
-
                 SetUserName(user.Name);
-                using (var av = await user.GetAvatar())
-                {
-                    if (av != null)
-                        authLink.NoFocusImage = authLink.Image = ImageUtility.ResizeImage(av, 32, 32);
-                }
+
+                var avatar = await _authManager.GetAvatar();
+                if (avatar != null)
+                    authLink.NoFocusImage = authLink.Image = avatar;
             }
             catch (Exception e)
             {

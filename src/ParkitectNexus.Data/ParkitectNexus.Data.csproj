@@ -102,6 +102,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\AvatarCache.cs" />
+    <Compile Include="Authentication\IParkitectNexusAuthManager.cs" />
     <Compile Include="Caching\CachedFile.cs" />
     <Compile Include="Caching\CachedFileJsonConverter.cs" />
     <Compile Include="Caching\CacheManager.cs" />
@@ -171,7 +173,7 @@
     <Compile Include="Web\Models\IParkitectNexusUrlAction.cs" />
     <Compile Include="Web\Models\ParkitectNexusAuthUrlAction.cs" />
     <Compile Include="Web\Models\ParkitectNexusInstallUrlAction.cs" />
-    <Compile Include="Web\ParkitectNexusAuthManager.cs" />
+    <Compile Include="Authentication\ParkitectNexusAuthManager.cs" />
     <Compile Include="Web\ParkitectNexusUrlAction.cs" />
     <Compile Include="Web\ParkitectNexusUrlActionAttribute.cs" />
     <Compile Include="Web\ParkitectOnlineAssetRepository.cs" />
