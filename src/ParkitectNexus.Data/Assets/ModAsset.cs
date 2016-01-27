@@ -9,7 +9,7 @@ namespace ParkitectNexus.Data.Assets
     {
         // todo: This should replace `ParkitectMod`
 
-        public ModAsset(string path, AssetCachedData data) : base(path, data, ParkitectAssetType.Mod)
+        public ModAsset(string path, AssetCachedData data) : base(path, data, AssetType.Mod)
         {
         }
     }

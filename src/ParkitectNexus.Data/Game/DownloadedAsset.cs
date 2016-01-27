@@ -3,40 +3,57 @@
 
 using System;
 using System.IO;
-using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Represents a Parkitect asset.
     /// </summary>
-    public class ParkitectDownloadedAsset : IParkitectDownloadedAsset
+    public class DownloadedAsset : IDownloadedAsset
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ParkitectDownloadedAsset" /> class.
+        ///     Initializes a new instance of the <see cref="DownloadedAsset" /> class.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <param name="type">The type.</param>
+        /// <param name="apiAsset"></param>
+        /// <param name="info"></param>
         /// <param name="stream">The stream.</param>
-        /// <exception cref="ArgumentNullException">Thrown if fileName or stream is null.</exception>
-        public ParkitectDownloadedAsset(string fileName, ParkitectAssetType type, Stream stream)
+        /// <exception cref="ArgumentNullException">fileName or stream is null.</exception>
+        public DownloadedAsset(string fileName, ApiAsset apiAsset, DownloadInfo info, Stream stream)
         {
             if (fileName == null) throw new ArgumentNullException(nameof(fileName));
+            if (apiAsset == null) throw new ArgumentNullException(nameof(apiAsset));
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             FileName = fileName;
+            ApiAsset = apiAsset;
+            Info = info;
             Stream = stream;
-            Type = type;
         }
+
+        /// <summary>
+        ///     Finalizes an instance of the <see cref="DownloadedAsset" /> class.
+        /// </summary>
+        ~DownloadedAsset()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        ///     Gets the API asset data.
+        /// </summary>
+        public ApiAsset ApiAsset { get; }
+
+        /// <summary>
+        /// Gets the information.
+        /// </summary>
+        public DownloadInfo Info { get; }
 
         /// <summary>
         ///     Gets the name of the file.
         /// </summary>
         public string FileName { get; }
-
-        /// <summary>
-        ///     Gets the type.
-        /// </summary>
-        public ParkitectAssetType Type { get; }
 
         /// <summary>
         ///     Gets the stream.
@@ -52,29 +69,6 @@ namespace ParkitectNexus.Data.Game
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        #endregion
-
-        /// <summary>
-        ///     Finalizes an instance of the <see cref="ParkitectDownloadedAsset" /> class.
-        /// </summary>
-        ~ParkitectDownloadedAsset()
-        {
-            Dispose(false);
-        }
-
-        #region Overrides of Object
-
-        /// <summary>
-        ///     Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        ///     A string that represents the current object.
-        /// </returns>
-        public override string ToString()
-        {
-            return $"{{{FileName} {Type}}}";
         }
 
         #endregion

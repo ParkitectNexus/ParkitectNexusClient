@@ -2,12 +2,14 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using ParkitectNexus.Data.Tasks.Prefab;
 
 namespace ParkitectNexus.Data.Web.Models
 {
-    public class ParkitectNexusInstallUrlAction : IParkitectNexusUrlAction
+    [UrlActionTask(typeof(InstallAssetTask))]
+    public class InstallUrlAction : IUrlAction
     {
-        public ParkitectNexusInstallUrlAction(string id)
+        public InstallUrlAction(string id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
             Id = id;

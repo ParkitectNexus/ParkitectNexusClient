@@ -61,9 +61,8 @@ namespace ParkitectNexus.Data.Web.API
         {
             var url = _website.ResolveUrl("api/subscriptions");
 
-            using (var client = _webClientFactory.CreateWebClient())
+            using (var client = _webClientFactory.CreateWebClient(true))
             {
-                client.Authorize(authKey);
                 using (var stream = client.OpenRead(url))
                 using (var reader = new StreamReader(stream))
                     return
@@ -81,9 +80,8 @@ namespace ParkitectNexus.Data.Web.API
         {
             var url = _website.ResolveUrl("api/users/me");
 
-            using (var client = _webClientFactory.CreateWebClient())
+            using (var client = _webClientFactory.CreateWebClient(true))
             {
-                client.Authorize(authKey);
                 using (var stream = client.OpenRead(url))
                 using (var reader = new StreamReader(stream))
                     return

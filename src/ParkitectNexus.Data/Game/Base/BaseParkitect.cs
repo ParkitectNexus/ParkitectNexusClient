@@ -33,7 +33,7 @@ namespace ParkitectNexus.Data.Game.Base
         {
             Logger = logger;
             GameSettings = gameSettingsRepository;
-            Assets = new AssetsRepository(cacheManager, this);
+            LocalAssets = new LocalAssetsRepository(cacheManager, this, Logger);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace ParkitectNexus.Data.Game.Base
         /// <summary>
         ///     Gets the assets repository.
         /// </summary>
-        public IAssetsRepository Assets { get; }
+        public ILocalAssetsRepository LocalAssets { get; }
 
         /// <summary>
         ///     Gets a collection of assembly names provided by the game.
@@ -101,7 +101,7 @@ namespace ParkitectNexus.Data.Game.Base
                 // Iterate trough every directory in the mods directory which has a mod.json file.
                 foreach (
                     var path in
-                        Directory.GetDirectories(Paths.Mods).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
+                        Directory.GetDirectories(Paths.GetAssetPath(AssetType.Mod)).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
                 {
                     // Attempt to deserialize the mod.json file.
                     var mod = new ParkitectMod(this, Logger);
@@ -151,21 +151,6 @@ namespace ParkitectNexus.Data.Game.Base
         /// <returns>The launched process.</returns>
         public abstract Process Launch(string arguments = "-single-instance");
 
-        /// <summary>
-        ///     Stores the specified asset in the game's correct directory.
-        /// </summary>
-        /// <param name="downloadedAsset">The asset.</param>
-        /// <returns>A task which performs the requested action.</returns>
-        public virtual async Task StoreAsset(IParkitectDownloadedAsset downloadedAsset)
-        {
-            if (downloadedAsset == null) throw new ArgumentNullException(nameof(downloadedAsset));
-
-            if (!IsInstalled)
-                throw new Exception("parkitect is not installed");
-
-            throw new NotImplementedException();
-        }
-        
         protected abstract bool IsValidInstallationPath(string path);
 
         protected virtual void CompileActiveMods()

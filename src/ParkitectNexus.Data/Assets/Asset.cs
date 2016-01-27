@@ -10,7 +10,7 @@ namespace ParkitectNexus.Data.Assets
 {
     public class Asset : IAsset
     {
-        public Asset(string path, AssetCachedData data, ParkitectAssetType type)
+        public Asset(string path, AssetCachedData data, AssetType type)
         {
             InstallationPath = path;
             CachedData = data;
@@ -21,7 +21,7 @@ namespace ParkitectNexus.Data.Assets
 
         public string Name => CachedData.Name;
         public string InstallationPath { get; }
-        public ParkitectAssetType Type { get; }
+        public AssetType Type { get; }
         public AssetCachedData CachedData { get; }
 
         public virtual Task<Image> GetThumbnail()

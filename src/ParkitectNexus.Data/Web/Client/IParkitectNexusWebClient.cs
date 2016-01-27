@@ -13,8 +13,8 @@ namespace ParkitectNexus.Data.Web.Client
         WebHeaderCollection ResponseHeaders { get; }
         Task<Stream> OpenReadTaskAsync(string url);
         string UploadString(string url, string data);
-        void Authorize(string key);
         Stream OpenRead(string url);
         void DownloadFile(string url, string path);
+        void Authorize();
     }
 }

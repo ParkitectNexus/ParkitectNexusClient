@@ -3,7 +3,7 @@
 
 namespace ParkitectNexus.Data.Web.Models
 {
-    public interface IParkitectNexusUrlAction
+    public interface IUrlAction
     {
     }
 }

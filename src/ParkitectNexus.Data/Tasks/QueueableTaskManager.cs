@@ -16,6 +16,9 @@ namespace ParkitectNexus.Data.Tasks
         private IQueueableTask _currentTask;
         public event EventHandler<QueueableTaskEventArgs> TaskAdded;
         public event EventHandler<QueueableTaskEventArgs> TaskRemoved;
+        public event EventHandler<QueueableTaskEventArgs> TaskFinished;
+
+        public int Count => _tasks.Count + (_currentTask != null ? 1 : 0);
 
         public void Add(IQueueableTask task)
         {
@@ -63,9 +66,11 @@ namespace ParkitectNexus.Data.Tasks
         {
             if (_currentTask.Status != TaskStatus.Running)
             {
-                _currentTask.StatusChanged -= Task_StatusChanged;
+                var task = _currentTask;
+                task.StatusChanged -= Task_StatusChanged;
                 _currentTask = null;
 
+                OnTaskFinished(new QueueableTaskEventArgs(task));
                 RunNext();
             }
         }
@@ -78,6 +83,11 @@ namespace ParkitectNexus.Data.Tasks
         protected virtual void OnTaskRemoved(QueueableTaskEventArgs e)
         {
             TaskRemoved?.Invoke(this, e);
+        }
+
+        protected virtual void OnTaskFinished(QueueableTaskEventArgs e)
+        {
+            TaskFinished?.Invoke(this, e);
         }
     }
 }

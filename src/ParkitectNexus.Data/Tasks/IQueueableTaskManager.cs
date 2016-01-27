@@ -6,6 +6,8 @@ namespace ParkitectNexus.Data.Tasks
     {
         event EventHandler<QueueableTaskEventArgs> TaskAdded;
         event EventHandler<QueueableTaskEventArgs> TaskRemoved;
+        event EventHandler<QueueableTaskEventArgs> TaskFinished;
+        int Count { get; }
         void Add(IQueueableTask task);
         void ClearCompleted();
     }

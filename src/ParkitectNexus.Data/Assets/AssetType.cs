@@ -4,27 +4,27 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace ParkitectNexus.Data.Game
+namespace ParkitectNexus.Data.Assets
 {
     /// <summary>
     ///     Contains parkitect asset types supported by the client.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum ParkitectAssetType
+    public enum AssetType
     {
         /// <summary>
         ///     A savegame.
         /// </summary>
-        [ParkitectAssetInfo("text/plain", "Savegame", "Saves\\Savegames", ParkitectAssetStorageType.File)] Savegame,
+        [AssetInfo("text/plain")] Savegame,
 
         /// <summary>
         ///     A blueprint.
         /// </summary>
-        [ParkitectAssetInfo("image/png", "Blueprint", "Saves\\Blueprints", ParkitectAssetStorageType.File)] Blueprint,
+        [AssetInfo("image/png")] Blueprint,
 
         /// <summary>
         ///     A mod.
         /// </summary>
-        [ParkitectAssetInfo("application/zip", "Mod", "pnmods", ParkitectAssetStorageType.Folder)] Mod
+        [AssetInfo("application/zip")] Mod
     }
 }

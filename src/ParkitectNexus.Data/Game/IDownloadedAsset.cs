@@ -3,14 +3,16 @@
 
 using System;
 using System.IO;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Provides the functionality of a Parkitect asset.
     /// </summary>
-    public interface IParkitectDownloadedAsset : IDisposable
+    public interface IDownloadedAsset : IDisposable
     {
         /// <summary>
         ///     Gets the name of the file.
@@ -18,9 +20,14 @@ namespace ParkitectNexus.Data.Game
         string FileName { get; }
 
         /// <summary>
-        ///     Gets the type.
+        ///     Gets the API asset data.
         /// </summary>
-        ParkitectAssetType Type { get; }
+        ApiAsset ApiAsset { get; }
+
+        /// <summary>
+        ///     Gets the information.
+        /// </summary>
+        DownloadInfo Info { get; }
 
         /// <summary>
         ///     Gets the stream.

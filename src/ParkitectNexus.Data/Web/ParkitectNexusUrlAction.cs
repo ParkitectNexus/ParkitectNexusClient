@@ -8,7 +8,7 @@ namespace ParkitectNexus.Data.Web
     public enum ParkitectNexusUrlAction
     {
         None,
-        [ParkitectNexusUrlAction(typeof (ParkitectNexusInstallUrlAction))] Install,
-        [ParkitectNexusUrlAction(typeof (ParkitectNexusAuthUrlAction))] Auth
+        [ParkitectNexusUrlAction(typeof (InstallUrlAction))] Install,
+        [ParkitectNexusUrlAction(typeof (AuthUrlAction))] Auth
     }
 }

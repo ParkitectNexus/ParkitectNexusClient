@@ -8,6 +8,6 @@ namespace ParkitectNexus.Data.Web
     public interface IParkitectNexusUrl
     {
         ParkitectNexusUrlAction Action { get; }
-        IParkitectNexusUrlAction Data { get; }
+        IUrlAction Data { get; }
     }
 }

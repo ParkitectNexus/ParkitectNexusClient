@@ -45,9 +45,9 @@ namespace ParkitectNexus.Debug
             IParkitect p = ObjectFactory.GetInstance<IParkitect>();
 
             p.SetInstallationPathIfValid(@"C:\Users\Tim\Desktop\Parkitect_Pre-Alpha_6b_64bit");
-            IAssetsRepository assetsRepository = ObjectFactory.GetInstance<IAssetsRepository>();
+            ILocalAssetsRepository localAssetsRepository = ObjectFactory.GetInstance<ILocalAssetsRepository>();
 
-            var bps = assetsRepository.GetSavegames();
+            var bps = localAssetsRepository.GetAssets(AssetType.Savegame);
 
             foreach (var bp in bps)
             {

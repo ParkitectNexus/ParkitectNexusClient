@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Web.API
@@ -19,7 +20,7 @@ namespace ParkitectNexus.Data.Web.API
         ///     Gets or sets the type.
         /// </summary>
         [JsonProperty("type")]
-        public ParkitectAssetType Type { get; set; }
+        public AssetType Type { get; set; }
 
         /// <summary>
         ///     Gets or sets the identifier.
@@ -103,14 +104,14 @@ namespace ParkitectNexus.Data.Web.API
 
             switch (Type)
             {
-                case ParkitectAssetType.Blueprint:
+                case AssetType.Blueprint:
                     return new ApiBlueprintResource
                     {
                         Id = mixed.Id,
                         FileName = mixed.FileName,
                         Asset = mixed.Asset
                     };
-                case ParkitectAssetType.Mod:
+                case AssetType.Mod:
                     return new ApiModResource
                     {
                         Id = mixed.Id,

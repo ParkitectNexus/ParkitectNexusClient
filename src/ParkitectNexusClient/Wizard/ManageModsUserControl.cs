@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -17,22 +18,22 @@ namespace ParkitectNexus.Client.Wizard
         private readonly ILogger _logger;
         private readonly MenuUserControl _menu;
         private readonly IParkitect _parkitect;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IRemoteAssetRepository _remoteAssetRepository;
 
         private bool _disableChecking = true;
 
         public ManageModsUserControl(MenuUserControl menu, IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ILogger logger)
+            IRemoteAssetRepository remoteAssetRepository, ILogger logger)
         {
             if (menu == null) throw new ArgumentNullException(nameof(menu));
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectOnlineAssetRepository == null)
-                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (remoteAssetRepository == null)
+                throw new ArgumentNullException(nameof(remoteAssetRepository));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
 
             _menu = menu;
             _parkitect = parkitect;
-            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _remoteAssetRepository = remoteAssetRepository;
             _logger = logger;
 
             InitializeComponent();
@@ -122,8 +123,8 @@ namespace ParkitectNexus.Client.Wizard
 //
 //            try
 //            {
-//                var url = new ParkitectNexusUrl(SelectedMod.Name, ParkitectAssetType.Mod, SelectedMod.Repository);
-//                var info = await _parkitectOnlineAssetRepository.ResolveDownloadInfo(url);
+//                var url = new ParkitectNexusUrl(SelectedMod.Name, AssetType.Mod, SelectedMod.Repository);
+//                var info = await _remoteAssetRepository.ResolveDownloadInfo(url);
 //
 //                WizardForm.Cursor = Cursors.Default;
 //                Enabled = true;
@@ -135,7 +136,7 @@ namespace ParkitectNexus.Client.Wizard
 //                }
 //                else
 //                {
-//                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger,
+//                    WizardForm.Attach(new InstallAssetUserControl(_parkitect, _remoteAssetRepository, _logger,
 //                        url, this));
 //                }
 //            }

@@ -5,14 +5,18 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using CommandLine;
 using MetroFramework;
 using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Client.Windows.Controls.TabPages;
+using ParkitectNexus.Data;
 using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Tasks;
+using ParkitectNexus.Data.Tasks.Prefab;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Models;
@@ -22,22 +26,28 @@ namespace ParkitectNexus.Client.Windows
     public partial class MainForm : MetroForm, IPresenter
     {
         private readonly IParkitectNexusAuthManager _authManager;
+        private readonly IQueueableTaskManager _taskManager;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger,
-            IParkitectNexusAuthManager authManager)
+            IParkitectNexusAuthManager authManager, IQueueableTaskManager taskManager)
         {
             if (presenterFactory == null) throw new ArgumentNullException(nameof(presenterFactory));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
             if (authManager == null) throw new ArgumentNullException(nameof(authManager));
+            if (taskManager == null) throw new ArgumentNullException(nameof(taskManager));
 
             _authManager = authManager;
+            _taskManager = taskManager;
 
+            _authManager.Authenticated += _authManager_Authenticated;
             logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
 
             ParkitectNexusProtocol.Install(logger);
 
             TopLevel = true;
+
+
             InitializeComponent();
 
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>());
@@ -53,13 +63,17 @@ namespace ParkitectNexus.Client.Windows
 
             if (_authManager.IsAuthenticated)
             {
-                // TODO show actual user information, such as name and avatar
                 FetchUserInfo();
             }
             else
             {
                 SetUserName("Log in");
             }
+        }
+
+        private void _authManager_Authenticated(object sender, EventArgs e)
+        {
+            FetchUserInfo();
         }
 
         private async void FetchUserInfo()
@@ -104,29 +118,16 @@ namespace ParkitectNexus.Client.Windows
                 ParkitectNexusUrl url;
                 if (ParkitectNexusUrl.TryParse(options.Url, out url))
                 {
-                    switch (url.Action)
+                    var attribute = url.Data.GetType().GetCustomAttribute<UrlActionTaskAttribute>();
+                    if (attribute?.TaskType != null && typeof (UrlQueueableTask).IsAssignableFrom(attribute.TaskType))
                     {
-                        case ParkitectNexusUrlAction.Auth:
-                            ProcessAuthUrl(url.Data as ParkitectNexusAuthUrlAction);
-                            break;
-                        case ParkitectNexusUrlAction.Install:
-                            ProcessInstallUrl(url.Data as ParkitectNexusInstallUrlAction);
-                            break;
+                        var task = ObjectFactory.Container.GetInstance(attribute.TaskType) as UrlQueueableTask;
+                        task.Data = url.Data;
+
+                        _taskManager.Add(task);
                     }
                 }
             }
-        }
-
-        private void ProcessAuthUrl(ParkitectNexusAuthUrlAction data)
-        {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-
-            _authManager.Key = data.Key;
-            FetchUserInfo();
-        }
-        private void ProcessInstallUrl(ParkitectNexusInstallUrlAction data)
-        {
-            if (data == null) throw new ArgumentNullException(nameof(data));
         }
 
         public void SpawnSliderPanel(SliderPanel panel)

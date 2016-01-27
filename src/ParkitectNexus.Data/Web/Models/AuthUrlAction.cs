@@ -2,12 +2,14 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using ParkitectNexus.Data.Tasks.Prefab;
 
 namespace ParkitectNexus.Data.Web.Models
 {
-    public class ParkitectNexusAuthUrlAction : IParkitectNexusUrlAction
+    [UrlActionTask(typeof(AuthenticateTask))]
+    public class AuthUrlAction : IUrlAction
     {
-        public ParkitectNexusAuthUrlAction(string key)
+        public AuthUrlAction(string key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             Key = key;

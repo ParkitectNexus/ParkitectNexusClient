@@ -5,31 +5,34 @@ using System;
 using System.Net;
 using System.Net.Cache;
 using System.Reflection;
+using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Utilities;
+using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
 namespace ParkitectNexus.Data.Web.Client
 {
     internal class ParkitectNexusWebClient : WebClient, IParkitectNexusWebClient
     {
+        private readonly IParkitectNexusAuthManager _authManager;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Net.WebClient" /> class.
         /// </summary>
-        public ParkitectNexusWebClient(IOperatingSystem operatingSystem)
+        public ParkitectNexusWebClient(IParkitectNexusAuthManager authManager)
         {
+            _authManager = authManager;
+
+            var os = OperatingSystem.Detect();
+
             // Workaround: disable certificate cache on MacOSX.
-            if (operatingSystem.Detect() == SupportedOperatingSystem.MacOSX)
+            if (os == SupportedOperatingSystem.MacOSX)
             {
                 CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-            }
-
-            if (operatingSystem.Detect() == SupportedOperatingSystem.MacOSX)
-            {
                 ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
             }
 
-
             // Add a version number header of requests.
-            var version = $"{Assembly.GetEntryAssembly().GetName().Version}-{operatingSystem.Detect()}";
+            var version = $"{Assembly.GetEntryAssembly().GetName().Version}-{os}";
 
             Headers.Add("X-ParkitectNexusInstaller-Version", version);
             Headers.Add("user-agent", $"ParkitectNexus/{version}");
@@ -63,9 +66,10 @@ namespace ParkitectNexus.Data.Web.Client
 
         #region Implementation of IParkitectNexusWebClient
 
-        public void Authorize(string key)
+        public void Authorize()
         {
-            Headers.Add("Authorization", key);
+            if (_authManager.IsAuthenticated)
+                Headers.Add("Authorization", _authManager.Key);
         }
 
         #endregion

@@ -20,14 +20,14 @@ namespace ParkitectNexus.Data.Web
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectNexusUrl" /> class.
         /// </summary>
-        public ParkitectNexusUrl(ParkitectNexusUrlAction action, IParkitectNexusUrlAction data)
+        public ParkitectNexusUrl(ParkitectNexusUrlAction action, IUrlAction data)
         {
             Action = action;
             Data = data;
         }
 
         public ParkitectNexusUrlAction Action { get; set; }
-        public IParkitectNexusUrlAction Data { get; set; }
+        public IUrlAction Data { get; set; }
 
         /// <summary>
         ///     Parses the specified input to an instance of <see cref="ParkitectNexusUrl" />
@@ -91,7 +91,7 @@ namespace ParkitectNexus.Data.Web
                     .FirstOrDefault(c => c.GetParameters().All(p => p.ParameterType == typeof (string)) &&
                                          c.GetParameters().Length <= parameters.Length - 1);
 
-            var data = constructor?.Invoke(parameters.Skip(1).ToArray()) as IParkitectNexusUrlAction;
+            var data = constructor?.Invoke(parameters.Skip(1).ToArray()) as IUrlAction;
 
             if (data == null)
                 return false;

@@ -8,6 +8,7 @@ using CommandLine;
 using ParkitectNexus.Client.Settings;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
@@ -22,7 +23,7 @@ namespace ParkitectNexus.Client
         private readonly string[] _args;
         private readonly ICrashReporterFactory _reportingFactory;
         private readonly IParkitect _parkitect;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IRemoteAssetRepository _remoteAssetRepository;
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly IOperatingSystem _operatingSystem;
         private readonly ISettingsRepository<ClientSettings> _clientSettingsRepository;
@@ -31,13 +32,13 @@ namespace ParkitectNexus.Client
         private readonly CommandLineOptions _options = new CommandLineOptions();
 
         public App(string[] args, ICrashReporterFactory reportingFactory, IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite,
+            IRemoteAssetRepository remoteAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite,
             IOperatingSystem operatingSystem, ISettingsRepository<ClientSettings> clientSettingsRepository, ILogger logger)
         {
             if (args == null) throw new ArgumentNullException(nameof(args));
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectOnlineAssetRepository == null)
-                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (remoteAssetRepository == null)
+                throw new ArgumentNullException(nameof(remoteAssetRepository));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             if (operatingSystem == null) throw new ArgumentNullException(nameof(operatingSystem));
             if (clientSettingsRepository == null) throw new ArgumentNullException(nameof(clientSettingsRepository));
@@ -46,7 +47,7 @@ namespace ParkitectNexus.Client
             _args = args;
             _reportingFactory = reportingFactory;
             _parkitect = parkitect;
-            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _remoteAssetRepository = remoteAssetRepository;
             _parkitectNexusWebsite = parkitectNexusWebsite;
             _operatingSystem = operatingSystem;
             _clientSettingsRepository = clientSettingsRepository;
@@ -113,7 +114,7 @@ namespace ParkitectNexus.Client
                 _clientSettingsRepository.Save();
 
                 var form = new WizardForm();
-                form.Attach(new MenuUserControl(_parkitect, _parkitectNexusWebsite, _parkitectOnlineAssetRepository,
+                form.Attach(new MenuUserControl(_parkitect, _parkitectNexusWebsite, _remoteAssetRepository,
                     _reportingFactory, _logger));
                 Application.Run(form);
             }
@@ -196,7 +197,7 @@ namespace ParkitectNexus.Client
 
             // Run the download process in an installer form, for a nice visible process.
             var form = new WizardForm();
-            form.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger,
+            form.Attach(new InstallAssetUserControl(_parkitect, _remoteAssetRepository, _logger,
                 parkitectNexusUrl, null));
             Application.Run(form);
         }

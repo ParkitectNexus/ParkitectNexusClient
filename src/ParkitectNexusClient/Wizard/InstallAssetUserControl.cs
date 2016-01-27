@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -15,24 +16,24 @@ namespace ParkitectNexus.Client.Wizard
         private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusUrl _parkitectNexusUrl;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IRemoteAssetRepository _remoteAssetRepository;
         private readonly BaseWizardUserControl _returnControl;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
 
         public InstallAssetUserControl(IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ILogger logger,
+            IRemoteAssetRepository remoteAssetRepository, ILogger logger,
             IParkitectNexusUrl parkitectNexusUrl,
             BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectOnlineAssetRepository == null)
-                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (remoteAssetRepository == null)
+                throw new ArgumentNullException(nameof(remoteAssetRepository));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
             if (parkitectNexusUrl == null) throw new ArgumentNullException(nameof(parkitectNexusUrl));
             _parkitect = parkitect;
-            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _remoteAssetRepository = remoteAssetRepository;
             _logger = logger;
             _parkitectNexusUrl = parkitectNexusUrl;
             _returnControl = returnControl;
@@ -47,11 +48,11 @@ namespace ParkitectNexus.Client.Wizard
         private async void InstallAsset()
         {
             throw new NotImplementedException();
-//            var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
+//            var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<AssetInfoAttribute>()?.Name;
 //            try
 //            {
 //                // Download the asset.
-//                var asset = await _parkitectOnlineAssetRepository.DownloadFile(_parkitectNexusUrl);
+//                var asset = await _remoteAssetRepository.DownloadFile(_parkitectNexusUrl);
 //
 //                if (asset == null)
 //                {

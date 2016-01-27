@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace ParkitectNexus.Data.Utilities
 {
-    public class OperatingSystem : IOperatingSystem
+    public static class OperatingSystem
     {
-        public SupportedOperatingSystem Detect()
+        public static SupportedOperatingSystem Detect()
         {
             var platform = Environment.OSVersion.Platform;
             switch (platform)

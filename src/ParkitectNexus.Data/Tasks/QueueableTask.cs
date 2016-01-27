@@ -33,9 +33,9 @@ namespace ParkitectNexus.Data.Tasks
 
         public event EventHandler StatusChanged;
         public virtual string Name { get; protected set; }
-        public virtual string StatusDescription { get; private set; }
-        public virtual TaskStatus Status { get; private set; }
-        public virtual int CompletionPercentage { get; private set; }
+        public virtual string StatusDescription { get; protected set; }
+        public virtual TaskStatus Status { get; protected set; }
+        public virtual int CompletionPercentage { get; protected set; }
 
         public abstract Task Run(CancellationToken token);
 

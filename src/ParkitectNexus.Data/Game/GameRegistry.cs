@@ -15,13 +15,11 @@ namespace ParkitectNexus.Data.Game
 
         public GameRegistry()
         {
-            var operatingSystem = new OperatingSystem();
             For<IParkitectMod>().Use<ParkitectMod>();
-            For<IParkitectDownloadedAsset>().Use<ParkitectDownloadedAsset>();
-            For<IParkitectAsset>().Use<ParkitectAsset>();
-            For<IAssetsRepository>().Use<AssetsRepository>();
+            For<IDownloadedAsset>().Use<DownloadedAsset>();
+            For<ILocalAssetsRepository>().Singleton().Use<LocalAssetsRepository>();
 
-            switch (operatingSystem.Detect())
+            switch (OperatingSystem.Detect())
             {
                 case SupportedOperatingSystem.Linux:
                     For<IParkitect>().Use<LinuxParkitect>();

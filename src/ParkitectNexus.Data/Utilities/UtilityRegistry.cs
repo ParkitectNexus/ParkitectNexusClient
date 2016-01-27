@@ -11,15 +11,8 @@ namespace ParkitectNexus.Data.Utilities
     {
         public UtilityRegistry()
         {
-            //operating system
-            For<IOperatingSystem>().Use<OperatingSystem>();
-
-            //create operating system
-            For<IOperatingSystem>().Use<OperatingSystem>();
-
             //only a single instance of the logger is needed
             For<ILogger>().Use<Logger>().Singleton();
-
         }
     }
 }

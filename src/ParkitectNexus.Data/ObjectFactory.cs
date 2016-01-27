@@ -36,9 +36,9 @@ namespace ParkitectNexus.Data
             // caching
             registry.For<ICacheManager>().Use<CacheManager>();
 
-            registry.For<IQueueableTaskManager>().Use<QueueableTaskManager>();
+            registry.For<IQueueableTaskManager>().Singleton().Use<QueueableTaskManager>();
 
-            registry.For<IParkitectNexusAuthManager>().Use<ParkitectNexusAuthManager>();
+            registry.For<IParkitectNexusAuthManager>().Singleton().Use<ParkitectNexusAuthManager>();
 
             return registry;
         }

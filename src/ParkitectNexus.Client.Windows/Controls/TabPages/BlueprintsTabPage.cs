@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using MetroFramework;
 using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Client.Windows.Controls.TabPages
@@ -47,8 +48,8 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                 var tiles = new List<MetroTile>();
 
                 var current = 0;
-                var fileCount = _parkitect.Assets.GetBlueprintsCount();
-                foreach (var bp in _parkitect.Assets.GetBlueprints())
+                var fileCount = _parkitect.LocalAssets.GetAssetCount(AssetType.Blueprint);
+                foreach (var bp in _parkitect.LocalAssets.GetAssets(AssetType.Blueprint))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 

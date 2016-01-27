@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
@@ -18,21 +19,21 @@ namespace ParkitectNexus.Client.Wizard
         private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IRemoteAssetRepository _remoteAssetRepository;
 
         public MenuUserControl(IParkitect parkitect, IParkitectNexusWebsite parkitectNexusWebsite,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ICrashReporterFactory crashReporting,
+            IRemoteAssetRepository remoteAssetRepository, ICrashReporterFactory crashReporting,
             ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
-            if (parkitectOnlineAssetRepository == null)
-                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (remoteAssetRepository == null)
+                throw new ArgumentNullException(nameof(remoteAssetRepository));
             _crashReporting = crashReporting;
             _logger = logger;
             _parkitect = parkitect;
             _parkitectNexusWebsite = parkitectNexusWebsite;
-            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _remoteAssetRepository = remoteAssetRepository;
 
             InitializeComponent();
         }
@@ -66,7 +67,7 @@ namespace ParkitectNexus.Client.Wizard
 
         private void manageModsButton_Click(object sender, EventArgs e)
         {
-            WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _parkitectOnlineAssetRepository, _logger));
+            WizardForm.Attach(new ManageModsUserControl(this, _parkitect, _remoteAssetRepository, _logger));
         }
 
         private void launchParkitectButton_Click(object sender, EventArgs e)

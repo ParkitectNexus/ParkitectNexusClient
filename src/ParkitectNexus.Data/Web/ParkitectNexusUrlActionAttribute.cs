@@ -11,8 +11,8 @@ namespace ParkitectNexus.Data.Web
         public ParkitectNexusUrlActionAttribute(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
-            if (!typeof (IParkitectNexusUrlAction).IsAssignableFrom(type))
-                throw new ArgumentException("type must implement IParkitectNexusUrlAction", nameof(type));
+            if (!typeof (IUrlAction).IsAssignableFrom(type))
+                throw new ArgumentException("type must implement IUrlAction", nameof(type));
             Type = type;
         }
 

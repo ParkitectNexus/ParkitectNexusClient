@@ -12,7 +12,7 @@ namespace ParkitectNexus.Data.Assets
     {
         string Name { get; }
         string InstallationPath { get; }
-        ParkitectAssetType Type { get; }
+        AssetType Type { get; }
         AssetCachedData CachedData { get; }
 
         Task<Image> GetThumbnail();

@@ -44,7 +44,7 @@ namespace ParkitectNexus.Data.Game
         /// <summary>
         ///     Gets the assets repository.
         /// </summary>
-        IAssetsRepository Assets { get; }
+        ILocalAssetsRepository LocalAssets { get; }
 
         /// <summary>
         ///     Detects the installation path.
@@ -65,12 +65,5 @@ namespace ParkitectNexus.Data.Game
         /// <param name="path">The path.</param>
         /// <returns>true if valid; false otherwise.</returns>
         bool SetInstallationPathIfValid(string path);
-
-        /// <summary>
-        ///     Stores the specified asset in the game's correct directory.
-        /// </summary>
-        /// <param name="downloadedAsset">The asset.</param>
-        /// <returns>A task which performs the requested action.</returns>
-        Task StoreAsset(IParkitectDownloadedAsset downloadedAsset);
     }
 }

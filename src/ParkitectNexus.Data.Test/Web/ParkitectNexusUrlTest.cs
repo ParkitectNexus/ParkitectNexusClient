@@ -20,8 +20,8 @@ namespace ParkitectNexus.Data.Test.Web
             var result1 = ParkitectNexusUrl.Parse(url1);
 
             Assert.AreEqual(ParkitectNexusUrlAction.Install, result1.Action);
-            Assert.IsInstanceOfType(result1.Data, typeof(ParkitectNexusInstallUrlAction));
-            Assert.AreEqual("testidentifier", (result1.Data as ParkitectNexusInstallUrlAction)?.Id);
+            Assert.IsInstanceOfType(result1.Data, typeof(InstallUrlAction));
+            Assert.AreEqual("testidentifier", (result1.Data as InstallUrlAction)?.Id);
         }
         [TestMethod]
         public void TryParseAuthTest()
@@ -33,8 +33,8 @@ namespace ParkitectNexus.Data.Test.Web
             var result1 = ParkitectNexusUrl.Parse(url1);
 
             Assert.AreEqual(ParkitectNexusUrlAction.Auth, result1.Action);
-            Assert.IsInstanceOfType(result1.Data, typeof(ParkitectNexusAuthUrlAction));
-            Assert.AreEqual("myauthkey", (result1.Data as ParkitectNexusAuthUrlAction)?.Key);
+            Assert.IsInstanceOfType(result1.Data, typeof(AuthUrlAction));
+            Assert.AreEqual("myauthkey", (result1.Data as AuthUrlAction)?.Key);
         }
     }
 }

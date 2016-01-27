@@ -7,24 +7,23 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Client;
+using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
 namespace ParkitectNexus.Data.Reporting
 {
     public class CrashReporterFactory : ICrashReporterFactory
     {
         private readonly ILogger _logger;
-        private readonly IOperatingSystem _operatingSystem;
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusWebClientFactory _webClientFactory;
         private readonly IParkitectNexusWebsite _website;
 
         public CrashReporterFactory(IParkitectNexusWebClientFactory webClientFactory, IParkitectNexusWebsite website,
-            IParkitect parkitect, IOperatingSystem operatingSystem, ILogger logger)
+            IParkitect parkitect, ILogger logger)
         {
             _website = website;
             _parkitect = parkitect;
             _webClientFactory = webClientFactory;
-            _operatingSystem = operatingSystem;
             _logger = logger;
         }
 
@@ -50,7 +49,7 @@ namespace ParkitectNexus.Data.Reporting
         {
             try
             {
-                var os = _operatingSystem.Detect();
+                var os = OperatingSystem.Detect();
                 switch (os)
                 {
                     case SupportedOperatingSystem.Windows:

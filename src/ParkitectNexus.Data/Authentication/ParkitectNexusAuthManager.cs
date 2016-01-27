@@ -33,6 +33,7 @@ namespace ParkitectNexus.Data.Authentication
             _cacheManager = cacheManager;
         }
 
+        public event EventHandler Authenticated;
         public bool IsAuthenticated => !string.IsNullOrWhiteSpace(_authSettingsRepository.Model.APIKey);
 
         public string Key
@@ -42,6 +43,9 @@ namespace ParkitectNexus.Data.Authentication
             {
                 _authSettingsRepository.Model.APIKey = value;
                 _authSettingsRepository.Save();
+
+                if (value != null)
+                    OnAuthenticated();
             }
         }
 
@@ -49,12 +53,12 @@ namespace ParkitectNexus.Data.Authentication
         {
             AssertAuthenticated();
 
-            var cached = _cacheManager.GetItem<ApiUser>("user");
+            var cached = _cacheManager.GetItem<ApiUser>("user" + Key);
 
             if (cached == null)
             {
                 var real = await _website.API.GetUserInfo(Key);
-                _cacheManager.SetItem("user", real);
+                _cacheManager.SetItem("user" + Key, real);
                 return real;
             }
             return cached;
@@ -62,7 +66,9 @@ namespace ParkitectNexus.Data.Authentication
 
         public async Task<Image> GetAvatar()
         {
-            var cached = _cacheManager.GetItem<AvatarCache>("avatar");
+            AssertAuthenticated();
+
+            var cached = _cacheManager.GetItem<AvatarCache>("avatar" + Key);
 
             if (cached == null || !cached.File.Exists)
             {
@@ -70,7 +76,7 @@ namespace ParkitectNexus.Data.Authentication
                 {
                     if (fullsize == null)
                     {
-                        _cacheManager.SetItem("avatar", new AvatarCache {HasAvatar = false});
+                        _cacheManager.SetItem("avatar" + Key, new AvatarCache {HasAvatar = false});
                         return null;
                     }
 
@@ -83,7 +89,7 @@ namespace ParkitectNexus.Data.Authentication
                         resized.Save(fileStream, ImageFormat.Bmp);
                     }
 
-                    _cacheManager.SetItem("avatar", newCached);
+                    _cacheManager.SetItem("avatar" + Key, newCached);
                     return resized;
                 }
             }
@@ -99,6 +105,7 @@ namespace ParkitectNexus.Data.Authentication
 
         public async Task<ApiAsset[]> GetSubscribedAssets()
         {
+            AssertAuthenticated();
             var assets = new List<ApiAsset>();
             var subscriptions = await GetSubscriptions();
 
@@ -124,15 +131,20 @@ namespace ParkitectNexus.Data.Authentication
 
         public void Logout()
         {
+            _cacheManager.SetItem<AvatarCache>("user" + Key, null);
+            _cacheManager.SetItem<AvatarCache>("avatar" + Key, null);
             Key = null;
-            _cacheManager.SetItem<AvatarCache>("user", null);
-            _cacheManager.SetItem<AvatarCache>("avatar", null);
         }
 
         private void AssertAuthenticated()
         {
             if (!IsAuthenticated)
                 throw new Exception("No user authentication key has been set");
+        }
+
+        protected virtual void OnAuthenticated()
+        {
+            Authenticated?.Invoke(this, EventArgs.Empty);
         }
     }
 }
