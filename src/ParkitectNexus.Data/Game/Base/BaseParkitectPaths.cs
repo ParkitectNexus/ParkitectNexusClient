@@ -27,10 +27,10 @@ namespace ParkitectNexus.Data.Game.Base
             switch (type)
             {
                 case AssetType.Blueprint:
-				
-				return GetPathInSavesFolder("Saves"+Path.DirectorySeparatorChar+"Blueprints", true);
+                
+                return GetPathInSavesFolder("Saves"+Path.DirectorySeparatorChar+"Blueprints", true);
                 case AssetType.Savegame:
-				return GetPathInSavesFolder("Saves"+Path.DirectorySeparatorChar+"Savegames", true);
+                return GetPathInSavesFolder("Saves"+Path.DirectorySeparatorChar+"Savegames", true);
                 case AssetType.Mod:
                     return GetPathInSavesFolder("pnmods", true);
                 default:

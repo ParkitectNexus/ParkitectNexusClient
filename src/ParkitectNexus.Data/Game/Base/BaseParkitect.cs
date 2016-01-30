@@ -21,142 +21,142 @@ using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Game.Base
 {
-	/// <summary>
-	///     Represents the Parkitect game.
-	/// </summary>
-	public abstract class BaseParkitect : IParkitect
-	{
-		protected ILogger Logger { get; }
-		protected ISettingsRepository<GameSettings> GameSettings { get; }
+    /// <summary>
+    ///     Represents the Parkitect game.
+    /// </summary>
+    public abstract class BaseParkitect : IParkitect
+    {
+        protected ILogger Logger { get; }
+        protected ISettingsRepository<GameSettings> GameSettings { get; }
 
-		protected BaseParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger, ICacheManager cacheManager)
-		{
-			Logger = logger;
-			GameSettings = gameSettingsRepository;
-			LocalAssets = new LocalAssetsRepository(cacheManager, this, Logger);
-		}
+        protected BaseParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger, ICacheManager cacheManager)
+        {
+            Logger = logger;
+            GameSettings = gameSettingsRepository;
+            LocalAssets = new LocalAssetsRepository(cacheManager, this, Logger);
+        }
 
-		/// <summary>
-		///     Gets a collection of enabled and development mods.
-		/// </summary>
-		public virtual IEnumerable<IParkitectMod> ActiveMods
-		=> InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
+        /// <summary>
+        ///     Gets a collection of enabled and development mods.
+        /// </summary>
+        public virtual IEnumerable<IParkitectMod> ActiveMods
+        => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
 
-		/// <summary>
-		///     Gets or sets the installation path.
-		/// </summary>
-		/// <exception cref="ArgumentException">Thrown if the value is invalid.</exception>
-		public virtual string InstallationPath
-		{
-			get
-			{
-				return IsValidInstallationPath(GameSettings.Model.InstallationPath)
-					? GameSettings.Model.InstallationPath
-						: null;
-			}
-			set
-			{
-				if (!IsValidInstallationPath(value))
-					throw new ArgumentException("invalid installation path", nameof(value));
+        /// <summary>
+        ///     Gets or sets the installation path.
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown if the value is invalid.</exception>
+        public virtual string InstallationPath
+        {
+            get
+            {
+                return IsValidInstallationPath(GameSettings.Model.InstallationPath)
+                    ? GameSettings.Model.InstallationPath
+                        : null;
+            }
+            set
+            {
+                if (!IsValidInstallationPath(value))
+                    throw new ArgumentException("invalid installation path", nameof(value));
 
-				GameSettings.Model.InstallationPath = value;
-				GameSettings.Save();
-			}
-		}
+                GameSettings.Model.InstallationPath = value;
+                GameSettings.Save();
+            }
+        }
 
-		/// <summary>
-		///     Gets a value indicating whether the game is installed.
-		/// </summary>
-		public virtual bool IsInstalled => IsValidInstallationPath(InstallationPath);
+        /// <summary>
+        ///     Gets a value indicating whether the game is installed.
+        /// </summary>
+        public virtual bool IsInstalled => IsValidInstallationPath(InstallationPath);
 
-		/// <summary>
-		///     Gets a collection of paths.
-		/// </summary>
-		public abstract IParkitectPaths Paths { get; }
+        /// <summary>
+        ///     Gets a collection of paths.
+        /// </summary>
+        public abstract IParkitectPaths Paths { get; }
 
-		/// <summary>
-		///     Gets the assets repository.
-		/// </summary>
-		public ILocalAssetsRepository LocalAssets { get; }
+        /// <summary>
+        ///     Gets the assets repository.
+        /// </summary>
+        public ILocalAssetsRepository LocalAssets { get; }
 
-		/// <summary>
-		///     Gets a collection of assembly names provided by the game.
-		/// </summary>
-		public virtual IEnumerable<string> ManagedAssemblyNames
-		=>
-		!IsInstalled
-		? null
-			: Directory.GetFiles(Paths.DataManaged, "*.dll").Select(Path.GetFileName);
+        /// <summary>
+        ///     Gets a collection of assembly names provided by the game.
+        /// </summary>
+        public virtual IEnumerable<string> ManagedAssemblyNames
+        =>
+        !IsInstalled
+        ? null
+            : Directory.GetFiles(Paths.DataManaged, "*.dll").Select(Path.GetFileName);
 
-		/// <summary>
-		///     Gets a collection of installed mods.
-		/// </summary>
-		public virtual IEnumerable<IParkitectMod> InstalledMods
-		{
-			get
-			{
-				if (!IsInstalled)
-					yield break;
+        /// <summary>
+        ///     Gets a collection of installed mods.
+        /// </summary>
+        public virtual IEnumerable<IParkitectMod> InstalledMods
+        {
+            get
+            {
+                if (!IsInstalled)
+                    yield break;
 
-				// Iterate trough every directory in the mods directory which has a mod.json file.
-				foreach (
-					var path in
-					Directory.GetDirectories(Paths.GetAssetPath(AssetType.Mod)).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
-				{
-					// Attempt to deserialize the mod.json file.
-					var mod = new ParkitectMod(this, Logger);
-					try
-					{
-						JsonConvert.PopulateObject(File.ReadAllText(Path.Combine(path, "mod.json")), mod);
-						mod.InstallationPath = path;
-					}
-					catch
-					{
-						mod = null;
-					}
+                // Iterate trough every directory in the mods directory which has a mod.json file.
+                foreach (
+                    var path in
+                    Directory.GetDirectories(Paths.GetAssetPath(AssetType.Mod)).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
+                {
+                    // Attempt to deserialize the mod.json file.
+                    var mod = new ParkitectMod(this, Logger);
+                    try
+                    {
+                        JsonConvert.PopulateObject(File.ReadAllText(Path.Combine(path, "mod.json")), mod);
+                        mod.InstallationPath = path;
+                    }
+                    catch
+                    {
+                        mod = null;
+                    }
 
-					// If the mod.json file was deserialized successfully, return the mod.
-					if (mod != null)
-						yield return mod;
-				}
-			}
-		}
+                    // If the mod.json file was deserialized successfully, return the mod.
+                    if (mod != null)
+                        yield return mod;
+                }
+            }
+        }
 
-		/// <summary>
-		///     Sets the installation path if the specified path is a valid installation path.
-		/// </summary>
-		/// <param name="path">The path.</param>
-		/// <returns>true if valid; false otherwise.</returns>
-		public virtual bool SetInstallationPathIfValid(string path)
-		{
-			if (IsValidInstallationPath(path))
-			{
-				InstallationPath = path;
-				return true;
-			}
+        /// <summary>
+        ///     Sets the installation path if the specified path is a valid installation path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns>true if valid; false otherwise.</returns>
+        public virtual bool SetInstallationPathIfValid(string path)
+        {
+            if (IsValidInstallationPath(path))
+            {
+                InstallationPath = path;
+                return true;
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		/// <summary>
-		///     Detects the installation path.
-		/// </summary>
-		/// <returns>true if the installation path has been detected; false otherwise.</returns>
-		public abstract bool DetectInstallationPath();
+        /// <summary>
+        ///     Detects the installation path.
+        /// </summary>
+        /// <returns>true if the installation path has been detected; false otherwise.</returns>
+        public abstract bool DetectInstallationPath();
 
-		/// <summary>
-		///     Launches the game with the specified arguments.
-		/// </summary>
-		/// <param name="arguments">The arguments.</param>
-		/// <returns>The launched process.</returns>
-		public abstract Process Launch(string arguments = "-single-instance");
+        /// <summary>
+        ///     Launches the game with the specified arguments.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The launched process.</returns>
+        public abstract Process Launch(string arguments = "-single-instance");
 
-		protected abstract bool IsValidInstallationPath(string path);
+        protected abstract bool IsValidInstallationPath(string path);
 
-		protected virtual void CompileActiveMods()
-		{
-			foreach (var mod in ActiveMods)
-				mod.Compile();
-		}
-	}
+        protected virtual void CompileActiveMods()
+        {
+            foreach (var mod in ActiveMods)
+                mod.Compile();
+        }
+    }
 }
