@@ -1,6 +1,8 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data.Web.API;
+
 namespace ParkitectNexus.Data.Web
 {
     /// <summary>
@@ -9,9 +11,22 @@ namespace ParkitectNexus.Data.Web
     public interface IParkitectNexusWebsite
     {
         /// <summary>
-        ///     Launches the nexus.
+        ///     Launches the website.
         /// </summary>
         void Launch();
+
+        /// <summary>
+        ///     Launches the website at the specified path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        void Launch(string path);
+
+        /// <summary>
+        ///     Launches the website at the specified path and sub domain.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="subdomain">The sub domain.</param>
+        void Launch(string path, string subdomain);
 
         /// <summary>
         ///     Resolves the URL to the specified path and subdomain.
@@ -27,5 +42,7 @@ namespace ParkitectNexus.Data.Web
         /// <param name="path">The path.</param>
         /// <returns>The URL.</returns>
         string ResolveUrl(string path);
+
+        IParkitectNexusAPI API { get; }
     }
 }

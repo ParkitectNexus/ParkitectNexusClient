@@ -5,6 +5,7 @@ using Gdk;
 using System.IO;
 using System.Drawing.Imaging;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Assets;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -15,9 +16,9 @@ namespace ParkitectNexus.Client.Linux
         const int NAME = 0;
         const int IMAGE = 1;
         const int PARKITECT_ASSET = 2;
-        private ListStore _blueprintListStore = new ListStore(typeof(string),typeof(Pixbuf),typeof(IParkitectAsset));
-        private IParkitect _parkitect;
-        private IParkitectAsset _selectedAsset;
+        private ListStore _blueprintListStore = new ListStore(typeof(string),typeof(Pixbuf),typeof(IAsset));
+		private IAsset _selectedAsset;
+		private IParkitect _parkitect;
         private Pixbuf _selectedAssetImage;
         private int _sizeChange = 0;
 
@@ -42,7 +43,7 @@ namespace ParkitectNexus.Client.Linux
 
         private bool ImageUpdate()
         {
-            if (_selectedAsset != null)
+			if (_selectedAsset != null)
             {
 
                 int lwPaneSize = (BlueprintPane.MaxPosition - BlueprintPane.Position)-20;
@@ -73,12 +74,12 @@ namespace ParkitectNexus.Client.Linux
                 TreeIter iter;
                 _blueprintListStore.GetIter(out iter, savegames.SelectedItems[0]);
 
-                IParkitectAsset asset = (IParkitectAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
+				IAsset asset = (IAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
 
                 _selectedAsset = asset;
                 savegameName.Text = _selectedAsset.Name;
                 using (MemoryStream stream = new MemoryStream ()) {
-                    _selectedAsset.Thumbnail.Save (stream, ImageFormat.Png);
+					_selectedAsset.GetImage().Result.Save (stream, ImageFormat.Png);
                     stream.Position = 0;
                     _selectedAssetImage = new Pixbuf(stream);
                 }
@@ -90,17 +91,15 @@ namespace ParkitectNexus.Client.Linux
         public void UpdateListStore()
         {
             _blueprintListStore.Clear();
-            foreach (var savegame in _parkitect.GetAssets(ParkitectAssetType.Savegame))
+			foreach (var savegame in _parkitect.LocalAssets.GetAssets(AssetType.Savegame))
             {
-
-                using (MemoryStream stream = new MemoryStream())
-                {
+					using (MemoryStream stream = new MemoryStream ()) {
                     
-                    savegame.Thumbnail.Save(stream, ImageFormat.Png);
-                    stream.Position = 0;
-                    Pixbuf pixbuf = new Pixbuf(stream);
-                    _blueprintListStore.AppendValues(savegame.Name, pixbuf,savegame);
-                }
+						savegame.GetImage ().Result.Save (stream, ImageFormat.Png);
+						stream.Position = 0;
+						Pixbuf pixbuf = new Pixbuf (stream);
+						_blueprintListStore.AppendValues (savegame.Name, pixbuf, savegame);
+					}
             }
         }
 

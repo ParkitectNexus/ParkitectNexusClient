@@ -10,6 +10,7 @@ using System.Linq;
 using System.Xml;
 using Microsoft.CSharp;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Game
@@ -18,7 +19,7 @@ namespace ParkitectNexus.Data.Game
     ///     Represents a Parkitect mod provided by ParkitectNexus.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class ParkitectMod : IParkitectMod
+    public class ParkitectMod :IParkitectMod
     {
         /// <summary>
         ///     Assemblies provided by the mono runtime.
@@ -354,7 +355,7 @@ namespace ParkitectNexus.Data.Game
             throw new NotImplementedException("Can't open a mod");
         }
 
-        public ParkitectAssetType Type { get; } = ParkitectAssetType.Mod;
+        public AssetType Type { get; } = AssetType.Mod;
 
         /// <summary>
         ///     Gets or sets the installation path.

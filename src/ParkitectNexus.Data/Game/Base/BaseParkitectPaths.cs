@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using ParkitectNexus.Data.Assets;
 
 namespace ParkitectNexus.Data.Game.Base
 {
@@ -19,10 +20,24 @@ namespace ParkitectNexus.Data.Game.Base
         public virtual string Installation => GetPathInGameFolder(null);
         public abstract string Data { get; }
         public abstract string DataManaged { get; }
-        public virtual string Mods => GetPathInSavesFolder("pnmods", true);
         public virtual string NativeMods => GetPathInSavesFolder("Mods", true);
-        public virtual string Blueprints => GetPathInSavesFolder("Saves\\Blueprints", true);
-        public virtual string Savegames => GetPathInSavesFolder("Saves\\Savegames", true);
+
+        public virtual string GetAssetPath(AssetType type)
+        {
+            switch (type)
+            {
+                case AssetType.Blueprint:
+				
+				return GetPathInSavesFolder("Saves"+Path.DirectorySeparatorChar+"Blueprints", true);
+                case AssetType.Savegame:
+				return GetPathInSavesFolder("Saves"+Path.DirectorySeparatorChar+"Savegames", true);
+                case AssetType.Mod:
+                    return GetPathInSavesFolder("pnmods", true);
+                default:
+                    throw new Exception("Unsupported asset type.");
+            }
+        }
+
         public string GetPathInSavesFolder(string path)
         {
             return GetPathInSavesFolder(path, false);

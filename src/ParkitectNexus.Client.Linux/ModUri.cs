@@ -4,23 +4,35 @@ using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Presenter;
 using Gtk;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Tasks;
+using ParkitectNexus.Data.Tasks.Prefab;
+using ParkitectNexus.Data.Web.Models;
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Client.Linux
 {
     public partial class ModUri : Gtk.Dialog, IPresenter
     {
         private readonly IParkitect _parkitect;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
-        private readonly IPresenterFactory _presenterFactory;
+       private readonly IPresenterFactory _presenterFactory;
         private readonly ILogger _logger;
-        public ModUri (IParkitect parkitect,ILogger logger,IParkitectOnlineAssetRepository parkitectOnlineAssetRepository,IPresenterFactory presenterFactory)
+		private IQueueableTaskManager _queuableTaskManager;
+		private IParkitectNexusWebsite _website;
+		private IRemoteAssetRepository _assetRepository;
+		private IParkitectNexusAPI _nexusAPI;
+		public ModUri (IQueueableTaskManager queuableTaskManager, IRemoteAssetRepository assetRepositry,IParkitectNexusAPI nexusAPI,IParkitectNexusWebsite website,IQueueableTaskManager taskManager,IParkitect parkitect,ILogger logger,IPresenterFactory presenterFactory)
         {
-            this.Build ();
-            this._logger = logger;
-            this._parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+			this.Build ();
+			this._assetRepository = assetRepositry;
+			this._nexusAPI = nexusAPI;
+
+			this._website = website;
+			this._logger = logger;
             this._parkitect = parkitect;
             this._presenterFactory = presenterFactory;
-        }
+			this._queuableTaskManager = queuableTaskManager;
+		}
 
         /// <summary>
         /// subit the URI and proceed with mod installation
@@ -43,10 +55,19 @@ namespace ParkitectNexus.Client.Linux
                 errorDialog.Destroy ();
             } else {
 
-                // Run the download process in an installer form, for a nice visible process.
+				//var assetTask =new InstallAssetTask (_parkitect, _website, _assetRepository);
+				//assetTask.Data = parkitectNexusUrl.Data;
+				// Run the download process in an installer form, for a nice visible process.
 
-                var form = new ModInstallDialog(parkitectNexusUrl, this, _logger, _parkitect, _parkitectOnlineAssetRepository);
-                switch (form.Run ()) {
+
+					ParkitectNexusUrl nexusURL;
+					ParkitectNexusUrl.TryParse (txtNexusURI.Text, out nexusURL);
+					var task = new InstallAssetTask (_parkitect, _website, _assetRepository);
+					task.Data = nexusURL.Data;
+					_queuableTaskManager.Add (task);
+
+
+				/*switch (form.Run ()) {
                 case (int)Gtk.ResponseType.Apply:
                     
                     form.Destroy ();
@@ -56,7 +77,7 @@ namespace ParkitectNexus.Client.Linux
 
                  break;
                 }
-                form.Destroy ();
+                form.Destroy ();*/
                 this.Destroy ();
             }
         

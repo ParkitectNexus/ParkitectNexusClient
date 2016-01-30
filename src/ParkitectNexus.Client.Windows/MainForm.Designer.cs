@@ -1,4 +1,4 @@
-﻿using ParkitectNexus.Client.Windows.SliderPanels;
+﻿using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 
 namespace ParkitectNexus.Client.Windows
 {
@@ -36,6 +36,7 @@ namespace ParkitectNexus.Client.Windows
             this.metroToggle1 = new MetroFramework.Controls.MetroToggle();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.developmentLabel = new MetroFramework.Controls.MetroLabel();
+            this.authLink = new MetroFramework.Controls.MetroLink();
             this.SuspendLayout();
             // 
             // metroTabControl
@@ -43,7 +44,7 @@ namespace ParkitectNexus.Client.Windows
             this.metroTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl.Location = new System.Drawing.Point(20, 70);
             this.metroTabControl.Name = "metroTabControl";
-            this.metroTabControl.Size = new System.Drawing.Size(682, 358);
+            this.metroTabControl.Size = new System.Drawing.Size(682, 360);
             this.metroTabControl.TabIndex = 0;
             this.metroTabControl.UseSelectable = true;
             this.metroTabControl.SelectedIndexChanged += new System.EventHandler(this.metroTabControl_SelectedIndexChanged);
@@ -80,6 +81,7 @@ namespace ParkitectNexus.Client.Windows
             // 
             // developmentLabel
             // 
+            this.developmentLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.developmentLabel.AutoSize = true;
             this.developmentLabel.Enabled = false;
             this.developmentLabel.FontWeight = MetroFramework.MetroLabelWeight.Bold;
@@ -91,6 +93,22 @@ namespace ParkitectNexus.Client.Windows
             this.developmentLabel.Text = "DEVELOPMENT BUILD";
             this.developmentLabel.UseStyleColors = true;
             // 
+            // authLink
+            // 
+            this.authLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.authLink.Image = global::ParkitectNexus.Client.Windows.Properties.Resources.appbar_user_tie;
+            this.authLink.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.authLink.ImageSize = 32;
+            this.authLink.Location = new System.Drawing.Point(584, 37);
+            this.authLink.Name = "authLink";
+            this.authLink.NoFocusImage = global::ParkitectNexus.Client.Windows.Properties.Resources.appbar_user_tie;
+            this.authLink.Size = new System.Drawing.Size(129, 27);
+            this.authLink.TabIndex = 2;
+            this.authLink.Text = "DEFAULT_VALUE";
+            this.authLink.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.authLink.UseSelectable = true;
+            this.authLink.Click += new System.EventHandler(this.authLink_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -98,13 +116,14 @@ namespace ParkitectNexus.Client.Windows
             this.BackImage = global::ParkitectNexus.Client.Windows.Properties.Resources.parkitectnexus_logo_full;
             this.BackImagePadding = new System.Windows.Forms.Padding(20, 15, 5, 5);
             this.BackMaxSize = 100;
-            this.ClientSize = new System.Drawing.Size(722, 448);
+            this.ClientSize = new System.Drawing.Size(722, 450);
+            this.Controls.Add(this.authLink);
             this.Controls.Add(this.developmentLabel);
             this.Controls.Add(this.metroTabControl);
             this.DisplayHeader = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(400, 300);
+            this.MinimumSize = new System.Drawing.Size(450, 450);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 70, 20, 20);
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
@@ -124,6 +143,7 @@ namespace ParkitectNexus.Client.Windows
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroToggle metroToggle1;
         private MetroFramework.Controls.MetroLabel developmentLabel;
+        private MetroFramework.Controls.MetroLink authLink;
     }
 }
 

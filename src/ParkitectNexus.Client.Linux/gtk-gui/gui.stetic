@@ -15,7 +15,7 @@
       </source>
     </icon-set>
   </icon-factory>
-  <widget class="Gtk.Window" id="MainWindow" design-size="460 370">
+  <widget class="Gtk.Window" id="MainWindow" design-size="460 455">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -60,13 +60,69 @@
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="Gtk.MenuBar" id="menubar1">
+          <widget class="Gtk.HBox" id="hbox3">
             <property name="MemberName" />
-            <node name="menubar1" type="Menubar">
-              <node type="Menu" action="helpAction">
-                <node type="Menuitem" action="AboutAction" />
-              </node>
-            </node>
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.MenuBar" id="menubar1">
+                <property name="MemberName" />
+                <node name="menubar1" type="Menubar">
+                  <node type="Menu" action="helpAction">
+                    <node type="Menuitem" action="AboutAction" />
+                  </node>
+                </node>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder />
+            </child>
+            <child>
+              <widget class="Gtk.EventBox" id="LoginBox">
+                <property name="MemberName" />
+                <child>
+                  <widget class="Gtk.HBox" id="hbox4">
+                    <property name="MemberName" />
+                    <property name="Spacing">6</property>
+                    <child>
+                      <widget class="Gtk.Image" id="image71">
+                        <property name="MemberName" />
+                        <property name="Pixbuf">stock:gtk-close Menu</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Label" id="label1">
+                        <property name="MemberName" />
+                        <property name="LabelProp" translatable="yes">User</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">0</property>
@@ -138,7 +194,7 @@
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Alignment" id="alignment1">
+              <widget class="Gtk.Alignment" id="alignment2">
                 <property name="MemberName" />
                 <child>
                   <placeholder />
@@ -160,7 +216,6 @@
                 <property name="Label" translatable="yes" />
                 <property name="UseUnderline">True</property>
                 <property name="Relief">Half</property>
-                <signal name="Clicked" handler="LaunchParkitect" after="yes" />
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -173,6 +228,43 @@
           </widget>
           <packing>
             <property name="Position">3</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Statusbar" id="LoadingStatus">
+            <property name="MemberName" />
+            <property name="Visible">False</property>
+            <property name="Spacing">2</property>
+            <child>
+              <widget class="Gtk.Label" id="TaskInfoField">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">-</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ProgressBar" id="StatusLoading">
+                <property name="MemberName" />
+                <property name="Visible">False</property>
+                <property name="Fraction">0.07</property>
+                <property name="Ellipsize">Middle</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">4</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -207,7 +299,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Install Mod</property>
+                    <property name="Label" translatable="yes">Install Asset</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="InstallMod" />
                   </widget>
@@ -359,7 +451,6 @@
                                 <child>
                                   <widget class="Gtk.EventBox" id="eventViewParkitectNexus">
                                     <property name="MemberName" />
-                                    <signal name="ButtonPressEvent" handler="VistModWebsite" after="yes" />
                                     <child>
                                       <widget class="Gtk.Label" id="lblViewOnParkitectNexusWebsite">
                                         <property name="MemberName" />
@@ -431,7 +522,6 @@
                                 <property name="Type">TextOnly</property>
                                 <property name="Label" translatable="yes">Uninstall</property>
                                 <property name="UseUnderline">True</property>
-                                <signal name="Clicked" handler="UninstallMod" after="yes" />
                               </widget>
                               <packing>
                                 <property name="Position">6</property>
@@ -1034,6 +1124,77 @@
                     </child>
                   </widget>
                 </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="ParkitectNexus.Client.Linux.TaskItems" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.ScrolledWindow" id="scrolledwindow1">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="ShadowType">In</property>
+        <child>
+          <widget class="Gtk.NodeView" id="Tasks">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="ParkitectNexus.Client.Linux.TaskItems" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.VBox" id="vbox3">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="scrolledwindow2">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.NodeView" id="TaskList">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="ParkitectNexus.Client.Linux.TaskItems" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.VBox" id="vbox2">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="scrolledwindow1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.NodeView" id="Tasks">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
               </widget>
             </child>
           </widget>

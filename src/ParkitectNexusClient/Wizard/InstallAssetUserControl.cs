@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -15,24 +16,24 @@ namespace ParkitectNexus.Client.Wizard
         private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
         private readonly IParkitectNexusUrl _parkitectNexusUrl;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IRemoteAssetRepository _remoteAssetRepository;
         private readonly BaseWizardUserControl _returnControl;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
 
         public InstallAssetUserControl(IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, ILogger logger,
+            IRemoteAssetRepository remoteAssetRepository, ILogger logger,
             IParkitectNexusUrl parkitectNexusUrl,
             BaseWizardUserControl returnControl)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectOnlineAssetRepository == null)
-                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (remoteAssetRepository == null)
+                throw new ArgumentNullException(nameof(remoteAssetRepository));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
             if (parkitectNexusUrl == null) throw new ArgumentNullException(nameof(parkitectNexusUrl));
             _parkitect = parkitect;
-            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _remoteAssetRepository = remoteAssetRepository;
             _logger = logger;
             _parkitectNexusUrl = parkitectNexusUrl;
             _returnControl = returnControl;
@@ -41,53 +42,54 @@ namespace ParkitectNexus.Client.Wizard
 
             // Format the "installing" label.
             installingLabel.Text =
-                $"Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
+                $"Please wait while ParkitectNexus is installing your asset.";
         }
 
         private async void InstallAsset()
         {
-            var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
-            try
-            {
-                // Download the asset.
-                var asset = await _parkitectOnlineAssetRepository.DownloadFile(_parkitectNexusUrl);
-
-                if (asset == null)
-                {
-                    // If the asset has failed to download, show some feedback to the user.
-                    MessageBox.Show(this,
-                        $"Failed to install {assetName}!\nPlease try again later.",
-                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    WizardForm.Close();
-                    return;
-                }
-
-                _keyword = "Installing";
-
-                await _parkitect.StoreAsset(asset);
-
-                asset.Dispose();
-            }
-            catch (Exception e)
-            {
-                _logger.WriteLine($"Failed to install {assetName}!");
-                _logger.WriteException(e);
-
-                // If the asset has failed to download, show some feedback to the user.
-                MessageBox.Show(this,
-                    $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}",
-                    "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                downloadingTimer.Enabled = false;
-                statusLabel.Text = "Done!";
-                progressBar.Style = ProgressBarStyle.Continuous;
-                progressBar.Value = 100;
-                WizardForm.Cursor = DefaultCursor;
-                finishButton.Enabled = true;
-                closeTimer.Enabled = true;
-            }
+            throw new NotImplementedException();
+//            var assetName = _parkitectNexusUrl.AssetType.GetCustomAttribute<AssetInfoAttribute>()?.Name;
+//            try
+//            {
+//                // Download the asset.
+//                var asset = await _remoteAssetRepository.DownloadFile(_parkitectNexusUrl);
+//
+//                if (asset == null)
+//                {
+//                    // If the asset has failed to download, show some feedback to the user.
+//                    MessageBox.Show(this,
+//                        $"Failed to install {assetName}!\nPlease try again later.",
+//                        "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//                    WizardForm.Close();
+//                    return;
+//                }
+//
+//                _keyword = "Installing";
+//
+//                await _parkitect.StoreAsset(asset);
+//
+//                asset.Dispose();
+//            }
+//            catch (Exception e)
+//            {
+//                _logger.WriteLine($"Failed to install {assetName}!");
+//                _logger.WriteException(e);
+//
+//                // If the asset has failed to download, show some feedback to the user.
+//                MessageBox.Show(this,
+//                    $"Failed to install {assetName}!\nPlease try again later.\n\n{e.Message}",
+//                    "ParkitectNexus Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//            }
+//            finally
+//            {
+//                downloadingTimer.Enabled = false;
+//                statusLabel.Text = "Done!";
+//                progressBar.Style = ProgressBarStyle.Continuous;
+//                progressBar.Value = 100;
+//                WizardForm.Cursor = DefaultCursor;
+//                finishButton.Enabled = true;
+//                closeTimer.Enabled = true;
+//            }
         }
 
         #region Overrides of BaseWizardUserControl

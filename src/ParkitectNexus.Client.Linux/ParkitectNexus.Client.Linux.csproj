@@ -70,7 +70,6 @@
     <Compile Include="MainWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ModsPage.cs" />
     <Compile Include="ParkitectInstallDialog.cs" />
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="TreeNodeModContainer.cs" />
@@ -88,6 +87,10 @@
     <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.BlueprintPage.cs" />
     <Compile Include="SavegamePage.cs" />
     <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.SavegamePage.cs" />
+    <Compile Include="ModsPage.cs" />
+    <Compile Include="TreeNodeTaskContainer.cs" />
+    <Compile Include="TaskItems.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.TaskItems.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -118,19 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="appbar_chevron_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\appbar.chevron.left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="parkitectnexus_logo_full" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\parkitectnexus_logo_full.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="appbar_information" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\appbar.information.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="parkitectnexus_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\parkitectnexus_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="parkitectnexus_logo_full" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\parkitectnexus_logo_full.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="appbar_chevron_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\appbar.chevron.left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="parkitect_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\parkitect_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="appbar.user.tie" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\appbar.user.tie.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="parkitectnexus_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\parkitectnexus_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="appbar.check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\appbar.check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

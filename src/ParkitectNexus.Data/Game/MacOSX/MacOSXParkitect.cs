@@ -3,8 +3,10 @@
 
 using System.Diagnostics;
 using System.IO;
+using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Settings.Models;
 using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Game.MacOSX
@@ -14,7 +16,7 @@ namespace ParkitectNexus.Data.Game.MacOSX
     /// </summary>
     public class MacOSXParkitect : BaseParkitect
     {
-        public MacOSXParkitect(ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger) : base(settingsRepositoryFactory, logger)
+        public MacOSXParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger, ICacheManager cacheManager) : base(gameSettingsRepository, logger, cacheManager)
         {
             Paths = new MacOSXParkitectPaths(this);
         }

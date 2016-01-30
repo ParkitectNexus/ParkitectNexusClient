@@ -13,7 +13,6 @@ namespace ParkitectNexus.Client.Linux
     {
         public ParkitectNexusUrl _ParkitectNexusUrl;
         private IParkitect _parkitect;
-        private IParkitectOnlineAssetRepository _assetRepository;
         private int _dots;
         private int _dotsDirection = 1;
         private string _keyword = "Downloading";
@@ -22,7 +21,7 @@ namespace ParkitectNexus.Client.Linux
 
         private volatile bool isFinished = false;
 
-        public ModInstallDialog (ParkitectNexusUrl parkitectNexusUrl,IPresenter presenter,ILogger logger,IParkitect parkitect, IParkitectOnlineAssetRepository parkitectOnlineAssetRepository)
+        public ModInstallDialog (ParkitectNexusUrl parkitectNexusUrl,IPresenter presenter,ILogger logger,IParkitect parkitect)
         {
 
             this.Parent = (Dialog)presenter;
@@ -31,17 +30,16 @@ namespace ParkitectNexus.Client.Linux
             this._ParkitectNexusUrl = parkitectNexusUrl;
             this._logger = logger;
             this._parkitect = parkitect;
-            this._assetRepository = parkitectOnlineAssetRepository;
             this.Build ();
 
             if (_parkitect == null) throw new ArgumentNullException(nameof(_parkitect));
-            if (_assetRepository == null)
-                throw new ArgumentNullException(nameof(_ParkitectNexusUrl));
+          //  if (_assetRepository == null)
+          //      throw new ArgumentNullException(nameof(_ParkitectNexusUrl));
             if (_ParkitectNexusUrl == null) throw new ArgumentNullException(nameof(_ParkitectNexusUrl));
 
             // Format the "installing" label.
             //installingLabel.Text = "Please wait while ParkitectNexus is installing {parkitectNexusUrl.AssetType} \"{parkitectNexusUrl.Name}\".";
-            this.lblModName.Text = "Please wait while ParkitectNexus is installing " + _ParkitectNexusUrl.AssetType + " \"" + _ParkitectNexusUrl.Name + "\".";
+          //  this.lblModName.Text = "Please wait while ParkitectNexus is installing " + _ParkitectNexusUrl.AssetType + " \"" + _ParkitectNexusUrl.Name + "\".";
 
             GLib.Timeout.Add(100, new GLib.TimeoutHandler(UpdateProgress));
             GLib.Timeout.Add(100, new GLib.TimeoutHandler(DownloadLabelUpdate));
@@ -102,7 +100,7 @@ namespace ParkitectNexus.Client.Linux
         private async void Process()
         {
 
-            var assetName = _ParkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
+          /*  var assetName = _ParkitectNexusUrl.AssetType.GetCustomAttribute<ParkitectAssetInfoAttribute>()?.Name;
             try
             {
                 // Download the asset.
@@ -145,7 +143,7 @@ namespace ParkitectNexus.Client.Linux
             {
                 isFinished = true;
 
-            }
+            }*/
 
         }
 

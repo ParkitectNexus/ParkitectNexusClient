@@ -1,25 +1,13 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
-using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Web
 {
     public interface IParkitectNexusUrl
     {
-        /// <summary>
-        ///     Gets the name.
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        ///     Gets the type of the asset.
-        /// </summary>
-        ParkitectAssetType AssetType { get; }
-
-        /// <summary>
-        ///     Gets the file hash.
-        /// </summary>
-        string FileHash { get; }
+        ParkitectNexusUrlAction Action { get; }
+        IUrlAction Data { get; }
     }
 }

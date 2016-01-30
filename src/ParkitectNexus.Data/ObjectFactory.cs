@@ -1,10 +1,13 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data.Authentication;
+using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using StructureMap;
@@ -24,13 +27,18 @@ namespace ParkitectNexus.Data
             registry.IncludeRegistry<PresenterRegistry>();
             registry.IncludeRegistry<UtilityRegistry>();
 
-            //repository settings
+            // repository settings
             registry.For(typeof (ISettingsRepository<>)).Singleton().Use(typeof (SettingsRepository<>));
-            registry.For<ISettingsRepositoryFactory>().Use<SettingsRepositoryFactory>();
 
-            //used to send crash reports
+            // used to send crash reports
             registry.For<ICrashReporterFactory>().Use<CrashReporterFactory>();
 
+            // caching
+            registry.For<ICacheManager>().Use<CacheManager>();
+
+            registry.For<IQueueableTaskManager>().Singleton().Use<QueueableTaskManager>();
+
+            registry.For<IParkitectNexusAuthManager>().Singleton().Use<ParkitectNexusAuthManager>();
 
             return registry;
         }

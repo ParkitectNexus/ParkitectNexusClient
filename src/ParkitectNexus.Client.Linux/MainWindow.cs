@@ -5,6 +5,7 @@ using ParkitectNexus.Client.Linux;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Client;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Tasks;
 
 public partial class MainWindow: Gtk.Window, IPresenter
 {
@@ -12,11 +13,14 @@ public partial class MainWindow: Gtk.Window, IPresenter
     private readonly IPresenterFactory _presenterFactory;
     private IPresenter[] _presenterPages;
     private int _previousPage = -1;
+	private IQueueableTaskManager _queuableTaskManager;
 
-    public MainWindow (IPresenterFactory presenterFactory,IParkitect parkitect, ILogger logger) : base (Gtk.WindowType.Toplevel)
+	public MainWindow (IQueueableTaskManager taskManager,IPresenterFactory presenterFactory,IParkitect parkitect, ILogger logger) : base (Gtk.WindowType.Toplevel)
     {
         _parkitect = parkitect;
         _presenterFactory = presenterFactory;
+		_queuableTaskManager = taskManager;
+
 
         Build ();
         logger.Open(System.IO.Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
@@ -26,7 +30,11 @@ public partial class MainWindow: Gtk.Window, IPresenter
         ModLoaderUtil.InstallModLoader (parkitect,logger);
        presenterFactory.InstantiatePresenter<ProtocalInstallUtility>();
 
-        _presenterPages = new IPresenter[] { presenterFactory.InstantiatePresenter<ModsPage>(this), presenterFactory.InstantiatePresenter<SavegamePage>(this), presenterFactory.InstantiatePresenter<BlueprintPage>(this) };
+        _presenterPages = new IPresenter[] {
+			presenterFactory.InstantiatePresenter<ModsPage>(this), 
+			presenterFactory.InstantiatePresenter<SavegamePage>(this), 
+			presenterFactory.InstantiatePresenter<BlueprintPage>(this),
+			presenterFactory.InstantiatePresenter<TaskItems>(this)};
 
         //remove the default page
         Pages.RemovePage (0);
@@ -34,8 +42,10 @@ public partial class MainWindow: Gtk.Window, IPresenter
         AddPageToPages("Mods", (Widget)_presenterPages[0]);
         AddPageToPages("Savegames", (Widget)_presenterPages[1]);
         AddPageToPages("Blueprints", (Widget)_presenterPages[2]);
-
+		AddPageToPages ("Tasks", (Widget)_presenterPages [3]);
+			
         Pages.SwitchPage += Pages_SwitchPage;
+
 
     }
 

@@ -3,13 +3,14 @@
 
 using System.Collections.Generic;
 using System.IO;
+using ParkitectNexus.Data.Assets;
 
 namespace ParkitectNexus.Data.Game
 {
     /// <summary>
     ///     Provides the functionality of a Parkitect mod provided by ParkitectNexus.
     /// </summary>
-    public interface IParkitectMod : IParkitectAsset
+    public interface IParkitectMod
     {
         /// <summary>
         ///     Gets the parkitect instance this mod was installed to.

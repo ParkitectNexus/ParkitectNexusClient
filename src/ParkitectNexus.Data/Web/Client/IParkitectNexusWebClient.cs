@@ -15,5 +15,6 @@ namespace ParkitectNexus.Data.Web.Client
         string UploadString(string url, string data);
         Stream OpenRead(string url);
         void DownloadFile(string url, string path);
+        void Authorize();
     }
 }

@@ -8,6 +8,7 @@ using CommandLine;
 using ParkitectNexus.Client.Settings;
 using ParkitectNexus.Client.Wizard;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
@@ -22,34 +23,34 @@ namespace ParkitectNexus.Client
         private readonly string[] _args;
         private readonly ICrashReporterFactory _reportingFactory;
         private readonly IParkitect _parkitect;
-        private readonly IParkitectOnlineAssetRepository _parkitectOnlineAssetRepository;
+        private readonly IRemoteAssetRepository _remoteAssetRepository;
         private readonly IParkitectNexusWebsite _parkitectNexusWebsite;
         private readonly IOperatingSystem _operatingSystem;
-        private readonly ISettingsRepositoryFactory _settingsRepositoryFactory;
+        private readonly ISettingsRepository<ClientSettings> _clientSettingsRepository;
         private readonly ILogger _logger;
 
         private readonly CommandLineOptions _options = new CommandLineOptions();
 
         public App(string[] args, ICrashReporterFactory reportingFactory, IParkitect parkitect,
-            IParkitectOnlineAssetRepository parkitectOnlineAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite,
-            IOperatingSystem operatingSystem, ISettingsRepositoryFactory settingsRepositoryFactory, ILogger logger)
+            IRemoteAssetRepository remoteAssetRepository, IParkitectNexusWebsite parkitectNexusWebsite,
+            IOperatingSystem operatingSystem, ISettingsRepository<ClientSettings> clientSettingsRepository, ILogger logger)
         {
             if (args == null) throw new ArgumentNullException(nameof(args));
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (parkitectOnlineAssetRepository == null)
-                throw new ArgumentNullException(nameof(parkitectOnlineAssetRepository));
+            if (remoteAssetRepository == null)
+                throw new ArgumentNullException(nameof(remoteAssetRepository));
             if (parkitectNexusWebsite == null) throw new ArgumentNullException(nameof(parkitectNexusWebsite));
             if (operatingSystem == null) throw new ArgumentNullException(nameof(operatingSystem));
-            if (settingsRepositoryFactory == null) throw new ArgumentNullException(nameof(settingsRepositoryFactory));
+            if (clientSettingsRepository == null) throw new ArgumentNullException(nameof(clientSettingsRepository));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
 
             _args = args;
             _reportingFactory = reportingFactory;
             _parkitect = parkitect;
-            _parkitectOnlineAssetRepository = parkitectOnlineAssetRepository;
+            _remoteAssetRepository = remoteAssetRepository;
             _parkitectNexusWebsite = parkitectNexusWebsite;
             _operatingSystem = operatingSystem;
-            _settingsRepositoryFactory = settingsRepositoryFactory;
+            _clientSettingsRepository = clientSettingsRepository;
             _logger = logger;
 
             Parser.Default.ParseArguments(args, _options);
@@ -57,8 +58,6 @@ namespace ParkitectNexus.Client
 
         public void Run()
         {
-            var settings = _settingsRepositoryFactory.Repository<ClientSettings>();
-
             _logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
             _logger.MinimumLogLevel = _options.LogLevel;
 
@@ -86,11 +85,11 @@ namespace ParkitectNexus.Client
 
 
                 // Install backlog.
-                if (!string.IsNullOrWhiteSpace(settings.Model.DownloadOnNextRun))
+                if (!string.IsNullOrWhiteSpace(_clientSettingsRepository.Model.DownloadOnNextRun))
                 {
-                    Download(settings.Model.DownloadOnNextRun);
-                    settings.Model.DownloadOnNextRun = null;
-                    settings.Save();
+                    Download(_clientSettingsRepository.Model.DownloadOnNextRun);
+                    _clientSettingsRepository.Model.DownloadOnNextRun = null;
+                    _clientSettingsRepository.Save();
                 }
 
                 // Process download option.
@@ -108,14 +107,14 @@ namespace ParkitectNexus.Client
                 }
 
                 // Handle silent calls.
-                if (_options.Silent && !settings.Model.BootOnNextRun)
+                if (_options.Silent && !_clientSettingsRepository.Model.BootOnNextRun)
                     return;
 
-                settings.Model.BootOnNextRun = false;
-                settings.Save();
+                _clientSettingsRepository.Model.BootOnNextRun = false;
+                _clientSettingsRepository.Save();
 
                 var form = new WizardForm();
-                form.Attach(new MenuUserControl(_parkitect, _parkitectNexusWebsite, _parkitectOnlineAssetRepository,
+                form.Attach(new MenuUserControl(_parkitect, _parkitectNexusWebsite, _remoteAssetRepository,
                     _reportingFactory, _logger));
                 Application.Run(form);
             }
@@ -198,7 +197,7 @@ namespace ParkitectNexus.Client
 
             // Run the download process in an installer form, for a nice visible process.
             var form = new WizardForm();
-            form.Attach(new InstallAssetUserControl(_parkitect, _parkitectOnlineAssetRepository, _logger,
+            form.Attach(new InstallAssetUserControl(_parkitect, _remoteAssetRepository, _logger,
                 parkitectNexusUrl, null));
             Application.Run(form);
         }
@@ -209,7 +208,7 @@ namespace ParkitectNexus.Client
             return false;
 #else
             var repositoryFactory = ObjectFactory.GetInstance<ISettingsRepositoryFactory>();
-            var webFactory = ObjectFactory.GetInstance<IParkitectNexusWebFactory>();
+            var webFactory = ObjectFactory.GetInstance<IParkitectNexusWebClientFactory>();
 
             var settings = repositoryFactory.Repository<ClientSettings>();
             var updateInfo = UpdateUtil.CheckForUpdates(website, webFactory);

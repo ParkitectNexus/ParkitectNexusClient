@@ -1,17 +1,18 @@
-﻿using System;
-using System.Reflection;
-using System.IO;
-using System.Diagnostics;
-using ParkitectNexus.Data.Utilities;
+﻿using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Presenter;
+using System.IO;
+using System.Reflection;
+using System.Diagnostics;
+using System;
+
 
 namespace ParkitectNexus.Client.Linux
 {
     public class ProtocalInstallUtility : IPresenter
     {
-        public ProtocalInstallUtility (IOperatingSystem system)
+        public ProtocalInstallUtility ()
         {
-            if (system.Detect() == Data.SupportedOperatingSystem.Linux)
+			if (ParkitectNexus.Data.Utilities.OperatingSystem.Detect() == Data.SupportedOperatingSystem.Linux)
             {
                 var appPath = Assembly.GetEntryAssembly().Location;
                 var s = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/applications/", "parkitectnexus.desktop");

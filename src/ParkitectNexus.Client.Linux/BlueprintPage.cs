@@ -5,6 +5,7 @@ using ParkitectNexus.Data.Presenter;
 using Gdk;
 using System.IO;
 using System.Drawing.Imaging;
+using ParkitectNexus.Data.Assets;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -16,9 +17,9 @@ namespace ParkitectNexus.Client.Linux
         private const int IMAGE = 1;
         private const int PARKITECT_ASSET = 2;
 
-        private ListStore _blueprintListStore = new ListStore(typeof(string),typeof(Pixbuf),typeof(IParkitectAsset));
-        private IParkitect _parkitect;
-        private IParkitectAsset _selectedAsset;
+		private ListStore _blueprintListStore = new ListStore(typeof(string),typeof(Pixbuf),typeof(IAsset));
+		private IAsset _selectedAsset;
+		private IParkitect _parkitect;
         private Pixbuf _selectedAssetImage;
         private int _sizeChange = 0;
         public BlueprintPage (IParkitect parkitect)
@@ -47,7 +48,8 @@ namespace ParkitectNexus.Client.Linux
                 TreeIter iter;
                 _blueprintListStore.GetIter(out iter, blueprints.SelectedItems[0]);
 
-                IParkitectAsset asset = (IParkitectAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
+
+				IAsset asset = (IAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
 
                 _selectedAsset = asset;
                 blueprintName.Text = _selectedAsset.Name;
@@ -86,17 +88,19 @@ namespace ParkitectNexus.Client.Linux
         public void UpdateListStore()
         {
             _blueprintListStore.Clear();
-            foreach (var blueprint in _parkitect.GetAssets(ParkitectAssetType.Blueprint))
+           
+			foreach (IAsset bp in _parkitect.LocalAssets.GetAssets(ParkitectNexus.Data.Assets.AssetType.Blueprint))
             {
+				if (bp.Name != null) {
+					using (MemoryStream stream = new MemoryStream ()) {
+					
+						bp.GetThumbnail ().Result.Save (stream, ImageFormat.Png);
+						stream.Position = 0;
+						Pixbuf pixbuf = new Pixbuf (stream);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-
-                    blueprint.Thumbnail.Save(stream, ImageFormat.Png);
-                    stream.Position = 0;
-                    Pixbuf pixbuf = new Pixbuf(stream);
-                    _blueprintListStore.AppendValues(blueprint.Name, pixbuf,blueprint);
-                }
+						_blueprintListStore.AppendValues (bp.Name, pixbuf, bp);
+					}
+				}
             }
         }
 

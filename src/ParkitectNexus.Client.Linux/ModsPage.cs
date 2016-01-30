@@ -5,6 +5,11 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
 using System.Diagnostics;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Tasks;
+using ParkitectNexus.Data.Tasks.Prefab;
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Web.Models;
+using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -13,17 +18,26 @@ namespace ParkitectNexus.Client.Linux
     {
         private NodeStore _mods = new NodeStore(typeof(TreeNodeModContainer));
         private IParkitect _parkitect;
-        private IParkitectOnlineAssetRepository _parkitectAssetRepository;
         private TreeNodeModContainer _selectedMod;
         private Window _parentwindow;
         private IPresenterFactory _presenterFactory;
         private ILogger _logger;
-        public ModsPage (ILogger logger,IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect, IParkitectOnlineAssetRepository assetRepository)
+		private IQueueableTaskManager _queuableTaskManager;
+		private IParkitectNexusWebsite _nexusWebsite;
+		private IRemoteAssetRepository _assetRepository;
+		private IParkitectNexusAPI _nexusAPI;
+		private IParkitectNexusWebsite _website;
+
+		public ModsPage (IParkitectNexusWebsite website,ILogger logger,IParkitectNexusAPI nexusAPI,IRemoteAssetRepository assetRepository,IParkitectNexusWebsite nexusWebsite,IQueueableTaskManager queueableTaskManager,IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect)
         {
+			this._website = website;
+			this._nexusAPI = nexusAPI;
+			this._assetRepository = assetRepository;
+			this._nexusWebsite = nexusWebsite;
+			this._queuableTaskManager = queueableTaskManager;
             this._logger = logger;
             this._presenterFactory = presenterFactory;
             this._parentwindow = (Window)parentWindow;
-            this._parkitectAssetRepository = assetRepository;
             this._parkitect = parkitect;
             this.Build ();
 
@@ -43,6 +57,7 @@ namespace ParkitectNexus.Client.Linux
             listViewMods.AppendColumn ("Name", nameRenderText, "text", 1);
             listViewMods.AppendColumn ("Current",new CellRendererText () , "text", 2);
             listViewMods.AppendColumn ("New", new CellRendererText (), "text", 3);
+
 
             //style the name column for the case when the current tag and avalible tag don't match
             listViewMods.Columns [1].SetCellDataFunc (nameRenderText, new TreeCellDataFunc (nameRendering));
@@ -67,9 +82,9 @@ namespace ParkitectNexus.Client.Linux
                 try{
                     var mod = (TreeNodeModContainer)((NodeStore)o).GetNode(args.Path);
                     if (mod.ParkitectMod.Repository != null && mod.ParkitectMod.Name != null) {
-                        var url = new ParkitectNexusUrl (mod.ParkitectMod.Name, ParkitectAssetType.Mod, mod.ParkitectMod.Repository);
-                        var info = await _parkitectAssetRepository.ResolveDownloadInfo (url); 
-                        mod.AvaliableVersion = info.Tag;
+                    //    var url = new ParkitectNexusUrl (mod.ParkitectMod.Name, ParkitectAssetType.Mod, mod.ParkitectMod.Repository);
+                    //    var info = await _parkitectAssetRepository.ResolveDownloadInfo (url); 
+                      //  mod.AvaliableVersion = info.Tag;
                         listViewMods.QueueDraw();   
                     }
                 }
@@ -149,20 +164,39 @@ namespace ParkitectNexus.Client.Linux
             ModUri installMod = _presenterFactory.InstantiatePresenter<ModUri> ();
             installMod.Run ();
             installMod.Destroy ();
-            UpdateModList ();
+			_queuableTaskManager.TaskFinished += (object sender_1, QueueableTaskEventArgs e_1) => {
+				if(e_1.Task is InstallAssetTask && e_1.Task.Status == TaskStatus.Stopped)
+				{
+					Gtk.Application.Invoke (delegate {
+						UpdateModList();
+					});
+				}
+			};
         }
 
         protected void CheckForUpdatesForMod (object sender, EventArgs e)
         {
             if (_selectedMod == null) return;
 
-            try
-            {
-                var url = new ParkitectNexusUrl(_selectedMod.ParkitectMod.Name, ParkitectAssetType.Mod, _selectedMod.ParkitectMod.Repository);
-                var info =  _parkitectAssetRepository.ResolveDownloadInfo(url).Result;
+            //try
+           // {
 
 
-                if (info.Tag == _selectedMod.ParkitectMod.Tag)
+				ParkitectNexusUrl nexusURL;
+				ParkitectNexusUrl.TryParse (_selectedMod.ParkitectMod.Repository, out nexusURL);
+				var task = new InstallAssetTask (_parkitect, _website, _assetRepository);
+				task.Data = nexusURL.Data;
+				_queuableTaskManager.Add (task);
+
+
+				//var installAssetTask = new InstallAssetTask(_parkitect,_nexusWebsite,_assetRepository);
+				//var url = new ParkitectNexusUrl(_selectedMod.ParkitectMod.Name, _selectedMod.ParkitectMod.Repository);
+				//installAssetTask.Data = url.Data;
+				//installAssetTask.Data = _nexusAPI.
+				//this._queuableTaskManager.Add(installAssetTask);
+               // var info =  _parkitectAssetRepository.ResolveDownloadInfo(url).Result;
+
+               /* if (info.Tag == _selectedMod.ParkitectMod.Tag)
                 {
                     MessageDialog errorDialog = new MessageDialog (_parentwindow, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, _selectedMod.ParkitectMod.Name +" is already up to date!");
                     errorDialog.Run();
@@ -179,14 +213,14 @@ namespace ParkitectNexus.Client.Linux
                     ShowMod(_selectedMod.ParkitectMod);
 
                     listViewMods.QueueDraw();
-                }
-            }
+                }*/
+         /*   }
             catch (Exception)
             {
                 Gtk.MessageDialog errorDialog = new MessageDialog (_parentwindow, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "Failed to check for updates. Please try again later.");
                 errorDialog.Run();
                 errorDialog.Destroy();
-            }
+            }*/
         }
 
         protected void UninstallMod (object sender, EventArgs e)

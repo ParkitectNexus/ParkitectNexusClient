@@ -1,7 +1,7 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
-namespace ParkitectNexus.Data.Settings
+namespace ParkitectNexus.Data.Settings.Models
 {
     public class GameSettings
     {

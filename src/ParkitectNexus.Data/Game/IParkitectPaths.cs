@@ -1,6 +1,8 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data.Assets;
+
 namespace ParkitectNexus.Data.Game
 {
     /// <summary>
@@ -11,11 +13,9 @@ namespace ParkitectNexus.Data.Game
         string Data { get; }
         string DataManaged { get; }
         string Installation { get; }
-        string Mods { get; }
         string NativeMods { get; }
-        string Blueprints { get; }
-        string Savegames { get; }
 
+        string GetAssetPath(AssetType type);
         string GetPathInSavesFolder(string path);
         string GetPathInSavesFolder(string path, bool createIfNotExists);
         string GetPathInGameFolder(string path);
