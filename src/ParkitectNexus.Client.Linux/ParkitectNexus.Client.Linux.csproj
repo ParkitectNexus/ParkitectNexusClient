@@ -18,6 +18,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterExecute" command="--url parkitectnexus://install/76adb0b9b5" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -54,6 +59,9 @@
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="CommandLine">
+      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\ParkitectNexus.Client.Windows\Resources\parkitectnexus_logo_full.png" />
@@ -64,6 +72,7 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\..\images\user_icon_small.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPages.cs" />
@@ -91,6 +100,8 @@
     <Compile Include="TreeNodeTaskContainer.cs" />
     <Compile Include="TaskItems.cs" />
     <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.TaskItems.cs" />
+    <Compile Include="ArgumentService.cs" />
+    <Compile Include="AppCommandLineOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -102,6 +113,12 @@
       <Properties>
         <Policies>
           <DotNetNamingPolicy DirectoryNamespaceAssociation="None" ResourceNamePolicy="MSBuild" />
+          <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
+          <CSharpFormattingPolicy IndentSwitchBody="True" IndentBlocksInsideExpressions="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ElseNewLinePlacement="NewLine" CatchNewLinePlacement="NewLine" FinallyNewLinePlacement="NewLine" WhileNewLinePlacement="DoNotCare" ArrayInitializerWrapping="DoNotChange" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" NewLineBeforeConstructorInitializerColon="NewLine" NewLineAfterConstructorInitializerColon="SameLine" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+          <TextStylePolicy inheritsSet="null" scope="application/config+xml" />
+          <XmlFormattingPolicy inheritsSet="null" scope="application/config+xml" />
+          <TextStylePolicy inheritsSet="null" scope="application/xml" />
+          <XmlFormattingPolicy inheritsSet="Mono" inheritsScope="application/xml" scope="application/xml" />
         </Policies>
       </Properties>
     </MonoDevelop>

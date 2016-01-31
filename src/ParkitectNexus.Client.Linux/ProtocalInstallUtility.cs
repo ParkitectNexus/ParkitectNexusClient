@@ -19,7 +19,7 @@ namespace ParkitectNexus.Client.Linux
                 File.WriteAllText(s, "[Desktop Entry] \n" +
                     "Comment[en_US]= \n" +
                     "Comment= \n" +
-                    "Exec=mono " + appPath + " %u --download '%1' \n" +
+                    "Exec=mono " + appPath + " --url %u \n" +
                     "GenericName[en_US]= \n" +
                     "GenericName= \n" +
                     "Icon=" + Directory.GetCurrentDirectory() + "/parkitectnexus_logo.png" + " \n" +
@@ -31,6 +31,7 @@ namespace ParkitectNexus.Client.Linux
                     "Type=Application \n" +
                     "MimeType=x-scheme-handler/parkitectnexus;");
                 Process.Start("update-desktop-database");
+           
             }
 
         }

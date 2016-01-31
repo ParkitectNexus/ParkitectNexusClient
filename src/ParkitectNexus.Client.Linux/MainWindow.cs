@@ -6,6 +6,10 @@ using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Client;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Tasks;
+using ParkitectNexus.Data.Authentication;
+using System.IO;
+using System.Drawing.Imaging;
+using Gdk;
 
 public partial class MainWindow: Gtk.Window, IPresenter
 {
@@ -13,18 +17,16 @@ public partial class MainWindow: Gtk.Window, IPresenter
     private readonly IPresenterFactory _presenterFactory;
     private IPresenter[] _presenterPages;
     private int _previousPage = -1;
-	private IQueueableTaskManager _queuableTaskManager;
+    private IParkitectNexusAuthManager _authManager;
 
-	public MainWindow (IQueueableTaskManager taskManager,IPresenterFactory presenterFactory,IParkitect parkitect, ILogger logger) : base (Gtk.WindowType.Toplevel)
+	public MainWindow (IParkitectNexusAuthManager authManager,IPresenterFactory presenterFactory,IParkitect parkitect, ILogger logger) : base (Gtk.WindowType.Toplevel)
     {
+        _authManager = authManager;
         _parkitect = parkitect;
         _presenterFactory = presenterFactory;
-		_queuableTaskManager = taskManager;
 
-
+       
         Build ();
-        logger.Open(System.IO.Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
-
 
         presenterFactory.InstantiatePresenter<ParkitectInstallDialog> (this);
         ModLoaderUtil.InstallModLoader (parkitect,logger);
@@ -45,6 +47,31 @@ public partial class MainWindow: Gtk.Window, IPresenter
 		AddPageToPages ("Tasks", (Widget)_presenterPages [3]);
 			
         Pages.SwitchPage += Pages_SwitchPage;
+
+        _authManager.Authenticated += async (sender, e) => {
+          
+            try
+            {
+                var user = await _authManager.GetUser();
+                LoginLabel.Text = user.Name;
+
+                var avatar = await _authManager.GetAvatar();
+                if(avatar != null)
+                {
+                    using (MemoryStream stream = new MemoryStream ()) {
+
+                        avatar.Save(stream, ImageFormat.Png);
+                        stream.Position = 0;
+                        Pixbuf pixbuf = new Pixbuf (stream);
+                        LoginIcon.Pixbuf = pixbuf;
+                    }
+                }
+            }
+            catch(Exception exception)
+            {
+            }
+        
+        };
 
 
     }
@@ -92,6 +119,14 @@ public partial class MainWindow: Gtk.Window, IPresenter
         var aboutDialog = _presenterFactory.InstantiatePresenter<ParkitectNexus.Client.Linux.AboutDialog> ();
         aboutDialog.Run ();
         aboutDialog.Destroy ();
+    }
+
+    protected void LoginButton (object o, ButtonPressEventArgs args)
+    {
+        if (!_authManager.IsAuthenticated) {
+            _authManager.OpenLoginPage ();
+        } else {
+        }
     }
 
 }

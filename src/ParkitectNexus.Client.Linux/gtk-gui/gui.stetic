@@ -15,7 +15,7 @@
       </source>
     </icon-set>
   </icon-factory>
-  <widget class="Gtk.Window" id="MainWindow" design-size="460 455">
+  <widget class="Gtk.Window" id="MainWindow" design-size="583 455">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -80,19 +80,29 @@
               </packing>
             </child>
             <child>
-              <placeholder />
+              <widget class="Gtk.Alignment" id="alignment1">
+                <property name="MemberName" />
+                <child>
+                  <placeholder />
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+              </packing>
             </child>
             <child>
               <widget class="Gtk.EventBox" id="LoginBox">
                 <property name="MemberName" />
+                <signal name="ButtonPressEvent" handler="LoginButton" after="yes" />
                 <child>
-                  <widget class="Gtk.HBox" id="hbox4">
+                  <widget class="Gtk.HBox" id="LoginContainer">
                     <property name="MemberName" />
-                    <property name="Spacing">6</property>
+                    <property name="Spacing">1</property>
                     <child>
-                      <widget class="Gtk.Image" id="image71">
+                      <widget class="Gtk.Image" id="LoginIcon">
                         <property name="MemberName" />
-                        <property name="Pixbuf">stock:gtk-close Menu</property>
+                        <property name="Pixbuf">resource:ParkitectNexus.Client.Linux.user_icon_small.png</property>
                       </widget>
                       <packing>
                         <property name="Position">0</property>
@@ -102,9 +112,10 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="label1">
+                      <widget class="Gtk.Label" id="LoginLabel">
                         <property name="MemberName" />
-                        <property name="LabelProp" translatable="yes">User</property>
+                        <property name="LabelProp" translatable="yes">Log In</property>
+                        <property name="WidthChars">9</property>
                       </widget>
                       <packing>
                         <property name="Position">1</property>
@@ -216,6 +227,7 @@
                 <property name="Label" translatable="yes" />
                 <property name="UseUnderline">True</property>
                 <property name="Relief">Half</property>
+                <signal name="Clicked" handler="LaunchParkitect" after="yes" />
               </widget>
               <packing>
                 <property name="Position">1</property>

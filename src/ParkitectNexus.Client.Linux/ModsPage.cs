@@ -96,6 +96,21 @@ namespace ParkitectNexus.Client.Linux
 
             this.HideModInfo ();
             this.UpdateModList ();
+
+            _queuableTaskManager.TaskAdded += (object sender, QueueableTaskEventArgs e) =>
+            {
+                       
+                e.Task.StatusChanged += (object s, EventArgs e_1) => 
+                {
+                    if (((IQueueableTask)s) is InstallAssetTask  && ((IQueueableTask)s).Status == TaskStatus.Stopped)
+                    {
+                        Gtk.Application.Invoke(delegate
+                            {
+                                UpdateModList();
+                            });
+                    }
+                };
+            };
         }
 
         /// <summary>
@@ -164,14 +179,7 @@ namespace ParkitectNexus.Client.Linux
             ModUri installMod = _presenterFactory.InstantiatePresenter<ModUri> ();
             installMod.Run ();
             installMod.Destroy ();
-			_queuableTaskManager.TaskFinished += (object sender_1, QueueableTaskEventArgs e_1) => {
-				if(e_1.Task is InstallAssetTask && e_1.Task.Status == TaskStatus.Stopped)
-				{
-					Gtk.Application.Invoke (delegate {
-						UpdateModList();
-					});
-				}
-			};
+		
         }
 
         protected void CheckForUpdatesForMod (object sender, EventArgs e)
