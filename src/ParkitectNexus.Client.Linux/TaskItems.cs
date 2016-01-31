@@ -3,6 +3,7 @@ using Gtk;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks.Prefab;
+using Gdk;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -27,7 +28,8 @@ namespace ParkitectNexus.Client.Linux
 				Tasks.ShowAll ();
 
 				_queueTaskManager.TaskAdded += (object sender, QueueableTaskEventArgs e) => {
-					_tasks.AddNode(new TreeNodeTaskContainer(e.Task,Tasks));
+
+                    _tasks.AddNode(new TreeNodeTaskContainer(e.Task,Tasks));
 				};
 		
 				Tasks.NodeStore = _tasks;

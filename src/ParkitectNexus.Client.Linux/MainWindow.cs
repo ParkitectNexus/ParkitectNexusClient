@@ -18,9 +18,10 @@ public partial class MainWindow: Gtk.Window, IPresenter
     private IPresenter[] _presenterPages;
     private int _previousPage = -1;
     private IParkitectNexusAuthManager _authManager;
-
-	public MainWindow (IParkitectNexusAuthManager authManager,IPresenterFactory presenterFactory,IParkitect parkitect, ILogger logger) : base (Gtk.WindowType.Toplevel)
+    private ILogger _logger;
+    public MainWindow (ILogger logger,IParkitectNexusAuthManager authManager,IPresenterFactory presenterFactory,IParkitect parkitect) : base (Gtk.WindowType.Toplevel)
     {
+        _logger = logger;
         _authManager = authManager;
         _parkitect = parkitect;
         _presenterFactory = presenterFactory;
@@ -48,32 +49,44 @@ public partial class MainWindow: Gtk.Window, IPresenter
 			
         Pages.SwitchPage += Pages_SwitchPage;
 
-        _authManager.Authenticated += async (sender, e) => {
+        _authManager.Authenticated += (sender, e) => {
           
-            try
-            {
-                var user = await _authManager.GetUser();
-                LoginLabel.Text = user.Name;
-
-                var avatar = await _authManager.GetAvatar();
-                if(avatar != null)
-                {
-                    using (MemoryStream stream = new MemoryStream ()) {
-
-                        avatar.Save(stream, ImageFormat.Png);
-                        stream.Position = 0;
-                        Pixbuf pixbuf = new Pixbuf (stream);
-                        LoginIcon.Pixbuf = pixbuf;
-                    }
-                }
-            }
-            catch(Exception exception)
-            {
-            }
-        
+      
+            FetchUserInfo();
         };
 
+        if (_authManager.IsAuthenticated)
+        {
+            FetchUserInfo();
+        }
 
+
+
+    }
+
+    private void FetchUserInfo()
+    {
+        try
+        {
+            var user =  _authManager.GetUser().Result;
+            LoginLabel.Text = user.Name;
+
+            var avatar =  _authManager.GetAvatar().Result;
+            if(avatar != null)
+            {
+                using (MemoryStream stream = new MemoryStream ()) {
+
+                    avatar.Save(stream, ImageFormat.Png);
+                    stream.Position = 0;
+                    Pixbuf pixbuf = new Pixbuf (stream);
+                    LoginIcon.Pixbuf = pixbuf;
+                }
+            }
+        }
+        catch(Exception exception)
+        {
+            _logger.WriteException(exception);
+        }
     }
 
     private void Pages_SwitchPage(object o, SwitchPageArgs args)

@@ -9,7 +9,7 @@ using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Models;
 using ParkitectNexus.Data.Tasks.Prefab;
 using ParkitectNexus.Data;
-
+using System.Reflection;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -99,9 +99,14 @@ namespace ParkitectNexus.Client.Linux
                 ParkitectNexusUrl url;
                 if(ParkitectNexusUrl.TryParse(options.Url,out url))
                 {
-                    var task = ObjectFactory.Container.GetInstance<InstallAssetTask>();
-                    task.Data = url.Data;
-                    _queueTaskManager.Add (task);
+                    var attribute = url.Data.GetType().GetCustomAttribute<UrlActionTaskAttribute>();
+                    if (attribute?.TaskType != null && typeof(UrlQueueableTask).IsAssignableFrom(attribute.TaskType))
+                    {
+                        var task = ObjectFactory.Container.GetInstance(attribute.TaskType) as UrlQueueableTask;
+                        task.Data = url.Data;
+                     
+                        _queueTaskManager.Add (task);                      
+                    }
 
                 }
             }
