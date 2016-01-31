@@ -534,6 +534,7 @@
                                 <property name="Type">TextOnly</property>
                                 <property name="Label" translatable="yes">Uninstall</property>
                                 <property name="UseUnderline">True</property>
+                                <signal name="Clicked" handler="UninstallMod" after="yes" />
                               </widget>
                               <packing>
                                 <property name="Position">6</property>

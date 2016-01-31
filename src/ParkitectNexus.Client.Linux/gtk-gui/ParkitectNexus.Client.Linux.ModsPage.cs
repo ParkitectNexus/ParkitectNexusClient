@@ -269,6 +269,7 @@ namespace ParkitectNexus.Client.Linux
 			this.Hide ();
 			this.btnInstallMod.Clicked += new global::System.EventHandler (this.InstallMod);
 			this.btnCheckUpdate.Clicked += new global::System.EventHandler (this.CheckForUpdatesForMod);
+			this.btnUninstall.Clicked += new global::System.EventHandler (this.UninstallMod);
 		}
 	}
 }
