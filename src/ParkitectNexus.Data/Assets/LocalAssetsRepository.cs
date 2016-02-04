@@ -42,8 +42,8 @@ namespace ParkitectNexus.Data.Assets
             {
                 case AssetType.Blueprint:
                     return GetAssets("blueprints", _parkitect.Paths.GetAssetPath(AssetType.Blueprint), "*.png", ResolveBlueprintData, AssetType.Blueprint);
-                case AssetType.Savegame:
-                    return GetAssets("savegames", _parkitect.Paths.GetAssetPath(AssetType.Savegame), "*.txt", ResolveSavegameData, AssetType.Savegame);
+                case AssetType.Park:
+                    return GetAssets("savegames", _parkitect.Paths.GetAssetPath(AssetType.Park), "*.txt", ResolveSavegameData, AssetType.Park);
                 case AssetType.Mod:
                     throw new NotImplementedException();
                 default:
@@ -57,8 +57,8 @@ namespace ParkitectNexus.Data.Assets
             {
                 case AssetType.Blueprint:
                     return Directory.GetFiles(_parkitect.Paths.GetAssetPath(AssetType.Blueprint), "*.png", SearchOption.AllDirectories).Length;
-                case AssetType.Savegame:
-                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(AssetType.Savegame), "*.txt", SearchOption.AllDirectories).Length;
+                case AssetType.Park:
+                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(AssetType.Park), "*.txt", SearchOption.AllDirectories).Length;
                 case AssetType.Mod:
                     throw new NotImplementedException();
                 default:
@@ -112,7 +112,7 @@ namespace ParkitectNexus.Data.Assets
 
         private AssetCachedData ResolveSavegameData(string relativePath)
         {
-            var path = Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Savegame), relativePath);
+            var path = Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Park), relativePath);
             var reader = new SavegameReader();
             var data = new AssetCachedData();
 
@@ -151,7 +151,7 @@ namespace ParkitectNexus.Data.Assets
             switch (asset.ApiAsset.Type)
             {
                 case AssetType.Blueprint:
-                case AssetType.Savegame:
+                case AssetType.Park:
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
                     var storagePath = _parkitect.Paths.GetAssetPath(asset.ApiAsset.Type);
                     var assetPath = Path.Combine(storagePath, asset.FileName);

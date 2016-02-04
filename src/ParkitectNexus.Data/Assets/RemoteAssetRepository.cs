@@ -106,7 +106,7 @@ namespace ParkitectNexus.Data.Assets
             switch (asset.Type)
             {
                 case AssetType.Blueprint:
-                case AssetType.Savegame:
+                case AssetType.Park:
                     return new DownloadInfo(asset.DownloadUrl, null, null);
                 case AssetType.Mod:
                     var repoUrl = ((await asset.GetResource()) as ApiModResource).Source;
