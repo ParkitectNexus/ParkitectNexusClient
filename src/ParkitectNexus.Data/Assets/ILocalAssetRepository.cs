@@ -8,12 +8,15 @@ using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Assets
 {
-    public interface ILocalAssetsRepository
+    public interface ILocalAssetRepository
     {
+        IEnumerable<Asset> this[AssetType type] { get; }
+
         event EventHandler<AssetEventArgs> AssetAdded;
+
         event EventHandler<AssetEventArgs> AssetRemoved;
-        IEnumerable<Asset> GetAssets(AssetType type);
+
         int GetAssetCount(AssetType type);
-        Task StoreAsset(IDownloadedAsset downloadedAsset);
+        Task<IAsset> StoreAsset(IDownloadedAsset downloadedAsset);
     }
 }

@@ -1,6 +1,9 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Assets.CachedData;
+using ParkitectNexus.Data.Assets.Meta;
 using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Game;
@@ -38,7 +41,12 @@ namespace ParkitectNexus.Data
 
             registry.For<IQueueableTaskManager>().Singleton().Use<QueueableTaskManager>();
 
-            registry.For<IParkitectNexusAuthManager>().Singleton().Use<ParkitectNexusAuthManager>();
+            registry.For<IAuthManager>().Singleton().Use<AuthManager>();
+
+            registry.For<ILocalAssetRepository>().Use<LocalAssetRepository>();
+            registry.For<IRemoteAssetRepository>().Use<RemoteAssetRepository>();
+            registry.For<IAssetMetadataStorage>().Use<AssetMetadataStorage>();
+            registry.For<IAssetCachedDataStorage>().Use<AssetCachedDataStorage>();
 
             return registry;
         }

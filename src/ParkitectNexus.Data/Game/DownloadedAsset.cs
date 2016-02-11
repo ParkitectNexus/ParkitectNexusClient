@@ -33,20 +33,12 @@ namespace ParkitectNexus.Data.Game
         }
 
         /// <summary>
-        ///     Finalizes an instance of the <see cref="DownloadedAsset" /> class.
-        /// </summary>
-        ~DownloadedAsset()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
         ///     Gets the API asset data.
         /// </summary>
         public ApiAsset ApiAsset { get; }
 
         /// <summary>
-        /// Gets the information.
+        ///     Gets the information.
         /// </summary>
         public DownloadInfo Info { get; }
 
@@ -72,6 +64,14 @@ namespace ParkitectNexus.Data.Game
         }
 
         #endregion
+
+        /// <summary>
+        ///     Finalizes an instance of the <see cref="DownloadedAsset" /> class.
+        /// </summary>
+        ~DownloadedAsset()
+        {
+            Dispose(false);
+        }
 
         /// <summary>
         ///     Releases unmanaged and - optionally - managed resources.

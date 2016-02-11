@@ -8,8 +8,10 @@ namespace ParkitectNexus.Data.Web
     /// <summary>
     ///     Provides the functionality of the ParkitectNexus website.
     /// </summary>
-    public interface IParkitectNexusWebsite
+    public interface IWebsite
     {
+        IParkitectNexusAPI API { get; }
+
         /// <summary>
         ///     Launches the website.
         /// </summary>
@@ -42,7 +44,5 @@ namespace ParkitectNexus.Data.Web
         /// <param name="path">The path.</param>
         /// <returns>The URL.</returns>
         string ResolveUrl(string path);
-
-        IParkitectNexusAPI API { get; }
     }
 }

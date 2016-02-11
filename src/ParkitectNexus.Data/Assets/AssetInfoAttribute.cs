@@ -11,7 +11,6 @@ namespace ParkitectNexus.Data.Assets
     [AttributeUsage(AttributeTargets.Field)]
     public class AssetInfoAttribute : Attribute
     {
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="AssetInfoAttribute" /> class.
         /// </summary>

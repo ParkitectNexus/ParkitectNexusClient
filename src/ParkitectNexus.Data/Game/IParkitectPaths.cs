@@ -11,8 +11,11 @@ namespace ParkitectNexus.Data.Game
     public interface IParkitectPaths
     {
         string Data { get; }
+
         string DataManaged { get; }
+
         string Installation { get; }
+
         string NativeMods { get; }
 
         string GetAssetPath(AssetType type);

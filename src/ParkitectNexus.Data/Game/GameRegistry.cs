@@ -3,6 +3,7 @@
 
 using System;
 using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Game.Linux;
 using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Game.Windows;
 using StructureMap;
@@ -12,12 +13,10 @@ namespace ParkitectNexus.Data.Game
 {
     public class GameRegistry : Registry
     {
-
         public GameRegistry()
         {
-            For<IParkitectMod>().Use<ParkitectMod>();
             For<IDownloadedAsset>().Use<DownloadedAsset>();
-            For<ILocalAssetsRepository>().Singleton().Use<LocalAssetsRepository>();
+            For<ILocalAssetRepository>().Singleton().Use<LocalAssetRepository>();
 
             switch (OperatingSystem.Detect())
             {

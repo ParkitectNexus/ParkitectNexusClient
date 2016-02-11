@@ -1,8 +1,6 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
-using System.Threading.Tasks;
-
 namespace ParkitectNexus.Data.Caching
 {
     public interface ICacheManager

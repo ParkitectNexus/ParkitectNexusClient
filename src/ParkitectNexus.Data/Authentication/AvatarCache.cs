@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ParkitectNexus.Data.Caching;
 
 namespace ParkitectNexus.Data.Authentication

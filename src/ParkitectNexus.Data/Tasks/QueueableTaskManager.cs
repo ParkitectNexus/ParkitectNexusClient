@@ -14,8 +14,11 @@ namespace ParkitectNexus.Data.Tasks
         private readonly Queue<IQueueableTask> _tasks = new Queue<IQueueableTask>();
         private CancellationTokenSource _cancellationTokenSource;
         private IQueueableTask _currentTask;
+
         public event EventHandler<QueueableTaskEventArgs> TaskAdded;
+
         public event EventHandler<QueueableTaskEventArgs> TaskRemoved;
+
         public event EventHandler<QueueableTaskEventArgs> TaskFinished;
 
         public int Count => _tasks.Count + (_currentTask != null ? 1 : 0);
@@ -42,7 +45,7 @@ namespace ParkitectNexus.Data.Tasks
             }
         }
 
-        private void RunNext()
+        private async void RunNext()
         {
             if (!_tasks.Any()) return;
             if (_currentTask != null) return;
@@ -59,20 +62,40 @@ namespace ParkitectNexus.Data.Tasks
             _currentTask.StatusChanged += Task_StatusChanged;
 
             _cancellationTokenSource = new CancellationTokenSource();
-            _currentTask.Run(_cancellationTokenSource.Token);
+
+            try
+            {
+                await _currentTask.Run(_cancellationTokenSource.Token);
+            }
+            catch (Exception e)
+            {
+                while (e is AggregateException)
+                    e = ((AggregateException) e).InnerException;
+
+                _currentTask.Status = TaskStatus.Canceled;
+                _currentTask.CompletionPercentage = 100;
+                _currentTask.StatusDescription = $"Failed: {e.Message}";
+
+                CurrentTaskFinished();
+            }
         }
 
         private void Task_StatusChanged(object sender, EventArgs e)
         {
             if (_currentTask.Status != TaskStatus.Running)
             {
-                var task = _currentTask;
-                task.StatusChanged -= Task_StatusChanged;
-                _currentTask = null;
-
-                OnTaskFinished(new QueueableTaskEventArgs(task));
-                RunNext();
+                CurrentTaskFinished();
             }
+        }
+
+        private void CurrentTaskFinished()
+        {
+            var task = _currentTask;
+            task.StatusChanged -= Task_StatusChanged;
+            _currentTask = null;
+
+            OnTaskFinished(new QueueableTaskEventArgs(task));
+            RunNext();
         }
 
         protected virtual void OnTaskAdded(QueueableTaskEventArgs e)

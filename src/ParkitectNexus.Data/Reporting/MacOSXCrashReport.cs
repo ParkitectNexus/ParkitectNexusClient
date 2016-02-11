@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
@@ -79,8 +81,8 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    return _parkitect.InstalledMods.Select(
-                        m => $"{m}(Enabled: {m.IsEnabled}, Directory: {m.InstallationPath})");
+                    return _parkitect.Assets[AssetType.Mod].OfType<ModAsset>().Select(
+                        m => $"{m}(Enabled: ???, Directory: {m.InstallationPath})");
                 }
                 catch
                 {

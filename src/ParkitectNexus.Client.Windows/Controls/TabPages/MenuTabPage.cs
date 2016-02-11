@@ -11,7 +11,6 @@ using MetroFramework;
 using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Properties;
 using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.Windows.Controls.TabPages
@@ -19,9 +18,9 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
     public class MenuTabPage : LoadableTilesTabPage
     {
         private readonly IParkitect _parkitect;
-        private readonly IParkitectNexusWebsite _website;
+        private readonly IWebsite _website;
 
-        public MenuTabPage(IParkitect parkitect, IParkitectNexusWebsite website)
+        public MenuTabPage(IParkitect parkitect, IWebsite website)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (website == null) throw new ArgumentNullException(nameof(website));

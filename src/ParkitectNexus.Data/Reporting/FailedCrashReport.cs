@@ -15,6 +15,7 @@ namespace ParkitectNexus.Data.Reporting
         }
 
         public string Action { get; set; }
+
         public Exception Exception { get; set; }
 
         public Exception CrashReportFailureException { get; set; }

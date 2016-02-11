@@ -9,6 +9,8 @@ using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
@@ -17,8 +19,8 @@ namespace ParkitectNexus.Data.Reporting
     [JsonObject(MemberSerialization.OptIn)]
     public class WindowsCrashReport
     {
-        private readonly IParkitect _parkitect;
         private readonly ILogger _logger;
+        private readonly IParkitect _parkitect;
 
         public WindowsCrashReport(IParkitect parkitect, string action, Exception exception, ILogger logger)
         {
@@ -62,8 +64,8 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    return _parkitect.InstalledMods.Select(
-                        m => $"{m}(Enabled: {m.IsEnabled}, Directory: {m.InstallationPath})").ToArray();
+                    return _parkitect.Assets[AssetType.Mod].OfType<ModAsset>().Select(
+                        m => $"{m}(Enabled: ???, Directory: {m.InstallationPath})").ToArray();
                 }
                 catch
                 {
@@ -160,13 +162,21 @@ namespace ParkitectNexus.Data.Reporting
             }
 
             public string Length { get; }
+
             public string MemoryLoad { get; }
+
             public string TotalPhysical { get; }
+
             public string AvailPhysical { get; }
+
             public string TotalPageFile { get; }
+
             public string AvailPageFile { get; }
+
             public string TotalVirtual { get; }
+
             public string AvailVirtual { get; }
+
             public string AvailExtendedVirtual { get; }
 
             private static string GetSizeReadable(ulong input)

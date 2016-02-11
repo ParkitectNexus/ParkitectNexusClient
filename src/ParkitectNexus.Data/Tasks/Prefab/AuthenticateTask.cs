@@ -11,9 +11,9 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 {
     public class AuthenticateTask : UrlQueueableTask
     {
-        private readonly IParkitectNexusAuthManager _authManager;
+        private readonly IAuthManager _authManager;
 
-        public AuthenticateTask(IParkitectNexusAuthManager authManager)
+        public AuthenticateTask(IAuthManager authManager)
         {
             if (authManager == null) throw new ArgumentNullException(nameof(authManager));
             _authManager = authManager;

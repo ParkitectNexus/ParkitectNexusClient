@@ -9,7 +9,7 @@ namespace ParkitectNexus.Data.Assets
     /// <summary>
     ///     Contains parkitect asset types supported by the client.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof (StringEnumConverter))]
     public enum AssetType
     {
         /// <summary>

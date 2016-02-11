@@ -10,7 +10,7 @@ namespace ParkitectNexus.Data.Web
     /// <summary>
     ///     Represents the ParkitectNexus website.
     /// </summary>
-    public class ParkitectNexusWebsite : IParkitectNexusWebsite
+    public class Website : IWebsite
     {
 #if DEBUG
         private const string WebsiteUrl = "http://{0}staging.parkitectnexus.com/{1}";
@@ -19,9 +19,9 @@ namespace ParkitectNexus.Data.Web
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        public ParkitectNexusWebsite(IParkitectNexusWebClientFactory webClientFactory)
+        public Website(INexusWebClientFactory webClientFactory)
         {
             API = new ParkitectNexusAPI(this, webClientFactory);
         }
@@ -75,7 +75,7 @@ namespace ParkitectNexus.Data.Web
         }
 
         /// <summary>
-        /// Gets the API.
+        ///     Gets the API.
         /// </summary>
         public IParkitectNexusAPI API { get; }
     }

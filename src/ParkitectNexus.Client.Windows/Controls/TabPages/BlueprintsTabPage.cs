@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Windows.Controls.TabPages
 {
@@ -48,8 +48,8 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                 var tiles = new List<MetroTile>();
 
                 var current = 0;
-                var fileCount = _parkitect.LocalAssets.GetAssetCount(AssetType.Blueprint);
-                foreach (var bp in _parkitect.LocalAssets.GetAssets(AssetType.Blueprint))
+                var fileCount = _parkitect.Assets.GetAssetCount(AssetType.Blueprint);
+                foreach (var bp in _parkitect.Assets[AssetType.Blueprint])
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
@@ -60,7 +60,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                             Text = bp.Name,
                             TextAlign = ContentAlignment.BottomCenter,
                             Style = MetroColorStyle.Default,
-                            TileImage = bp.GetThumbnail().Result,
+                            TileImage = ImageUtility.ResizeImage(bp.GetImage(), 100, 100),
                             UseTileImage = true,
                             TileImageAlign = ContentAlignment.MiddleCenter
                         };

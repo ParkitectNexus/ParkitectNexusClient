@@ -6,19 +6,19 @@ using System.Net;
 using System.Net.Cache;
 using System.Reflection;
 using ParkitectNexus.Data.Authentication;
-using ParkitectNexus.Data.Utilities;
 using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    internal class ParkitectNexusWebClient : WebClient, IParkitectNexusWebClient
+    internal class NexusWebClient : WebClient, INexusWebClient
     {
-        private readonly IParkitectNexusAuthManager _authManager;
+        private readonly IAuthManager _authManager;
+
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Net.WebClient" /> class.
         /// </summary>
-        public ParkitectNexusWebClient(IParkitectNexusAuthManager authManager)
+        public NexusWebClient(IAuthManager authManager)
         {
             _authManager = authManager;
 
@@ -37,6 +37,16 @@ namespace ParkitectNexus.Data.Web.Client
             Headers.Add("X-ParkitectNexusInstaller-Version", version);
             Headers.Add("user-agent", $"ParkitectNexus/{version}");
         }
+
+        #region Implementation of INexusWebClient
+
+        public void Authorize()
+        {
+            if (_authManager.IsAuthenticated)
+                Headers.Add("Authorization", _authManager.Key);
+        }
+
+        #endregion
 
         /// <summary>
         ///     Returns a <see cref="T:System.Net.WebRequest" /> object for the specified resource.
@@ -60,18 +70,9 @@ namespace ParkitectNexus.Data.Web.Client
             }
 
             // Set a 10 minute timeout. Should allow the slowest of connections to download anything.
-            request.Timeout = 10*60*1000;
+            request.Timeout = 2000;
+            //request.Timeout = 10*60*1000;
             return request;
         }
-
-        #region Implementation of IParkitectNexusWebClient
-
-        public void Authorize()
-        {
-            if (_authManager.IsAuthenticated)
-                Headers.Add("Authorization", _authManager.Key);
-        }
-
-        #endregion
     }
 }

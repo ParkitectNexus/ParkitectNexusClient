@@ -6,21 +6,22 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Assets;
-using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Web.API
 {
     /// <summary>
     ///     Represents an API asset.
     /// </summary>
-    [JsonObject]
+    [JsonObject(MemberSerialization.OptIn)]
     public class ApiAsset
     {
-        /// <summary>
-        ///     Gets or sets the type.
-        /// </summary>
         [JsonProperty("type")]
-        public AssetType Type { get; set; }
+        public string TypeString { get; set; }
+
+        /// <summary>
+        ///     Gets the type.
+        /// </summary>
+        public AssetType Type => AssetTypeUtil.Parse(TypeString);
 
         /// <summary>
         ///     Gets or sets the identifier.
@@ -44,13 +45,13 @@ namespace ParkitectNexus.Data.Web.API
         ///     Gets or sets the thumbnail.
         /// </summary>
         [JsonProperty("thumbnail")]
-        public ApiResourcePromiseWithUrl<ApiAlbumImage> Thumbnail { get; set; }
+        public ApiAlbumImagePromise Thumbnail { get; set; }
 
         /// <summary>
         ///     Gets or sets the album.
         /// </summary>
         [JsonProperty("album")]
-        public IEnumerable<ApiResourcePromiseWithUrl<ApiAlbumImage>> Album { get; set; }
+        public IEnumerable<ApiAlbumImagePromise> Album { get; set; }
 
         /// <summary>
         ///     Gets or sets the tags.
@@ -125,10 +126,10 @@ namespace ParkitectNexus.Data.Web.API
         #region Overrides of Object
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         public override string ToString()
         {

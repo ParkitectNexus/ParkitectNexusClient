@@ -1,6 +1,7 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using System.Reflection;
 using StructureMap;
 
 namespace ParkitectNexus.Data.Presenter
@@ -11,10 +12,10 @@ namespace ParkitectNexus.Data.Presenter
         {
             Scan(x =>
             {
-                x.IncludeNamespaceContainingType<IPresenter>();
+                x.Assembly(Assembly.GetEntryAssembly());
+                x.AddAllTypesOf<IPresenter>();
                 x.WithDefaultConventions();
             });
-
             For<IPresenterFactory>().Use<PresenterFactory>();
         }
     }

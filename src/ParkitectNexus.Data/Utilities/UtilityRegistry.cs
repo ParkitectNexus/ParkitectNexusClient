@@ -1,9 +1,7 @@
-﻿using StructureMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using StructureMap;
 
 namespace ParkitectNexus.Data.Utilities
 {

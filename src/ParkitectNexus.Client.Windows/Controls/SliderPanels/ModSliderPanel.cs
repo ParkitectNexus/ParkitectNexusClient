@@ -2,16 +2,15 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Assets.Modding;
 
 namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
     public partial class ModSliderPanel : SliderPanel
     {
-        private readonly IParkitectMod _mod;
+        private readonly IModAsset _mod;
 
-        public ModSliderPanel(IParkitectMod mod)
+        public ModSliderPanel(IModAsset mod)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             _mod = mod;
@@ -19,13 +18,15 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
             InitializeComponent();
 
             nameLabel.Text = mod.Name;
-            versionLabel.Text = mod.Tag;
-            enableModToggle.Checked = _mod.IsEnabled;
+            pictureBox.Image = mod.GetImage();
+            versionLabel.Text = "???";
+            enableModToggle.Checked = false;
         }
 
         private void enableModToggle_CheckedChanged(object sender, EventArgs e)
         {
-            _mod.IsEnabled = enableModToggle.Checked;
+            throw new NotImplementedException();
+            //_mod.IsEnabled = enableModToggle.Checked;
         }
     }
 }

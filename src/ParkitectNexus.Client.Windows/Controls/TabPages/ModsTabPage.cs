@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -7,7 +10,10 @@ using System.Threading.Tasks;
 using MetroFramework;
 using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Windows.Controls.TabPages
 {
@@ -32,7 +38,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
             return Task.Run(() =>
             {
                 var tiles = new List<MetroTile>();
-                var mods = _parkitect.InstalledMods.ToArray();
+                var mods = _parkitect.Assets[AssetType.Mod].OfType<ModAsset>().ToArray();
                 var current = 0;
 
                 foreach (var mod in mods)
@@ -42,12 +48,11 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                     var tile = new MetroTile
                     {
                         Text = mod.Name,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        //TextAlign = ContentAlignment.BottomCenter,
-                        Style = MetroColorStyle.Default
-                        //TileImage = tileImage,
-                        //UseTileImage = true,
-                        //TileImageAlign = ContentAlignment.MiddleCenter,
+                        TextAlign = ContentAlignment.BottomCenter,
+                        Style = MetroColorStyle.Default,
+                        TileImage = ImageUtility.ResizeImage(mod.GetImage(), 100, 100),
+                        UseTileImage = true,
+                        TileImageAlign = ContentAlignment.MiddleCenter
                     };
 
                     tile.Click +=

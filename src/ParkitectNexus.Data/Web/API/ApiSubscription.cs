@@ -3,7 +3,6 @@
 
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Web.API
 {
@@ -12,8 +11,10 @@ namespace ParkitectNexus.Data.Web.API
     {
         [JsonProperty("id")]
         public int Id { get; set; }
+
         [JsonProperty("subscribable_id")]
         public int SubscribableId { get; set; }
+
         [JsonProperty("subscribable_type")]
         public string SubscribableType { get; set; }
 

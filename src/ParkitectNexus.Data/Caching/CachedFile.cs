@@ -1,7 +1,9 @@
-﻿using System;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Utilities;
 
@@ -59,7 +61,7 @@ namespace ParkitectNexus.Data.Caching
 
             return Path == null ? null : File.Open(GetFullPath(), FileMode.OpenOrCreate);
         }
-        
+
         public void Delete()
         {
             if (Path == null) return;

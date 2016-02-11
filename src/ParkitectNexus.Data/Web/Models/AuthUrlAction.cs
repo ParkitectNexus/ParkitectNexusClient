@@ -6,7 +6,7 @@ using ParkitectNexus.Data.Tasks.Prefab;
 
 namespace ParkitectNexus.Data.Web.Models
 {
-    [UrlActionTask(typeof(AuthenticateTask))]
+    [UrlActionTask(typeof (AuthenticateTask))]
     public class AuthUrlAction : IUrlAction
     {
         public AuthUrlAction(string key)

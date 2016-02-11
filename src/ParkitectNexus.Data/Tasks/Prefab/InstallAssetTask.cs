@@ -4,7 +4,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ParkitectNexus.AssetMagic.Elements;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Web;
@@ -15,10 +14,10 @@ namespace ParkitectNexus.Data.Tasks.Prefab
     public class InstallAssetTask : UrlQueueableTask
     {
         private readonly IParkitect _parkitect;
-        private readonly IParkitectNexusWebsite _website;
         private readonly IRemoteAssetRepository _remoteAssetRepository;
+        private readonly IWebsite _website;
 
-        public InstallAssetTask(IParkitect parkitect, IParkitectNexusWebsite website, IRemoteAssetRepository remoteAssetRepository)
+        public InstallAssetTask(IParkitect parkitect, IWebsite website, IRemoteAssetRepository remoteAssetRepository)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (website == null) throw new ArgumentNullException(nameof(website));
@@ -32,7 +31,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 
         #region Overrides of QueueableTask
 
-        public async override Task Run(CancellationToken token)
+        public override async Task Run(CancellationToken token)
         {
             var data = Data as InstallUrlAction;
             if (data == null)
@@ -45,10 +44,11 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 
             var assetData = await _website.API.GetAsset(data.Id);
 
-            UpdateStatus($"Installing {assetData.Type.ToString().ToLower()} '{assetData.Name}'...", 15, TaskStatus.Running);
+            UpdateStatus($"Installing {assetData.Type.ToString().ToLower()} '{assetData.Name}'...", 15,
+                TaskStatus.Running);
             var downloadedAsset = await _remoteAssetRepository.DownloadAsset(assetData);
 
-            await _parkitect.LocalAssets.StoreAsset(downloadedAsset);
+            await _parkitect.Assets.StoreAsset(downloadedAsset);
 
             UpdateStatus($"Installed {assetData.Type.ToString().ToLower()} '{assetData.Name}'.", 100, TaskStatus.Stopped);
         }

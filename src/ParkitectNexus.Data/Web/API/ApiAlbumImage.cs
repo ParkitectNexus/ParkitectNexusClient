@@ -1,7 +1,10 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using System.Drawing;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Data.Web.API
 {
@@ -11,6 +14,16 @@ namespace ParkitectNexus.Data.Web.API
     [JsonObject]
     public class ApiAlbumImage
     {
+        private readonly INexusWebClientFactory _webClientFactory;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ApiAlbumImage" /> class.
+        /// </summary>
+        public ApiAlbumImage()
+        {
+            _webClientFactory = ObjectFactory.GetInstance<INexusWebClientFactory>();
+        }
+
         /// <summary>
         ///     Gets or sets the identifier.
         /// </summary>
@@ -28,5 +41,14 @@ namespace ParkitectNexus.Data.Web.API
         /// </summary>
         [JsonProperty("filename")]
         public string FileName { get; set; }
+
+        /// <summary>
+        ///     Gets the image this instance represents.
+        /// </summary>
+        public async Task<Image> Get()
+        {
+            using (var webClient = _webClientFactory.CreateWebClient(true))
+                return Image.FromStream(await webClient.OpenReadTaskAsync(Url));
+        }
     }
 }

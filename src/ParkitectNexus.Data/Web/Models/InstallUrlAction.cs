@@ -6,7 +6,7 @@ using ParkitectNexus.Data.Tasks.Prefab;
 
 namespace ParkitectNexus.Data.Web.Models
 {
-    [UrlActionTask(typeof(InstallAssetTask))]
+    [UrlActionTask(typeof (InstallAssetTask))]
     public class InstallUrlAction : IUrlAction
     {
         public InstallUrlAction(string id)

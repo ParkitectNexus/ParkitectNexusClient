@@ -2,18 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using ParkitectNexus.AssetMagic.Readers;
-using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Settings.Models;
@@ -26,21 +15,16 @@ namespace ParkitectNexus.Data.Game.Base
     /// </summary>
     public abstract class BaseParkitect : IParkitect
     {
-        protected ILogger Logger { get; }
-        protected ISettingsRepository<GameSettings> GameSettings { get; }
-
-        protected BaseParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger, ICacheManager cacheManager)
+        protected BaseParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger)
         {
             Logger = logger;
             GameSettings = gameSettingsRepository;
-            LocalAssets = new LocalAssetsRepository(cacheManager, this, Logger);
+            Assets = ObjectFactory.Container.With<IParkitect>(this).GetInstance<ILocalAssetRepository>();
         }
 
-        /// <summary>
-        ///     Gets a collection of enabled and development mods.
-        /// </summary>
-        public virtual IEnumerable<IParkitectMod> ActiveMods
-            => InstalledMods.Where(mod => mod.IsEnabled || mod.IsDevelopment);
+        protected ILogger Logger { get; }
+
+        protected ISettingsRepository<GameSettings> GameSettings { get; }
 
         /// <summary>
         ///     Gets or sets the installation path.
@@ -77,50 +61,7 @@ namespace ParkitectNexus.Data.Game.Base
         /// <summary>
         ///     Gets the assets repository.
         /// </summary>
-        public ILocalAssetsRepository LocalAssets { get; }
-
-        /// <summary>
-        ///     Gets a collection of assembly names provided by the game.
-        /// </summary>
-        public virtual IEnumerable<string> ManagedAssemblyNames
-            =>
-                !IsInstalled
-                    ? null
-                    : Directory.GetFiles(Paths.DataManaged, "*.dll").Select(Path.GetFileName);
-
-        /// <summary>
-        ///     Gets a collection of installed mods.
-        /// </summary>
-        public virtual IEnumerable<IParkitectMod> InstalledMods
-        {
-            get
-            {
-                if (!IsInstalled)
-                    yield break;
-
-                // Iterate trough every directory in the mods directory which has a mod.json file.
-                foreach (
-                    var path in
-                        Directory.GetDirectories(Paths.GetAssetPath(AssetType.Mod)).Where(path => File.Exists(Path.Combine(path, "mod.json"))))
-                {
-                    // Attempt to deserialize the mod.json file.
-                    var mod = new ParkitectMod(this, Logger);
-                    try
-                    {
-                        JsonConvert.PopulateObject(File.ReadAllText(Path.Combine(path, "mod.json")), mod);
-                        mod.InstallationPath = path;
-                    }
-                    catch
-                    {
-                        mod = null;
-                    }
-
-                    // If the mod.json file was deserialized successfully, return the mod.
-                    if (mod != null)
-                        yield return mod;
-                }
-            }
-        }
+        public ILocalAssetRepository Assets { get; }
 
         /// <summary>
         ///     Sets the installation path if the specified path is a valid installation path.
@@ -152,11 +93,5 @@ namespace ParkitectNexus.Data.Game.Base
         public abstract Process Launch(string arguments = "-single-instance");
 
         protected abstract bool IsValidInstallationPath(string path);
-
-        protected virtual void CompileActiveMods()
-        {
-            foreach (var mod in ActiveMods)
-                mod.Compile();
-        }
     }
 }

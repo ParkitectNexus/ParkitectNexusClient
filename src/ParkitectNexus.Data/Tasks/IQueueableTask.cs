@@ -10,10 +10,15 @@ namespace ParkitectNexus.Data.Tasks
     public interface IQueueableTask
     {
         string Name { get; }
-        string StatusDescription { get; }
-        TaskStatus Status { get; }
-        int CompletionPercentage { get; }
+
+        string StatusDescription { get; set; }
+
+        TaskStatus Status { get; set; }
+
+        int CompletionPercentage { get; set; }
+
         event EventHandler StatusChanged;
+
         Task Run(CancellationToken token);
     }
 }

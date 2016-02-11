@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -35,6 +36,10 @@ namespace ParkitectNexus.Client.Windows
                     var registry = ObjectFactory.ConfigureStructureMap();
                     registry.IncludeRegistry(new PresenterRegistry());
                     ObjectFactory.SetUpContainer(registry);
+                    Debug.WriteLine(ObjectFactory.Container.WhatDidIScan());
+                    Debug.WriteLine(ObjectFactory.Container.WhatDoIHave());
+
+                    registry.For<MainForm>().Use<MainForm>();
 
                     var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
                     var form = presenterFactory.InstantiatePresenter<MainForm>();
