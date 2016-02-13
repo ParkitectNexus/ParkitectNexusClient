@@ -2,18 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using ParkitectNexus.AssetMagic.Readers;
-using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Settings.Models;
@@ -47,7 +36,7 @@ namespace ParkitectNexus.Data.Game.Base
             {
                 return IsValidInstallationPath(GameSettings.Model.InstallationPath)
                     ? GameSettings.Model.InstallationPath
-                    : null;
+                        : null;
             }
             set
             {
@@ -104,11 +93,5 @@ namespace ParkitectNexus.Data.Game.Base
         public abstract Process Launch(string arguments = "-single-instance");
 
         protected abstract bool IsValidInstallationPath(string path);
-
-        protected virtual void CompileActiveMods()
-        {
-            foreach (var mod in ActiveMods)
-                mod.Compile();
-        }
     }
 }
