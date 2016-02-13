@@ -96,8 +96,8 @@ namespace ParkitectNexus.Client.Linux
             Parser.Default.ParseArguments(arguments, options);
             if (options.Url != null)
             {
-                ParkitectNexusUrl url;
-                if(ParkitectNexusUrl.TryParse(options.Url,out url))
+                NexusUrl url;
+                if(NexusUrl.TryParse(options.Url,out url))
                 {
                     var attribute = url.Data.GetType().GetCustomAttribute<UrlActionTaskAttribute>();
                     if (attribute?.TaskType != null && typeof(UrlQueueableTask).IsAssignableFrom(attribute.TaskType))

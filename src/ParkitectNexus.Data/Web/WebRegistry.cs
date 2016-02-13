@@ -13,10 +13,10 @@ namespace ParkitectNexus.Data.Web
     {
         public WebRegistry()
         {
-            For<IParkitectNexusWebClient>().Use<ParkitectNexusWebClient>();
-            For<IParkitectNexusWebClientFactory>().Use<ParkitectNexusWebClientFactory>().Singleton();
+            For<INexusWebClient>().Use<NexusWebClient>();
+            For<INexusWebClientFactory>().Use<NexusWebClientFactory>().Singleton();
 
-            For<IParkitectNexusWebsite>().Use<ParkitectNexusWebsite>();
+            For<IWebsite>().Use<Website>();
             For<IRemoteAssetRepository>().Use<RemoteAssetRepository>();
 
             For<IGitHubClient>().Use(() => new GitHubClient(new ProductHeaderValue("parkitect-nexus-client")));

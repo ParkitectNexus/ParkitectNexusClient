@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,10 +35,14 @@ namespace ParkitectNexus.Data.Tasks
         #region Implementation of IQueueableTask
 
         public event EventHandler StatusChanged;
+
         public virtual string Name { get; protected set; }
-        public virtual string StatusDescription { get; protected set; }
-        public virtual TaskStatus Status { get; protected set; }
-        public virtual int CompletionPercentage { get; protected set; }
+
+        public virtual string StatusDescription { get; set; }
+
+        public virtual TaskStatus Status { get; set; }
+
+        public virtual int CompletionPercentage { get; set; }
 
         public abstract Task Run(CancellationToken token);
 

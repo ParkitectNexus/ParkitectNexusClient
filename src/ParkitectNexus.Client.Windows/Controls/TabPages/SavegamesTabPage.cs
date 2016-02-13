@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +12,7 @@ using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Windows.Controls.TabPages
 {
@@ -49,8 +48,8 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                 var tiles = new List<MetroTile>();
 
                 var current = 0;
-                var fileCount = _parkitect.LocalAssets.GetAssetCount(AssetType.Savegame);
-                foreach (var sg in _parkitect.LocalAssets.GetAssets(AssetType.Savegame))
+                var fileCount = _parkitect.Assets.GetAssetCount(AssetType.Savegame);
+                foreach (var sg in _parkitect.Assets[AssetType.Savegame])
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
@@ -63,7 +62,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                             Text = name,
                             TextAlign = ContentAlignment.BottomCenter,
                             Style = MetroColorStyle.Default,
-                            TileImage = sg.GetThumbnail().Result,
+                            TileImage = ImageUtility.ResizeImage(sg.GetImage(), 100, 100),
                             UseTileImage = true,
                             TileImageAlign = ContentAlignment.MiddleCenter
                         };
@@ -76,7 +75,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
 
                     UpdateLoadingProgress((current++*100)/fileCount);
                 }
-                return (IEnumerable<MetroTile>)tiles;
+                return (IEnumerable<MetroTile>) tiles;
             }, cancellationToken);
         }
 

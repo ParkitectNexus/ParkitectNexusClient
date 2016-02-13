@@ -1,3 +1,6 @@
+// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
 using System;
 
 namespace ParkitectNexus.Data.Assets

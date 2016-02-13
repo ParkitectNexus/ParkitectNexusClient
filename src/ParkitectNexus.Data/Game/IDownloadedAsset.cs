@@ -4,7 +4,6 @@
 using System;
 using System.IO;
 using ParkitectNexus.Data.Assets;
-using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Data.Game

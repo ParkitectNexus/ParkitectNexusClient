@@ -3,16 +3,16 @@
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    public class ParkitectNexusWebClientFactory : IParkitectNexusWebClientFactory
+    public class NexusWebClientFactory : INexusWebClientFactory
     {
-        public IParkitectNexusWebClient CreateWebClient()
+        public INexusWebClient CreateWebClient()
         {
             return CreateWebClient(false);
         }
 
-        public IParkitectNexusWebClient CreateWebClient(bool authorize)
+        public INexusWebClient CreateWebClient(bool authorize)
         {
-            var client = ObjectFactory.GetInstance<IParkitectNexusWebClient>();
+            var client = ObjectFactory.GetInstance<INexusWebClient>();
 
             if (authorize)
                 client.Authorize();

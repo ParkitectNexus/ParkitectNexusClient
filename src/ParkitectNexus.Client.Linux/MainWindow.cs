@@ -17,9 +17,9 @@ public partial class MainWindow: Gtk.Window, IPresenter
     private readonly IPresenterFactory _presenterFactory;
     private IPresenter[] _presenterPages;
     private int _previousPage = -1;
-    private IParkitectNexusAuthManager _authManager;
+    private IAuthManager _authManager;
     private ILogger _logger;
-    public MainWindow (ILogger logger,IParkitectNexusAuthManager authManager,IPresenterFactory presenterFactory,IParkitect parkitect) : base (Gtk.WindowType.Toplevel)
+    public MainWindow (ILogger logger,IAuthManager authManager,IPresenterFactory presenterFactory,IParkitect parkitect) : base (Gtk.WindowType.Toplevel)
     {
         _logger = logger;
         _authManager = authManager;

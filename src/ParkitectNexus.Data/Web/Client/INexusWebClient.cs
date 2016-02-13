@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    public interface IParkitectNexusWebClient : IDisposable
+    public interface INexusWebClient : IDisposable
     {
         WebHeaderCollection ResponseHeaders { get; }
+
         Task<Stream> OpenReadTaskAsync(string url);
         string UploadString(string url, string data);
         Stream OpenRead(string url);
         void DownloadFile(string url, string path);
+        string DownloadString(string url);
         void Authorize();
     }
 }

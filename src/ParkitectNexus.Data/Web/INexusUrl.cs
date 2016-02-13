@@ -5,9 +5,10 @@ using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Web
 {
-    public interface IParkitectNexusUrl
+    public interface INexusUrl
     {
-        ParkitectNexusUrlAction Action { get; }
+        UrlAction Action { get; }
+
         IUrlAction Data { get; }
     }
 }

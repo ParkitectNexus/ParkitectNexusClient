@@ -3,7 +3,6 @@
 
 using System.Threading.Tasks;
 using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Data.Assets

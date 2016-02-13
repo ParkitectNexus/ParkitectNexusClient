@@ -12,15 +12,15 @@ namespace ParkitectNexus.Data.Web.API
     public class ApiModResource : IApiResource
     {
         /// <summary>
-        ///     Gets or sets the identifier of this resource.
-        /// </summary>
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
-        /// <summary>
         ///     Gets or sets the GitHub source repository of this mod.
         /// </summary>
         [JsonProperty("source")]
         public string Source { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the identifier of this resource.
+        /// </summary>
+        [JsonProperty("id")]
+        public int Id { get; set; }
     }
 }

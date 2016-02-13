@@ -38,6 +38,8 @@
             this.deleteButton = new MetroFramework.Controls.MetroButton();
             this.updateButton = new MetroFramework.Controls.MetroButton();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -109,7 +111,7 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(23, 232);
+            this.deleteButton.Location = new System.Drawing.Point(23, 455);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(233, 23);
             this.deleteButton.TabIndex = 17;
@@ -118,7 +120,7 @@
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(23, 203);
+            this.updateButton.Location = new System.Drawing.Point(23, 426);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(233, 23);
             this.updateButton.TabIndex = 16;
@@ -128,7 +130,7 @@
             // 
             // metroButton1
             // 
-            this.metroButton1.Location = new System.Drawing.Point(23, 174);
+            this.metroButton1.Location = new System.Drawing.Point(23, 397);
             this.metroButton1.Name = "metroButton1";
             this.metroButton1.Size = new System.Drawing.Size(233, 23);
             this.metroButton1.TabIndex = 18;
@@ -136,11 +138,21 @@
             this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Light;
             this.metroButton1.UseSelectable = true;
             // 
+            // pictureBox
+            // 
+            this.pictureBox.Location = new System.Drawing.Point(23, 158);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(233, 233);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox.TabIndex = 19;
+            this.pictureBox.TabStop = false;
+            // 
             // ModSliderPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackText = "Mod";
+            this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.updateButton);
@@ -152,7 +164,7 @@
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.nameLabel);
             this.Name = "ModSliderPanel";
-            this.Size = new System.Drawing.Size(279, 313);
+            this.Size = new System.Drawing.Size(279, 497);
             this.Controls.SetChildIndex(this.nameLabel, 0);
             this.Controls.SetChildIndex(this.metroLabel1, 0);
             this.Controls.SetChildIndex(this.enableModToggle, 0);
@@ -163,6 +175,8 @@
             this.Controls.SetChildIndex(this.updateButton, 0);
             this.Controls.SetChildIndex(this.deleteButton, 0);
             this.Controls.SetChildIndex(this.metroButton1, 0);
+            this.Controls.SetChildIndex(this.pictureBox, 0);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,5 +194,6 @@
         private MetroFramework.Controls.MetroButton deleteButton;
         private MetroFramework.Controls.MetroButton updateButton;
         private MetroFramework.Controls.MetroButton metroButton1;
+        private System.Windows.Forms.PictureBox pictureBox;
     }
 }

@@ -20,13 +20,13 @@ namespace ParkitectNexus.Data.Assets
     /// </summary>
     public class RemoteAssetRepository : IRemoteAssetRepository
     {
-        private readonly ILogger _logger;
-        private readonly IParkitectNexusWebsite _website;
-        private readonly IParkitectNexusWebClientFactory _webClientFactory;
         private readonly IGitHubClient _gitHubClient;
+        private readonly ILogger _logger;
+        private readonly INexusWebClientFactory _webClientFactory;
+        private readonly IWebsite _website;
 
-        public RemoteAssetRepository(ILogger logger, IParkitectNexusWebsite website,
-            IParkitectNexusWebClientFactory webClientFactory, IGitHubClient gitHubClient)
+        public RemoteAssetRepository(ILogger logger, IWebsite website,
+            INexusWebClientFactory webClientFactory, IGitHubClient gitHubClient)
         {
             if (logger == null) throw new ArgumentNullException(nameof(logger));
             if (website == null) throw new ArgumentNullException(nameof(website));
@@ -39,7 +39,7 @@ namespace ParkitectNexus.Data.Assets
         }
 
         /// <summary>
-        /// Downloads the asset.
+        ///     Downloads the asset.
         /// </summary>
         /// <param name="asset">The asset.</param>
         /// <returns></returns>

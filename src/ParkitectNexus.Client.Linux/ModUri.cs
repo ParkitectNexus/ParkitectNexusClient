@@ -18,16 +18,17 @@ namespace ParkitectNexus.Client.Linux
        private readonly IPresenterFactory _presenterFactory;
         private readonly ILogger _logger;
 		private IQueueableTaskManager _queuableTaskManager;
-		private IParkitectNexusWebsite _website;
 		private IRemoteAssetRepository _assetRepository;
 		private IParkitectNexusAPI _nexusAPI;
-		public ModUri (IQueueableTaskManager queuableTaskManager, IRemoteAssetRepository assetRepositry,IParkitectNexusAPI nexusAPI,IParkitectNexusWebsite website,IQueueableTaskManager taskManager,IParkitect parkitect,ILogger logger,IPresenterFactory presenterFactory)
+        private IWebsite _website;
+        public ModUri (IWebsite website,IQueueableTaskManager queuableTaskManager, IRemoteAssetRepository assetRepositry,IParkitectNexusAPI nexusAPI,IQueueableTaskManager taskManager,IParkitect parkitect,ILogger logger,IPresenterFactory presenterFactory)
         {
+            
 			this.Build ();
+            this._website = website;
 			this._assetRepository = assetRepositry;
 			this._nexusAPI = nexusAPI;
 
-			this._website = website;
 			this._logger = logger;
             this._parkitect = parkitect;
             this._presenterFactory = presenterFactory;
@@ -41,8 +42,8 @@ namespace ParkitectNexus.Client.Linux
         {
            
             // Try to parse the specified download url. If parsing fails open ParkitectNexus. 
-            ParkitectNexusUrl parkitectNexusUrl;
-            if (!ParkitectNexusUrl.TryParse (txtNexusURI.Text, out parkitectNexusUrl)) {
+            NexusUrl parkitectNexusUrl;
+            if (!NexusUrl.TryParse (txtNexusURI.Text, out parkitectNexusUrl)) {
                 // Create a form to allow the dialogs to have a owner with forced focus and an icon.
                MessageDialog errorDialog = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "The URL you opened is invalid!");
                 switch (errorDialog.Run ()) {
@@ -55,13 +56,13 @@ namespace ParkitectNexus.Client.Linux
                 errorDialog.Destroy ();
             } else {
 
-				//var assetTask =new InstallAssetTask (_parkitect, _website, _assetRepository);
-				//assetTask.Data = parkitectNexusUrl.Data;
+				var assetTask =new InstallAssetTask (_parkitect, _website, _assetRepository);
+				assetTask.Data = parkitectNexusUrl.Data;
 				// Run the download process in an installer form, for a nice visible process.
 
 
-					ParkitectNexusUrl nexusURL;
-					ParkitectNexusUrl.TryParse (txtNexusURI.Text, out nexusURL);
+                NexusUrl nexusURL;
+                NexusUrl.TryParse (txtNexusURI.Text, out nexusURL);
 					var task = new InstallAssetTask (_parkitect, _website, _assetRepository);
 					task.Data = nexusURL.Data;
 					_queuableTaskManager.Add (task);

@@ -1,4 +1,6 @@
-﻿using ParkitectNexus.Data.Web;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
 using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Tasks.Prefab

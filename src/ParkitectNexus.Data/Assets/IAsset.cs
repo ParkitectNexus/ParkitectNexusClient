@@ -1,23 +1,25 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using System;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
-using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Assets
 {
     public interface IAsset
     {
+        string Id { get; }
+
+        DateTime InstalledVersion { get; }
+
         string Name { get; }
+
         string InstallationPath { get; }
+
         AssetType Type { get; }
-        AssetCachedData CachedData { get; }
 
-        Task<Image> GetThumbnail();
-        Task<Image> GetImage();
-
+        Image GetImage();
         Stream Open();
     }
 }

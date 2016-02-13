@@ -1,7 +1,6 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -16,14 +15,14 @@ namespace ParkitectNexus.Data.Web.API
     [JsonObject]
     public class ApiResourcePromise<T> where T : class
     {
-        private readonly IParkitectNexusWebClientFactory _webClientFactory;
+        private readonly INexusWebClientFactory _webClientFactory;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApiResourcePromise{T}" /> class.
         /// </summary>
         public ApiResourcePromise()
         {
-            _webClientFactory = ObjectFactory.GetInstance<IParkitectNexusWebClientFactory>();
+            _webClientFactory = ObjectFactory.GetInstance<INexusWebClientFactory>();
         }
 
         /// <summary>

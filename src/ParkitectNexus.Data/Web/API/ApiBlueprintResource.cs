@@ -12,12 +12,6 @@ namespace ParkitectNexus.Data.Web.API
     public class ApiBlueprintResource : IApiResource
     {
         /// <summary>
-        ///     Gets or sets the identifier of this resource.
-        /// </summary>
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
-        /// <summary>
         ///     Gets or sets the name of the file of this blueprint.
         /// </summary>
         [JsonProperty("filename")]
@@ -28,5 +22,11 @@ namespace ParkitectNexus.Data.Web.API
         /// </summary>
         [JsonProperty("asset")]
         public ApiResourcePromise<ApiAsset> Asset { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the identifier of this resource.
+        /// </summary>
+        [JsonProperty("id")]
+        public int Id { get; set; }
     }
 }

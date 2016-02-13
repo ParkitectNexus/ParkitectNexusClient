@@ -1,3 +1,6 @@
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;

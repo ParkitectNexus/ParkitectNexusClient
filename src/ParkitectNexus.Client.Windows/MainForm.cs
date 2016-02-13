@@ -25,12 +25,12 @@ namespace ParkitectNexus.Client.Windows
 {
     public partial class MainForm : MetroForm, IPresenter
     {
-        private readonly IParkitectNexusAuthManager _authManager;
+        private readonly IAuthManager _authManager;
         private readonly IQueueableTaskManager _taskManager;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger,
-            IParkitectNexusAuthManager authManager, IQueueableTaskManager taskManager)
+            IAuthManager authManager, IQueueableTaskManager taskManager)
         {
             if (presenterFactory == null) throw new ArgumentNullException(nameof(presenterFactory));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
@@ -101,7 +101,7 @@ namespace ParkitectNexus.Client.Windows
             using (var b = new Bitmap(1, 1))
             using (var g = Graphics.FromImage(b))
             using (var f = MetroFonts.Link(authLink.FontSize, authLink.FontWeight))
-                width = (int)g.MeasureString(name, f).Width;
+                width = (int) g.MeasureString(name, f).Width;
 
             authLink.Width = 32 + 8 + width;
             authLink.Text = name;
@@ -115,8 +115,8 @@ namespace ParkitectNexus.Client.Windows
 
             if (options.Url != null)
             {
-                ParkitectNexusUrl url;
-                if (ParkitectNexusUrl.TryParse(options.Url, out url))
+                NexusUrl url;
+                if (NexusUrl.TryParse(options.Url, out url))
                 {
                     var attribute = url.Data.GetType().GetCustomAttribute<UrlActionTaskAttribute>();
                     if (attribute?.TaskType != null && typeof (UrlQueueableTask).IsAssignableFrom(attribute.TaskType))
@@ -198,12 +198,6 @@ namespace ParkitectNexus.Client.Windows
             if (!_authManager.IsAuthenticated)
             {
                 _authManager.OpenLoginPage();
-            }
-            else
-            {
-                // TODO refresh subscriptions instead of logging out
-                // _authManager.Logout();
-                // SetUserName("Log in");
             }
         }
     }

@@ -6,6 +6,8 @@ using Gdk;
 using System.IO;
 using System.Drawing.Imaging;
 using ParkitectNexus.Data.Assets;
+using System.Linq;
+using ParkitectNexus.Data.Assets.Modding;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -89,15 +91,15 @@ namespace ParkitectNexus.Client.Linux
         {
             _blueprintListStore.Clear();
            
-			foreach (IAsset bp in _parkitect.LocalAssets.GetAssets(ParkitectNexus.Data.Assets.AssetType.Blueprint))
+            foreach (IAsset bp in _parkitect.Assets[AssetType.Blueprint])
             {
 				if (bp.Name != null) {
 					using (MemoryStream stream = new MemoryStream ()) {
 					
-						bp.GetThumbnail ().Result.Save (stream, ImageFormat.Png);
+                        bp.GetImage().Save (stream, ImageFormat.Png);
 						stream.Position = 0;
 						Pixbuf pixbuf = new Pixbuf (stream);
-
+                        pixbuf =  pixbuf.ScaleSimple(100, 100, InterpType.Hyper);
 						_blueprintListStore.AppendValues (bp.Name, pixbuf, bp);
 					}
 				}

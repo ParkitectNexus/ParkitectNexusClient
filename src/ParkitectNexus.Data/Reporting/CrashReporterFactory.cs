@@ -15,10 +15,10 @@ namespace ParkitectNexus.Data.Reporting
     {
         private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
-        private readonly IParkitectNexusWebClientFactory _webClientFactory;
-        private readonly IParkitectNexusWebsite _website;
+        private readonly INexusWebClientFactory _webClientFactory;
+        private readonly IWebsite _website;
 
-        public CrashReporterFactory(IParkitectNexusWebClientFactory webClientFactory, IParkitectNexusWebsite website,
+        public CrashReporterFactory(INexusWebClientFactory webClientFactory, IWebsite website,
             IParkitect parkitect, ILogger logger)
         {
             _website = website;

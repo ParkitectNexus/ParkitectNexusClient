@@ -18,8 +18,11 @@ namespace ParkitectNexus.Data.Game.Base
         protected IParkitect Parkitect { get; }
 
         public virtual string Installation => GetPathInGameFolder(null);
+
         public abstract string Data { get; }
+
         public abstract string DataManaged { get; }
+
         public virtual string NativeMods => GetPathInSavesFolder("Mods", true);
 
         public virtual string GetAssetPath(AssetType type)

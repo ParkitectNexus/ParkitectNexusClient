@@ -4,8 +4,6 @@
 using System;
 using System.Drawing;
 using ParkitectNexus.Data.Assets;
-using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {

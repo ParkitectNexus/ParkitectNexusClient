@@ -17,6 +17,7 @@ namespace ParkitectNexus.Data.Game.MacOSX
         }
 
         public override string Data => GetPathInGameFolder("Contents/Resources/Data");
+
         public override string DataManaged => GetPathInGameFolder("Contents/Resources/Data/Managed");
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
@@ -28,8 +29,8 @@ namespace ParkitectNexus.Data.Game.MacOSX
                 "Library/Application Support/Parkitect");
 
             path = path == null
-                    ? parkitectFolder
-                    : Path.Combine(parkitectFolder, path);
+                ? parkitectFolder
+                : Path.Combine(parkitectFolder, path);
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);

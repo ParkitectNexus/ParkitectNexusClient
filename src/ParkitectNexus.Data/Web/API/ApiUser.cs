@@ -45,7 +45,7 @@ namespace ParkitectNexus.Data.Web.API
             if (AvatarUrl == null)
                 return null;
 
-            var webClientFactory = ObjectFactory.GetInstance<IParkitectNexusWebClientFactory>();
+            var webClientFactory = ObjectFactory.GetInstance<INexusWebClientFactory>();
 
             using (var client = webClientFactory.CreateWebClient())
             using (var stream = await client.OpenReadTaskAsync(AvatarUrl))

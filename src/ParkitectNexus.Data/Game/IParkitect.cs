@@ -2,10 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using ParkitectNexus.Data.Assets;
 
 namespace ParkitectNexus.Data.Game
@@ -22,19 +19,9 @@ namespace ParkitectNexus.Data.Game
         string InstallationPath { get; set; }
 
         /// <summary>
-        ///     Gets a collection of installed mods.
-        /// </summary>
-        IEnumerable<IParkitectMod> InstalledMods { get; }
-
-        /// <summary>
         ///     Gets a value indicating whether the game is installed.
         /// </summary>
         bool IsInstalled { get; }
-
-        /// <summary>
-        ///     Gets a collection of assembly names provided by the game.
-        /// </summary>
-        IEnumerable<string> ManagedAssemblyNames { get; }
 
         /// <summary>
         ///     Gets a collection of paths.
@@ -44,7 +31,7 @@ namespace ParkitectNexus.Data.Game
         /// <summary>
         ///     Gets the assets repository.
         /// </summary>
-        ILocalAssetsRepository LocalAssets { get; }
+        ILocalAssetRepository Assets { get; }
 
         /// <summary>
         ///     Detects the installation path.

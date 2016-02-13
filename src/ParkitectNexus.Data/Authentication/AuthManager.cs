@@ -16,13 +16,13 @@ using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Data.Authentication
 {
-    public class ParkitectNexusAuthManager : IParkitectNexusAuthManager
+    public class AuthManager : IAuthManager
     {
         private readonly ISettingsRepository<AuthSettings> _authSettingsRepository;
         private readonly ICacheManager _cacheManager;
-        private readonly IParkitectNexusWebsite _website;
+        private readonly IWebsite _website;
 
-        public ParkitectNexusAuthManager(IParkitectNexusWebsite website,
+        public AuthManager(IWebsite website,
             ISettingsRepository<AuthSettings> authSettingsRepository, ICacheManager cacheManager)
         {
             if (website == null) throw new ArgumentNullException(nameof(website));
@@ -34,6 +34,7 @@ namespace ParkitectNexus.Data.Authentication
         }
 
         public event EventHandler Authenticated;
+
         public bool IsAuthenticated => !string.IsNullOrWhiteSpace(_authSettingsRepository.Model.APIKey);
 
         public string Key

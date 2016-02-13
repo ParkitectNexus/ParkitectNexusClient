@@ -1,19 +1,20 @@
 ﻿using System;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Assets.Modding;
 
 namespace ParkitectNexus.Client.Linux
 {
         [Gtk.TreeNode (ListOnly=true)]
         public class TreeNodeModContainer : Gtk.TreeNode
         {
-            private IParkitectMod _parkitectMod;
-            public TreeNodeModContainer(IParkitectMod parkitectMod)
+             private IModAsset _parkitectMod;
+             public TreeNodeModContainer(IModAsset parkitectMod)
             {
                 this._parkitectMod = parkitectMod;
                 AvaliableVersion= "-";
             }
 
-            public IParkitectMod ParkitectMod
+        public IModAsset ParkitectMod
             {
                 get{ return _parkitectMod; }
             }
@@ -27,7 +28,7 @@ namespace ParkitectNexus.Client.Linux
             { 
                 get
                 { 
-                    return _parkitectMod.Tag;
+                return _parkitectMod.Information.CompilerVersion;
                 }
             }
 
@@ -43,12 +44,12 @@ namespace ParkitectNexus.Client.Linux
             [Gtk.TreeNodeValue (Column=0)]
             public bool IsActive{ 
                 get{ 
-                    return _parkitectMod.IsEnabled;
+                return _parkitectMod.Information.IsEnabled;
                 } 
                 set
                 { 
-                    _parkitectMod.IsEnabled = value; 
-                    _parkitectMod.Save ();
+                _parkitectMod.Information.IsEnabled = value; 
+                //_parkitectMod.Information..Save ();
                 }
             }
         }

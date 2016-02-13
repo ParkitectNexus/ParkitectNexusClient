@@ -134,6 +134,7 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
         }
 
         public event EventHandler SlidedIn;
+
         public event EventHandler SlidedOut;
 
         private void CurrentAnimationOnAnimationCompleted(object sender, EventArgs eventArgs)

@@ -3,6 +3,7 @@
 
 using System.IO;
 using ParkitectNexus.Data.Game.Base;
+using ParkitectNexus.Data.Game.Linux;
 
 namespace ParkitectNexus.Data
 {
@@ -13,6 +14,7 @@ namespace ParkitectNexus.Data
         }
 
         public override string Data => GetPathInGameFolder("Parkitect_Data");
+
         public override string DataManaged => GetPathInGameFolder(@"Parkitect_Data/Managed");
    
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)

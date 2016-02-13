@@ -6,9 +6,10 @@ using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Web
 {
-    public class ParkitectNexusUrlActionAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field)]
+    public class UrlActionAttribute : Attribute
     {
-        public ParkitectNexusUrlActionAttribute(Type type)
+        public UrlActionAttribute(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             if (!typeof (IUrlAction).IsAssignableFrom(type))

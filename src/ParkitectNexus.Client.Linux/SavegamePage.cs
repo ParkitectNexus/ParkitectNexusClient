@@ -6,6 +6,9 @@ using System.IO;
 using System.Drawing.Imaging;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Assets;
+using System.Linq;
+using ParkitectNexus.Data.Assets.Modding;
+
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -79,7 +82,7 @@ namespace ParkitectNexus.Client.Linux
                 _selectedAsset = asset;
                 savegameName.Text = _selectedAsset.Name;
                 using (MemoryStream stream = new MemoryStream ()) {
-					_selectedAsset.GetImage().Result.Save (stream, ImageFormat.Png);
+					_selectedAsset.GetImage().Save (stream, ImageFormat.Png);
                     stream.Position = 0;
                     _selectedAssetImage = new Pixbuf(stream);
                 }
@@ -91,13 +94,14 @@ namespace ParkitectNexus.Client.Linux
         public void UpdateListStore()
         {
             _blueprintListStore.Clear();
-			foreach (var savegame in _parkitect.LocalAssets.GetAssets(AssetType.Savegame))
+            foreach (var savegame in _parkitect.Assets[AssetType.Savegame])
             {
 					using (MemoryStream stream = new MemoryStream ()) {
                     
-						savegame.GetImage ().Result.Save (stream, ImageFormat.Png);
+						savegame.GetImage ().Save (stream, ImageFormat.Png);
 						stream.Position = 0;
 						Pixbuf pixbuf = new Pixbuf (stream);
+                    pixbuf.ScaleSimple(100, 100, InterpType.Hyper);
 						_blueprintListStore.AppendValues (savegame.Name, pixbuf, savegame);
 					}
             }

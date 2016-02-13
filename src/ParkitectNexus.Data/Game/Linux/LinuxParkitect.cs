@@ -4,18 +4,17 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using ParkitectNexus.Data.Caching;
-using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Settings.Models;
 using ParkitectNexus.Data.Utilities;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Game.Linux
 {
     public class LinuxParkitect : BaseParkitect
     {
-        public LinuxParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger, ICacheManager cacheManager) : base(gameSettingsRepository, logger, cacheManager)
+        public LinuxParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger)
+            : base(gameSettingsRepository, logger)
         {
             Paths = new LinuxParkitectPath(this);
         }
@@ -48,9 +47,6 @@ namespace ParkitectNexus.Data
         public override Process Launch(string arguments = "-single-instance")
         {
             Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
-
-            Logger.WriteLine("Attempting to compile installed mods.");
-            CompileActiveMods();
 
             // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();

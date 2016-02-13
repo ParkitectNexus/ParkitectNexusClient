@@ -2,10 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.Drawing;
 using ParkitectNexus.Data.Assets;
-using ParkitectNexus.Data.Game;
-using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
@@ -17,7 +14,7 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
             InitializeComponent();
 
             nameLabel.Text = savegame.Name;
-            pictureBox.Image = savegame.CachedData.GetImage();
+            pictureBox.Image = savegame.GetImage();
         }
     }
 }

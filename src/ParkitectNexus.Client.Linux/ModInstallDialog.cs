@@ -6,12 +6,13 @@ using System.Linq;
 using Gtk;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Client.Linux
 {
     public partial class ModInstallDialog : Gtk.Dialog
     {
-        public ParkitectNexusUrl _ParkitectNexusUrl;
+        public IParkitectNexusAPI _ParkitectNexusUrl;
         private IParkitect _parkitect;
         private int _dots;
         private int _dotsDirection = 1;
@@ -21,7 +22,7 @@ namespace ParkitectNexus.Client.Linux
 
         private volatile bool isFinished = false;
 
-        public ModInstallDialog (ParkitectNexusUrl parkitectNexusUrl,IPresenter presenter,ILogger logger,IParkitect parkitect)
+        public ModInstallDialog (IParkitectNexusAPI parkitectNexusUrl,IPresenter presenter,ILogger logger,IParkitect parkitect)
         {
 
             this.Parent = (Dialog)presenter;

@@ -17,6 +17,7 @@ namespace ParkitectNexus.Data.Game.Windows
         }
 
         public override string Data => GetPathInGameFolder("Parkitect_Data");
+
         public override string DataManaged => GetPathInGameFolder(@"Parkitect_Data\Managed");
 
         public override string GetPathInSavesFolder(string path, bool createIfNotExists)
@@ -27,8 +28,8 @@ namespace ParkitectNexus.Data.Game.Windows
                 "Parkitect");
 
             path = path == null
-                    ? documentsFolder
-                    : Path.Combine(documentsFolder, path);
+                ? documentsFolder
+                : Path.Combine(documentsFolder, path);
 
             if (path != null && createIfNotExists)
                 Directory.CreateDirectory(path);

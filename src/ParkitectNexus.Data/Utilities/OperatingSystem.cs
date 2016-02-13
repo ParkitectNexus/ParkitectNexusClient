@@ -27,7 +27,6 @@ namespace ParkitectNexus.Data.Utilities
                 default:
                     throw new ApplicationException("unsupported platform " + platform);
             }
-
         }
 
         [DllImport("libc")]

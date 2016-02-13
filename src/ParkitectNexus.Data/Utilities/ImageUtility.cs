@@ -34,7 +34,6 @@ namespace ParkitectNexus.Data.Utilities
                 {
                     var currentColor = image.GetPixel(x, y);
                     image.SetPixel(x, y, Color.FromArgb(currentColor.A, color));
-
                 }
 
             return image;
