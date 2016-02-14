@@ -4,6 +4,7 @@
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Assets.CachedData;
 using ParkitectNexus.Data.Assets.Meta;
+using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Caching;
 using ParkitectNexus.Data.Game;
@@ -47,6 +48,7 @@ namespace ParkitectNexus.Data
             registry.For<IRemoteAssetRepository>().Use<RemoteAssetRepository>();
             registry.For<IAssetMetadataStorage>().Use<AssetMetadataStorage>();
             registry.For<IAssetCachedDataStorage>().Use<AssetCachedDataStorage>();
+            registry.For<IModCompiler>().Use<ModCompiler>();
 
             return registry;
         }

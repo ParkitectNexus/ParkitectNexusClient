@@ -39,6 +39,8 @@
             this.updateButton = new MetroFramework.Controls.MetroButton();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.debugTextBox = new MetroFramework.Controls.MetroTextBox();
+            this.recompileButton = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -120,9 +122,9 @@
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(23, 426);
+            this.updateButton.Location = new System.Drawing.Point(142, 426);
             this.updateButton.Name = "updateButton";
-            this.updateButton.Size = new System.Drawing.Size(233, 23);
+            this.updateButton.Size = new System.Drawing.Size(114, 23);
             this.updateButton.TabIndex = 16;
             this.updateButton.Text = "Update";
             this.updateButton.Theme = MetroFramework.MetroThemeStyle.Light;
@@ -147,11 +149,56 @@
             this.pictureBox.TabIndex = 19;
             this.pictureBox.TabStop = false;
             // 
+            // debugTextBox
+            // 
+            // 
+            // 
+            // 
+            this.debugTextBox.CustomButton.Image = null;
+            this.debugTextBox.CustomButton.Location = new System.Drawing.Point(143, 1);
+            this.debugTextBox.CustomButton.Name = "";
+            this.debugTextBox.CustomButton.Size = new System.Drawing.Size(89, 89);
+            this.debugTextBox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.debugTextBox.CustomButton.TabIndex = 1;
+            this.debugTextBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.debugTextBox.CustomButton.UseSelectable = true;
+            this.debugTextBox.CustomButton.Visible = false;
+            this.debugTextBox.Lines = new string[] {
+        "debugTextBox"};
+            this.debugTextBox.Location = new System.Drawing.Point(23, 484);
+            this.debugTextBox.MaxLength = 32767;
+            this.debugTextBox.Multiline = true;
+            this.debugTextBox.Name = "debugTextBox";
+            this.debugTextBox.PasswordChar = '\0';
+            this.debugTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.debugTextBox.SelectedText = "";
+            this.debugTextBox.SelectionLength = 0;
+            this.debugTextBox.SelectionStart = 0;
+            this.debugTextBox.Size = new System.Drawing.Size(233, 91);
+            this.debugTextBox.TabIndex = 20;
+            this.debugTextBox.Text = "debugTextBox";
+            this.debugTextBox.UseSelectable = true;
+            this.debugTextBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.debugTextBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // 
+            // recompileButton
+            // 
+            this.recompileButton.Location = new System.Drawing.Point(23, 426);
+            this.recompileButton.Name = "recompileButton";
+            this.recompileButton.Size = new System.Drawing.Size(114, 23);
+            this.recompileButton.TabIndex = 21;
+            this.recompileButton.Text = "Recompile";
+            this.recompileButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.recompileButton.UseSelectable = true;
+            this.recompileButton.Click += new System.EventHandler(this.recompileButton_Click);
+            // 
             // ModSliderPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackText = "Mod";
+            this.Controls.Add(this.recompileButton);
+            this.Controls.Add(this.debugTextBox);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.deleteButton);
@@ -164,7 +211,7 @@
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.nameLabel);
             this.Name = "ModSliderPanel";
-            this.Size = new System.Drawing.Size(279, 497);
+            this.Size = new System.Drawing.Size(279, 612);
             this.Controls.SetChildIndex(this.nameLabel, 0);
             this.Controls.SetChildIndex(this.metroLabel1, 0);
             this.Controls.SetChildIndex(this.enableModToggle, 0);
@@ -176,6 +223,8 @@
             this.Controls.SetChildIndex(this.deleteButton, 0);
             this.Controls.SetChildIndex(this.metroButton1, 0);
             this.Controls.SetChildIndex(this.pictureBox, 0);
+            this.Controls.SetChildIndex(this.debugTextBox, 0);
+            this.Controls.SetChildIndex(this.recompileButton, 0);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -195,5 +244,7 @@
         private MetroFramework.Controls.MetroButton updateButton;
         private MetroFramework.Controls.MetroButton metroButton1;
         private System.Windows.Forms.PictureBox pictureBox;
+        private MetroFramework.Controls.MetroTextBox debugTextBox;
+        private MetroFramework.Controls.MetroButton recompileButton;
     }
 }

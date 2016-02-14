@@ -8,7 +8,7 @@ using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Assets
 {
-    public interface ILocalAssetRepository
+    public interface ILocalAssetRepository : IEnumerable<IAsset>
     {
         IEnumerable<Asset> this[AssetType type] { get; }
 

@@ -114,6 +114,7 @@
     <Compile Include="Assets\Meta\AssetMetadataStorage.cs" />
     <Compile Include="Assets\Meta\IAssetMetadata.cs" />
     <Compile Include="Assets\Meta\IAssetMetadataStorage.cs" />
+    <Compile Include="Assets\Meta\IModMetadata.cs" />
     <Compile Include="Assets\Modding\ModCompiler.cs" />
     <Compile Include="Assets\Modding\ModInformation.cs" />
     <Compile Include="Assets\Meta\ModMetadata.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Tasks\IQueueableTask.cs" />
     <Compile Include="Tasks\IQueueableTaskManager.cs" />
     <Compile Include="Tasks\Prefab\AuthenticateTask.cs" />
+    <Compile Include="Tasks\Prefab\CompileModTask.cs" />
     <Compile Include="Tasks\Prefab\InstallAssetTask.cs" />
     <Compile Include="Tasks\Prefab\UrlQueueableTask.cs" />
     <Compile Include="Tasks\QueueableTask.cs" />

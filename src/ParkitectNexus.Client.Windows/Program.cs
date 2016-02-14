@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
 
@@ -41,6 +42,8 @@ namespace ParkitectNexus.Client.Windows
 
                     registry.For<MainForm>().Use<MainForm>();
 
+                    ObjectFactory.GetInstance<IParkitect>()
+                        .SetInstallationPathIfValid("C:\\Users\\Tim\\Desktop\\Parkitect_Pre-Alpha_7a_64bit");
                     var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
                     var form = presenterFactory.InstantiatePresenter<MainForm>();
 
