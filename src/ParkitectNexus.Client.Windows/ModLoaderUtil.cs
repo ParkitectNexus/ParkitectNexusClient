@@ -1,15 +1,15 @@
-﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
-namespace ParkitectNexus.Client
+namespace ParkitectNexus.Client.Windows
 {
     public static class ModLoaderUtil
     {
@@ -26,16 +26,10 @@ namespace ParkitectNexus.Client
 
             if (File.Exists(targetPath))
             {
-                var md5 = MD5.Create();
-                byte[] sourceHash, targetHash;
-
                 using (var stream = File.OpenRead(sourcePath))
-                    sourceHash = md5.ComputeHash(stream);
-                using (var stream = File.OpenRead(targetPath))
-                    targetHash = md5.ComputeHash(stream);
-
-                if (sourceHash.SequenceEqual(targetHash))
-                    return;
+                using (var stream2 = File.OpenRead(targetPath))
+                    if (stream.CreateMD5Checksum() == stream2.CreateMD5Checksum())
+                        return;
             }
 
             File.Copy(sourcePath, targetPath, true);
@@ -43,6 +37,9 @@ namespace ParkitectNexus.Client
 
         public static void InstallModLoader(IParkitect parkitect, ILogger logger)
         {
+            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
+
             try
             {
                 InstallModLoaderFile(parkitect, "ParkitectNexus.Mod.ModLoader.dll");

@@ -68,17 +68,29 @@ namespace ParkitectNexus.Data.Assets
                     case AssetType.Mod:
                         foreach (var path in GetFilesInAssetPath(type))
                         {
-                            var metadata = _assetMetadataStorage.GetMetadata(type, path) as IModMetadata;
+                            ModAsset result = null;
+                            try
+                            {
+                                var metadata = _assetMetadataStorage.GetMetadata(type, path) as IModMetadata;
 
-                            var modInformationString = File.ReadAllText(Path.Combine(path, "mod.json"));
-                            var modInformation = JsonConvert.DeserializeObject<ModInformation>(modInformationString);
+                                var modInformationString = File.ReadAllText(Path.Combine(path, "mod.json"));
+                                var modInformation = JsonConvert.DeserializeObject<ModInformation>(modInformationString);
 
-                            var cachedData = metadata == null
-                                ? new AssetWithImageCachedData()
-                                : _assetCachedDataStorage.GetData(type, metadata, path).Result as
-                                    AssetWithImageCachedData;
+                                var cachedData = metadata == null
+                                    ? new AssetWithImageCachedData()
+                                    : _assetCachedDataStorage.GetData(type, metadata, path).Result as
+                                        AssetWithImageCachedData;
 
-                            yield return new ModAsset(path, metadata, cachedData, modInformation);
+                                result = new ModAsset(path, metadata, cachedData, modInformation);
+                            }
+                            catch (Exception e)
+                            {
+                                // TODO log the exception
+                                throw e;
+                            }
+
+                            if (result != null)
+                                yield return result;
                         }
                         break;
                     default:

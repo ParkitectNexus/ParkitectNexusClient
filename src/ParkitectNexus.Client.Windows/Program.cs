@@ -37,13 +37,15 @@ namespace ParkitectNexus.Client.Windows
                     var registry = ObjectFactory.ConfigureStructureMap();
                     registry.IncludeRegistry(new PresenterRegistry());
                     ObjectFactory.SetUpContainer(registry);
-                    Debug.WriteLine(ObjectFactory.Container.WhatDidIScan());
-                    Debug.WriteLine(ObjectFactory.Container.WhatDoIHave());
 
                     registry.For<MainForm>().Use<MainForm>();
 
+                    ModLoaderUtil.InstallModLoader(ObjectFactory.GetInstance<IParkitect>(), ObjectFactory.GetInstance<ILogger>());
+
+                    // Debug. TODO: Create a finder window on launch if path is not set
                     ObjectFactory.GetInstance<IParkitect>()
                         .SetInstallationPathIfValid("C:\\Users\\Tim\\Desktop\\Parkitect_Pre-Alpha_7a_64bit");
+
                     var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
                     var form = presenterFactory.InstantiatePresenter<MainForm>();
 

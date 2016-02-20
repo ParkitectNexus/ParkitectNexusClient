@@ -35,6 +35,9 @@ namespace ParkitectNexus.Data.Assets.Modding
         /// </summary>
         public string Project { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the dependencies.
+        /// </summary>
         public string[] Dependencies { get; set; }
     }
 }

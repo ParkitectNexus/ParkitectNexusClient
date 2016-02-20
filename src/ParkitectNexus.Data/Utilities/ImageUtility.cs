@@ -10,6 +10,8 @@ namespace ParkitectNexus.Data.Utilities
     {
         public static Bitmap ResizeImage(Image image, int width, int height)
         {
+            if (image == null)
+                return null;
             var result = new Bitmap(width, height);
             result.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 

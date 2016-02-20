@@ -52,13 +52,13 @@ namespace ParkitectNexus.Data.Assets.Modding
 
         public async Task<ModCompileResults> Compile(IModAsset mod)
         {
-            var dependencies = mod.Information.Dependencies?.Select(tag =>
+            var dependencies = mod.Information.Dependencies?.Select(repository =>
             {
-                var dep = _parkitect.Assets[AssetType.Mod].OfType<IModAsset>().FirstOrDefault(m => m.Tag == tag);
+                var dep = _parkitect.Assets[AssetType.Mod].OfType<IModAsset>().FirstOrDefault(m => m.Repository == repository);
 
                 if (dep == null)
                 {
-                    throw new Exception($"Dependency {tag} was not installed.");
+                    throw new Exception($"Dependency {repository} was not installed.");
                 }
 
                 return dep;
@@ -163,7 +163,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                         var dep = GetBuildPath(depMod);
                         if (dep == null)
                             throw new Exception($"Dependency {depMod.Name} wasn't build yet");
-                        assemblyFiles.Add(dep);
+                        assemblyFiles.Add(Path.Combine(depMod.InstallationPath, dep));
                     }
 
                     // Resolve the source file paths.

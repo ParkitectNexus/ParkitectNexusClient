@@ -49,6 +49,7 @@ namespace ParkitectNexus.Data
             registry.For<IAssetMetadataStorage>().Use<AssetMetadataStorage>();
             registry.For<IAssetCachedDataStorage>().Use<AssetCachedDataStorage>();
             registry.For<IModCompiler>().Use<ModCompiler>();
+            registry.For<IModLoadOrderBuilder>().Use<ModLoadOrderBuilder>();
 
             return registry;
         }

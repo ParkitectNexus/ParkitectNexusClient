@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using ParkitectNexus.Data;
 using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Tasks.Prefab;
@@ -36,7 +37,7 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 
         private void recompileButton_Click(object sender, EventArgs e)
         {
-            _queueableTaskManager.Add(new CompileModTask(_mod));
+            _queueableTaskManager.Add(ObjectFactory.Container.With(_mod).GetInstance<CompileModTask>());
         }
     }
 }

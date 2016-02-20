@@ -3,27 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client", "src\ParkitectNexusClient\ParkitectNexus.Client.csproj", "{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3451EBAF-3D69-4019-92BE-10E331F32A6F} = {3451EBAF-3D69-4019-92BE-10E331F32A6F}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data", "src\ParkitectNexus.Data\ParkitectNexus.Data.csproj", "{0CB13383-05D3-40F5-B0E1-3907A42872DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Mod.ModLoader", "src\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader.csproj", "{3451EBAF-3D69-4019-92BE-10E331F32A6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "src\Setup\Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 	ProjectSection(ProjectDependencies) = postProject
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4} = {82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC} = {0CB13383-05D3-40F5-B0E1-3907A42872DC}
+		{E94CE4AE-20FE-4B7C-BA78-662800F0D44D} = {E94CE4AE-20FE-4B7C-BA78-662800F0D44D}
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F} = {3451EBAF-3D69-4019-92BE-10E331F32A6F}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Data.Test", "src\ParkitectNexus.Data.Test\ParkitectNexus.Data.Test.csproj", "{A940BE61-A6C6-49B4-945B-AC557B00CF6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.Windows", "src\ParkitectNexus.Client.Windows\ParkitectNexus.Client.Windows.csproj", "{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Debug", "ParkitectNexus.Debug\ParkitectNexus.Debug.csproj", "{32195047-6BF6-49DA-9423-CD82EA9A3B33}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3451EBAF-3D69-4019-92BE-10E331F32A6F} = {3451EBAF-3D69-4019-92BE-10E331F32A6F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82FCD17E-8E5E-4322-B8B8-C00C4C224FE4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,10 +47,6 @@ Global
 		{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E94CE4AE-20FE-4B7C-BA78-662800F0D44D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32195047-6BF6-49DA-9423-CD82EA9A3B33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
