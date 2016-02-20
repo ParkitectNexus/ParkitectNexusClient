@@ -14,6 +14,7 @@ using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Client.Windows.Controls.TabPages;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Authentication;
+using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Tasks.Prefab;
@@ -27,85 +28,46 @@ namespace ParkitectNexus.Client.Windows
     {
         private readonly IAuthManager _authManager;
         private readonly IQueueableTaskManager _taskManager;
+        private readonly IParkitect _parkitect;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger,
-            IAuthManager authManager, IQueueableTaskManager taskManager)
+            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect)
         {
-            if (presenterFactory == null) throw new ArgumentNullException(nameof(presenterFactory));
-            if (logger == null) throw new ArgumentNullException(nameof(logger));
-            if (authManager == null) throw new ArgumentNullException(nameof(authManager));
-            if (taskManager == null) throw new ArgumentNullException(nameof(taskManager));
-
             _authManager = authManager;
             _taskManager = taskManager;
+            _parkitect = parkitect;
 
-            _authManager.Authenticated += _authManager_Authenticated;
+            // Hook onto the authentication manager events.
+            _authManager.Authenticated += (sender, args) => FetchUserInfo();
+
+            // Open the logger and install the modloader and parkitect nexus protocol.
             logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
-
+            ModLoaderUtil.InstallModLoader(_parkitect, logger);
             ParkitectNexusProtocol.Install(logger);
 
+            // Initialize the compontents in this form.
+            InitializeComponent();
             TopLevel = true;
 
-
-            InitializeComponent();
-
+            // Add tab pages to the tab control.
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<MenuTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<ModsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<BlueprintsTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<SavegamesTabPage>());
             metroTabControl.TabPages.Add(presenterFactory.InstantiatePresenter<TasksTabPage>());
 
+            // Display 'development build' message if debug mode is enabled.
 #if DEBUG
             Text += " (DEVELOPMENT BUILD)";
             developmentLabel.Enabled = true;
 #endif
 
+            // Set user box image and name.
             if (_authManager.IsAuthenticated)
-            {
                 FetchUserInfo();
-            }
             else
-            {
                 SetUserName("Log in");
-            }
-        }
-
-        private void _authManager_Authenticated(object sender, EventArgs e)
-        {
-            FetchUserInfo();
-        }
-
-        private async void FetchUserInfo()
-        {
-            try
-            {
-                SetUserName("Loading...");
-
-                var user = await _authManager.GetUser();
-                SetUserName(user.Name);
-
-                var avatar = await _authManager.GetAvatar();
-                if (avatar != null)
-                    authLink.NoFocusImage = authLink.Image = avatar;
-            }
-            catch (Exception e)
-            {
-                // todo handle exceptions properly
-            }
-        }
-
-        private void SetUserName(string name)
-        {
-            int width;
-            using (var b = new Bitmap(1, 1))
-            using (var g = Graphics.FromImage(b))
-            using (var f = MetroFonts.Link(authLink.FontSize, authLink.FontWeight))
-                width = (int) g.MeasureString(name, f).Width;
-
-            authLink.Width = 32 + 8 + width;
-            authLink.Text = name;
-            authLink.Left = Width - authLink.Width - 7;
         }
 
         public void ProcessArguments(string[] args)
@@ -149,16 +111,109 @@ namespace ParkitectNexus.Client.Windows
             panel.IsSlidedIn = true;
         }
 
+        private async void FetchUserInfo()
+        {
+            try
+            {
+                SetUserName("Loading...");
+
+                var user = await _authManager.GetUser();
+                SetUserName(user.Name);
+
+                var avatar = await _authManager.GetAvatar();
+                if (avatar != null)
+                    authLink.NoFocusImage = authLink.Image = avatar;
+            }
+            catch (Exception e)
+            {
+                // todo handle exceptions properly
+            }
+        }
+
+        private void SetUserName(string name)
+        {
+            int width;
+            using (var b = new Bitmap(1, 1))
+            using (var g = Graphics.FromImage(b))
+            using (var f = MetroFonts.Link(authLink.FontSize, authLink.FontWeight))
+                width = (int)g.MeasureString(name, f).Width;
+
+            authLink.Width = 32 + 8 + width;
+            authLink.Text = name;
+            authLink.Left = Width - authLink.Width - 7;
+        }
+
+        private void ShowMe()
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                WindowState = FormWindowState.Normal;
+            }
+
+            // Force to top
+            NativeMethods.SetForegroundWindow(Handle);
+        }
+
         private void metroTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             var tab = metroTabControl.SelectedTab as LoadableTilesTabPage;
             tab?.WasSelected();
         }
 
+        private void authLink_Click(object sender, EventArgs e)
+        {
+            if (!_authManager.IsAuthenticated)
+                _authManager.OpenLoginPage();
+        }
+
+        #region Overrides of Form
+
+        /// <summary>
+        ///     Raises the <see cref="E:System.Windows.Forms.Form.Shown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        protected override void OnShown(EventArgs e)
+        {
+            if (!_parkitect.IsInstalled)
+            {
+                if (
+                    MetroMessageBox.Show(this, "We couldn't detect Parkitect on your machine.\nPlease point me to it!",
+                        "Parkitect Installation", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) ==
+                    DialogResult.Cancel)
+                {
+                    Close();
+                    return;
+                }
+
+                var dialog = new FolderBrowserDialog
+                {
+                    Description = "Select your Parkitect installation folder.",
+                    ShowNewFolderButton = false
+                };
+
+                while (!_parkitect.IsInstalled)
+                {
+                    if (dialog.ShowDialog(this) == DialogResult.Cancel)
+                    {
+                        Close();
+                        return;
+                    }
+
+                    _parkitect.SetInstallationPathIfValid(dialog.SelectedPath);
+                }
+            }
+
+            base.OnShown(e);
+        }
+
+        #endregion
+
         #region Overrides of MetroForm
 
         protected override void WndProc(ref Message m)
         {
+            // Interprocess communication system. If the custom WM_GIVEFOCUS message was received,
+            // read the ipc.dat file in the app data and pass it's arguments into the ProcessArguments method.
             if (m.Msg == NativeMethods.WM_GIVEFOCUS)
             {
                 try
@@ -182,23 +237,5 @@ namespace ParkitectNexus.Client.Windows
 
         #endregion
 
-        private void ShowMe()
-        {
-            if (WindowState == FormWindowState.Minimized)
-            {
-                WindowState = FormWindowState.Normal;
-            }
-
-            // Force to top
-            NativeMethods.SetForegroundWindow(Handle);
-        }
-
-        private void authLink_Click(object sender, EventArgs e)
-        {
-            if (!_authManager.IsAuthenticated)
-            {
-                _authManager.OpenLoginPage();
-            }
-        }
     }
 }

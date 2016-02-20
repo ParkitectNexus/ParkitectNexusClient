@@ -17,8 +17,10 @@ namespace ParkitectNexus.Client.Windows
         {
             try
             {
+                // Find the path the the client application.
                 var appPath = Assembly.GetEntryAssembly().Location;
 
+                // Create registry keys in the classes tree for the parkitectnexus:// protocol.
                 var parkitectNexus = Registry.CurrentUser?.CreateSubKey(@"Software\Classes\parkitectnexus");
                 parkitectNexus?.SetValue("", "ParkitectNexus Client");
                 parkitectNexus?.SetValue("URL Protocol", "");

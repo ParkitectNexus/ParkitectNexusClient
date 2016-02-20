@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ParkitectNexusClient
+// Copyright 2016 Parkitect, Tim Potze
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 
