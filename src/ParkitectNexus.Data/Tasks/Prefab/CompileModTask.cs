@@ -30,12 +30,15 @@ namespace ParkitectNexus.Data.Tasks.Prefab
         {
             UpdateStatus($"Compiling {_mod.Name}...", 25, TaskStatus.Running);
 
+            // Compile the mod.
             var result = await _modCompiler.Compile(_mod);
 
+            // Build the mod load order and store it to the load.dat file.
             _modLoadOrderBuilder.Build();
 
-            UpdateStatus($"Compiled {_mod.Name} with {result.Errors.Length} errors! Success? {result.Success}", 100,
-                TaskStatus.Stopped);
+            // Set the status to finished.
+            UpdateStatus($"Compiled {_mod.Name} with {result.Errors?.Length ?? 0} errors! Success? {result.Success}", 100,
+                TaskStatus.Finished);
         }
 
         #endregion

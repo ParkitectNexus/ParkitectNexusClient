@@ -45,9 +45,13 @@ namespace ParkitectNexus.Client.Windows.Controls
                     progressSpinner.Style = MetroColorStyle.Black;
                     progressSpinner.Speed = 0.1f;
                     break;
-                case TaskStatus.Stopped:
+                case TaskStatus.Finished:
                     progressSpinner.Visible = false;
                     donePictureBox.Visible = true;
+                    break;
+                case TaskStatus.Break:
+                    progressSpinner.Style = MetroColorStyle.Silver;
+                    progressSpinner.Speed = 0.1f;
                     break;
                 case TaskStatus.Canceled:
                     progressSpinner.Style = MetroColorStyle.Silver;
