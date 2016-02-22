@@ -13,14 +13,14 @@ namespace ParkitectNexus.Client.Windows.Controls
 {
     public partial class TaskUserControl : MetroUserControl
     {
-        private readonly IQueueableTask _task;
+        public IQueueableTask Task { get; }
 
         public TaskUserControl(IQueueableTask task)
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
-            _task = task;
+            Task = task;
 
-            _task.StatusChanged += _task_StatusChanged;
+            Task.StatusChanged += _task_StatusChanged;
             InitializeComponent();
 
             donePictureBox.Visible = false;
@@ -35,11 +35,11 @@ namespace ParkitectNexus.Client.Windows.Controls
 
         private void UpdateUI()
         {
-            nameLabel.Text = _task.Name;
-            descriptionLabel.Text = _task.StatusDescription;
-            progressSpinner.Value = _task.CompletionPercentage;
+            nameLabel.Text = Task.Name;
+            descriptionLabel.Text = Task.StatusDescription;
+            progressSpinner.Value = Task.CompletionPercentage;
 
-            switch (_task.Status)
+            switch (Task.Status)
             {
                 case TaskStatus.Queued:
                     progressSpinner.Style = MetroColorStyle.Black;

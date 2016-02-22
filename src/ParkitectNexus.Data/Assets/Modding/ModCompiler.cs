@@ -14,30 +14,6 @@ using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Assets.Modding
 {
-    public struct ModCompileResults
-    {
-        public static ModCompileResults Successful { get; } = new ModCompileResults(null, true);
-
-        public static ModCompileResults Failure { get; } = new ModCompileResults(null, false);
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public ModCompileResults(CompilerError[] errors, bool success)
-        {
-            Errors = errors;
-            Success = success;
-        }
-
-        public bool Success { get; }
-        public CompilerError[] Errors { get; }
-    }
-
-    public interface IModCompiler
-    {
-        Task<ModCompileResults> Compile(IModAsset mod);
-    }
-
     public class ModCompiler : IModCompiler
     {
         private readonly IParkitect _parkitect;
@@ -52,153 +28,162 @@ namespace ParkitectNexus.Data.Assets.Modding
 
         public async Task<ModCompileResults> Compile(IModAsset mod)
         {
-            var dependencies = mod.Information.Dependencies?.Select(repository =>
+            return await Task.Run(() =>
             {
-                var dep = _parkitect.Assets[AssetType.Mod].OfType<IModAsset>().FirstOrDefault(m => m.Repository == repository);
-
-                if (dep == null)
+                var dependencies = mod.Information.Dependencies?.Select(repository =>
                 {
-                    throw new Exception($"Dependency {repository} was not installed.");
-                }
+                    var dep =
+                        _parkitect.Assets[AssetType.Mod].OfType<IModAsset>()
+                            .FirstOrDefault(m => m.Repository == repository);
 
-                return dep;
-            }).ToArray() ?? new IModAsset[0];
+                    if (dep == null)
+                        throw new Exception($"Dependency {repository} was not installed.");
 
-            using (var logFile = mod.OpenLogFile())
-            {
-                try
+                    return dep;
+                }).ToArray() ?? new IModAsset[0];
+
+                using (var logFile = mod.OpenLogFile())
                 {
-                    // Delete old builds.
-                    var binPath = Path.Combine(mod.InstallationPath, "bin");
-                    if (Directory.Exists(binPath))
+                    try
                     {
-                        foreach (var build in Directory.GetFiles(binPath, "build-*.dll"))
-                            try
-                            {
-                                File.Delete(build);
-                            }
-                            catch
-                            {
-                            }
-                    }
-
-                    var buildPath = GetBuildPath(mod);
-
-                    // Compute build path
-                    if (mod.Information.IsDevelopment || string.IsNullOrWhiteSpace(buildPath) ||
-                        !File.Exists(Path.Combine(mod.InstallationPath, buildPath)))
-                    {
-                        Directory.CreateDirectory(binPath);
-                        buildPath = $"bin/build-{DateTime.Now.ToString("yyMMddHHmmssfff")}.dll";
-                        SetBuildPath(mod, buildPath);
-                    }
-
-                    // Delete existing compiled file if compilation is forced.
-                    if (File.Exists(Path.Combine(mod.InstallationPath, buildPath)))
-                    {
-                        return ModCompileResults.Successful;
-                    }
-
-                    logFile.Log($"Compiling {mod.Name} to {buildPath}...");
-
-                    var assemblyFiles = new List<string>();
-                    var sourceFiles = new List<string>();
-
-                    var codeDir = string.IsNullOrWhiteSpace(mod.Information.BaseDir) || mod.Information.BaseDir.All(c => c == '/' || c == '\\')
-                        ? mod.InstallationPath
-                        : Path.Combine(mod.InstallationPath, mod.Information.BaseDir);
-
-                    var csProjPath = mod.Information.Project == null ? null : Path.Combine(codeDir, mod.Information.Project);
-
-                    List<string> unresolvedAssemblyReferences;
-                    List<string> unresolvedSourceFiles;
-
-                    if (csProjPath != null)
-                    {
-                        // Load source files and referenced assemblies from *.csproj file.
-                        logFile.Log($"Compiling from `{mod.Information.Project}`.");
-
-                        // Open the .csproj file of the mod.
-                        var document = new XmlDocument();
-                        document.Load(csProjPath);
-
-                        var manager = new XmlNamespaceManager(document.NameTable);
-                        manager.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
-
-                        // List the referenced assemblies of the mod.
-                        unresolvedAssemblyReferences = document.SelectNodes("//x:Reference", manager)
-                            .Cast<XmlNode>()
-                            .Select(node => node.Attributes["Include"])
-                            .Select(name => name.Value.Split(',').FirstOrDefault()).ToList();
-
-                        // List the source files of the mod.
-                        unresolvedSourceFiles = document.SelectNodes("//x:Compile", manager)
-                            .Cast<XmlNode>()
-                            .Select(node => node.Attributes["Include"].Value).ToList();
-                    }
-                    else
-                    {
-                        throw new Exception("No project file set");
-                    }
-
-                    // Resolve the assembly references.
-                    foreach (var name in unresolvedAssemblyReferences)
-                    {
-                        var resolved = ResolveAssembly(dependencies, name);
-
-                        if (resolved != null)
+                        // Delete old builds.
+                        var binPath = Path.Combine(mod.InstallationPath, "bin");
+                        if (Directory.Exists(binPath))
                         {
-                            assemblyFiles.Add(resolved);
+                            foreach (var build in Directory.GetFiles(binPath, "build-*.dll"))
+                                try
+                                {
+                                    File.Delete(build);
+                                }
+                                catch
+                                {
+                                }
+                        }
 
-                            logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
+                        var buildPath = GetBuildPath(mod);
+
+                        // Compute build path
+                        if (mod.Information.IsDevelopment || string.IsNullOrWhiteSpace(buildPath) ||
+                            !File.Exists(Path.Combine(mod.InstallationPath, buildPath)))
+                        {
+                            Directory.CreateDirectory(binPath);
+                            buildPath = $"bin/build-{DateTime.Now.ToString("yyMMddHHmmssfff")}.dll";
+                            SetBuildPath(mod, buildPath);
+                        }
+
+                        // Delete existing compiled file if compilation is forced.
+                        if (File.Exists(Path.Combine(mod.InstallationPath, buildPath)))
+                        {
+                            return ModCompileResults.Successful;
+                        }
+
+                        logFile.Log($"Compiling {mod.Name} to {buildPath}...");
+
+                        var assemblyFiles = new List<string>();
+                        var sourceFiles = new List<string>();
+
+                        var codeDir = string.IsNullOrWhiteSpace(mod.Information.BaseDir) ||
+                                      mod.Information.BaseDir.All(c => c == '/' || c == '\\')
+                            ? mod.InstallationPath
+                            : Path.Combine(mod.InstallationPath, mod.Information.BaseDir);
+
+                        var csProjPath = mod.Information.Project == null
+                            ? null
+                            : Path.Combine(codeDir, mod.Information.Project);
+
+                        List<string> unresolvedAssemblyReferences;
+                        List<string> unresolvedSourceFiles;
+
+                        if (csProjPath != null)
+                        {
+                            // Load source files and referenced assemblies from *.csproj file.
+                            logFile.Log($"Compiling from `{mod.Information.Project}`.");
+
+                            // Open the .csproj file of the mod.
+                            var document = new XmlDocument();
+                            document.Load(csProjPath);
+
+                            var manager = new XmlNamespaceManager(document.NameTable);
+                            manager.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
+
+                            // List the referenced assemblies of the mod.
+                            unresolvedAssemblyReferences = document.SelectNodes("//x:Reference", manager)
+                                .Cast<XmlNode>()
+                                .Select(node => node.Attributes["Include"])
+                                .Select(name => name.Value.Split(',').FirstOrDefault()).ToList();
+
+                            // List the source files of the mod.
+                            unresolvedSourceFiles = document.SelectNodes("//x:Compile", manager)
+                                .Cast<XmlNode>()
+                                .Select(node => node.Attributes["Include"].Value).ToList();
                         }
                         else
                         {
-                            logFile.Log($"IGNORING assembly reference `{name}`");
+                            throw new Exception("No project file set");
                         }
-                    }
 
-                    foreach (var depMod in dependencies)
-                    {
-                        var dep = GetBuildPath(depMod);
-                        if (dep == null)
-                            throw new Exception($"Dependency {depMod.Name} wasn't build yet");
-                        assemblyFiles.Add(Path.Combine(depMod.InstallationPath, dep));
-                    }
-
-                    // Resolve the source file paths.
-                    logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
-                    sourceFiles.AddRange(
-                        unresolvedSourceFiles.Select(file =>
+                        // Resolve the assembly references.
+                        foreach (var name in unresolvedAssemblyReferences)
                         {
-                            var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
-                            return Path.Combine(codeDir, repl);
-                        }));
+                            var resolved = ResolveAssembly(dependencies, name);
 
-                    // Compile.
-                    logFile.Log($"Compile using compiler version {mod.Information.CompilerVersion ?? "v3.5"}.");
-                    var csCodeProvider =
-                        new CSharpCodeProvider(new Dictionary<string, string> {{"CompilerVersion", mod.Information.CompilerVersion ?? "v3.5"} });
-                    var parameters = new CompilerParameters(assemblyFiles.ToArray(),
-                        Path.Combine(mod.InstallationPath, buildPath));
+                            if (resolved != null)
+                            {
+                                assemblyFiles.Add(resolved);
 
-                    var result = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());
+                                logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
+                            }
+                            else
+                            {
+                                logFile.Log($"IGNORING assembly reference `{name}`");
+                            }
+                        }
 
-                    // Log errors.
-                    foreach (var error in result.Errors.Cast<CompilerError>())
-                    {
-                        logFile.Log(
-                            $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
-                            LogLevel.Error);
+                        foreach (var depMod in dependencies)
+                        {
+                            var dep = GetBuildPath(depMod);
+                            if (dep == null)
+                                throw new Exception($"Dependency {depMod.Name} wasn't build yet");
+                            assemblyFiles.Add(Path.Combine(depMod.InstallationPath, dep));
+                        }
+
+                        // Resolve the source file paths.
+                        logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
+                        sourceFiles.AddRange(
+                            unresolvedSourceFiles.Select(file =>
+                            {
+                                var repl = file.Replace("\\", Path.DirectorySeparatorChar.ToString());
+                                return Path.Combine(codeDir, repl);
+                            }));
+
+                        // Compile.
+                        logFile.Log($"Compile using compiler version {mod.Information.CompilerVersion ?? "v3.5"}.");
+                        var csCodeProvider =
+                            new CSharpCodeProvider(new Dictionary<string, string>
+                            {
+                                {"CompilerVersion", mod.Information.CompilerVersion ?? "v3.5"}
+                            });
+                        var parameters = new CompilerParameters(assemblyFiles.ToArray(),
+                            Path.Combine(mod.InstallationPath, buildPath));
+
+                        var result = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());
+
+                        // Log errors.
+                        foreach (var error in result.Errors.Cast<CompilerError>())
+                        {
+                            logFile.Log(
+                                $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
+                                LogLevel.Error);
+                        }
+                        return result.Errors.HasErrors ? ModCompileResults.Failure : ModCompileResults.Successful;
                     }
-                    return result.Errors.HasErrors ? ModCompileResults.Failure : ModCompileResults.Successful;
+                    catch (Exception e)
+                    {
+                        logFile.Log(e.Message, LogLevel.Error);
+                        return ModCompileResults.Failure;
+                    }
                 }
-                catch (Exception e)
-                {
-                    logFile.Log(e.Message, LogLevel.Error);
-                    return ModCompileResults.Failure;
-                }
-            }
+            });
         }
 
         private string GetBuildPath(IModAsset mod)

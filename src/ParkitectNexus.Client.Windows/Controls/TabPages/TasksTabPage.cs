@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using MetroFramework.Controls;
 using ParkitectNexus.Data.Presenter;
@@ -32,15 +33,50 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
 
         private void _taskManager_TaskRemoved(object sender, QueueableTaskEventArgs e)
         {
-            //
+            var taskControl = Controls.OfType<TaskUserControl>().FirstOrDefault(c => c.Task == e.Task);
+
+            if (taskControl == null)
+                return;
+
+            Controls.Remove(taskControl);
+            ReorderTasks();
         }
 
         private void _taskManager_TaskAdded(object sender, QueueableTaskEventArgs e)
         {
-            var control = new TaskUserControl(e.Task) {Dock = DockStyle.Top};
+            var control = new TaskUserControl(e.Task)
+            {
+                Width = Width
+            };
+
+            control.Top = control.Height*_taskManager.IndexOf(e.Task);
+
             Controls.Add(control);
             UpdateTasksCount();
+            ReorderTasks();
         }
+
+        private void ReorderTasks()
+        {
+            foreach (var taskControl in Controls.OfType<TaskUserControl>())
+                taskControl.Top = _taskManager.IndexOf(taskControl.Task)*taskControl.Height;
+        }
+
+        #region Overrides of Panel
+
+        /// <summary>
+        /// Fires the event indicating that the panel has been resized. Inheriting controls should use this in favor of actually listening to the event, but should still call base.onResize to ensure that the event is fired for external listeners.
+        /// </summary>
+        /// <param name="eventargs">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        protected override void OnResize(EventArgs eventargs)
+        {
+            foreach (var control in Controls.OfType<Control>())
+                control.Width = Width;
+
+            base.OnResize(eventargs);
+        }
+
+        #endregion
 
         private void UpdateTasksCount()
         {

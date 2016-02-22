@@ -46,6 +46,7 @@ namespace ParkitectNexus.Client.Windows
                     // form.
                     var form = ObjectFactory.GetInstance<IPresenterFactory>().InstantiatePresenter<MainForm>();
                     if (args.Any()) form.ProcessArguments(args);
+                    form.ProcessArguments(new [] {"--url", "parkitectnexus://install/1a66b752c7" });
                     Application.Run(form);
                 }
                 finally

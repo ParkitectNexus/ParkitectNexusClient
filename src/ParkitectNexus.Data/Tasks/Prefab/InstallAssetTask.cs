@@ -14,12 +14,15 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 {
     public class InstallAssetTask : UrlQueueableTask
     {
+        private const bool InstallOptionalDependencies = true;
+
         private readonly IParkitect _parkitect;
         private readonly IRemoteAssetRepository _remoteAssetRepository;
         private readonly IQueueableTaskManager _queueableTaskManager;
         private readonly IWebsite _website;
 
-        public InstallAssetTask(IParkitect parkitect, IWebsite website, IRemoteAssetRepository remoteAssetRepository, IQueueableTaskManager queueableTaskManager)
+        public InstallAssetTask(IParkitect parkitect, IWebsite website, IRemoteAssetRepository remoteAssetRepository,
+            IQueueableTaskManager queueableTaskManager)
         {
             _parkitect = parkitect;
             _website = website;
@@ -49,18 +52,36 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             // Download the asset trough the RemoveAssetRepository.
             UpdateStatus($"Installing {assetData.Type.ToString().ToLower()} '{assetData.Name}'...", 15,
                 TaskStatus.Running);
+
             var downloadedAsset = await _remoteAssetRepository.DownloadAsset(assetData);
 
             // Store the asset in in the appropriate location.
             var asset = await _parkitect.Assets.StoreAsset(downloadedAsset);
 
-            // If the downloaded asset is a mod, add a "compile mod" task to the queue;
+            // Ensure dependencies have been installed.
+            foreach (var dependency in assetData.Dependencies)
+            {
+                if (!dependency.Required && !InstallOptionalDependencies)
+                    continue;
+
+                // Create install task for the dependency.
+                var installDependencyTask = ObjectFactory.GetInstance<InstallAssetTask>();
+                installDependencyTask.Data = new InstallUrlAction(dependency.Asset.Id);
+
+                // Insert the install task in the queueable task manager. 
+                _queueableTaskManager.InsertAfter(installDependencyTask, this);
+            }
+
+            // If the downloaded asset is a mod, add a "compile mod" task to the queue.
             var modAsset = asset as IModAsset;
             if (modAsset != null)
-                _queueableTaskManager.Add(ObjectFactory.Container.With(modAsset).GetInstance<CompileModTask>());
+                _queueableTaskManager.InsertAfter(ObjectFactory.Container.With(modAsset).GetInstance<CompileModTask>(),
+                    this);
+
 
             // Update the status of the task.
-            UpdateStatus($"Installed {assetData.Type.ToString().ToLower()} '{assetData.Name}'.", 100, TaskStatus.Finished);
+            UpdateStatus($"Installed {assetData.Type.ToString().ToLower()} '{assetData.Name}'.", 100,
+                TaskStatus.Finished);
         }
 
         #endregion

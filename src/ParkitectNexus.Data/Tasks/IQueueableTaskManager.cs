@@ -16,6 +16,11 @@ namespace ParkitectNexus.Data.Tasks
         event EventHandler<QueueableTaskEventArgs> TaskFinished;
 
         void Add(IQueueableTask task);
+
+        void InsertAfter(IQueueableTask task, IQueueableTask afterTask);
+
+        int IndexOf(IQueueableTask task);
+
         void ClearCompleted();
     }
 }

@@ -11,7 +11,7 @@ namespace ParkitectNexus.Data.Tasks
     public class QueueableTaskManager : IQueueableTaskManager
     {
         private readonly List<IQueueableTask> _runningAndFinishedTasks = new List<IQueueableTask>();
-        private readonly Queue<IQueueableTask> _queuedTasks = new Queue<IQueueableTask>();
+        private readonly List<IQueueableTask> _queuedTasks = new List<IQueueableTask>();
 
         private CancellationTokenSource _cancellationTokenSource;
         private IQueueableTask _currentTask;
@@ -49,10 +49,45 @@ namespace ParkitectNexus.Data.Tasks
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
 
-            _queuedTasks.Enqueue(task);
+            _queuedTasks.Add(task);
             OnTaskAdded(new QueueableTaskEventArgs(task));
 
             RunNext();
+        }
+
+        /// <summary>
+        ///     Inserts the specified task after the specified task.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <param name="afterTask">The after.</param>
+        public void InsertAfter(IQueueableTask task, IQueueableTask afterTask)
+        {
+            if (task == null) throw new ArgumentNullException(nameof(task));
+            if (afterTask == null) throw new ArgumentNullException(nameof(afterTask));
+            var index = _queuedTasks.IndexOf(afterTask);
+
+            if (index < 0)
+                index = 0;
+
+            _queuedTasks.Insert(index, task);
+            OnTaskAdded(new QueueableTaskEventArgs(task));
+        }
+
+        public int IndexOf(IQueueableTask task)
+        {
+            var index = _runningAndFinishedTasks.IndexOf(task);
+
+            if (index >= 0)
+                return index;
+
+            index = _queuedTasks.IndexOf(task);
+
+            if (index < 0)
+                return -1;
+
+            index += _runningAndFinishedTasks.Count;
+
+            return index;
         }
 
         /// <summary>
@@ -82,7 +117,9 @@ namespace ParkitectNexus.Data.Tasks
             if (_currentTask != null) return;
 
             // Store the first task in the queue in _currentTask and add it to the running tasks list.
-            _currentTask = _queuedTasks.Dequeue();
+            _currentTask = _queuedTasks.First();
+            _queuedTasks.RemoveAt(0);
+
             _runningAndFinishedTasks.Add(_currentTask);
 
             // Ensure the dequeued task is awaiting being run.
