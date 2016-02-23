@@ -23,6 +23,8 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
             _taskManager.TaskAdded += _taskManager_TaskAdded;
             _taskManager.TaskRemoved += _taskManager_TaskRemoved;
             _taskManager.TaskFinished += _taskManager_TaskFinished;
+
+            AutoScroll = true;
             Text = "Tasks";
         }
 
@@ -46,7 +48,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
         {
             var control = new TaskUserControl(e.Task)
             {
-                Width = Width
+                Width = HScroll ? Width - HorizontalScrollbarSize : Width
             };
 
             control.Top = control.Height*_taskManager.IndexOf(e.Task);
@@ -70,8 +72,8 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
         /// <param name="eventargs">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
         protected override void OnResize(EventArgs eventargs)
         {
-            foreach (var control in Controls.OfType<Control>())
-                control.Width = Width;
+            foreach (var control in Controls.OfType<TaskUserControl>())
+                control.Width = HScroll ? Width - HorizontalScrollbarSize : Width;
 
             base.OnResize(eventargs);
         }

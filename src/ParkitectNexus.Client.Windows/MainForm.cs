@@ -60,7 +60,7 @@ namespace ParkitectNexus.Client.Windows
             // Display 'development build' message if debug mode is enabled.
 #if DEBUG
             Text += " (DEVELOPMENT BUILD)";
-            developmentLabel.Enabled = true;
+            developmentLabel.Visible = true;
 #endif
 
             // Set user box image and name.

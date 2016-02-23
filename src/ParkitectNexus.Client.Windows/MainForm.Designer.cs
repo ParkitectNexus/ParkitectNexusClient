@@ -83,7 +83,6 @@ namespace ParkitectNexus.Client.Windows
             // 
             this.developmentLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.developmentLabel.AutoSize = true;
-            this.developmentLabel.Enabled = false;
             this.developmentLabel.FontWeight = MetroFramework.MetroLabelWeight.Bold;
             this.developmentLabel.Location = new System.Drawing.Point(742, 15);
             this.developmentLabel.Name = "developmentLabel";
@@ -92,6 +91,7 @@ namespace ParkitectNexus.Client.Windows
             this.developmentLabel.TabIndex = 1;
             this.developmentLabel.Text = "DEVELOPMENT BUILD";
             this.developmentLabel.UseStyleColors = true;
+            this.developmentLabel.Visible = false;
             // 
             // authLink
             // 
