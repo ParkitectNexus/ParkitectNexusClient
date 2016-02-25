@@ -65,7 +65,7 @@ namespace ParkitectNexus.Client.Windows.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap appbar_check {
             get {
-                object obj = ResourceManager.GetObject("appbar.check", resourceCulture);
+                object obj = ResourceManager.GetObject("appbar_check", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +95,7 @@ namespace ParkitectNexus.Client.Windows.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap appbar_user_tie {
             get {
-                object obj = ResourceManager.GetObject("appbar.user.tie", resourceCulture);
+                object obj = ResourceManager.GetObject("appbar_user_tie", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +126,16 @@ namespace ParkitectNexus.Client.Windows.Properties {
         internal static System.Drawing.Bitmap parkitectnexus_logo_full {
             get {
                 object obj = ResourceManager.GetObject("parkitectnexus_logo_full", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap update_available {
+            get {
+                object obj = ResourceManager.GetObject("update_available", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

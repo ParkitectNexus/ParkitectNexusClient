@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using StructureMap.Pipeline;
 
 namespace ParkitectNexus.Data.Tasks
 {
@@ -73,6 +74,11 @@ namespace ParkitectNexus.Data.Tasks
             OnTaskAdded(new QueueableTaskEventArgs(task));
         }
 
+        public void InsertAfter<TTask>(IQueueableTask afterTask) where TTask : IQueueableTask
+        {
+            InsertAfter(ObjectFactory.GetInstance<TTask>(), afterTask);
+        }
+
         public int IndexOf(IQueueableTask task)
         {
             var index = _runningAndFinishedTasks.IndexOf(task);
@@ -90,8 +96,18 @@ namespace ParkitectNexus.Data.Tasks
             return index;
         }
 
+        public void Add<TTask>() where TTask : IQueueableTask
+        {
+            Add(ObjectFactory.GetInstance<TTask>());
+        }
+
+        public ExplicitQueueableTaskArgsExpression With<TArg>(TArg arg)
+        {
+            return new ExplicitQueueableTaskArgsExpression(this, ObjectFactory.Container.With(arg));
+        }
+
         /// <summary>
-        /// Clears the completed tasks from the tasks list.
+        ///     Clears the completed tasks from the tasks list.
         /// </summary>
         public void ClearCompleted()
         {

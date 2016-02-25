@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Octokit;
+using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -23,17 +24,11 @@ namespace ParkitectNexus.Data.Assets
         private readonly IGitHubClient _gitHubClient;
         private readonly ILogger _logger;
         private readonly INexusWebClientFactory _webClientFactory;
-        private readonly IWebsite _website;
 
-        public RemoteAssetRepository(ILogger logger, IWebsite website,
+        public RemoteAssetRepository(ILogger logger,
             INexusWebClientFactory webClientFactory, IGitHubClient gitHubClient)
         {
-            if (logger == null) throw new ArgumentNullException(nameof(logger));
-            if (website == null) throw new ArgumentNullException(nameof(website));
-            if (webClientFactory == null) throw new ArgumentNullException(nameof(webClientFactory));
-            if (gitHubClient == null) throw new ArgumentNullException(nameof(gitHubClient));
             _logger = logger;
-            _website = website;
             _webClientFactory = webClientFactory;
             _gitHubClient = gitHubClient;
         }
@@ -43,8 +38,8 @@ namespace ParkitectNexus.Data.Assets
         /// </summary>
         /// <param name="asset">The asset.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        /// <exception cref="System.Exception">the specified asset id is invalid</exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception">the specified asset id is invalid</exception>
         public async Task<IDownloadedAsset> DownloadAsset(ApiAsset asset)
         {
             if (asset == null) throw new ArgumentNullException(nameof(asset));
@@ -97,6 +92,20 @@ namespace ParkitectNexus.Data.Assets
                     return new DownloadedAsset(fileName, asset, downloadInfo, memoryStream);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the latest mod tag.
+        /// </summary>
+        /// <param name="asset">The asset.</param>
+        /// <returns>The latest tag.</returns>
+        public async Task<string> GetLatestModTag(IModAsset asset)
+        {
+            if (asset == null)
+                throw new ArgumentNullException(nameof(asset));
+
+            var repositoryTag = await GetLatestModTag(asset.Repository);
+            return repositoryTag.Name;
         }
 
         private async Task<DownloadInfo> ResolveDownloadInfo(ApiAsset asset)

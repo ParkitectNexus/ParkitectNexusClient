@@ -75,10 +75,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             // If the downloaded asset is a mod, add a "compile mod" task to the queue.
             var modAsset = asset as IModAsset;
             if (modAsset != null)
-                _queueableTaskManager.InsertAfter(ObjectFactory.Container.With(modAsset).GetInstance<CompileModTask>(),
-                    this);
-
-
+                _queueableTaskManager.With(modAsset).InsertAfter<CompileModTask>(this);
+            
             // Update the status of the task.
             UpdateStatus($"Installed {assetData.Type.ToString().ToLower()} '{assetData.Name}'.", 100,
                 TaskStatus.Finished);

@@ -19,11 +19,12 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
     public class BlueprintsTabPage : LoadableTilesTabPage
     {
         private readonly IParkitect _parkitect;
+        private readonly IAssetUpdatesManager _assetUpdatesManager;
 
-        public BlueprintsTabPage(IParkitect parkitect)
+        public BlueprintsTabPage(IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager)
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             _parkitect = parkitect;
+            _assetUpdatesManager = assetUpdatesManager;
 
             Text = "Blueprints";
         }

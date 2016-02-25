@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MetroFramework;
 using MetroFramework.Controls;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
+using ParkitectNexus.Client.Windows.Properties;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Assets.Modding;
@@ -22,13 +23,34 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
     public class ModsTabPage : LoadableTilesTabPage
     {
         private readonly IParkitect _parkitect;
+        private readonly IAssetUpdatesManager _assetUpdatesManager;
 
-        public ModsTabPage(IParkitect parkitect)
+        public ModsTabPage(IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager)
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             _parkitect = parkitect;
+            _assetUpdatesManager = assetUpdatesManager;
 
+            assetUpdatesManager.UpdateFound += AssetUpdatesManager_UpdateFound;
             Text = "Mods";
+        }
+
+        private void AssetUpdatesManager_UpdateFound(object sender, AssetEventArgs e)
+        {
+            DrawUpdateAvailable(Controls.OfType<MetroTile>().FirstOrDefault(t => t.Tag == e.Asset));
+        }
+
+        private void DrawUpdateAvailable(MetroTile tile)
+        {
+            if (tile == null)
+                return;
+
+            if (tile.Image == null)
+                tile.Image = Resources.update_available;
+
+            using (var g = Graphics.FromImage(tile.Image))
+            {
+                g.DrawImage(Resources.update_available, 0, 0);
+            }
         }
 
         #region Overrides of LoadableTilesTabPage
@@ -54,8 +76,12 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                         Style = MetroColorStyle.Default,
                         TileImage = ImageUtility.ResizeImage(mod.GetImage(), 100, 100),
                         UseTileImage = true,
-                        TileImageAlign = ContentAlignment.MiddleCenter
+                        TileImageAlign = ContentAlignment.MiddleCenter,
+                        Tag = mod
                     };
+
+                    if(_assetUpdatesManager.HasChecked && _assetUpdatesManager.IsUpdateAvailableInMemory(mod))
+                        DrawUpdateAvailable(tile);
 
                     tile.Click +=
                         (sender, args) => { (FindForm() as MainForm)?.SpawnSliderPanel(new ModSliderPanel(ObjectFactory.GetInstance<IQueueableTaskManager>(), mod)); };

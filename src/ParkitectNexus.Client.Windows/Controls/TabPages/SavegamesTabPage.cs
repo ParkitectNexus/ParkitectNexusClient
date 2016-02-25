@@ -19,11 +19,12 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
     public class SavegamesTabPage : LoadableTilesTabPage
     {
         private readonly IParkitect _parkitect;
+        private readonly IAssetUpdatesManager _assetUpdatesManager;
 
-        public SavegamesTabPage(IParkitect parkitect)
+        public SavegamesTabPage(IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager)
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             _parkitect = parkitect;
+            _assetUpdatesManager = assetUpdatesManager;
 
             Text = "Savegames";
         }

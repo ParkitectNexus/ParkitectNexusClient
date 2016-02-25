@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetEventArgs.cs" />
+    <Compile Include="Assets\AssetUpdatesManager.cs" />
     <Compile Include="Assets\BlueprintAsset.cs" />
     <Compile Include="Assets\CachedData\AssetCachedDataStorage.cs" />
     <Compile Include="Assets\CachedData\AssetWithImageCachedData.cs" />
@@ -141,9 +142,11 @@
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
     <Compile Include="Game\Linux\LinuxParkitectPath.cs" />
     <Compile Include="Settings\Models\AuthSettings.cs" />
+    <Compile Include="Tasks\ExplicitQueueableTaskArgsExpression.cs" />
     <Compile Include="Tasks\IQueueableTask.cs" />
     <Compile Include="Tasks\IQueueableTaskManager.cs" />
     <Compile Include="Tasks\Prefab\AuthenticateTask.cs" />
+    <Compile Include="Tasks\Prefab\CheckForUpdatesTask.cs" />
     <Compile Include="Tasks\Prefab\CompileModTask.cs" />
     <Compile Include="Tasks\Prefab\InstallAssetTask.cs" />
     <Compile Include="Tasks\Prefab\UrlQueueableTask.cs" />

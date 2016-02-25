@@ -13,6 +13,7 @@ using MetroFramework.Forms;
 using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Client.Windows.Controls.TabPages;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
@@ -32,7 +33,7 @@ namespace ParkitectNexus.Client.Windows
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger,
-            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect)
+            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager)
         {
             _authManager = authManager;
             _taskManager = taskManager;
@@ -68,6 +69,10 @@ namespace ParkitectNexus.Client.Windows
                 FetchUserInfo();
             else
                 SetUserName("Log in");
+
+            // Fetch updates
+            if (assetUpdatesManager.ShouldCheckForUpdates())
+                _taskManager.Add<CheckForUpdatesTask>();
         }
 
         public void ProcessArguments(string[] args)
