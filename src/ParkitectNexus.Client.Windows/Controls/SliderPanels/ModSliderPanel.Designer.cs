@@ -178,6 +178,7 @@
             this.debugTextBox.TabIndex = 20;
             this.debugTextBox.Text = "debugTextBox";
             this.debugTextBox.UseSelectable = true;
+            this.debugTextBox.Visible = false;
             this.debugTextBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.debugTextBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             // 

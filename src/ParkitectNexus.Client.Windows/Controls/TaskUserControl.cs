@@ -6,6 +6,7 @@ using System.Drawing;
 using MetroFramework;
 using MetroFramework.Controls;
 using MetroFramework.Drawing;
+using ParkitectNexus.Client.Windows.Properties;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Utilities;
 
@@ -48,6 +49,11 @@ namespace ParkitectNexus.Client.Windows.Controls
                 case TaskStatus.Finished:
                     progressSpinner.Visible = false;
                     donePictureBox.Visible = true;
+                    break;
+                case TaskStatus.FinishedWithErrors:
+                    progressSpinner.Visible = false;
+                    donePictureBox.Visible = true;
+                    donePictureBox.Image = ImageUtility.RecolorImage(Resources.appbar_close, MetroColors.Red);
                     break;
                 case TaskStatus.Break:
                     progressSpinner.Style = MetroColorStyle.Silver;

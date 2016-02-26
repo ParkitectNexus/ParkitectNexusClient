@@ -37,8 +37,18 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             _modLoadOrderBuilder.Build();
 
             // Set the status to finished.
-            UpdateStatus($"Compiled {_mod.Name} with {result.Errors?.Length ?? 0} errors! Success? {result.Success}", 100,
-                TaskStatus.Finished);
+            if (result.Success)
+            {
+                UpdateStatus(
+                    $"Successfuly compiled {_mod.Name}!", 100,
+                    TaskStatus.Finished);
+            }
+            else
+            {
+                UpdateStatus(
+                    $"Failed compiling {_mod.Name} with {result.Errors?.Length ?? 0} compile errors! View mod.log file for more info.", 100,
+                    TaskStatus.FinishedWithErrors);
+            }
         }
 
         #endregion

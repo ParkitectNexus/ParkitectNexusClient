@@ -64,6 +64,7 @@
             this.uploadButton.Text = "Upload";
             this.uploadButton.Theme = MetroFramework.MetroThemeStyle.Light;
             this.uploadButton.UseSelectable = true;
+            this.uploadButton.Visible = false;
             // 
             // deleteButton
             // 

@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using MetroFramework.Controls;
@@ -13,6 +14,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
     public class TasksTabPage : MetroTabPage, IPresenter
     {
         private readonly IQueueableTaskManager _taskManager;
+        private readonly MetroLabel _noTasksLabel;
 
         public TasksTabPage(IQueueableTaskManager taskManager)
         {
@@ -26,6 +28,16 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
 
             AutoScroll = true;
             Text = "Tasks";
+
+            _noTasksLabel = new MetroLabel
+            {
+                Location = new Point(6, 6),
+                AutoSize = true,
+                Text = "There are currently no running tasks.",
+                Enabled = true
+            };
+
+            Controls.Add(_noTasksLabel);
         }
 
         private void _taskManager_TaskFinished(object sender, QueueableTaskEventArgs e)
@@ -46,6 +58,12 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
 
         private void _taskManager_TaskAdded(object sender, QueueableTaskEventArgs e)
         {
+            if (_noTasksLabel.Enabled)
+            {
+                Controls.Remove(_noTasksLabel);
+                _noTasksLabel.Enabled = false;
+            }
+
             var control = new TaskUserControl(e.Task)
             {
                 Width = HScroll ? Width - HorizontalScrollbarSize : Width

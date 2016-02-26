@@ -85,8 +85,8 @@ namespace ParkitectNexus.Data.Assets
                             }
                             catch (Exception e)
                             {
-                                // TODO log the exception
-                                throw e;
+                                _log.WriteLine($"Failed loading mod at path {path}", LogLevel.Fatal);
+                                _log.WriteException(e);
                             }
 
                             if (result != null)

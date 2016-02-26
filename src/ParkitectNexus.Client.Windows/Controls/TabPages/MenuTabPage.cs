@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,6 +68,16 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                 TileImageAlign = ContentAlignment.MiddleCenter
             };
 
+            var donate = new MetroTile
+            {
+                Text = "Donate",
+                TextAlign = ContentAlignment.BottomCenter,
+                Style = MetroColorStyle.Default,
+                TileImage = Resources.appbar_thumbs_up,
+                UseTileImage = true,
+                TileImageAlign = ContentAlignment.MiddleCenter
+            };
+
             visit.Click += (sender, args) =>
             {
                 _website.Launch();
@@ -77,14 +88,46 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
                 _parkitect.Launch();
                 Application.Exit();
             };
-            help.Click += (sender, args) => { };
+
+            help.Click += (sender, args) =>
+            {
+                // Temporary help solution.
+                Process.Start(
+                    "https://parkitectnexus.com/forum/2/parkitectnexus-website-client/70/troubleshooting-mods-and-client");
+            };
+
+            donate.Click += (sender, args) =>
+            {
+
+                if (MetroMessageBox.Show(GetParentForm(), "Maintaining this client and adding new features takes a lot of time.\n" +
+                                      "If you appreciate our work, please consider sending a donation our way!\n" +
+                                      "All donations will be used for further development of the ParkitectNexus Client and the website.\n" +
+                                      "\nSelect Yes to visit PayPal and send a donation.", "ParkitectNexus Client",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Process.Start("https://paypal.me/ikkentim");
+                }
+            };
 
             return Task.FromResult((IEnumerable<MetroTile>) new[]
             {
-                visit, launch, help
+                visit, launch, help, donate
             });
         }
 
         #endregion
+
+        private Form GetParentForm()
+        {
+            var form = Parent;
+
+            while (!(form is Form) && form != null)
+            {
+                form = form.Parent;
+            }
+
+            return form as Form;
+        }
     }
+
 }

@@ -175,7 +175,10 @@ namespace ParkitectNexus.Data.Assets.Modding
                                 $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
                                 LogLevel.Error);
                         }
-                        return result.Errors.HasErrors ? ModCompileResults.Failure : ModCompileResults.Successful;
+
+                        return result.Errors.HasErrors
+                        ? new ModCompileResults(result.Errors.OfType<CompilerError>().ToArray(), false)
+                        : ModCompileResults.Successful;
                     }
                     catch (Exception e)
                     {

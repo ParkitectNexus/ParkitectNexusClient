@@ -113,7 +113,7 @@ namespace ParkitectNexus.Data.Tasks
         {
             // Gather a collection of finished tasks.
             var completed = _runningAndFinishedTasks
-                .Where(t => t.Status == TaskStatus.Canceled || t.Status == TaskStatus.Finished)
+                .Where(t => t.Status == TaskStatus.Canceled || t.Status == TaskStatus.Finished || t.Status == TaskStatus.FinishedWithErrors)
                 .ToArray();
 
             // Remove every finished task from the list and raise the TaskRemoved event.

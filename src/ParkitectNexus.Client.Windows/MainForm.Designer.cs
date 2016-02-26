@@ -107,6 +107,7 @@ namespace ParkitectNexus.Client.Windows
             this.authLink.Text = "DEFAULT_VALUE";
             this.authLink.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.authLink.UseSelectable = true;
+            this.authLink.Visible = false;
             this.authLink.Click += new System.EventHandler(this.authLink_Click);
             // 
             // MainForm
