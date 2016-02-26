@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ParkitectNexus.Data.Assets
         bool ShouldCheckForUpdates();
         bool HasChecked { get; }
     }
-    
+
     public class AssetUpdatesManager : IAssetUpdatesManager
     {
         private readonly TimeSpan _checkInterval = TimeSpan.FromHours(1);
@@ -34,7 +35,7 @@ namespace ParkitectNexus.Data.Assets
         private readonly IRemoteAssetRepository _remoteAssetRepository;
         private readonly ILocalAssetRepository _localAssetRepository;
         private readonly ICacheManager _cacheManager;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
@@ -71,7 +72,7 @@ namespace ParkitectNexus.Data.Assets
                 return false;
 
             ReadFromCache();
-            
+
             return !HasChecked;
         }
 
@@ -79,7 +80,7 @@ namespace ParkitectNexus.Data.Assets
         {
             if (HasChecked)
                 return;
-            
+
             var cache = _cacheManager.GetItem<AssetUpdatesCache>("updates_check");
 
             if (cache == null)
@@ -126,7 +127,7 @@ namespace ParkitectNexus.Data.Assets
             if (asset == null) throw new ArgumentNullException(nameof(asset));
 
             ReadFromCache();
-                
+
             switch (asset.Type)
             {
                 case AssetType.Blueprint:
@@ -197,7 +198,7 @@ namespace ParkitectNexus.Data.Assets
 
         private class AssetUpdatesCache
         {
-            public IDictionary<Tuple<AssetType, string>, string> Updates { get; set; }
+            public IList<AssetCachedUpdateInfo> Updates { get; set; }
 
             public DateTime CheckedDate { get; set; }
 
@@ -209,10 +210,10 @@ namespace ParkitectNexus.Data.Assets
                 var result = new Dictionary<IAsset, string>();
                 foreach (var keyValue in Updates)
                 {
-                    var asset = localAssetRepository[keyValue.Key.Item1].FirstOrDefault(a => a.Id == keyValue.Key.Item2);
+                    var asset = localAssetRepository[keyValue.Type].FirstOrDefault(a => a.Id == keyValue.Id);
 
                     if (asset != null)
-                        result[asset] = keyValue.Value;
+                        result[asset] = keyValue.Tag;
                 }
 
                 return result;
@@ -224,14 +225,26 @@ namespace ParkitectNexus.Data.Assets
                 var result = new AssetUpdatesCache
                 {
                     CheckedDate = DateTime.Now,
-                    Updates = new Dictionary<Tuple<AssetType, string>, string>()
+                    Updates = new List<AssetCachedUpdateInfo>()
                 };
 
                 foreach (var keyValue in updatesAvailable)
-                    result.Updates[new Tuple<AssetType, string>(keyValue.Key.Type, keyValue.Key.Id)] = keyValue.Value;
+                    result.Updates.Add(new AssetCachedUpdateInfo
+                    {
+                        Type = keyValue.Key.Type,
+                        Id = keyValue.Key.Id,
+                        Tag = keyValue.Value
+                    });
 
                 return result;
             }
+        }
+
+        private class AssetCachedUpdateInfo
+        {
+            public AssetType Type { get; set; }
+            public string Id { get; set; }
+            public string Tag { get; set; }
         }
     }
 }

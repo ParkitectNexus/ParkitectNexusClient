@@ -71,8 +71,9 @@ namespace ParkitectNexus.Client.Windows
                 SetUserName("Log in");
 
             // Fetch updates
-            if (assetUpdatesManager.ShouldCheckForUpdates())
-                _taskManager.Add<CheckForUpdatesTask>();
+            // TODO: Disable update checking; It takes too many GH calls. Reimplementing when PN reports version numbers.
+//            if (assetUpdatesManager.ShouldCheckForUpdates())
+//                _taskManager.Add<CheckForUpdatesTask>();
         }
 
         public void ProcessArguments(string[] args)
@@ -179,6 +180,7 @@ namespace ParkitectNexus.Client.Windows
         /// <param name="e">A <see cref="T:System.EventArgs"/> that contains the event data. </param>
         protected override void OnShown(EventArgs e)
         {
+            // Ensure Parkitect has been installed.
             if (!_parkitect.IsInstalled)
             {
                 if (
