@@ -158,6 +158,9 @@
     <Compile Include="Tasks\QueueableTaskManager.cs" />
     <Compile Include="Tasks\TaskStatus.cs" />
     <Compile Include="Tasks\Prefab\TestWaitQueueableTask.cs" />
+    <Compile Include="Updating\IUpdateManager.cs" />
+    <Compile Include="Updating\UpdateInfo.cs" />
+    <Compile Include="Updating\UpdateManager.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="ObjectFactory.cs" />

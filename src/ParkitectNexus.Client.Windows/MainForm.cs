@@ -20,6 +20,7 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Tasks.Prefab;
+using ParkitectNexus.Data.Updating;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Models;
@@ -32,15 +33,17 @@ namespace ParkitectNexus.Client.Windows
         private readonly IQueueableTaskManager _taskManager;
         private readonly IParkitect _parkitect;
         private readonly IModCompiler _modCompiler;
+        private readonly IUpdateManager _updateManager;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger,
-            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager, IModCompiler modCompiler)
+            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager, IModCompiler modCompiler, IUpdateManager updateManager)
         {
             _authManager = authManager;
             _taskManager = taskManager;
             _parkitect = parkitect;
             _modCompiler = modCompiler;
+            _updateManager = updateManager;
 
             // Hook onto the authentication manager events.
             _authManager.Authenticated += (sender, args) => FetchUserInfo();
@@ -199,6 +202,30 @@ namespace ParkitectNexus.Client.Windows
         /// <param name="e">A <see cref="T:System.EventArgs"/> that contains the event data. </param>
         protected override void OnShown(EventArgs e)
         {
+            var update = _updateManager.CheckForUpdates<MainForm>();
+
+            if (update != null)
+            {
+                if (
+                    MetroMessageBox.Show(this,
+                        "A required update for the ParkitectNexus Client needs to be installed.\n" +
+                        "Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n" +
+                        $"Would you like to install it now?\n\nYou are currently running v{typeof (Program).Assembly.GetName().Version}. The newest version is v{update.Version}",
+                        "ParkitectNexus Client Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
+                    DialogResult.Yes)
+                {
+                    Close();
+                    return;
+                }
+
+                if (!_updateManager.InstallUpdate(update))
+                    MessageBox.Show(this, "Failed installing the update! Please try again later.",
+                        "ParkitectNexus Client Update",
+                        MessageBoxButtons.OK);
+
+                Close();
+            }
+
             // Ensure Parkitect has been installed.
             if (!_parkitect.IsInstalled)
             {

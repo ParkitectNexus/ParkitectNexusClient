@@ -13,6 +13,7 @@ using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Tasks;
+using ParkitectNexus.Data.Updating;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using StructureMap;
@@ -52,6 +53,7 @@ namespace ParkitectNexus.Data
             registry.For<IModCompiler>().Use<ModCompiler>();
             registry.For<IModLoadOrderBuilder>().Use<ModLoadOrderBuilder>();
             registry.For<IAssetUpdatesManager>().Singleton().Use<AssetUpdatesManager>();
+            registry.For<IUpdateManager>().Use<UpdateManager>();
 
             return registry;
         }
