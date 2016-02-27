@@ -59,5 +59,9 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
             var mainForm = ParentForm as MainForm;
             mainForm?.SpawnSliderPanel(null);
         }
+
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+        }
     }
 }

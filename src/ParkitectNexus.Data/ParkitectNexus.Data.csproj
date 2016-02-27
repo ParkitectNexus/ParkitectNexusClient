@@ -73,12 +73,12 @@
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Octokit, Version=0.17.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Octokit.0.17.0\lib\net45\Octokit.dll</HintPath>
+    <Reference Include="Octokit, Version=0.18.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Octokit.0.18.0\lib\net45\Octokit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.1.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.1.1\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.2.0\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">

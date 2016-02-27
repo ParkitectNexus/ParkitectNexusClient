@@ -130,6 +130,7 @@
             this.updateButton.Text = "Update";
             this.updateButton.Theme = MetroFramework.MetroThemeStyle.Light;
             this.updateButton.UseSelectable = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // metroButton1
             // 
