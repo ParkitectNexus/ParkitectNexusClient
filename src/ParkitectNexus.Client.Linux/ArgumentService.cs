@@ -18,7 +18,7 @@ namespace ParkitectNexus.Client.Linux
 {
     public class ArgumentService
     {
-        private ManualResetEvent allDone = new ManualResetEvent(false);
+        
         public bool IsServer{ get; private set;}
         private IQueueableTaskManager _queueTaskManager;
         private EndPoint _endPoint;
@@ -81,17 +81,16 @@ namespace ParkitectNexus.Client.Linux
 
         private void Listen()
         {
-            while (true)
-            {
-                allDone.Reset();
-                _socket.BeginAccept(new System.AsyncCallback(OnAccept),_socket);
-                allDone.WaitOne();
-            }
+            while (_socket.Connected)
+                {
+                    _socket.BeginAccept(new System.AsyncCallback(OnAccept),_socket);
+                }
             
         }
 
         private void OnAccept(IAsyncResult ar)
         {
+           
             System.Net.Sockets.Socket listener = (System.Net.Sockets.Socket)ar.AsyncState;
             System.Net.Sockets.Socket handler = listener.EndAccept(ar);
             using (NetworkStream stream = new NetworkStream(handler))
@@ -133,6 +132,11 @@ namespace ParkitectNexus.Client.Linux
 
                 }
             }
+        }
+
+        public void Close()
+        {
+            _socket.Close();
         }
 
        

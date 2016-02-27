@@ -77,6 +77,8 @@ namespace ParkitectNexus.Client.Linux
            
                
             }
+
+            argumentService.Close();
         }
 
 

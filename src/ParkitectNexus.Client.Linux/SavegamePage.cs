@@ -24,9 +24,10 @@ namespace ParkitectNexus.Client.Linux
 		private IParkitect _parkitect;
         private Pixbuf _selectedAssetImage;
         private int _sizeChange = 0;
-
-        public SavegamePage (IParkitect parkitect)
+        IPresenter _parentWindow;
+        public SavegamePage (IParkitect parkitect,IPresenter parentWindow)
         {
+            _parentWindow = parentWindow;
             _parkitect = parkitect;
             this.Build();
 
@@ -48,7 +49,7 @@ namespace ParkitectNexus.Client.Linux
         {
 			if (_selectedAsset != null)
             {
-
+                
                 int lwPaneSize = (BlueprintPane.MaxPosition - BlueprintPane.Position)-20;
                 if (_sizeChange != lwPaneSize) {
                     _sizeChange = lwPaneSize;
@@ -74,20 +75,26 @@ namespace ParkitectNexus.Client.Linux
         {
             if (savegames.SelectedItems.Length >= 1)
             {
+                btnDelete.Sensitive = true;
                 TreeIter iter;
                 _blueprintListStore.GetIter(out iter, savegames.SelectedItems[0]);
 
-				IAsset asset = (IAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
+                IAsset asset = (IAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
 
                 _selectedAsset = asset;
                 savegameName.Text = _selectedAsset.Name;
-                using (MemoryStream stream = new MemoryStream ()) {
-					_selectedAsset.GetImage().Save (stream, ImageFormat.Png);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    _selectedAsset.GetImage().Save(stream, ImageFormat.Png);
                     stream.Position = 0;
                     _selectedAssetImage = new Pixbuf(stream);
                 }
 
                 _sizeChange = -1;
+            }
+            else
+            {
+                btnDelete.Sensitive = false;
             }
         }
 
@@ -101,10 +108,22 @@ namespace ParkitectNexus.Client.Linux
 						savegame.GetImage ().Save (stream, ImageFormat.Png);
 						stream.Position = 0;
 						Pixbuf pixbuf = new Pixbuf (stream);
-                    pixbuf.ScaleSimple(100, 100, InterpType.Hyper);
+                        pixbuf = pixbuf.ScaleSimple(100, 100, InterpType.Hyper);
 						_blueprintListStore.AppendValues (savegame.Name, pixbuf, savegame);
 					}
             }
+        }
+
+        protected void Delete (object sender, EventArgs e)
+        {
+            MessageDialog errorDialog = new MessageDialog ((Gtk.Window)_parentWindow, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, "Are you sure wish to delete "+ _selectedAsset.Name +"?");
+            if(errorDialog.Run() == (int)ResponseType.Yes)
+            {
+                if (_selectedAsset == null) return;
+                _parkitect.Assets.DeleteAsset(_selectedAsset);
+            }
+            errorDialog.Destroy();
+            UpdateListStore();
         }
 
         public void OnOpen()

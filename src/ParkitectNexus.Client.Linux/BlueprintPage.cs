@@ -24,8 +24,10 @@ namespace ParkitectNexus.Client.Linux
 		private IParkitect _parkitect;
         private Pixbuf _selectedAssetImage;
         private int _sizeChange = 0;
-        public BlueprintPage (IParkitect parkitect)
+        private IPresenter _parentWindow;
+        public BlueprintPage (IParkitect parkitect,IPresenter parentWindow)
         {
+            this._parentWindow = parentWindow;
             _parkitect = parkitect;
             this.Build();
 
@@ -47,16 +49,21 @@ namespace ParkitectNexus.Client.Linux
         {
             if (blueprints.SelectedItems.Length >= 1)
             {
+                btnDelete.Sensitive = true;
                 TreeIter iter;
                 _blueprintListStore.GetIter(out iter, blueprints.SelectedItems[0]);
 
 
-				IAsset asset = (IAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
+                IAsset asset = (IAsset)_blueprintListStore.GetValue(iter, PARKITECT_ASSET);
 
                 _selectedAsset = asset;
                 blueprintName.Text = _selectedAsset.Name;
                 _selectedAssetImage = new Pixbuf(_selectedAsset.Open());
                 _sizeChange = -1;
+            }
+            else
+            {
+                btnDelete.Sensitive = false;
             }
         }
 
@@ -113,6 +120,18 @@ namespace ParkitectNexus.Client.Linux
 
         public void OnClose()
         {
+        }
+
+        protected void Delete (object sender, EventArgs e)
+        {
+            MessageDialog errorDialog = new MessageDialog ((Gtk.Window)_parentWindow, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, "Are you sure wish to delete "+ _selectedAsset.Name +"?");
+            if(errorDialog.Run() == (int)ResponseType.Yes)
+            {
+                if (_selectedAsset == null) return;
+                _parkitect.Assets.DeleteAsset(_selectedAsset);
+            }
+            errorDialog.Destroy();
+            UpdateListStore();
         }
     }
 }

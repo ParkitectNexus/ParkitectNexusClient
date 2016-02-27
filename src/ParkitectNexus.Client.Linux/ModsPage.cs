@@ -28,7 +28,7 @@ namespace ParkitectNexus.Client.Linux
 		private IRemoteAssetRepository _assetRepository;
 		private IParkitectNexusAPI _nexusAPI;
 	
-		public ModsPage (ILogger logger,IParkitectNexusAPI nexusAPI,IRemoteAssetRepository assetRepository,IQueueableTaskManager queueableTaskManager,IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect)
+        public ModsPage (IAssetUpdatesManager updateManager,ILogger logger,IParkitectNexusAPI nexusAPI,IRemoteAssetRepository assetRepository,IQueueableTaskManager queueableTaskManager,IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect)
         {
 			this._nexusAPI = nexusAPI;
 			this._assetRepository = assetRepository;
@@ -75,20 +75,16 @@ namespace ParkitectNexus.Client.Linux
 
             listViewMods.NodeStore = _mods;
 
+
+
             //update the tag information
             listViewMods.Model.RowInserted += async (o, args) => {
-                try{
-                    var mod = (TreeNodeModContainer)((NodeStore)o).GetNode(args.Path);
-                    if (mod.ParkitectMod != null && mod.ParkitectMod.Name != null) {
-                    //    var url = new ParkitectNexusUrl (mod.ParkitectMod.Name, ParkitectAssetType.Mod, mod.ParkitectMod.Repository);
-                    //    var info = await _parkitectAssetRepository.ResolveDownloadInfo (url); 
-                      //  mod.AvaliableVersion = info.Tag;
-                        listViewMods.QueueDraw();   
-                    }
-                }
-                catch (Exception)
-                {
+                var mod = (TreeNodeModContainer)((NodeStore)o).GetNode(args.Path);
 
+                if (mod.ParkitectMod != null && mod.ParkitectMod.Name != null) {
+                    mod.AvaliableVersion = await updateManager.GetLatestVersionName(mod.ParkitectMod);
+
+                    listViewMods.QueueDraw();   
                 }
             };
 
@@ -103,12 +99,20 @@ namespace ParkitectNexus.Client.Linux
                     if (((IQueueableTask)s) is InstallAssetTask  && ((IQueueableTask)s).Status == TaskStatus.Finished)
                     {
                         Gtk.Application.Invoke(delegate
-                            {
-                                UpdateModList();
-                            });
+                        {
+                            UpdateModList();
+                        });
                     }
                 };
             };
+        }
+
+        public void OnOpen()
+        {
+        }
+
+        public void OnClose()
+        {
         }
 
         /// <summary>
@@ -137,8 +141,10 @@ namespace ParkitectNexus.Client.Linux
             lblViewOnParkitectNexusWebsite.UseUnderline = true;
             lblViewOnParkitectNexusWebsite.Pattern = "______________________";
 
-            btnCheckUpdate.Sensitive = !mod.Information.IsDevelopment;// && !string.IsNullOrWhiteSpace(mod.Repository);
+            btnUpdate.Sensitive = !mod.Information.IsDevelopment;// && !string.IsNullOrWhiteSpace(mod.Repository);
             btnUninstall.Sensitive = !mod.Information.IsDevelopment;
+            btnRecompile.Sensitive = true;
+
         }
 
 
@@ -153,8 +159,9 @@ namespace ParkitectNexus.Client.Linux
             lblViewOnParkitectNexusWebsite.ModifyFg (StateType.Normal, new Gdk.Color (0, 0, 0));
 
             lblDevelopmentStatus.Visible = false;
-            btnCheckUpdate.Sensitive = false;
+            btnUpdate.Sensitive = false;
             btnUninstall.Sensitive = false;
+            btnRecompile.Sensitive = false;
         }
 
         /// <summary>
@@ -180,75 +187,37 @@ namespace ParkitectNexus.Client.Linux
 		
         }
 
-        protected void CheckForUpdatesForMod (object sender, EventArgs e)
-        {
-            if (_selectedMod == null) return;
-
-            //try
-           // {
-
-
-                   /*NexusUrl nexusURL;
-                 NexusUrl.TryParse (_selectedMod.ParkitectMod.Repository, out nexusURL);
-				var task = new InstallAssetTask (_parkitect, _website, _assetRepository);
-				task.Data = nexusURL.Data;
-				_queuableTaskManager.Add (task);*/
-
-				//var installAssetTask = new InstallAssetTask(_parkitect,_nexusWebsite,_assetRepository);
-				//var url = new ParkitectNexusUrl(_selectedMod.ParkitectMod.Name, _selectedMod.ParkitectMod.Repository);
-				//installAssetTask.Data = url.Data;
-				//installAssetTask.Data = _nexusAPI.
-				//this._queuableTaskManager.Add(installAssetTask);
-               // var info =  _parkitectAssetRepository.ResolveDownloadInfo(url).Result;
-
-               /* if (info.Tag == _selectedMod.ParkitectMod.Tag)
-                {
-                    MessageDialog errorDialog = new MessageDialog (_parentwindow, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, _selectedMod.ParkitectMod.Name +" is already up to date!");
-                    errorDialog.Run();
-                    errorDialog.Destroy();
-                }
-                else
-                {
-                    var installDialog = new ModInstallDialog(url, this, _logger, _parkitect, _parkitectAssetRepository);
-                    installDialog.Run();
-                    installDialog.Destroy();
-                    //update the tag info and update the mod info
-                    _selectedMod.AvaliableVersion = info.Tag;
-                    _selectedMod.ParkitectMod.Tag = info.Tag;
-                    ShowMod(_selectedMod.ParkitectMod);
-
-                    listViewMods.QueueDraw();
-                }*/
-         /*   }
-            catch (Exception)
-            {
-                Gtk.MessageDialog errorDialog = new MessageDialog (_parentwindow, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "Failed to check for updates. Please try again later.");
-                errorDialog.Run();
-                errorDialog.Destroy();
-            }*/
-        }
+     
 
         protected void UninstallMod (object sender, EventArgs e)
         {
-            if (_selectedMod == null) return;
-            _mods.RemoveNode (_selectedMod);
-            //_selectedMod.ParkitectMod.Delete();
+            MessageDialog errorDialog = new MessageDialog (_parentwindow, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, "Are you sure wish to delete "+ _selectedMod.ParkitectMod.Name +"?");
+            if(errorDialog.Run() == (int)ResponseType.Yes)
+            {
+                if (_selectedMod == null) return;
+                _mods.RemoveNode (_selectedMod);
+                _parkitect.Assets.DeleteAsset(_selectedMod.ParkitectMod);
+            }
+            errorDialog.Destroy();
             HideModInfo ();
             UpdateModList ();
         }
 
         protected void VistModWebsite (object o, Gtk.ButtonPressEventArgs args)
         {
-           // if (_selectedMod == null) return;
-          //  Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.ParkitectMod.Repository}");
+            if (_selectedMod == null) return;
+              Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.ParkitectMod.Repository}");
+        }
+           
+
+        protected void Recompile (object sender, EventArgs e)
+        {
+            _queuableTaskManager.With(_selectedMod.ParkitectMod).Add<CompileModTask>();
         }
 
-        public void OnOpen()
+        protected void Update (object sender, EventArgs e)
         {
-        }
-
-        public void OnClose()
-        {
+            _queuableTaskManager.With(_selectedMod.ParkitectMod).Add<UpdateModTask>();
         }
     }
 }

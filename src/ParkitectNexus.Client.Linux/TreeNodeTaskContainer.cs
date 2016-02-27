@@ -40,16 +40,20 @@ namespace ParkitectNexus.Client.Linux
 		public string Status{ 
 			get{ 
 				switch (_task.Status) { 
-				case  TaskStatus.Queued:
-					return "Queued";
-				case TaskStatus.Running:
-					return "Running";
+                    case  TaskStatus.Break:
+                        return "Break";
+                    case TaskStatus.Canceled:
+                        return "Canceled";
                     case TaskStatus.Finished:
-					return "Stopped";
-				case TaskStatus.Canceled:
-					return "Canceled";
+                        return "Finished";
+                    case TaskStatus.FinishedWithErrors:
+                        return "FinishedWithErrors";
+                    case TaskStatus.Queued:
+                        return "Queued";
+                    case TaskStatus.Running:
+                        return "Running";
 
-				}
+                }
 				return "ummm ... something went wrong";
 
 			}

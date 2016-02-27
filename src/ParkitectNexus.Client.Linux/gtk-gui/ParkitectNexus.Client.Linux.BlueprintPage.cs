@@ -23,6 +23,8 @@ namespace ParkitectNexus.Client.Linux
 		private global::Gtk.Alignment alignment2;
 		
 		private global::Gtk.Image blueprintImage;
+		
+		private global::Gtk.Button btnDelete;
 
 		protected virtual void Build ()
 		{
@@ -101,17 +103,30 @@ namespace ParkitectNexus.Client.Linux
 			w7.Position = 1;
 			w7.Expand = false;
 			w7.Fill = false;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.btnDelete = new global::Gtk.Button ();
+			this.btnDelete.Sensitive = false;
+			this.btnDelete.CanFocus = true;
+			this.btnDelete.Name = "btnDelete";
+			this.btnDelete.UseUnderline = true;
+			this.btnDelete.Label = global::Mono.Unix.Catalog.GetString ("Delete");
+			this.vbox3.Add (this.btnDelete);
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.btnDelete]));
+			w8.Position = 2;
+			w8.Expand = false;
+			w8.Fill = false;
 			w3.Add (this.vbox3);
 			this.scrolledwindow1.Add (w3);
 			this.BlueprintPane.Add (this.scrolledwindow1);
 			this.hbox2.Add (this.BlueprintPane);
-			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.BlueprintPane]));
-			w11.Position = 0;
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.BlueprintPane]));
+			w12.Position = 0;
 			this.Add (this.hbox2);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.btnDelete.Clicked += new global::System.EventHandler (this.Delete);
 		}
 	}
 }

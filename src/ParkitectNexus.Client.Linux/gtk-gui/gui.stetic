@@ -313,7 +313,6 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Install Asset</property>
                     <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="InstallMod" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -499,12 +498,15 @@
                               </packing>
                             </child>
                             <child>
+                              <placeholder />
+                            </child>
+                            <child>
                               <widget class="Gtk.Label" id="lblDevelopmentStatus">
                                 <property name="MemberName" />
                                 <property name="LabelProp" translatable="yes">MOD IN DEVELOPMENT</property>
                               </widget>
                               <packing>
-                                <property name="Position">4</property>
+                                <property name="Position">5</property>
                                 <property name="AutoSize">True</property>
                                 <property name="Expand">False</property>
                                 <property name="Fill">False</property>
@@ -512,16 +514,42 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="Gtk.Button" id="btnCheckUpdate">
+                              <widget class="Gtk.HButtonBox" id="hbuttonbox3">
                                 <property name="MemberName" />
-                                <property name="CanFocus">True</property>
-                                <property name="Type">TextOnly</property>
-                                <property name="Label" translatable="yes">Check for Updates</property>
-                                <property name="UseUnderline">True</property>
-                                <signal name="Clicked" handler="CheckForUpdatesForMod" after="yes" />
+                                <property name="Size">2</property>
+                                <property name="LayoutStyle">Spread</property>
+                                <child>
+                                  <widget class="Gtk.Button" id="btnRecompile">
+                                    <property name="MemberName" />
+                                    <property name="CanFocus">True</property>
+                                    <property name="Type">TextOnly</property>
+                                    <property name="Label" translatable="yes">Recompile</property>
+                                    <property name="UseUnderline">True</property>
+                                    <signal name="Clicked" handler="Recompile" after="yes" />
+                                  </widget>
+                                  <packing>
+                                    <property name="Expand">False</property>
+                                    <property name="Fill">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="Gtk.Button" id="btnUpdate">
+                                    <property name="MemberName" />
+                                    <property name="CanFocus">True</property>
+                                    <property name="Type">TextOnly</property>
+                                    <property name="Label" translatable="yes">Update</property>
+                                    <property name="UseUnderline">True</property>
+                                    <signal name="Clicked" handler="Update" after="yes" />
+                                  </widget>
+                                  <packing>
+                                    <property name="Position">1</property>
+                                    <property name="Expand">False</property>
+                                    <property name="Fill">False</property>
+                                  </packing>
+                                </child>
                               </widget>
                               <packing>
-                                <property name="Position">5</property>
+                                <property name="Position">6</property>
                                 <property name="AutoSize">True</property>
                                 <property name="Expand">False</property>
                                 <property name="Fill">False</property>
@@ -532,12 +560,12 @@
                                 <property name="MemberName" />
                                 <property name="CanFocus">True</property>
                                 <property name="Type">TextOnly</property>
-                                <property name="Label" translatable="yes">Uninstall</property>
+                                <property name="Label" translatable="yes">Delete</property>
                                 <property name="UseUnderline">True</property>
-                                <signal name="Clicked" handler="UninstallMod" after="yes" />
+                                <signal name="Clicked" handler="UninstallMod" />
                               </widget>
                               <packing>
-                                <property name="Position">6</property>
+                                <property name="Position">7</property>
                                 <property name="AutoSize">True</property>
                                 <property name="Expand">False</property>
                                 <property name="Fill">False</property>
@@ -561,125 +589,11 @@
                   <packing>
                     <property name="Position">0</property>
                     <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
                   </packing>
                 </child>
               </widget>
             </child>
           </widget>
-        </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="Gtk.Dialog" id="ParkitectNexus.Client.Linux.ModInstallDialog" design-size="400 157">
-    <property name="MemberName" />
-    <property name="Icon">resource:ParkitectNexus.Client.Linux.parkitectnexus_logo.png</property>
-    <property name="WindowPosition">CenterOnParent</property>
-    <property name="Buttons">1</property>
-    <property name="HelpButton">False</property>
-    <child internal-child="VBox">
-      <widget class="Gtk.VBox" id="dialog1_VBox">
-        <property name="MemberName" />
-        <property name="BorderWidth">2</property>
-        <child>
-          <widget class="Gtk.VBox" id="dialog1_VBox1">
-            <property name="MemberName" />
-            <property name="BorderWidth">2</property>
-            <child>
-              <widget class="Gtk.Alignment" id="alignment3">
-                <property name="MemberName" />
-                <property name="LeftPadding">20</property>
-                <property name="TopPadding">30</property>
-                <property name="RightPadding">20</property>
-                <property name="BottomPadding">20</property>
-                <child>
-                  <widget class="Gtk.Label" id="lblModName">
-                    <property name="MemberName" />
-                    <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">label2</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="Position">0</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Alignment" id="alignment1">
-                <property name="MemberName" />
-                <property name="LeftPadding">10</property>
-                <property name="RightPadding">10</property>
-                <child>
-                  <widget class="Gtk.ProgressBar" id="installProgress">
-                    <property name="MemberName" />
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Alignment" id="alignment2">
-                <property name="MemberName" />
-                <property name="Xalign">0</property>
-                <property name="LeftPadding">20</property>
-                <property name="TopPadding">10</property>
-                <child>
-                  <widget class="Gtk.Label" id="lblProgressLabel">
-                    <property name="MemberName" />
-                    <property name="Xalign">0</property>
-                    <property name="LabelProp" translatable="yes">label1</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="Position">2</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="Position">0</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
-        </child>
-      </widget>
-    </child>
-    <child internal-child="ActionArea">
-      <widget class="Gtk.HButtonBox" id="dialog1_ActionArea">
-        <property name="MemberName" />
-        <property name="Spacing">10</property>
-        <property name="BorderWidth">5</property>
-        <property name="Size">1</property>
-        <property name="LayoutStyle">End</property>
-        <child>
-          <widget class="Gtk.Button" id="btnFinished">
-            <property name="MemberName" />
-            <property name="Sensitive">False</property>
-            <property name="CanDefault">True</property>
-            <property name="CanFocus">True</property>
-            <property name="Type">TextAndIcon</property>
-            <property name="Icon">stock:gtk-apply Menu</property>
-            <property name="Label" translatable="yes">Finish</property>
-            <property name="UseUnderline">True</property>
-            <property name="ResponseId">-10</property>
-          </widget>
-          <packing>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
         </child>
       </widget>
     </child>
@@ -1021,7 +935,21 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder />
+                          <widget class="Gtk.Button" id="btnDelete">
+                            <property name="MemberName" />
+                            <property name="Sensitive">False</property>
+                            <property name="CanFocus">True</property>
+                            <property name="Type">TextOnly</property>
+                            <property name="Label" translatable="yes">Delete</property>
+                            <property name="UseUnderline">True</property>
+                            <signal name="Clicked" handler="Delete" />
+                          </widget>
+                          <packing>
+                            <property name="Position">2</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
                         </child>
                         <child>
                           <placeholder />
@@ -1128,7 +1056,21 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder />
+                          <widget class="Gtk.Button" id="btnDelete">
+                            <property name="MemberName" />
+                            <property name="Sensitive">False</property>
+                            <property name="CanFocus">True</property>
+                            <property name="Type">TextOnly</property>
+                            <property name="Label" translatable="yes">Delete</property>
+                            <property name="UseUnderline">True</property>
+                            <signal name="Clicked" handler="Delete" after="yes" />
+                          </widget>
+                          <packing>
+                            <property name="Position">2</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
                         </child>
                         <child>
                           <placeholder />

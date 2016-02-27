@@ -28,7 +28,7 @@ namespace ParkitectNexus.Client.Linux
             { 
                 get
                 { 
-                return _parkitectMod.Information.CompilerVersion;
+                return _parkitectMod.Tag ?? "-";
                 }
             }
 

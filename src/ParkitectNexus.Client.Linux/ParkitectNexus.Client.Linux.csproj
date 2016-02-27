@@ -82,12 +82,9 @@
     <Compile Include="ParkitectInstallDialog.cs" />
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="TreeNodeModContainer.cs" />
-    <Compile Include="ModInstallDialog.cs" />
     <Compile Include="AboutDialog.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="gtk-gui\MainWindow.cs" />
-    <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.ModsPage.cs" />
-    <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.ModInstallDialog.cs" />
     <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.AboutDialog.cs" />
     <Compile Include="ProtocalInstallUtility.cs" />
     <Compile Include="ModUri.cs" />
@@ -102,6 +99,7 @@
     <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.TaskItems.cs" />
     <Compile Include="ArgumentService.cs" />
     <Compile Include="AppCommandLineOptions.cs" />
+    <Compile Include="gtk-gui\ParkitectNexus.Client.Linux.ModsPage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -132,5 +130,11 @@
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
       <Name>ParkitectNexus.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ParkitectNexus.desktop">
+      <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

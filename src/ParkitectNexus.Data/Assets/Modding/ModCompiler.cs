@@ -146,7 +146,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                             var dep = GetBuildPath(depMod);
                             if (dep == null)
                                 throw new Exception($"Dependency {depMod.Name} wasn't build yet");
-                            assemblyFiles.Add(Path.Combine(depMod.InstallationPath, dep));
+                                assemblyFiles.Add(Path.Combine(depMod.InstallationPath, dep));
                         }
 
                         // Resolve the source file paths.
@@ -241,14 +241,15 @@ namespace ParkitectNexus.Data.Assets.Modding
 //            if (File.Exists(Path.Combine(modPath)))
 //                return modPath;
 
+            if (SystemAssemblies.Contains(assemblyName))
+                return dllName;
+           
             var managedAssemblyNames =
                 Directory.GetFiles(_parkitect.Paths.DataManaged, "*.dll").Select(Path.GetFileName).ToArray();
 
             if (managedAssemblyNames.Contains(dllName))
                 return Path.Combine(_parkitect.Paths.DataManaged, dllName);
-
-            if (SystemAssemblies.Contains(assemblyName))
-                return dllName;
+           
 
             return null;
             //throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");

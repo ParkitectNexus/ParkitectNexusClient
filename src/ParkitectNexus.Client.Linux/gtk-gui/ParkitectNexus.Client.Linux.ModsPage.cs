@@ -48,7 +48,11 @@ namespace ParkitectNexus.Client.Linux
 		
 		private global::Gtk.Label lblDevelopmentStatus;
 		
-		private global::Gtk.Button btnCheckUpdate;
+		private global::Gtk.HButtonBox hbuttonbox3;
+		
+		private global::Gtk.Button btnRecompile;
+		
+		private global::Gtk.Button btnUpdate;
 		
 		private global::Gtk.Button btnUninstall;
 		
@@ -222,32 +226,51 @@ namespace ParkitectNexus.Client.Linux
 			this.lblDevelopmentStatus.LabelProp = global::Mono.Unix.Catalog.GetString ("MOD IN DEVELOPMENT");
 			this.vbox4.Add (this.lblDevelopmentStatus);
 			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.lblDevelopmentStatus]));
-			w16.Position = 4;
+			w16.Position = 5;
 			w16.Expand = false;
 			w16.Fill = false;
 			w16.Padding = ((uint)(5));
 			// Container child vbox4.Gtk.Box+BoxChild
-			this.btnCheckUpdate = new global::Gtk.Button ();
-			this.btnCheckUpdate.CanFocus = true;
-			this.btnCheckUpdate.Name = "btnCheckUpdate";
-			this.btnCheckUpdate.UseUnderline = true;
-			this.btnCheckUpdate.Label = global::Mono.Unix.Catalog.GetString ("Check for Updates");
-			this.vbox4.Add (this.btnCheckUpdate);
-			global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.btnCheckUpdate]));
-			w17.Position = 5;
+			this.hbuttonbox3 = new global::Gtk.HButtonBox ();
+			this.hbuttonbox3.Name = "hbuttonbox3";
+			this.hbuttonbox3.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(1));
+			// Container child hbuttonbox3.Gtk.ButtonBox+ButtonBoxChild
+			this.btnRecompile = new global::Gtk.Button ();
+			this.btnRecompile.CanFocus = true;
+			this.btnRecompile.Name = "btnRecompile";
+			this.btnRecompile.UseUnderline = true;
+			this.btnRecompile.Label = global::Mono.Unix.Catalog.GetString ("Recompile");
+			this.hbuttonbox3.Add (this.btnRecompile);
+			global::Gtk.ButtonBox.ButtonBoxChild w17 = ((global::Gtk.ButtonBox.ButtonBoxChild)(this.hbuttonbox3 [this.btnRecompile]));
 			w17.Expand = false;
 			w17.Fill = false;
+			// Container child hbuttonbox3.Gtk.ButtonBox+ButtonBoxChild
+			this.btnUpdate = new global::Gtk.Button ();
+			this.btnUpdate.CanFocus = true;
+			this.btnUpdate.Name = "btnUpdate";
+			this.btnUpdate.UseUnderline = true;
+			this.btnUpdate.Label = global::Mono.Unix.Catalog.GetString ("Update");
+			this.hbuttonbox3.Add (this.btnUpdate);
+			global::Gtk.ButtonBox.ButtonBoxChild w18 = ((global::Gtk.ButtonBox.ButtonBoxChild)(this.hbuttonbox3 [this.btnUpdate]));
+			w18.Position = 1;
+			w18.Expand = false;
+			w18.Fill = false;
+			this.vbox4.Add (this.hbuttonbox3);
+			global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.hbuttonbox3]));
+			w19.Position = 6;
+			w19.Expand = false;
+			w19.Fill = false;
 			// Container child vbox4.Gtk.Box+BoxChild
 			this.btnUninstall = new global::Gtk.Button ();
 			this.btnUninstall.CanFocus = true;
 			this.btnUninstall.Name = "btnUninstall";
 			this.btnUninstall.UseUnderline = true;
-			this.btnUninstall.Label = global::Mono.Unix.Catalog.GetString ("Uninstall");
+			this.btnUninstall.Label = global::Mono.Unix.Catalog.GetString ("Delete");
 			this.vbox4.Add (this.btnUninstall);
-			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.btnUninstall]));
-			w18.Position = 6;
-			w18.Expand = false;
-			w18.Fill = false;
+			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.btnUninstall]));
+			w20.Position = 7;
+			w20.Expand = false;
+			w20.Fill = false;
 			this.GtkAlignment2.Add (this.vbox4);
 			this.optionsFrame.Add (this.GtkAlignment2);
 			this.GtkLabel6 = new global::Gtk.Label ();
@@ -256,10 +279,8 @@ namespace ParkitectNexus.Client.Linux
 			this.GtkLabel6.UseMarkup = true;
 			this.optionsFrame.LabelWidget = this.GtkLabel6;
 			this.vbox6.Add (this.optionsFrame);
-			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.optionsFrame]));
-			w21.Position = 0;
-			w21.Expand = false;
-			w21.Fill = false;
+			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.optionsFrame]));
+			w23.Position = 0;
 			this.OptionsPane.Add (this.vbox6);
 			this.alignment3.Add (this.OptionsPane);
 			this.Add (this.alignment3);
@@ -267,8 +288,8 @@ namespace ParkitectNexus.Client.Linux
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
-			this.btnInstallMod.Clicked += new global::System.EventHandler (this.InstallMod);
-			this.btnCheckUpdate.Clicked += new global::System.EventHandler (this.CheckForUpdatesForMod);
+			this.btnRecompile.Clicked += new global::System.EventHandler (this.Recompile);
+			this.btnUpdate.Clicked += new global::System.EventHandler (this.Update);
 			this.btnUninstall.Clicked += new global::System.EventHandler (this.UninstallMod);
 		}
 	}
