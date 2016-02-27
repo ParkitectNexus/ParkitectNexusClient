@@ -119,6 +119,7 @@
             this.deleteButton.TabIndex = 17;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseSelectable = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
             // updateButton
             // 

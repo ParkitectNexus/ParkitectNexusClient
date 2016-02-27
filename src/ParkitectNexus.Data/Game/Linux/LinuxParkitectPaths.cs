@@ -3,13 +3,12 @@
 
 using System.IO;
 using ParkitectNexus.Data.Game.Base;
-using ParkitectNexus.Data.Game.Linux;
 
-namespace ParkitectNexus.Data
+namespace ParkitectNexus.Data.Game.Linux
 {
-    public class LinuxParkitectPath : BaseParkitectPaths
+    public class LinuxParkitectPaths : BaseParkitectPaths
     {
-        public LinuxParkitectPath(LinuxParkitect parkitect) : base(parkitect)
+        public LinuxParkitectPaths(LinuxParkitect parkitect) : base(parkitect)
         {
         }
 

@@ -18,5 +18,6 @@ namespace ParkitectNexus.Data.Assets
 
         int GetAssetCount(AssetType type);
         Task<IAsset> StoreAsset(IDownloadedAsset downloadedAsset);
+        void DeleteAsset(IAsset asset);
     }
 }

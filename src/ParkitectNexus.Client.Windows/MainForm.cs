@@ -14,6 +14,7 @@ using ParkitectNexus.Client.Windows.Controls.SliderPanels;
 using ParkitectNexus.Client.Windows.Controls.TabPages;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Authentication;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
@@ -30,14 +31,16 @@ namespace ParkitectNexus.Client.Windows
         private readonly IAuthManager _authManager;
         private readonly IQueueableTaskManager _taskManager;
         private readonly IParkitect _parkitect;
+        private readonly IModCompiler _modCompiler;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger logger,
-            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager)
+            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager, IModCompiler modCompiler)
         {
             _authManager = authManager;
             _taskManager = taskManager;
             _parkitect = parkitect;
+            _modCompiler = modCompiler;
 
             // Hook onto the authentication manager events.
             _authManager.Authenticated += (sender, args) => FetchUserInfo();
@@ -76,7 +79,7 @@ namespace ParkitectNexus.Client.Windows
 //                _taskManager.Add<CheckForUpdatesTask>();
         }
 
-        public void ProcessArguments(string[] args)
+        public bool ProcessArguments(string[] args)
         {
             var options = new AppCommandLineOptions();
             Parser.Default.ParseArguments(args, options);
@@ -89,13 +92,28 @@ namespace ParkitectNexus.Client.Windows
                     var attribute = url.Data.GetType().GetCustomAttribute<UrlActionTaskAttribute>();
                     if (attribute?.TaskType != null && typeof (UrlQueueableTask).IsAssignableFrom(attribute.TaskType))
                     {
-                        var task = ObjectFactory.Container.GetInstance(attribute.TaskType) as UrlQueueableTask;
+                        var task = ObjectFactory.GetInstance<UrlQueueableTask>(attribute.TaskType);
                         task.Data = url.Data;
 
                         _taskManager.Add(task);
+
+                        return true;
                     }
                 }
             }
+
+            if (options.Launch)
+            {
+                // todo: do this as a task.
+                foreach (
+                    var mod in
+                        _parkitect.Assets[AssetType.Mod].OfType<IModAsset>().Where(m => m.Information.IsDevelopment))
+                    _modCompiler.Compile(mod).Wait();
+
+                _parkitect.Launch();
+                return false;
+            }
+            return true;
         }
 
         public void SpawnSliderPanel(SliderPanel panel)

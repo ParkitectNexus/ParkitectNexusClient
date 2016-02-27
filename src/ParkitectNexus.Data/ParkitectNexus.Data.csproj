@@ -140,7 +140,7 @@
     <Compile Include="Game\GameRegistry.cs" />
     <Compile Include="Assets\Modding\ModAsset.cs" />
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
-    <Compile Include="Game\Linux\LinuxParkitectPath.cs" />
+    <Compile Include="Game\Linux\LinuxParkitectPaths.cs" />
     <Compile Include="Settings\Models\AuthSettings.cs" />
     <Compile Include="Tasks\ExplicitQueueableTaskArgsExpression.cs" />
     <Compile Include="Tasks\IQueueableTask.cs" />

@@ -2,7 +2,6 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game.Linux;
 using ParkitectNexus.Data.Game.MacOSX;
 using ParkitectNexus.Data.Game.Windows;
@@ -16,18 +15,20 @@ namespace ParkitectNexus.Data.Game
         public GameRegistry()
         {
             For<IDownloadedAsset>().Use<DownloadedAsset>();
-            For<ILocalAssetRepository>().Singleton().Use<LocalAssetRepository>();
 
             switch (OperatingSystem.Detect())
             {
                 case SupportedOperatingSystem.Linux:
-                    For<IParkitect>().Use<LinuxParkitect>();
+                    For<IParkitectPaths>().Use<LinuxParkitectPaths>();
+                    For<IParkitect>().Singleton().Use<LinuxParkitect>();
                     break;
                 case SupportedOperatingSystem.MacOSX:
-                    For<IParkitect>().Use<MacOSXParkitect>();
+                    For<IParkitectPaths>().Use<MacOSXParkitectPaths>();
+                    For<IParkitect>().Singleton().Use<MacOSXParkitect>();
                     break;
                 case SupportedOperatingSystem.Windows:
-                    For<IParkitect>().Use<WindowsParkitect>();
+                    For<IParkitectPaths>().Use<WindowsParkitectPaths>();
+                    For<IParkitect>().Singleton().Use<WindowsParkitect>();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("operating system not supported");

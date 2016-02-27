@@ -124,6 +124,26 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
             Controls.Remove(_progressSpinner);
         }
 
+        protected void RepositionTiles()
+        {
+            const int marginX = 5;
+            const int marginY = 5;
+            var size = new Size(100, 100);
+            var countX = (Width - marginX - VerticalScrollbarSize) / (size.Width + marginX);
+
+            if (countX > 0)
+            {
+                var i = 0;
+                foreach (var tile in Controls.OfType<MetroTile>())
+                {
+                    var x = i % countX;
+                    var y = i / countX;
+                    tile.Location = new Point(Margin.Left + (x * (size.Width + marginX)),
+                        Margin.Top + (y * (size.Height + marginY)));
+                    i++;
+                }
+            }
+        }
         #region Overrides of Panel
 
         /// <summary>
@@ -148,23 +168,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
         /// <param name="eventargs">An <see cref="T:System.EventArgs" /> that contains the event data. </param>
         protected override void OnResize(EventArgs eventargs)
         {
-            const int marginX = 5;
-            const int marginY = 5;
-            var size = new Size(100, 100);
-            var countX = (Width - marginX - VerticalScrollbarSize)/(size.Width + marginX);
-
-            if (countX > 0)
-            {
-                var i = 0;
-                foreach (var tile in Controls.OfType<MetroTile>())
-                {
-                    var x = i%countX;
-                    var y = i/countX;
-                    tile.Location = new Point(Margin.Left + (x*(size.Width + marginX)),
-                        Margin.Top + (y*(size.Height + marginY)));
-                    i++;
-                }
-            }
+            RepositionTiles();
 
             base.OnResize(eventargs);
         }

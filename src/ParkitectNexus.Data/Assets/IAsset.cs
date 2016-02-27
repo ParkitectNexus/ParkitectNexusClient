@@ -18,7 +18,7 @@ namespace ParkitectNexus.Data.Assets
         string InstallationPath { get; }
 
         AssetType Type { get; }
-
+        
         Image GetImage();
         Stream Open();
     }

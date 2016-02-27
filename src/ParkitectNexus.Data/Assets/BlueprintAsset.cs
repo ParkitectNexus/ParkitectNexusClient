@@ -18,7 +18,20 @@ namespace ParkitectNexus.Data.Assets
 
         public override Image GetImage()
         {
-            return Image.FromStream(Open());
+            using (var stream = Open())
+            {
+                if (stream == null)
+                    return null;
+
+                using (var image = Image.FromStream(stream))
+                {
+                    var result = new Bitmap(image.Width, image.Height);
+                    using (var graphics = Graphics.FromImage(result))
+                        graphics.DrawImage(image, 0, 0);
+
+                    return result;
+                }
+            }
         }
 
         #endregion

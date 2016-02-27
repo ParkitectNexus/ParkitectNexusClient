@@ -41,7 +41,7 @@ namespace ParkitectNexus.Data.Assets
 
         public virtual Stream Open()
         {
-            return File.OpenRead(InstallationPath);
+            return File.Exists(InstallationPath) ? File.OpenRead(InstallationPath) : null;
         }
 
         #endregion
@@ -57,6 +57,44 @@ namespace ParkitectNexus.Data.Assets
         public override string ToString()
         {
             return $"{Type}Asset, Name: {Name}";
+        }
+
+        #endregion
+
+        #region Equality members
+
+        protected bool Equals(Asset other)
+        {
+            return string.Equals(InstallationPath, other.InstallationPath) && Type == other.Type;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Asset) obj);
+        }
+
+        /// <summary>
+        /// Serves as the default hash function.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current object.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((InstallationPath != null ? InstallationPath.GetHashCode() : 0)*397) ^ (int) Type;
+            }
         }
 
         #endregion

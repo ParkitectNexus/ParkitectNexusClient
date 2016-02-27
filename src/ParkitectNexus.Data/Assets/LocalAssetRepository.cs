@@ -24,19 +24,16 @@ namespace ParkitectNexus.Data.Assets
         private readonly IAssetMetadataStorage _assetMetadataStorage;
         private readonly ILogger _log;
         private readonly IParkitect _parkitect;
-        private readonly IWebsite _website;
 
-        public LocalAssetRepository(IParkitect parkitect, ILogger log, IWebsite website,
-            IAssetMetadataStorage assetMetadataStorage, IAssetCachedDataStorage assetCachedDataStorage)
+        public LocalAssetRepository(IParkitect parkitect, ILogger log, IAssetMetadataStorage assetMetadataStorage, IAssetCachedDataStorage assetCachedDataStorage)
         {
-            if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
-            if (website == null) throw new ArgumentNullException(nameof(website));
             _parkitect = parkitect;
             _log = log;
-            _website = website;
             _assetMetadataStorage = assetMetadataStorage;
             _assetCachedDataStorage = assetCachedDataStorage;
         }
+
+        #region Implementation of ILocalAssetRepository
 
         public event EventHandler<AssetEventArgs> AssetAdded;
 
@@ -275,6 +272,49 @@ namespace ParkitectNexus.Data.Assets
             }
         }
 
+        public void DeleteAsset(IAsset asset)
+        {
+            if (asset == null) throw new ArgumentNullException(nameof(asset));
+
+            switch (asset.Type)
+            {
+                case AssetType.Blueprint:
+                case AssetType.Savegame:
+                    var directory = Path.GetDirectoryName(asset.InstallationPath);
+                    var filenameWithoutExtension = Path.GetFileNameWithoutExtension(asset.InstallationPath);
+
+                    try
+                    {
+                        File.Delete(asset.InstallationPath);
+                        File.Delete(Path.Combine(directory, $"{filenameWithoutExtension}.cache"));
+                        File.Delete(Path.Combine(directory, $"{filenameWithoutExtension}.meta"));
+
+                        OnAssetRemoved(new AssetEventArgs(asset));
+                    }
+                    catch (Exception e)
+                    {
+                        _log.WriteLine($"Failed to delete asset {asset.Name}", LogLevel.Fatal);
+                        _log.WriteException(e);
+                    }
+                    break;
+                case AssetType.Mod:
+                    try
+                    {
+                        Directory.Delete(asset.InstallationPath, true);
+
+                        OnAssetRemoved(new AssetEventArgs(asset));
+                    }
+                    catch (Exception e)
+                    {
+                        _log.WriteLine($"Failed to delete mod {asset.Name}", LogLevel.Fatal);
+                        _log.WriteException(e);
+                    }
+                    break;
+            }
+        }
+
+        #endregion
+
         private string[] GetFilesInAssetPath(AssetType type)
         {
             switch (type)
@@ -307,15 +347,27 @@ namespace ParkitectNexus.Data.Assets
             }
         }
 
+        #region Event raisers
+
+        /// <summary>
+        /// Raises the <see cref="E:AssetAdded" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ParkitectNexus.Data.Assets.AssetEventArgs" /> instance containing the event data.</param>
         protected virtual void OnAssetAdded(AssetEventArgs e)
         {
             AssetAdded?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:AssetRemoved" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ParkitectNexus.Data.Assets.AssetEventArgs" /> instance containing the event data.</param>
         protected virtual void OnAssetRemoved(AssetEventArgs e)
         {
             AssetRemoved?.Invoke(this, e);
         }
+
+        #endregion
 
         #region Implementation of IEnumerable
 

@@ -1,6 +1,6 @@
 ﻿namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
-    partial class BlueprintSliderPanel
+    partial class AssetSliderPanel
     {
         /// <summary>
         /// Required designer variable.
@@ -42,9 +42,9 @@
             this.nameLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
             this.nameLabel.Location = new System.Drawing.Point(23, 59);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(134, 25);
+            this.nameLabel.Size = new System.Drawing.Size(146, 25);
             this.nameLabel.TabIndex = 5;
-            this.nameLabel.Text = "Blueprint Name";
+            this.nameLabel.Text = "Savegame Name";
             // 
             // pictureBox
             // 
@@ -74,17 +74,18 @@
             this.deleteButton.TabIndex = 8;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseSelectable = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
-            // BlueprintSliderPanel
+            // AssetSliderPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackText = "Blueprint";
+            this.BackText = "Savegame";
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.uploadButton);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.nameLabel);
-            this.Name = "BlueprintSliderPanel";
+            this.Name = "AssetSliderPanel";
             this.Size = new System.Drawing.Size(279, 483);
             this.Controls.SetChildIndex(this.nameLabel, 0);
             this.Controls.SetChildIndex(this.pictureBox, 0);

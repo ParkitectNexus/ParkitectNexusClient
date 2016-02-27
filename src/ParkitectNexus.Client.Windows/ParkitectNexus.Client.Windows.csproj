@@ -117,6 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCommandLineOptions.cs" />
+    <Compile Include="Controls\TabPages\AssetsTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TaskUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -126,11 +129,11 @@
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ParkitectNexusProtocol.cs" />
-    <Compile Include="Controls\SliderPanels\SavegameSliderPanel.cs">
+    <Compile Include="Controls\SliderPanels\AssetSliderPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\SliderPanels\SavegameSliderPanel.Designer.cs">
-      <DependentUpon>SavegameSliderPanel.cs</DependentUpon>
+    <Compile Include="Controls\SliderPanels\AssetSliderPanel.Designer.cs">
+      <DependentUpon>AssetSliderPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\SliderPanels\ModSliderPanel.cs">
       <SubType>UserControl</SubType>
@@ -143,12 +146,6 @@
     </Compile>
     <Compile Include="Controls\SliderPanels\SliderPanel.Designer.cs">
       <DependentUpon>SliderPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SliderPanels\BlueprintSliderPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\SliderPanels\BlueprintSliderPanel.Designer.cs">
-      <DependentUpon>BlueprintSliderPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TabPages\BlueprintsTabPage.cs">
       <SubType>Component</SubType>
@@ -195,14 +192,11 @@
     <EmbeddedResource Include="Controls\SliderPanels\ModSliderPanel.resx">
       <DependentUpon>ModSliderPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SliderPanels\SavegameSliderPanel.resx">
-      <DependentUpon>SavegameSliderPanel.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\SliderPanels\AssetSliderPanel.resx">
+      <DependentUpon>AssetSliderPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SliderPanels\SliderPanel.resx">
       <DependentUpon>SliderPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SliderPanels\BlueprintSliderPanel.resx">
-      <DependentUpon>BlueprintSliderPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
