@@ -5,14 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ParkitectNexus.Data.Utilities;
 using StructureMap.Pipeline;
 
 namespace ParkitectNexus.Data.Tasks
 {
     public class QueueableTaskManager : IQueueableTaskManager
     {
+        private readonly ILogger _log;
         private readonly List<IQueueableTask> _runningAndFinishedTasks = new List<IQueueableTask>();
         private readonly List<IQueueableTask> _queuedTasks = new List<IQueueableTask>();
+        
+        public QueueableTaskManager(ILogger log)
+        {
+            _log = log;
+        }
 
         private CancellationTokenSource _cancellationTokenSource;
         private IQueueableTask _currentTask;
@@ -49,6 +56,8 @@ namespace ParkitectNexus.Data.Tasks
         public void Add(IQueueableTask task)
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
+
+            _log.WriteLine($"Adding {task} to the task queue.");
 
             _queuedTasks.Add(task);
             OnTaskAdded(new QueueableTaskEventArgs(task));
@@ -149,6 +158,7 @@ namespace ParkitectNexus.Data.Tasks
             // Ensure the dequeued task is awaiting being run.
             if (_currentTask.Status != TaskStatus.Queued && _currentTask.Status != TaskStatus.Break)
             {
+                _log.WriteLine($"Skipping execution of task {_currentTask}. Task is not queued or in break mode.");
                 RunNext();
                 return;
             }
@@ -158,13 +168,24 @@ namespace ParkitectNexus.Data.Tasks
 
             try
             {
+                _log.WriteLine($"Started task {_currentTask}.");
                 await _currentTask.Run(_cancellationTokenSource.Token);
+                _log.WriteLine($"Task {_currentTask} ended in state {_currentTask.Status} at {_currentTask.CompletionPercentage}%.");
 
                 // If the task requests a break, move it to the end of the queue.
                 if (_currentTask.Status == TaskStatus.Break)
                 {
                     _runningAndFinishedTasks.Remove(_currentTask);
                     Add(_currentTask);
+                }
+                else
+                {
+                    if (_currentTask.CompletionPercentage != 100)
+                    {
+                        _currentTask.Status = TaskStatus.FinishedWithErrors;
+                        _currentTask.CompletionPercentage = 100;
+                        _currentTask.StatusDescription = "Task finished in an unkown error.";
+                    }
                 }
             }
             catch (Exception e)
@@ -177,10 +198,14 @@ namespace ParkitectNexus.Data.Tasks
                 _currentTask.Status = TaskStatus.Canceled;
                 _currentTask.CompletionPercentage = 100;
                 _currentTask.StatusDescription = $"Failed: {e.Message}";
+
+                _log.WriteLine($"Task {_currentTask} threw an exception!", LogLevel.Fatal);
+                _log.WriteException(e);
             }
             finally
             {
                 // After the task has either successfully run or failed, a next task can be started.
+                _log.WriteLine($"Task {_currentTask} process finished.");
                 CurrentTaskFinished();
                 RunNext();
             }

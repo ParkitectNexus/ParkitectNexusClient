@@ -22,14 +22,12 @@ namespace ParkitectNexus.Data.Tasks.Prefab
         private readonly IWebsite _website;
 
         public InstallAssetTask(IParkitect parkitect, IWebsite website, IRemoteAssetRepository remoteAssetRepository,
-            IQueueableTaskManager queueableTaskManager)
+            IQueueableTaskManager queueableTaskManager) : base("Install asset")
         {
             _parkitect = parkitect;
             _website = website;
             _remoteAssetRepository = remoteAssetRepository;
             _queueableTaskManager = queueableTaskManager;
-
-            Name = "Install asset";
         }
 
         #region Overrides of QueueableTask

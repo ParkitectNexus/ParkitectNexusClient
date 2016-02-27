@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Assets.Modding
 {
@@ -17,10 +18,12 @@ namespace ParkitectNexus.Data.Assets.Modding
     public class ModLoadOrderBuilder : IModLoadOrderBuilder
     {
         private readonly IParkitect _parkitect;
+        private readonly ILogger _log;
 
-        public ModLoadOrderBuilder(IParkitect parkitect)
+        public ModLoadOrderBuilder(IParkitect parkitect, ILogger log)
         {
             _parkitect = parkitect;
+            _log = log;
         }
 
         private static void AddModToList(IModAsset[] allMods, Stack<IModAsset> buildStack, IModAsset mod,
@@ -52,6 +55,8 @@ namespace ParkitectNexus.Data.Assets.Modding
 
         public void Build()
         {
+            _log.WriteLine("Building mod load order list.");
+
             var mods = _parkitect.Assets[AssetType.Mod].OfType<IModAsset>().ToArray();
 
             var orderedList = new List<IModAsset>();

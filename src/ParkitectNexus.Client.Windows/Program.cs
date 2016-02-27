@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Windows
@@ -48,6 +49,21 @@ namespace ParkitectNexus.Client.Windows
                     var form = ObjectFactory.GetInstance<IPresenterFactory>().InstantiatePresenter<MainForm>();
                     if (args.Any()) form.ProcessArguments(args);
                     Application.Run(form);
+                }
+                catch (Exception e)
+                {
+                    // Report crash to the server.
+                    var crashReporterFactory = ObjectFactory.GetInstance<ICrashReporterFactory>();
+                    crashReporterFactory.Report("global", e);
+
+                    // Write the error to the log file.
+                    var log = ObjectFactory.GetInstance<ILogger>();
+                    log?.WriteLine("Application crashed!", LogLevel.Fatal);
+                    log?.WriteException(e);
+
+                    // Display a message to the user.
+                    MessageBox.Show(
+                        $"The ParkitectNexus Client crashed. :(\nWe've stored some details to the log file located at {log?.LoggingPath ?? "(unknown location)"}.");
                 }
                 finally
                 {

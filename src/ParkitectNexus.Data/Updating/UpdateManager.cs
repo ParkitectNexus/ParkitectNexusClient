@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Client;
 
@@ -15,11 +16,13 @@ namespace ParkitectNexus.Data.Updating
     {
         private readonly IWebsite _website;
         private readonly INexusWebClientFactory _webClientFactory;
+        private readonly ILogger _log;
 
-        public UpdateManager(IWebsite website, INexusWebClientFactory webClientFactory)
+        public UpdateManager(IWebsite website, INexusWebClientFactory webClientFactory, ILogger log)
         {
             _website = website;
             _webClientFactory = webClientFactory;
+            _log = log;
         }
 
         protected virtual string GetUpdateVersionUrl()
@@ -43,8 +46,13 @@ namespace ParkitectNexus.Data.Updating
         /// <returns>Information about the available update.</returns>
         public UpdateInfo CheckForUpdates<TEntryPoint>()
         {
+            var currentVersion = typeof (TEntryPoint).Assembly.GetName().Version;
+
             try
             {
+                _log.WriteLine(
+                    $"Checking for client updates... Currently on version v{currentVersion}-{Utilities.OperatingSystem.Detect()}.");
+
                 using (var webClient = _webClientFactory.CreateWebClient(true))
                 using (var stream = webClient.OpenRead(GetUpdateVersionUrl()))
                 using (var streamReader = new StreamReader(stream))
@@ -55,14 +63,17 @@ namespace ParkitectNexus.Data.Updating
 
                     if (updateInfo != null)
                     {
-                        var currentVersion = typeof (TEntryPoint).Assembly.GetName().Version;
                         var newestVersion = new Version(updateInfo.Version);
 
                         currentVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build);
                         newestVersion = new Version(newestVersion.Major, newestVersion.Minor, newestVersion.Build);
 
+                        _log.WriteLine($"Server reported newest version is v{updateInfo.Version}.");
                         if (newestVersion > currentVersion)
+                        {
+                            _log.WriteLine($"Found newer version v{newestVersion}.");
                             return updateInfo;
+                        }
                     }
                 }
             }

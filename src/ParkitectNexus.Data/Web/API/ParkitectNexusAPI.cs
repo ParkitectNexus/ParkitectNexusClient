@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Data.Web.API
@@ -15,6 +16,7 @@ namespace ParkitectNexus.Data.Web.API
     public class ParkitectNexusAPI : IParkitectNexusAPI
     {
         private readonly INexusWebClientFactory _webClientFactory;
+        private readonly ILogger _log;
         private readonly IWebsite _website;
 
         /// <summary>
@@ -22,13 +24,13 @@ namespace ParkitectNexus.Data.Web.API
         /// </summary>
         /// <param name="website">The website.</param>
         /// <param name="webClientFactory">The web client factory.</param>
+        /// <param name="log"></param>
         /// <exception cref="ArgumentNullException">website or webClientFactory is null.</exception>
-        public ParkitectNexusAPI(IWebsite website, INexusWebClientFactory webClientFactory)
+        public ParkitectNexusAPI(IWebsite website, INexusWebClientFactory webClientFactory, ILogger log)
         {
-            if (website == null) throw new ArgumentNullException(nameof(website));
-            if (webClientFactory == null) throw new ArgumentNullException(nameof(webClientFactory));
             _website = website;
             _webClientFactory = webClientFactory;
+            _log = log;
         }
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace ParkitectNexus.Data.Web.API
         {
             try
             {
+                _log.WriteLine($"Fetching information from the PN API for asset {id}.");
                 var url = _website.ResolveUrl("api/assets/" + id);
 
                 using (var client = _webClientFactory.CreateWebClient())
@@ -54,9 +57,11 @@ namespace ParkitectNexus.Data.Web.API
                     return deserialized.Data;
                 }
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
-                Console.WriteLine(exception);
+                _log.WriteLine($"Failed to fetch information for asset {id}!", LogLevel.Error);
+                _log.WriteException(e);
+
                 return null;
             }
         }
@@ -74,6 +79,8 @@ namespace ParkitectNexus.Data.Web.API
 
             using (var client = _webClientFactory.CreateWebClient(true))
             {
+                _log.WriteLine($"Fetching subscriptions for auth key {authKey.Substring(0, 4)}xxxxxxxxxx.");
+
                 using (var stream = client.OpenRead(url))
                 using (var reader = new StreamReader(stream))
                     return
@@ -93,6 +100,8 @@ namespace ParkitectNexus.Data.Web.API
 
             using (var client = _webClientFactory.CreateWebClient(true))
             {
+                _log.WriteLine($"Fetching user info for auth key {authKey.Substring(0, 4)}xxxxxxxxxx.");
+
                 using (var stream = client.OpenRead(url))
                 using (var reader = new StreamReader(stream))
                     return

@@ -13,18 +13,18 @@ namespace ParkitectNexus.Data.Reporting
 {
     public class CrashReporterFactory : ICrashReporterFactory
     {
-        private readonly ILogger _logger;
+        private readonly ILogger _log;
         private readonly IParkitect _parkitect;
         private readonly INexusWebClientFactory _webClientFactory;
         private readonly IWebsite _website;
 
         public CrashReporterFactory(INexusWebClientFactory webClientFactory, IWebsite website,
-            IParkitect parkitect, ILogger logger)
+            IParkitect parkitect, ILogger log)
         {
             _website = website;
             _parkitect = parkitect;
             _webClientFactory = webClientFactory;
-            _logger = logger;
+            _log = log;
         }
 
         public void Report(string action, Exception exception)
@@ -37,7 +37,9 @@ namespace ParkitectNexus.Data.Reporting
 
                 using (var client = _webClientFactory.CreateWebClient())
                 {
+                    _log.WriteLine("Crash report is being sent.");
                     client.UploadString(_website.ResolveUrl("report/crash", "client"), data);
+                    _log.WriteLine("Crash report was sent.");
                 }
             }
             catch
@@ -53,9 +55,9 @@ namespace ParkitectNexus.Data.Reporting
                 switch (os)
                 {
                     case SupportedOperatingSystem.Windows:
-                        return new WindowsCrashReport(parkitect, action, exception, _logger);
+                        return new WindowsCrashReport(parkitect, action, exception, _log);
                     case SupportedOperatingSystem.MacOSX:
-                        return new MacOSXCrashReport(parkitect, action, exception, _logger);
+                        return new MacOSXCrashReport(parkitect, action, exception, _log);
                     default:
                         throw new Exception("unsupported operating system " + os);
                 }

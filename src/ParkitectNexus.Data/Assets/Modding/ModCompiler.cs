@@ -17,13 +17,12 @@ namespace ParkitectNexus.Data.Assets.Modding
     public class ModCompiler : IModCompiler
     {
         private readonly IParkitect _parkitect;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public ModCompiler(IParkitect parkitect)
+        private readonly ILogger _log;
+        
+        public ModCompiler(IParkitect parkitect, ILogger log)
         {
             _parkitect = parkitect;
+            _log = log;
         }
 
         public async Task<ModCompileResults> Compile(IModAsset mod)
@@ -79,6 +78,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                             return ModCompileResults.Successful;
                         }
 
+                        _log.WriteLine($"Compiling {mod.Name} to {buildPath}...");
                         logFile.Log($"Compiling {mod.Name} to {buildPath}...");
 
                         var assemblyFiles = new List<string>();
@@ -99,6 +99,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                         if (csProjPath != null)
                         {
                             // Load source files and referenced assemblies from *.csproj file.
+                            _log.WriteLine($"Compiling from `{mod.Information.Project}`.");
                             logFile.Log($"Compiling from `{mod.Information.Project}`.");
 
                             // Open the .csproj file of the mod.
@@ -133,10 +134,12 @@ namespace ParkitectNexus.Data.Assets.Modding
                             {
                                 assemblyFiles.Add(resolved);
 
+                                _log.WriteLine($"Resolved assembly reference `{name}` to `{resolved}`");
                                 logFile.Log($"Resolved assembly reference `{name}` to `{resolved}`");
                             }
                             else
                             {
+                                _log.WriteLine($"IGNORING assembly reference `{name}`");
                                 logFile.Log($"IGNORING assembly reference `{name}`");
                             }
                         }
@@ -150,6 +153,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                         }
 
                         // Resolve the source file paths.
+                        _log.WriteLine($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                         logFile.Log($"Source files: {string.Join(", ", unresolvedSourceFiles)} from `{codeDir}`.");
                         sourceFiles.AddRange(
                             unresolvedSourceFiles.Select(file =>
@@ -159,6 +163,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                             }));
 
                         // Compile.
+                        _log.WriteLine($"Compile using compiler version {mod.Information.CompilerVersion ?? "v3.5"}.");
                         logFile.Log($"Compile using compiler version {mod.Information.CompilerVersion ?? "v3.5"}.");
                         var csCodeProvider =
                             new CSharpCodeProvider(new Dictionary<string, string>
@@ -181,6 +186,9 @@ namespace ParkitectNexus.Data.Assets.Modding
                             }
                             catch (Exception e)
                             {
+                                _log.WriteLine.Log($"Could not copy binaries to persistant path {persistantPath}!",
+                                    LogLevel.Warn);
+                                _log.WriteException(e, LogLevel.Warn);
                                 logFile.Log($"Could not copy binaries to persistant path {persistantPath}!",
                                     LogLevel.Warn);
                                 logFile.Log(e.Message, LogLevel.Warn);
@@ -190,6 +198,9 @@ namespace ParkitectNexus.Data.Assets.Modding
                         // Log errors.
                         foreach (var error in result.Errors.Cast<CompilerError>())
                         {
+                            _log.WriteLine(
+                                $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
+                                LogLevel.Error);
                             logFile.Log(
                                 $"{error.ErrorNumber}: {error.Line}:{error.Column}: {error.ErrorText} in {error.FileName}",
                                 LogLevel.Error);
@@ -228,7 +239,7 @@ namespace ParkitectNexus.Data.Assets.Modding
         private string ResolveAssembly(IModAsset[] dependencies, string assemblyName)
         {
             if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
-
+            
             var dllName = $"{assemblyName}.dll";
 
             if (SystemAssemblies.Contains(assemblyName))

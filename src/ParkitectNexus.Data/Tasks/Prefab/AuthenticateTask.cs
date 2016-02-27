@@ -13,12 +13,11 @@ namespace ParkitectNexus.Data.Tasks.Prefab
     {
         private readonly IAuthManager _authManager;
 
-        public AuthenticateTask(IAuthManager authManager)
+        public AuthenticateTask(IAuthManager authManager) : base ("Log in")
         {
             if (authManager == null) throw new ArgumentNullException(nameof(authManager));
             _authManager = authManager;
 
-            Name = "Log in";
             StatusDescription = "Try to log in.";
         }
 

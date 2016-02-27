@@ -12,11 +12,9 @@ namespace ParkitectNexus.Data.Tasks.Prefab
     {
         private readonly IAssetUpdatesManager _assetUpdatesManager;
 
-        public CheckForUpdatesTask(IAssetUpdatesManager assetUpdatesManager)
+        public CheckForUpdatesTask(IAssetUpdatesManager assetUpdatesManager) : base ("Updates check")
         {
             _assetUpdatesManager = assetUpdatesManager;
-
-            Name = "Updates check";
         }
 
         #region Overrides of QueueableTask

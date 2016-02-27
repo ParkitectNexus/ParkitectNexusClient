@@ -109,6 +109,7 @@
     <Compile Include="Assets\CachedData\AssetWithImageCachedData.cs" />
     <Compile Include="Assets\CachedData\IAssetCachedData.cs" />
     <Compile Include="Assets\CachedData\IAssetCachedDataStorage.cs" />
+    <Compile Include="Assets\IAssetUpdatesManager.cs" />
     <Compile Include="Assets\Meta\AssetMetadata.cs" />
     <Compile Include="Assets\AssetTypeUtil.cs" />
     <Compile Include="Assets\DownloadInfo.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Assets\Meta\IAssetMetadata.cs" />
     <Compile Include="Assets\Meta\IAssetMetadataStorage.cs" />
     <Compile Include="Assets\Meta\IModMetadata.cs" />
+    <Compile Include="Assets\Modding\IModAsset.cs" />
     <Compile Include="Assets\Modding\IModCompiler.cs" />
     <Compile Include="Assets\Modding\ModCompiler.cs" />
     <Compile Include="Assets\Modding\ModCompileResults.cs" />

@@ -79,8 +79,7 @@ namespace ParkitectNexus.Data.Assets
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Asset) obj);
+            return obj.GetType() == GetType() && Equals((Asset) obj);
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace ParkitectNexus.Data.Assets
         {
             unchecked
             {
-                return ((InstallationPath != null ? InstallationPath.GetHashCode() : 0)*397) ^ (int) Type;
+                return ((InstallationPath?.GetHashCode() ?? 0)*397) ^ (int) Type;
             }
         }
 

@@ -276,6 +276,8 @@ namespace ParkitectNexus.Data.Assets
         {
             if (asset == null) throw new ArgumentNullException(nameof(asset));
 
+            _log.WriteLine($"Deleting asset {asset}");
+
             switch (asset.Type)
             {
                 case AssetType.Blueprint:
