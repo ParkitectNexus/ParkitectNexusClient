@@ -134,6 +134,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCommandLineOptions.cs" />
+    <Compile Include="Controls\TabPages\MenuTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TabPages\ModsTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TabPages\SavegamesTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TabPages\TasksTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TaskUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -167,6 +179,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Controls\TabPages\MenuTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -181,6 +194,22 @@
     <Compile Include="Controls\TabPages\TasksTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
+=======
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\SliderPanels\BlueprintSliderPanel.resx">
+      <DependentUpon>BlueprintSliderPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderPanels\ModSliderPanel.resx">
+      <DependentUpon>ModSliderPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderPanels\SavegameSliderPanel.resx">
+      <DependentUpon>SavegameSliderPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SliderPanels\SliderPanel.resx">
+      <DependentUpon>SliderPanel.cs</DependentUpon>
+    </EmbeddedResource>
+>>>>>>> dd4fe308f0ab677accf2bd853f0ecd297a9d50eb
     <EmbeddedResource Include="Controls\TaskUserControl.resx">
       <DependentUpon>TaskUserControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -197,12 +226,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+<<<<<<< HEAD
     <EmbeddedResource Include="Controls\SliderPanels\ModSliderPanel.resx">
       <DependentUpon>ModSliderPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SliderPanels\SliderPanel.resx">
       <DependentUpon>SliderPanel.cs</DependentUpon>
     </EmbeddedResource>
+=======
+>>>>>>> dd4fe308f0ab677accf2bd853f0ecd297a9d50eb
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
