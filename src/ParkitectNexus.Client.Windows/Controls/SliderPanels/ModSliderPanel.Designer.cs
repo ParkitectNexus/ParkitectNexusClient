@@ -99,7 +99,7 @@
             this.latestVersionLabel.Name = "latestVersionLabel";
             this.latestVersionLabel.Size = new System.Drawing.Size(139, 19);
             this.latestVersionLabel.TabIndex = 15;
-            this.latestVersionLabel.Text = "-";
+            this.latestVersionLabel.Text = "Not available";
             this.latestVersionLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // metroLabel4

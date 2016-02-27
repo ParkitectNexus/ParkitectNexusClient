@@ -56,6 +56,14 @@ namespace ParkitectNexus.Data.Tasks
             RunNext();
         }
 
+        public ExplicitQueueableTasksPropertyExpression With(string argName, object value)
+        {
+            var expression = new ExplicitQueueableTasksPropertyExpression(this);
+            expression.With(argName, value);
+
+            return expression;
+        }
+
         /// <summary>
         ///     Inserts the specified task after the specified task.
         /// </summary>

@@ -52,6 +52,7 @@ namespace ParkitectNexus.Data
             registry.For<IModCompiler>().Use<ModCompiler>();
             registry.For<IModLoadOrderBuilder>().Use<ModLoadOrderBuilder>();
             registry.For<IAssetUpdatesManager>().Singleton().Use<AssetUpdatesManager>();
+
             return registry;
         }
 

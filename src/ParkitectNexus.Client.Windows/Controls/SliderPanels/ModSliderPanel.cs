@@ -34,8 +34,9 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 
             debugTextBox.Text = mod.ToString();
 
-            deleteButton.Enabled = !mod.Information.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository) &&
-                                   !string.IsNullOrWhiteSpace(mod.Tag);
+            updateButton.Enabled = deleteButton.Enabled =
+                !mod.Information.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository) &&
+                !string.IsNullOrWhiteSpace(mod.Tag);
         }
 
         private void enableModToggle_CheckedChanged(object sender, EventArgs e)
@@ -45,7 +46,7 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 
         private void recompileButton_Click(object sender, EventArgs e)
         {
-            _queueableTaskManager.Add(ObjectFactory.Container.With(_mod).GetInstance<CompileModTask>());
+            _queueableTaskManager.With(_mod).Add<CompileModTask>();
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -62,6 +63,7 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 
         private void updateButton_Click(object sender, EventArgs e)
         {
+            _queueableTaskManager.With(_mod).Add<UpdateModTask>();
         }
     }
 }

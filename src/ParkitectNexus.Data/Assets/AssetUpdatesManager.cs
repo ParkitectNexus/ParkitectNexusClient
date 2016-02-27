@@ -16,7 +16,7 @@ namespace ParkitectNexus.Data.Assets
     {
         event EventHandler<AssetEventArgs> UpdateFound;
         Task<int> CheckForUpdates();
-        Task<bool> IsUpdateAvailable(IAsset asset);
+        Task<bool> IsUpdateAvailableOnline(IAsset asset);
         bool IsUpdateAvailableInMemory(IAsset asset);
         Task<string> GetLatestVersionName(IAsset asset);
         bool ShouldCheckForUpdates();
@@ -120,11 +120,9 @@ namespace ParkitectNexus.Data.Assets
             return count;
         }
 
-        public async Task<bool> IsUpdateAvailable(IAsset asset)
+        public async Task<bool> IsUpdateAvailableOnline(IAsset asset)
         {
             if (asset == null) throw new ArgumentNullException(nameof(asset));
-
-            ReadFromCache();
 
             switch (asset.Type)
             {
@@ -133,14 +131,8 @@ namespace ParkitectNexus.Data.Assets
                     return false;
                 case AssetType.Mod:
                     var modAsset = asset as IModAsset;
-
-                    if (!HasChecked)
-                    {
-                        var latestTag = await _remoteAssetRepository.GetLatestModTag(modAsset);
-                        return latestTag != null && latestTag != modAsset.Tag;
-                    }
-
-                    return _updatesAvailable.ContainsKey(asset);
+                    var latestTag = await _remoteAssetRepository.GetLatestModTag(modAsset);
+                    return latestTag != null && latestTag != modAsset.Tag;
                 default:
                     throw new ArgumentException("invalid asset type", nameof(asset));
             }
