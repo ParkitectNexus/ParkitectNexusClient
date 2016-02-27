@@ -34,7 +34,7 @@ namespace ParkitectNexus.Data.Tasks
 
         public void InsertAfter<TTask>(IQueueableTask afterTask) where TTask : IQueueableTask
         {
-            _queueableTaskManager.InsertAfter<TTask>(afterTask);
+            _queueableTaskManager.InsertAfter(_expression.GetInstance<TTask>(), afterTask);
         }
     }
 }

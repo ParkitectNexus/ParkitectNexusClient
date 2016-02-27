@@ -14,6 +14,21 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -113,6 +128,9 @@
     <Reference Include="StructureMap.Net4, Version=4.0.1.318, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="ParkitectNexus.AssetMagic">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.2.0\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCommandLineOptions.cs" />
@@ -125,12 +143,6 @@
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ParkitectNexusProtocol.cs" />
-    <Compile Include="Controls\SliderPanels\SavegameSliderPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\SliderPanels\SavegameSliderPanel.Designer.cs">
-      <DependentUpon>SavegameSliderPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\SliderPanels\ModSliderPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,12 +154,6 @@
     </Compile>
     <Compile Include="Controls\SliderPanels\SliderPanel.Designer.cs">
       <DependentUpon>SliderPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SliderPanels\BlueprintSliderPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\SliderPanels\BlueprintSliderPanel.Designer.cs">
-      <DependentUpon>BlueprintSliderPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TabPages\BlueprintsTabPage.cs">
       <SubType>Component</SubType>
@@ -161,17 +167,23 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TabPages\MenuTabPage.cs">
+    <Compile Include="Controls\TabPages\MenuTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TabPages\ModsTabPage.cs">
+    <Compile Include="Controls\TabPages\ModsTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TabPages\SavegamesTabPage.cs">
+    <Compile Include="Controls\TabPages\SavegamesTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TabPages\TasksTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="Controls\TaskUserControl.resx">
+      <DependentUpon>TaskUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -185,17 +197,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SliderPanels\ModSliderPanel.resx">
+    <EmbeddedResource Include="Controls\SliderPanels\ModSliderPanel.resx">
       <DependentUpon>ModSliderPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SliderPanels\SavegameSliderPanel.resx">
-      <DependentUpon>SavegameSliderPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SliderPanels\SliderPanel.resx">
+    <EmbeddedResource Include="Controls\SliderPanels\SliderPanel.resx">
       <DependentUpon>SliderPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SliderPanels\BlueprintSliderPanel.resx">
-      <DependentUpon>BlueprintSliderPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -207,6 +213,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Controls\SliderPanels\AssetSliderPanel.Designer.cs" />
+    <Compile Include="Controls\SliderPanels\AssetSliderPanel.cs" />
+    <None Include="Controls\SliderPanels\AssetSliderPanel.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -246,6 +255,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\appbar.close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="nexus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

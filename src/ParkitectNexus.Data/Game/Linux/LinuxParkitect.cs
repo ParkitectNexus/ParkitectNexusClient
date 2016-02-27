@@ -16,7 +16,7 @@ namespace ParkitectNexus.Data.Game.Linux
         public LinuxParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger)
             : base(gameSettingsRepository, logger)
         {
-            Paths = new LinuxParkitectPath(this);
+            Paths = new LinuxParkitectPaths(this);
         }
 
 

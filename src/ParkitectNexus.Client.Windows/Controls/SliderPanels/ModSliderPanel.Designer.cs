@@ -99,7 +99,7 @@
             this.latestVersionLabel.Name = "latestVersionLabel";
             this.latestVersionLabel.Size = new System.Drawing.Size(139, 19);
             this.latestVersionLabel.TabIndex = 15;
-            this.latestVersionLabel.Text = "-";
+            this.latestVersionLabel.Text = "Not available";
             this.latestVersionLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // metroLabel4
@@ -119,6 +119,7 @@
             this.deleteButton.TabIndex = 17;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseSelectable = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
             // updateButton
             // 
@@ -129,6 +130,7 @@
             this.updateButton.Text = "Update";
             this.updateButton.Theme = MetroFramework.MetroThemeStyle.Light;
             this.updateButton.UseSelectable = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // metroButton1
             // 

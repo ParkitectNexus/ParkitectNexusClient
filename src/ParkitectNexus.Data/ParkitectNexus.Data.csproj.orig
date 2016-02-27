@@ -75,6 +75,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Octokit, Version=0.18.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Octokit.0.18.0\lib\net45\Octokit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.2.0\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+>>>>>>> upstream/develop
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -89,8 +112,8 @@
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Octokit.0.18.0\lib\net45\Octokit.dll</HintPath>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.1.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.1.1\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
@@ -98,8 +121,8 @@
     <Reference Include="StructureMap.Net4, Version=4.0.1.318, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.2.0\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+    <Reference Include="Octokit">
+      <HintPath>..\..\packages\Octokit.0.18.0\lib\net45\Octokit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -141,20 +164,27 @@
     <Compile Include="Game\GameRegistry.cs" />
     <Compile Include="Assets\Modding\ModAsset.cs" />
     <Compile Include="Game\Linux\LinuxParkitect.cs" />
+    <Compile Include="Game\Linux\LinuxParkitectPaths.cs" />
     <Compile Include="Settings\Models\AuthSettings.cs" />
     <Compile Include="Tasks\ExplicitQueueableTaskArgsExpression.cs" />
+    <Compile Include="Tasks\ExplicitQueueableTasksPropertyExpression.cs" />
     <Compile Include="Tasks\IQueueableTask.cs" />
     <Compile Include="Tasks\IQueueableTaskManager.cs" />
     <Compile Include="Tasks\Prefab\AuthenticateTask.cs" />
     <Compile Include="Tasks\Prefab\CheckForUpdatesTask.cs" />
     <Compile Include="Tasks\Prefab\CompileModTask.cs" />
     <Compile Include="Tasks\Prefab\InstallAssetTask.cs" />
+    <Compile Include="Tasks\Prefab\LaunchGameTask.cs" />
+    <Compile Include="Tasks\Prefab\UpdateModTask.cs" />
     <Compile Include="Tasks\Prefab\UrlQueueableTask.cs" />
     <Compile Include="Tasks\QueueableTask.cs" />
     <Compile Include="Tasks\QueueableTaskEventArgs.cs" />
     <Compile Include="Tasks\QueueableTaskManager.cs" />
     <Compile Include="Tasks\TaskStatus.cs" />
     <Compile Include="Tasks\Prefab\TestWaitQueueableTask.cs" />
+    <Compile Include="Updating\IUpdateManager.cs" />
+    <Compile Include="Updating\UpdateInfo.cs" />
+    <Compile Include="Updating\UpdateManager.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="ObjectFactory.cs" />
@@ -227,21 +257,11 @@
     <Compile Include="Game\MacOSX\MacOSXParkitectPaths.cs" />
     <Compile Include="Utilities\AppData.cs" />
     <Compile Include="Web\WebRegistry.cs" />
-    <Compile Include="Game\Linux\LinuxParkitectPaths.cs" />
-    <Compile Include="Tasks\ExplicitQueueableTasksPropertyExpression.cs" />
-    <Compile Include="Settings\SettingsBase.cs" />
-    <Compile Include="Tasks\Prefab\LaunchGameTask.cs" />
-    <Compile Include="Tasks\Prefab\UpdateModTask.cs" />
-    <Compile Include="Updating\IUpdateManager.cs" />
-    <Compile Include="Updating\UpdateInfo.cs" />
-    <Compile Include="Updating\UpdateManager.cs" />
     <Compile Include="Utilities\Log.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="ParkitectNexus.Data-xamarin.csproj" />
-    <None Include="ParkitectNexus.Data.csproj" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

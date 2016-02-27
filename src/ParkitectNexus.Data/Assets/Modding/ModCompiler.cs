@@ -71,8 +71,10 @@ namespace ParkitectNexus.Data.Assets.Modding
                             SetBuildPath(mod, buildPath);
                         }
 
+                        var fullBuildPath = Path.Combine(mod.InstallationPath, buildPath);
+
                         // Delete existing compiled file if compilation is forced.
-                        if (File.Exists(Path.Combine(mod.InstallationPath, buildPath)))
+                        if (File.Exists(fullBuildPath))
                         {
                             return ModCompileResults.Successful;
                         }
@@ -163,10 +165,27 @@ namespace ParkitectNexus.Data.Assets.Modding
                             {
                                 {"CompilerVersion", mod.Information.CompilerVersion ?? "v3.5"}
                             });
-                        var parameters = new CompilerParameters(assemblyFiles.ToArray(),
-                            Path.Combine(mod.InstallationPath, buildPath));
+                        var parameters = new CompilerParameters(assemblyFiles.ToArray(), fullBuildPath);
 
                         var result = csCodeProvider.CompileAssemblyFromFile(parameters, sourceFiles.ToArray());
+
+                        // Copy to persistant instance
+                        if (File.Exists(fullBuildPath))
+                        {
+                            var persistantPath = Path.Combine(mod.InstallationPath,
+                                $"bin/{Path.GetFileName(mod.InstallationPath)}.dll");
+
+                            try
+                            {
+                                File.Copy(fullBuildPath, persistantPath, true);
+                            }
+                            catch (Exception e)
+                            {
+                                logFile.Log($"Could not copy binaries to persistant path {persistantPath}!",
+                                    LogLevel.Warn);
+                                logFile.Log(e.Message, LogLevel.Warn);
+                            }
+                        }
 
                         // Log errors.
                         foreach (var error in result.Errors.Cast<CompilerError>())
@@ -177,8 +196,8 @@ namespace ParkitectNexus.Data.Assets.Modding
                         }
 
                         return result.Errors.HasErrors
-                        ? new ModCompileResults(result.Errors.OfType<CompilerError>().ToArray(), false)
-                        : ModCompileResults.Successful;
+                            ? new ModCompileResults(result.Errors.OfType<CompilerError>().ToArray(), false)
+                            : ModCompileResults.Successful;
                     }
                     catch (Exception e)
                     {

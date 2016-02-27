@@ -53,6 +53,7 @@ namespace ParkitectNexus.Client.Linux
                 }
                 Application.Run();
 
+
 #else
             try
             {

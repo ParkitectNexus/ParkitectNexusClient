@@ -25,9 +25,6 @@ namespace WixSharpSetup
 
         private static void Main()
         {
-            // TODO: This script needs updating
-            return;
-
             // Get version of the client.
             var assembly = Assembly.LoadFrom(AppBinariesPath + AppExecutable);
             var assemblyName = assembly.GetName();
@@ -39,10 +36,16 @@ namespace WixSharpSetup
                 new Dir(new Id("INSTALL_DIR"), @"%ProgramFiles%\" + AppName,
                     new File(AppExecutable),
                     new File(@"CommandLine.dll"),
+                    new File(@"MetroFramework.Design.dll"),
+                    new File(@"MetroFramework.dll"),
+                    new File(@"MetroFramework.Fonts.dll"),
                     new File(@"Newtonsoft.Json.dll"),
                     new File(@"Octokit.dll"),
+                    new File(@"ParkitectNexus.AssetMagic.dll"),
                     new File(@"ParkitectNexus.Data.dll"),
-                    new File(@"ParkitectNexus.Mod.ModLoader.dll")
+                    new File(@"ParkitectNexus.Mod.ModLoader.dll"),
+                    new File(@"StructureMap.dll"),
+                    new File(@"StructureMap.Net4.dll")
                     ),
                 new Dir(@"%ProgramMenu%\" + AppName,
                     new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", ""),

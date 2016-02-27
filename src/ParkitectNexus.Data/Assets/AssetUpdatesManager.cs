@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Caching;
+using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.Data.Assets
 {
@@ -15,7 +16,7 @@ namespace ParkitectNexus.Data.Assets
     {
         event EventHandler<AssetEventArgs> UpdateFound;
         Task<int> CheckForUpdates();
-        Task<bool> IsUpdateAvailable(IAsset asset);
+        Task<bool> IsUpdateAvailableOnline(IAsset asset);
         bool IsUpdateAvailableInMemory(IAsset asset);
         Task<string> GetLatestVersionName(IAsset asset);
         bool ShouldCheckForUpdates();
@@ -33,16 +34,13 @@ namespace ParkitectNexus.Data.Assets
         private bool _isChecking = false;
         private IDictionary<IAsset,string> _updatesAvailable = new Dictionary<IAsset,string>();
         private readonly IRemoteAssetRepository _remoteAssetRepository;
-        private readonly ILocalAssetRepository _localAssetRepository;
+        private readonly IParkitect _parkitect;
         private readonly ICacheManager _cacheManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public AssetUpdatesManager(IRemoteAssetRepository remoteAssetRepository, ILocalAssetRepository localAssetRepository, ICacheManager cacheManager)
+        public AssetUpdatesManager(IRemoteAssetRepository remoteAssetRepository, IParkitect parkitect, ICacheManager cacheManager)
         {
             _remoteAssetRepository = remoteAssetRepository;
-            _localAssetRepository = localAssetRepository;
+            _parkitect = parkitect;
             _cacheManager = cacheManager;
         }
 
@@ -86,7 +84,7 @@ namespace ParkitectNexus.Data.Assets
             if (cache == null)
                 return;
 
-            _updatesAvailable = cache.ToAssetsList(_localAssetRepository);
+            _updatesAvailable = cache.ToAssetsList(_parkitect);
             HasChecked = true;
         }
 
@@ -96,7 +94,7 @@ namespace ParkitectNexus.Data.Assets
             var count = 0;
             try
             {
-                foreach (var asset in _localAssetRepository[AssetType.Mod].OfType<ModAsset>())
+                foreach (var asset in _parkitect.Assets[AssetType.Mod].OfType<ModAsset>())
                 {
                     if (asset?.Repository == null || asset.Information.IsDevelopment)
                         continue;
@@ -122,11 +120,9 @@ namespace ParkitectNexus.Data.Assets
             return count;
         }
 
-        public async Task<bool> IsUpdateAvailable(IAsset asset)
+        public async Task<bool> IsUpdateAvailableOnline(IAsset asset)
         {
             if (asset == null) throw new ArgumentNullException(nameof(asset));
-
-            ReadFromCache();
 
             switch (asset.Type)
             {
@@ -135,14 +131,8 @@ namespace ParkitectNexus.Data.Assets
                     return false;
                 case AssetType.Mod:
                     var modAsset = asset as IModAsset;
-
-                    if (!HasChecked)
-                    {
-                        var latestTag = await _remoteAssetRepository.GetLatestModTag(modAsset);
-                        return latestTag != null && latestTag != modAsset.Tag;
-                    }
-
-                    return _updatesAvailable.ContainsKey(asset);
+                    var latestTag = await _remoteAssetRepository.GetLatestModTag(modAsset);
+                    return latestTag != null && latestTag != modAsset.Tag;
                 default:
                     throw new ArgumentException("invalid asset type", nameof(asset));
             }
@@ -202,7 +192,7 @@ namespace ParkitectNexus.Data.Assets
 
             public DateTime CheckedDate { get; set; }
 
-            public IDictionary<IAsset, string> ToAssetsList(ILocalAssetRepository localAssetRepository)
+            public IDictionary<IAsset, string> ToAssetsList(IParkitect parkitect)
             {
                 if (Updates == null)
                     return null;
@@ -210,7 +200,7 @@ namespace ParkitectNexus.Data.Assets
                 var result = new Dictionary<IAsset, string>();
                 foreach (var keyValue in Updates)
                 {
-                    var asset = localAssetRepository[keyValue.Type].FirstOrDefault(a => a.Id == keyValue.Id);
+                    var asset = parkitect.Assets[keyValue.Type].FirstOrDefault(a => a.Id == keyValue.Id);
 
                     if (asset != null)
                         result[asset] = keyValue.Tag;

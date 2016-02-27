@@ -20,12 +20,12 @@ using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Windows.Controls.TabPages
 {
-    public class ModsTabPage : LoadableTilesTabPage
+    public class ModsTabPage : AssetsTabPage
     {
         private readonly IParkitect _parkitect;
         private readonly IAssetUpdatesManager _assetUpdatesManager;
 
-        public ModsTabPage(IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager)
+        public ModsTabPage(IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager) : base(parkitect, AssetType.Mod)
         {
             _parkitect = parkitect;
             _assetUpdatesManager = assetUpdatesManager;
@@ -36,7 +36,7 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
 
         private void AssetUpdatesManager_UpdateFound(object sender, AssetEventArgs e)
         {
-            DrawUpdateAvailable(Controls.OfType<MetroTile>().FirstOrDefault(t => t.Tag == e.Asset));
+            DrawUpdateAvailable(Controls.OfType<MetroTile>().FirstOrDefault(t => t.Tag.Equals(e.Asset)));
         }
 
         private void DrawUpdateAvailable(MetroTile tile)
@@ -53,45 +53,16 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
             }
         }
 
-        #region Overrides of LoadableTilesTabPage
+        #region Overrides of AssetsTabPage
 
-        protected override bool ReloadOnEnter { get; } = true;
-
-        protected override Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken)
+        protected override void AddClickHandlerToTile(MetroTile tile, IAsset asset)
         {
-            return Task.Run(() =>
-            {
-                var tiles = new List<MetroTile>();
-                var mods = _parkitect.Assets[AssetType.Mod].OfType<ModAsset>().ToArray();
-                var current = 0;
-
-                foreach (var mod in mods)
+            tile.Click +=
+                (sender, args) =>
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    var tile = new MetroTile
-                    {
-                        Text = mod.Name,
-                        TextAlign = ContentAlignment.BottomCenter,
-                        Style = MetroColorStyle.Default,
-                        TileImage = ImageUtility.ResizeImage(mod.GetImage(), 100, 100),
-                        UseTileImage = true,
-                        TileImageAlign = ContentAlignment.MiddleCenter,
-                        Tag = mod
-                    };
-
-                    if(_assetUpdatesManager.HasChecked && _assetUpdatesManager.IsUpdateAvailableInMemory(mod))
-                        DrawUpdateAvailable(tile);
-
-                    tile.Click +=
-                        (sender, args) => { (FindForm() as MainForm)?.SpawnSliderPanel(new ModSliderPanel(ObjectFactory.GetInstance<IQueueableTaskManager>(), mod)); };
-                    tiles.Add(tile);
-
-
-                    UpdateLoadingProgress((current++*100)/mods.Length);
-                }
-                return (IEnumerable<MetroTile>) tiles;
-            }, cancellationToken);
+                    var panel = ObjectFactory.With(asset as IModAsset).GetInstance<ModSliderPanel>();
+                    (FindForm() as MainForm)?.SpawnSliderPanel(panel);
+                };
         }
 
         #endregion

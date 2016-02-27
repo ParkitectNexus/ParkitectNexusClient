@@ -19,6 +19,7 @@ namespace ParkitectNexus.Data.Tasks
         void Add<TTask>() where TTask : IQueueableTask;
 
         ExplicitQueueableTaskArgsExpression With<TArg>(TArg arg);
+        ExplicitQueueableTasksPropertyExpression With(string argName, object value);
 
         void InsertAfter(IQueueableTask task, IQueueableTask afterTask);
 

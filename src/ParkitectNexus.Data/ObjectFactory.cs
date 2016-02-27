@@ -1,6 +1,7 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using System;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Assets.CachedData;
 using ParkitectNexus.Data.Assets.Meta;
@@ -12,6 +13,7 @@ using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Tasks;
+using ParkitectNexus.Data.Updating;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using StructureMap;
@@ -51,6 +53,7 @@ namespace ParkitectNexus.Data
             registry.For<IModCompiler>().Use<ModCompiler>();
             registry.For<IModLoadOrderBuilder>().Use<ModLoadOrderBuilder>();
             registry.For<IAssetUpdatesManager>().Singleton().Use<AssetUpdatesManager>();
+            registry.For<IUpdateManager>().Use<UpdateManager>();
 
             return registry;
         }
@@ -58,6 +61,22 @@ namespace ParkitectNexus.Data
         public static T GetInstance<T>()
         {
             return Container.GetInstance<T>();
+        }
+
+        public static object GetInstance(Type type)
+        {
+            return Container.GetInstance(type);
+        }
+
+        public static T GetInstance<T>(Type type)
+        {
+            var instance = GetInstance(type);
+            return instance is T ? (T) instance : default(T);
+        }
+
+        public static ExplicitArgsExpression With<TArg>(TArg arg)
+        {
+            return Container.With(arg);
         }
 
         public static void SetUpContainer(Registry registry)
