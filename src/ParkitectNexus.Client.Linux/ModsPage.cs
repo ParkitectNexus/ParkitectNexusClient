@@ -100,7 +100,7 @@ namespace ParkitectNexus.Client.Linux
                        
                 e.Task.StatusChanged += (object s, EventArgs e_1) => 
                 {
-                    if (((IQueueableTask)s) is InstallAssetTask  && ((IQueueableTask)s).Status == TaskStatus.Stopped)
+                    if (((IQueueableTask)s) is InstallAssetTask  && ((IQueueableTask)s).Status == TaskStatus.Finished)
                     {
                         Gtk.Application.Invoke(delegate
                             {

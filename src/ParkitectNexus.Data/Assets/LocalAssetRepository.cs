@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -67,17 +68,29 @@ namespace ParkitectNexus.Data.Assets
                     case AssetType.Mod:
                         foreach (var path in GetFilesInAssetPath(type))
                         {
-                            var metadata = _assetMetadataStorage.GetMetadata(type, path);
+                            ModAsset result = null;
+                            try
+                            {
+                                var metadata = _assetMetadataStorage.GetMetadata(type, path) as IModMetadata;
 
-                            var modInformationString = File.ReadAllText(Path.Combine(path, "mod.json"));
-                            var modInformation = JsonConvert.DeserializeObject<ModInformation>(modInformationString);
+                                var modInformationString = File.ReadAllText(Path.Combine(path, "mod.json"));
+                                var modInformation = JsonConvert.DeserializeObject<ModInformation>(modInformationString);
 
-                            var cachedData = metadata == null
-                                ? new AssetWithImageCachedData()
-                                : _assetCachedDataStorage.GetData(type, metadata, path).Result as
-                                    AssetWithImageCachedData;
+                                var cachedData = metadata == null
+                                    ? new AssetWithImageCachedData()
+                                    : _assetCachedDataStorage.GetData(type, metadata, path).Result as
+                                        AssetWithImageCachedData;
 
-                            yield return new ModAsset(path, metadata, cachedData, modInformation);
+                                result = new ModAsset(path, metadata, cachedData, modInformation);
+                            }
+                            catch (Exception e)
+                            {
+                                _log.WriteLine($"Failed loading mod at path {path}", LogLevel.Fatal);
+                                _log.WriteException(e);
+                            }
+
+                            if (result != null)
+                                yield return result;
                         }
                         break;
                     default:
@@ -303,5 +316,35 @@ namespace ParkitectNexus.Data.Assets
         {
             AssetRemoved?.Invoke(this, e);
         }
+
+        #region Implementation of IEnumerable
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<IAsset> GetEnumerator()
+        {
+            return
+                Enum.GetValues(typeof (AssetType))
+                    .OfType<AssetType>()
+                    .SelectMany(type => this[type])
+                    .GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }

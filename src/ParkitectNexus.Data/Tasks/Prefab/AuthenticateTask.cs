@@ -44,7 +44,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             UpdateStatus("Getting user avatar...", 75, TaskStatus.Running);
             await _authManager.GetAvatar();
 
-            UpdateStatus($"You are now logged in as {user.Name}!", 100, TaskStatus.Stopped);
+            UpdateStatus($"You are now logged in as {user.Name}!", 100, TaskStatus.Finished);
         }
 
         #endregion

@@ -27,7 +27,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
                 await Task.Delay(100, token);
             }
 
-            UpdateStatus("Such completion, much wow", 100, TaskStatus.Stopped);
+            UpdateStatus("Such completion, much wow", 100, TaskStatus.Finished);
         }
 
         #endregion

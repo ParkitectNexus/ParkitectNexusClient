@@ -7,7 +7,9 @@ namespace ParkitectNexus.Data.Tasks
     {
         Queued,
         Running,
-        Stopped,
+        Finished,
+        FinishedWithErrors,
+        Break,
         Canceled
     }
 }

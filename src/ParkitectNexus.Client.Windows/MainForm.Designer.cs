@@ -44,7 +44,7 @@ namespace ParkitectNexus.Client.Windows
             this.metroTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl.Location = new System.Drawing.Point(20, 70);
             this.metroTabControl.Name = "metroTabControl";
-            this.metroTabControl.Size = new System.Drawing.Size(682, 360);
+            this.metroTabControl.Size = new System.Drawing.Size(938, 549);
             this.metroTabControl.TabIndex = 0;
             this.metroTabControl.UseSelectable = true;
             this.metroTabControl.SelectedIndexChanged += new System.EventHandler(this.metroTabControl_SelectedIndexChanged);
@@ -83,15 +83,15 @@ namespace ParkitectNexus.Client.Windows
             // 
             this.developmentLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.developmentLabel.AutoSize = true;
-            this.developmentLabel.Enabled = false;
             this.developmentLabel.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.developmentLabel.Location = new System.Drawing.Point(486, 15);
+            this.developmentLabel.Location = new System.Drawing.Point(742, 15);
             this.developmentLabel.Name = "developmentLabel";
             this.developmentLabel.Size = new System.Drawing.Size(152, 19);
             this.developmentLabel.Style = MetroFramework.MetroColorStyle.Red;
             this.developmentLabel.TabIndex = 1;
             this.developmentLabel.Text = "DEVELOPMENT BUILD";
             this.developmentLabel.UseStyleColors = true;
+            this.developmentLabel.Visible = false;
             // 
             // authLink
             // 
@@ -99,7 +99,7 @@ namespace ParkitectNexus.Client.Windows
             this.authLink.Image = global::ParkitectNexus.Client.Windows.Properties.Resources.appbar_user_tie;
             this.authLink.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.authLink.ImageSize = 32;
-            this.authLink.Location = new System.Drawing.Point(584, 37);
+            this.authLink.Location = new System.Drawing.Point(840, 37);
             this.authLink.Name = "authLink";
             this.authLink.NoFocusImage = global::ParkitectNexus.Client.Windows.Properties.Resources.appbar_user_tie;
             this.authLink.Size = new System.Drawing.Size(129, 27);
@@ -107,6 +107,7 @@ namespace ParkitectNexus.Client.Windows
             this.authLink.Text = "DEFAULT_VALUE";
             this.authLink.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.authLink.UseSelectable = true;
+            this.authLink.Visible = false;
             this.authLink.Click += new System.EventHandler(this.authLink_Click);
             // 
             // MainForm
@@ -116,7 +117,7 @@ namespace ParkitectNexus.Client.Windows
             this.BackImage = global::ParkitectNexus.Client.Windows.Properties.Resources.parkitectnexus_logo_full;
             this.BackImagePadding = new System.Windows.Forms.Padding(20, 15, 5, 5);
             this.BackMaxSize = 100;
-            this.ClientSize = new System.Drawing.Size(722, 450);
+            this.ClientSize = new System.Drawing.Size(978, 639);
             this.Controls.Add(this.authLink);
             this.Controls.Add(this.developmentLabel);
             this.Controls.Add(this.metroTabControl);

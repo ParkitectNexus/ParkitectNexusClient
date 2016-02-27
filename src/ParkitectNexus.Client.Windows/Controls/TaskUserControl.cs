@@ -6,6 +6,7 @@ using System.Drawing;
 using MetroFramework;
 using MetroFramework.Controls;
 using MetroFramework.Drawing;
+using ParkitectNexus.Client.Windows.Properties;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Utilities;
 
@@ -13,14 +14,14 @@ namespace ParkitectNexus.Client.Windows.Controls
 {
     public partial class TaskUserControl : MetroUserControl
     {
-        private readonly IQueueableTask _task;
+        public IQueueableTask Task { get; }
 
         public TaskUserControl(IQueueableTask task)
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
-            _task = task;
+            Task = task;
 
-            _task.StatusChanged += _task_StatusChanged;
+            Task.StatusChanged += _task_StatusChanged;
             InitializeComponent();
 
             donePictureBox.Visible = false;
@@ -35,19 +36,28 @@ namespace ParkitectNexus.Client.Windows.Controls
 
         private void UpdateUI()
         {
-            nameLabel.Text = _task.Name;
-            descriptionLabel.Text = _task.StatusDescription;
-            progressSpinner.Value = _task.CompletionPercentage;
+            nameLabel.Text = Task.Name;
+            descriptionLabel.Text = Task.StatusDescription;
+            progressSpinner.Value = Task.CompletionPercentage;
 
-            switch (_task.Status)
+            switch (Task.Status)
             {
                 case TaskStatus.Queued:
                     progressSpinner.Style = MetroColorStyle.Black;
                     progressSpinner.Speed = 0.1f;
                     break;
-                case TaskStatus.Stopped:
+                case TaskStatus.Finished:
                     progressSpinner.Visible = false;
                     donePictureBox.Visible = true;
+                    break;
+                case TaskStatus.FinishedWithErrors:
+                    progressSpinner.Visible = false;
+                    donePictureBox.Visible = true;
+                    donePictureBox.Image = ImageUtility.RecolorImage(Resources.appbar_close, MetroColors.Red);
+                    break;
+                case TaskStatus.Break:
+                    progressSpinner.Style = MetroColorStyle.Silver;
+                    progressSpinner.Speed = 0.1f;
                     break;
                 case TaskStatus.Canceled:
                     progressSpinner.Style = MetroColorStyle.Silver;

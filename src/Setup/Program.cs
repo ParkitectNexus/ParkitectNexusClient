@@ -25,6 +25,9 @@ namespace WixSharpSetup
 
         private static void Main()
         {
+            // TODO: This script needs updating
+            return;
+
             // Get version of the client.
             var assembly = Assembly.LoadFrom(AppBinariesPath + AppExecutable);
             var assemblyName = assembly.GetName();

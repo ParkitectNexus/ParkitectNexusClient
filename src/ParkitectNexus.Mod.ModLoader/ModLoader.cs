@@ -78,16 +78,19 @@ namespace ParkitectNexus.Mod.ModLoader
             var modsPath = FilePaths.getFolderPath("pnmods");
 
             // Find mod directories in the mods directory.
-            foreach (var folder in Directory.GetDirectories(modsPath))
+            foreach (var directoryName in File.ReadAllLines(FPath.Combine(modsPath, "load.dat")))
             {
+                if (string.IsNullOrEmpty(directoryName))
+                    continue;
+
+                var folder = FPath.Combine(modsPath, directoryName);
+                var filePath = FPath.Combine(folder, "mod.json");
+
+                if (!File.Exists(filePath))
+                    continue;
+
                 try
                 {
-                    var directoryName = FPath.GetFileName(folder);
-                    var filePath = FPath.Combine(folder, "mod.json");
-
-                    if (!File.Exists(filePath))
-                        continue;
-
                     // Read the mod.json file.
                     var dictionary = Json.Deserialize(File.ReadAllText(filePath)) as Dictionary<string, object>;
 

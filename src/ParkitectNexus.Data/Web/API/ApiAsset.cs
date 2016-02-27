@@ -96,6 +96,12 @@ namespace ParkitectNexus.Data.Web.API
         public DateTime UpdatedAt { get; set; }
 
         /// <summary>
+        ///     Gets or sets the dependencies.
+        /// </summary>
+        [JsonProperty("dependencies")]
+        public ApiAssetDependency[] Dependencies { get; set; }
+
+        /// <summary>
         ///     Gets the resource.
         /// </summary>
         /// <returns>The resource.</returns>

@@ -130,13 +130,22 @@
   <data name="parkitect_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\parkitect_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="appbar.user.tie" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="appbar_user_tie" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\appbar.user.tie.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="parkitectnexus_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\parkitectnexus_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="appbar.check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="appbar_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\appbar.check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="update_available" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\update_available.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="appbar_thumbs_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\appbar.thumbs.up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="appbar_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\appbar.close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

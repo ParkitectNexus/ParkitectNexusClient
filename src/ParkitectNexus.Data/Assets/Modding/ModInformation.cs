@@ -13,7 +13,7 @@ namespace ParkitectNexus.Data.Assets.Modding
         /// <summary>
         ///     Gets or sets the compiler version.
         /// </summary>
-        public string CompilerVersion { get; set; }
+        public string CompilerVersion { get; set; } = "v3.5";
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is development.
@@ -34,5 +34,10 @@ namespace ParkitectNexus.Data.Assets.Modding
         ///     Gets or sets the project.
         /// </summary>
         public string Project { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the dependencies.
+        /// </summary>
+        public string[] Dependencies { get; set; }
     }
 }

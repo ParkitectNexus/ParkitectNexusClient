@@ -22,7 +22,6 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
             Size = new Size(75, 75)
         };
 
-        private bool _entered;
         private bool _loaded;
         private CancellationTokenSource _tokenSource;
 
@@ -35,7 +34,8 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
 
         public void WasSelected()
         {
-            RefreshTiles();
+            if (ReloadOnEnter)
+                RefreshTiles();
         }
 
         protected abstract Task<IEnumerable<MetroTile>> LoadTiles(CancellationToken cancellationToken);
@@ -123,38 +123,6 @@ namespace ParkitectNexus.Client.Windows.Controls.TabPages
 
             Controls.Remove(_progressSpinner);
         }
-
-        #region Overrides of TabPage
-
-        /// <summary>
-        ///     Raises the <see cref="E:System.Windows.Forms.Control.Enter" /> event of the
-        ///     <see cref="T:System.Windows.Forms.TabPage" />.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        protected override void OnEnter(EventArgs e)
-        {
-            if (!_entered)
-            {
-                _entered = true;
-                //if (ReloadOnEnter)
-                //     RefreshTiles();
-            }
-
-            base.OnEnter(e);
-        }
-
-        /// <summary>
-        ///     Raises the <see cref="E:System.Windows.Forms.Control.Leave" /> event of the
-        ///     <see cref="T:System.Windows.Forms.TabPage" />.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        protected override void OnLeave(EventArgs e)
-        {
-            _entered = false;
-            base.OnLeave(e);
-        }
-
-        #endregion
 
         #region Overrides of Panel
 

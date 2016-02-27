@@ -56,14 +56,14 @@ namespace ParkitectNexus.Client.Linux
                 errorDialog.Destroy ();
             } else {
 
-				var assetTask =new InstallAssetTask (_parkitect, _website, _assetRepository);
+                var assetTask =new InstallAssetTask (_parkitect, _website, _assetRepository,_queuableTaskManager);
 				assetTask.Data = parkitectNexusUrl.Data;
 				// Run the download process in an installer form, for a nice visible process.
 
 
                 NexusUrl nexusURL;
                 NexusUrl.TryParse (txtNexusURI.Text, out nexusURL);
-					var task = new InstallAssetTask (_parkitect, _website, _assetRepository);
+                var task = new InstallAssetTask (_parkitect, _website, _assetRepository,_queuableTaskManager);
 					task.Data = nexusURL.Data;
 					_queuableTaskManager.Add (task);
 

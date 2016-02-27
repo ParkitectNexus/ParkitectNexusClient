@@ -44,7 +44,7 @@ namespace ParkitectNexus.Client.Linux
 					return "Queued";
 				case TaskStatus.Running:
 					return "Running";
-				case TaskStatus.Stopped:
+                    case TaskStatus.Finished:
 					return "Stopped";
 				case TaskStatus.Canceled:
 					return "Canceled";

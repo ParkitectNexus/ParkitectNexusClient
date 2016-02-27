@@ -34,9 +34,9 @@
             this.deleteButton = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // nameLabel
-            //
+            // 
             this.nameLabel.AutoSize = true;
             this.nameLabel.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.nameLabel.FontWeight = MetroFramework.MetroLabelWeight.Regular;
@@ -45,18 +45,18 @@
             this.nameLabel.Size = new System.Drawing.Size(146, 25);
             this.nameLabel.TabIndex = 5;
             this.nameLabel.Text = "Savegame Name";
-            //
+            // 
             // pictureBox
-            //
+            // 
             this.pictureBox.Location = new System.Drawing.Point(23, 87);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(233, 233);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 6;
             this.pictureBox.TabStop = false;
-            //
+            // 
             // uploadButton
-            //
+            // 
             this.uploadButton.Location = new System.Drawing.Point(23, 326);
             this.uploadButton.Name = "uploadButton";
             this.uploadButton.Size = new System.Drawing.Size(233, 23);
@@ -64,18 +64,19 @@
             this.uploadButton.Text = "Upload";
             this.uploadButton.Theme = MetroFramework.MetroThemeStyle.Light;
             this.uploadButton.UseSelectable = true;
-            //
+            this.uploadButton.Visible = false;
+            // 
             // deleteButton
-            //
+            // 
             this.deleteButton.Location = new System.Drawing.Point(23, 355);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(233, 23);
             this.deleteButton.TabIndex = 8;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseSelectable = true;
-            //
+            // 
             // SavegameSliderPanel
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackText = "Savegame";

@@ -2,7 +2,6 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -21,47 +20,53 @@ namespace ParkitectNexus.Client.Windows
         [STAThread]
         private static void Main(string[] args)
         {
-            var mutex = new Mutex(false, "com.ParkitectNexus.Client");
+            // Create a mutex which is held while the app is open. If the app is started and the mutex can't be awaited,
+            // assume the app is already running and broadcast a WM_GIVEFICUS message.
+            bool mutexIsNew;
+            var mutex = new Mutex(false, "com.ParkitectNexus.Client", out mutexIsNew);
 
-            if (mutex.WaitOne(0, true))
+            // Look and see if this is the only running instance of the client.
+            if (mutexIsNew)
             {
+                // No matter if the application crashes, we must release the mutex when the app closes. Wrap the app
+                // logic in a try-finally block.
                 try
                 {
+                    // Increase maximum threads.
                     ThreadPool.SetMaxThreads(16, 16);
 
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
-                    //configure map
+                    // Initialize the structure map container.
                     var registry = ObjectFactory.ConfigureStructureMap();
                     registry.IncludeRegistry(new PresenterRegistry());
                     ObjectFactory.SetUpContainer(registry);
-                    Debug.WriteLine(ObjectFactory.Container.WhatDidIScan());
-                    Debug.WriteLine(ObjectFactory.Container.WhatDoIHave());
 
-                    registry.For<MainForm>().Use<MainForm>();
-
-                    var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
-                    var form = presenterFactory.InstantiatePresenter<MainForm>();
-
-                    if (args.Any())
-                        form.ProcessArguments(args);
-
+                    // Create the form and run its message loop. If arguments were specified, process them within the
+                    // form.
+                    var form = ObjectFactory.GetInstance<IPresenterFactory>().InstantiatePresenter<MainForm>();
+                    if (args.Any()) form.ProcessArguments(args);
                     Application.Run(form);
                 }
                 finally
                 {
-                    mutex.ReleaseMutex();
+                    // Release the mutex so other instances of the app can again be created.
+                    // mutex.ReleaseMutex();
                 }
-            }
-            else
-            {
-                var ipc = 0;
 
-                if (args.Any())
+                return;
+            }
+
+            // If any arguments are set, pass these on to our main application instance.
+            if (args.Any())
+            {
+                var attempts = 0;
+                do
                 {
                     try
                     {
+                        // Write the specified arguments to a temporary ipc.dat file.
                         using (var fileStream = File.OpenWrite(Path.Combine(AppData.Path, "ipc.dat")))
                         using (var streamWriter = new StreamWriter(fileStream))
                         {
@@ -69,17 +74,24 @@ namespace ParkitectNexus.Client.Windows
                                 streamWriter.WriteLine(arg);
                         }
 
-                        ipc = 1;
+                        // Send a broadcast to all open applications with our custom WM_GIVEFOCUS message. This message
+                        // will be picked up by our main instance of the application which in turn will read the
+                        // temporary ipc.dat file.
+                        NativeMethods.SendNotifyMessage((IntPtr)NativeMethods.HWND_BROADCAST,
+                            (uint)NativeMethods.WM_GIVEFOCUS, 1, 0);
+
+                        return;
                     }
                     catch (IOException)
                     {
-                        ipc = -1;
+                        // If storing the arguments fails, we're in trouble. Let's try it again in a few.
+                        Thread.Sleep(500);
+                        attempts++;
                     }
-                }
-
-                NativeMethods.SendNotifyMessage((IntPtr) NativeMethods.HWND_BROADCAST, (uint) NativeMethods.WM_GIVEFOCUS,
-                    ipc, 0);
+                } while (attempts < 5); // Limit to 5 attempts.
             }
+
+            GC.KeepAlive(mutex);
         }
     }
 }
