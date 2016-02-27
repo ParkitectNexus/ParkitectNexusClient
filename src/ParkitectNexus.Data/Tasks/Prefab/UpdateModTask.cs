@@ -19,15 +19,13 @@ namespace ParkitectNexus.Data.Tasks.Prefab
         private readonly IQueueableTaskManager _queueableTaskManager;
 
         public UpdateModTask(IModAsset mod, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager,
-            IQueueableTaskManager queueableTaskManager)
+            IQueueableTaskManager queueableTaskManager) : base ($"Update mod {mod?.Name}")
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             _mod = mod;
             _parkitect = parkitect;
             _assetUpdatesManager = assetUpdatesManager;
             _queueableTaskManager = queueableTaskManager;
-
-            Name = $"Update mod {mod.Name}";
         }
 
         #region Overrides of QueueableTask

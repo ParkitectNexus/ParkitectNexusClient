@@ -9,9 +9,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 {
     public class TestWaitQueueableTask : QueueableTask
     {
-        public TestWaitQueueableTask(int number)
+        public TestWaitQueueableTask(int number) : base($"Wait task for testing #{number}")
         {
-            Name = $"Wait task for testing #{number}";
         }
 
         #region Overrides of QueueableTask

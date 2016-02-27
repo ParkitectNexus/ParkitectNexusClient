@@ -7,6 +7,10 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 {
     public abstract class UrlQueueableTask : QueueableTask
     {
+        protected UrlQueueableTask(string name) : base(name)
+        {
+        }
+
         public IUrlAction Data { get; set; }
     }
 }

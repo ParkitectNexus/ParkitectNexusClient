@@ -140,7 +140,8 @@ namespace ParkitectNexus.Data.Assets
                 throw new ArgumentException(nameof(repository));
 
             _logger.WriteLine($"Getting latest mod tag for '{repository}'.");
-            var release = (await _gitHubClient.Release.GetAll(p[0], p[1])).FirstOrDefault(r => !r.Prerelease);
+
+            var release = (await _gitHubClient.Repository.Release.GetAll(p[0], p[1])).FirstOrDefault(r => !r.Prerelease);
 
             return release == null
                 ? null

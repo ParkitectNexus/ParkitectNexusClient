@@ -20,17 +20,16 @@ namespace ParkitectNexus.Data.Authentication
     {
         private readonly ISettingsRepository<AuthSettings> _authSettingsRepository;
         private readonly ICacheManager _cacheManager;
+        private readonly ILogger _log;
         private readonly IWebsite _website;
 
         public AuthManager(IWebsite website,
-            ISettingsRepository<AuthSettings> authSettingsRepository, ICacheManager cacheManager)
+            ISettingsRepository<AuthSettings> authSettingsRepository, ICacheManager cacheManager, ILogger log)
         {
-            if (website == null) throw new ArgumentNullException(nameof(website));
-            if (authSettingsRepository == null) throw new ArgumentNullException(nameof(authSettingsRepository));
-            if (cacheManager == null) throw new ArgumentNullException(nameof(cacheManager));
             _website = website;
             _authSettingsRepository = authSettingsRepository;
             _cacheManager = cacheManager;
+            _log = log;
         }
 
         public event EventHandler Authenticated;
@@ -45,6 +44,7 @@ namespace ParkitectNexus.Data.Authentication
                 _authSettingsRepository.Model.APIKey = value;
                 _authSettingsRepository.Save();
 
+                _log.WriteLine("User authenticated.");
                 if (value != null)
                     OnAuthenticated();
             }

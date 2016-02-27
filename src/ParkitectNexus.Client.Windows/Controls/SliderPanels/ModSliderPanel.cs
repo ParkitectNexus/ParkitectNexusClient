@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using MetroFramework;
 using ParkitectNexus.Data;
@@ -9,6 +10,7 @@ using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Tasks.Prefab;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
 {
@@ -16,13 +18,15 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
     {
         private readonly IQueueableTaskManager _queueableTaskManager;
         private readonly IParkitect _parkitect;
+        private readonly IWebsite _website;
         private readonly IModAsset _mod;
 
-        public ModSliderPanel(IQueueableTaskManager queueableTaskManager, IParkitect parkitect, IModAsset mod)
+        public ModSliderPanel(IQueueableTaskManager queueableTaskManager, IParkitect parkitect, IWebsite website, IModAsset mod)
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             _queueableTaskManager = queueableTaskManager;
             _parkitect = parkitect;
+            _website = website;
             _mod = mod;
 
             InitializeComponent();
@@ -33,8 +37,7 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
             enableModToggle.Checked = _mod.Information.IsEnabled;
 
             debugTextBox.Text = mod.ToString();
-
-            updateButton.Enabled = deleteButton.Enabled =
+            metroButton1.Enabled = updateButton.Enabled = deleteButton.Enabled =
                 !mod.Information.IsDevelopment && !string.IsNullOrWhiteSpace(mod.Repository) &&
                 !string.IsNullOrWhiteSpace(mod.Tag);
         }
@@ -64,6 +67,11 @@ namespace ParkitectNexus.Client.Windows.Controls.SliderPanels
         private void updateButton_Click(object sender, EventArgs e)
         {
             _queueableTaskManager.With(_mod).Add<UpdateModTask>();
+        }
+
+        private void metroButton1_Click(object sender, EventArgs e)
+        {
+            Process.Start(_website.ResolveUrl($"redirect/{_mod.Repository}", "client"));
         }
     }
 }

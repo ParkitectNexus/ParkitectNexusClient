@@ -13,12 +13,11 @@ namespace ParkitectNexus.Client.Windows
     {
         private readonly MainForm _form;
 
-        public CloseAppTask(MainForm form)
+        public CloseAppTask(MainForm form) : base("Close application")
         {
             if (form == null) throw new ArgumentNullException(nameof(form));
             _form = form;
-
-            Name = "Close application";
+            
             StatusDescription = "Close the ParkitectNexus Client.";
         }
 

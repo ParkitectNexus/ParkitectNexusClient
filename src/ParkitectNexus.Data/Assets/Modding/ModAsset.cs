@@ -10,17 +10,6 @@ using ParkitectNexus.Data.Assets.Meta;
 
 namespace ParkitectNexus.Data.Assets.Modding
 {
-    public interface IModAsset : IAsset
-    {
-        ModInformation Information { get; }
-
-        string Tag { get; }
-        string Repository { get; }
-
-        StreamWriter OpenLogFile();
-        void SaveInformation();
-    }
-
     public class ModAsset : Asset, IModAsset
     {
         private readonly IModMetadata _metadata;

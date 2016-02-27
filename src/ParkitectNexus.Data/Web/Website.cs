@@ -21,9 +21,9 @@ namespace ParkitectNexus.Data.Web
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        public Website(INexusWebClientFactory webClientFactory)
+        public Website()
         {
-            API = new ParkitectNexusAPI(this, webClientFactory);
+            API = ObjectFactory.With<IWebsite>(this).GetInstance<IParkitectNexusAPI>();
         }
 
         /// <summary>

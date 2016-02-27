@@ -30,11 +30,6 @@ namespace ParkitectNexus.Data.Caching
             }
         }
 
-        public T GetItemOrNew<T>(string name) where T : class
-        {
-            return GetItem<T>(name) ?? Activator.CreateInstance<T>();
-        }
-
         public void SetItem<T>(string name, T item) where T : class
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -50,13 +45,6 @@ namespace ParkitectNexus.Data.Caching
             }
 
             File.WriteAllText(path, JsonConvert.SerializeObject(item, _converter));
-        }
-
-        public void Clear()
-        {
-            var path = Path.Combine(AppData.Path, "cache");
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
         }
 
         private string GetFullPath(string name)

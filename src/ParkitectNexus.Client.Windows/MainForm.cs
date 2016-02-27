@@ -29,29 +29,31 @@ namespace ParkitectNexus.Client.Windows
 {
     public partial class MainForm : MetroForm, IPresenter
     {
+        private readonly ILogger _log;
         private readonly IAuthManager _authManager;
         private readonly IQueueableTaskManager _taskManager;
         private readonly IParkitect _parkitect;
-        private readonly IModCompiler _modCompiler;
         private readonly IUpdateManager _updateManager;
         private SliderPanel _currentPanel;
 
-        public MainForm(IPresenterFactory presenterFactory, ILogger logger,
-            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager, IModCompiler modCompiler, IUpdateManager updateManager)
+        public MainForm(IPresenterFactory presenterFactory, ILogger log,
+            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IUpdateManager updateManager)
         {
+            _log = log;
             _authManager = authManager;
             _taskManager = taskManager;
             _parkitect = parkitect;
-            _modCompiler = modCompiler;
             _updateManager = updateManager;
 
             // Hook onto the authentication manager events.
             _authManager.Authenticated += (sender, args) => FetchUserInfo();
 
             // Open the logger and install the modloader and parkitect nexus protocol.
-            logger.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
-            ModLoaderUtil.InstallModLoader(_parkitect, logger);
-            ParkitectNexusProtocol.Install(logger);
+            log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
+            log.MinimumLogLevel = LogLevel.Debug;
+
+            ModLoaderUtil.InstallModLoader(_parkitect, log);
+            ParkitectNexusProtocol.Install(log);
 
             // Initialize the compontents in this form.
             InitializeComponent();
@@ -84,6 +86,8 @@ namespace ParkitectNexus.Client.Windows
 
         public bool ProcessArguments(string[] args)
         {
+            _log.WriteLine($"Received arguments: '{string.Join(" ", args)}", LogLevel.Info);
+
             var options = new AppCommandLineOptions();
             Parser.Default.ParseArguments(args, options);
 

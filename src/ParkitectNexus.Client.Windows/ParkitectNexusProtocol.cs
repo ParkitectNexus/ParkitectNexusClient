@@ -29,7 +29,7 @@ namespace ParkitectNexus.Client.Windows
             }
             catch (Exception e)
             {
-                logger.WriteLine("Failed to install parkitectnexus:// protocol.");
+                logger.WriteLine("Failed to install parkitectnexus:// protocol.", LogLevel.Fatal);
                 logger.WriteException(e);
             }
         }

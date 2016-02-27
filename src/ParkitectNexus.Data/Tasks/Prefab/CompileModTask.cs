@@ -14,14 +14,12 @@ namespace ParkitectNexus.Data.Tasks.Prefab
         private readonly IModCompiler _modCompiler;
         private readonly IModLoadOrderBuilder _modLoadOrderBuilder;
 
-        public CompileModTask(IModAsset mod, IModCompiler modCompiler, IModLoadOrderBuilder modLoadOrderBuilder)
+        public CompileModTask(IModAsset mod, IModCompiler modCompiler, IModLoadOrderBuilder modLoadOrderBuilder) : base("Compile mod")
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             _mod = mod;
             _modCompiler = modCompiler;
             _modLoadOrderBuilder = modLoadOrderBuilder;
-
-            Name = "Compile mod";
         }
 
         #region Overrides of QueueableTask

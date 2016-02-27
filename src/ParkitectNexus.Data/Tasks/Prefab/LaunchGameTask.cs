@@ -11,11 +11,9 @@ namespace ParkitectNexus.Data.Tasks.Prefab
     {
         private readonly IParkitect _parkitect;
 
-        public LaunchGameTask(IParkitect parkitect)
+        public LaunchGameTask(IParkitect parkitect) : base("Launch parkitect")
         {
             _parkitect = parkitect;
-
-            Name = "Launch Parkitect";
         }
 
         #region Overrides of QueueableTask
