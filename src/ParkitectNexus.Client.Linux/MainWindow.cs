@@ -31,7 +31,6 @@ public partial class MainWindow: Gtk.Window, IPresenter
 
         presenterFactory.InstantiatePresenter<ParkitectInstallDialog> (this);
         ModLoaderUtil.InstallModLoader (parkitect,logger);
-       presenterFactory.InstantiatePresenter<ProtocalInstallUtility>();
 
         _presenterPages = new IPresenter[] {
 			presenterFactory.InstantiatePresenter<ModsPage>(this), 

@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using ParkitectNexus.Data.Tasks;
+using Mono.Unix;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -38,12 +39,11 @@ namespace ParkitectNexus.Client.Linux
             logger.WriteLine("staring client with:" + output,LogLevel.Info);
 
             bool hasArgs = args.Any();
-           
+
             var argumentService = new ArgumentService(hasArgs, args, logger, ObjectFactory.Container.GetInstance<IQueueableTaskManager>());
             if (!hasArgs || argumentService.IsServer )
             {
 
-              
                 
 #if DEBUG
                 presenterFactory.InstantiatePresenter<MainWindow>().Show();
@@ -52,6 +52,7 @@ namespace ParkitectNexus.Client.Linux
                     argumentService.ProcessArguments(args);
                 }
                 Application.Run();
+
 #else
             try
             {
@@ -76,6 +77,7 @@ namespace ParkitectNexus.Client.Linux
                
             }
         }
+
 
 
     }

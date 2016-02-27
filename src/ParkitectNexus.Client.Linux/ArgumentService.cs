@@ -1,75 +1,97 @@
-﻿using System;
+﻿
+using Mono.Unix;
 using System.Net;
 using System.Net.Sockets;
-using System.IO;
-using ParkitectNexus.Data.Tasks;
+using System.Threading;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Tasks;
+using System;
 using CommandLine;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Models;
-using ParkitectNexus.Data.Tasks.Prefab;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Tasks.Prefab;
+using System.IO;
 using System.Reflection;
 
 namespace ParkitectNexus.Client.Linux
 {
     public class ArgumentService
     {
-        private Socket socket = new System.Net.Sockets.Socket(AddressFamily.InterNetwork,SocketType.Stream,ProtocolType.Tcp);
-        public bool IsServer{ get; private set; }
+        private ManualResetEvent allDone = new ManualResetEvent(false);
+        public bool IsServer{ get; private set;}
         private IQueueableTaskManager _queueTaskManager;
-        private ILogger _logger;
+        private EndPoint _endPoint;
+        private Socket _socket;
         public ArgumentService(bool isClient,string[] args,ILogger logger,IQueueableTaskManager queuableTaskManager)
         {
-            this._logger = logger;
             this._queueTaskManager = queuableTaskManager;
-            
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
-            if (isClient)
+            _endPoint = new UnixEndPoint("Parkitect_Unix_Port");
+            _socket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.IP);
+
+            if(!System.IO.File.Exists("Parkitect_Unix_Port"))
             {
-               
+                    CreateServer();
+            }
+            else
+            {
                 try{
-                    
-                    socket.Connect(localEndPoint);
-                    using (NetworkStream sr = new NetworkStream(socket))
+                    IsServer = false;
+                    _socket.Connect(_endPoint);
+                    using (NetworkStream sr = new NetworkStream(_socket))
                     {
                         using (StreamWriter writer = new StreamWriter(sr))
                         {
                             writer.WriteLine(args.Length); 
-                            for(int x = 0; x < args.Length; x++)
+                            for (int x = 0; x < args.Length; x++)
                             {
                                 writer.WriteLine(args[x]); 
                             }
-                           
+
                         }
                     }
-                    IsServer = false;
-                }
-                catch(SocketException)
+                    _socket.Close();
+                }  
+                catch
                 {
-                    socket.Bind(localEndPoint);
-                    socket.Listen(5000);
-                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                    socket.BeginAccept(new AsyncCallback(OnAccept), socket);
-                    IsServer = true;
+                    System.IO.File.Delete("Parkitect_Unix_Port");
+                    CreateServer();
                 }
+            }
+  
 
-            }
-            else
+        }
+
+        private void CreateServer() 
+        {
+            try
             {
-                socket.Bind(localEndPoint);
-                socket.Listen(5000);
-                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                socket.BeginAccept(new AsyncCallback(OnAccept), socket);
-                IsServer = true;
+            IsServer = true;
+            _socket.Bind(_endPoint);
+            _socket.Listen(10);
+
+            var listeningThread = new Thread(Listen);
+            listeningThread.Start();
             }
+            catch(System.Net.Sockets.SocketException e)
+            {
+                throw e;
+            }
+        }
+
+        private void Listen()
+        {
+            while (true)
+            {
+                allDone.Reset();
+                _socket.BeginAccept(new System.AsyncCallback(OnAccept),_socket);
+                allDone.WaitOne();
+            }
+            
         }
 
         private void OnAccept(IAsyncResult ar)
         {
-            // Get the socket that handles the client request.
             System.Net.Sockets.Socket listener = (System.Net.Sockets.Socket)ar.AsyncState;
             System.Net.Sockets.Socket handler = listener.EndAccept(ar);
             using (NetworkStream stream = new NetworkStream(handler))
@@ -84,11 +106,12 @@ namespace ParkitectNexus.Client.Linux
                     }
                     ProcessArguments(args);
 
-                 }
+                }
             }
-            socket.BeginAccept(new AsyncCallback(OnAccept), socket);
+            _socket.BeginAccept(new AsyncCallback(OnAccept), _socket);
 
         }
+
 
         public void ProcessArguments(string[] arguments)
         {
@@ -104,7 +127,7 @@ namespace ParkitectNexus.Client.Linux
                     {
                         var task = ObjectFactory.Container.GetInstance(attribute.TaskType) as UrlQueueableTask;
                         task.Data = url.Data;
-                     
+
                         _queueTaskManager.Add (task);                      
                     }
 
@@ -112,6 +135,7 @@ namespace ParkitectNexus.Client.Linux
             }
         }
 
+       
 
     }
 }
