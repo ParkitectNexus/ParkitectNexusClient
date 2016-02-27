@@ -149,6 +149,7 @@
     <Compile Include="Tasks\Prefab\CheckForUpdatesTask.cs" />
     <Compile Include="Tasks\Prefab\CompileModTask.cs" />
     <Compile Include="Tasks\Prefab\InstallAssetTask.cs" />
+    <Compile Include="Tasks\Prefab\LaunchGameTask.cs" />
     <Compile Include="Tasks\Prefab\UrlQueueableTask.cs" />
     <Compile Include="Tasks\QueueableTask.cs" />
     <Compile Include="Tasks\QueueableTaskEventArgs.cs" />

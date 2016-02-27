@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCommandLineOptions.cs" />
+    <Compile Include="CloseAppTask.cs" />
     <Compile Include="Controls\TabPages\AssetsTabPage.cs">
       <SubType>Component</SubType>
     </Compile>

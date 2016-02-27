@@ -104,13 +104,14 @@ namespace ParkitectNexus.Client.Windows
 
             if (options.Launch)
             {
-                // todo: do this as a task.
                 foreach (
                     var mod in
                         _parkitect.Assets[AssetType.Mod].OfType<IModAsset>().Where(m => m.Information.IsDevelopment))
-                    _modCompiler.Compile(mod).Wait();
+                    _taskManager.With(mod).Add<CompileModTask>();
 
-                _parkitect.Launch();
+
+                _taskManager.Add<LaunchGameTask>();
+                _taskManager.Add(new CloseAppTask(this));
                 return false;
             }
             return true;
