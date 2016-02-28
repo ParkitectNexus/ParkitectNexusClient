@@ -1,0 +1,3 @@
+#!/bin/sh
+cd opt/nexus
+mono "ParkitectNexus.Client.Linux.exe" "$@"

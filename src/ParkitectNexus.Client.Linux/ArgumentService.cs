@@ -26,10 +26,10 @@ namespace ParkitectNexus.Client.Linux
         public ArgumentService(bool isClient,string[] args,ILogger logger,IQueueableTaskManager queuableTaskManager)
         {
             this._queueTaskManager = queuableTaskManager;
-            _endPoint = new UnixEndPoint("Parkitect_Unix_Port");
+            _endPoint = new UnixEndPoint(Path.GetTempPath()+"/parkitect_nexus.socket");
             _socket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.IP);
 
-            if(!System.IO.File.Exists("Parkitect_Unix_Port"))
+            if(!System.IO.File.Exists(Path.GetTempPath()+"/parkitect_nexus.socket"))
             {
                     CreateServer();
             }
@@ -54,7 +54,7 @@ namespace ParkitectNexus.Client.Linux
                 }  
                 catch
                 {
-                    System.IO.File.Delete("Parkitect_Unix_Port");
+                    System.IO.File.Delete(Path.GetTempPath()+"/parkitect_nexus.socket");
                     CreateServer();
                 }
             }
