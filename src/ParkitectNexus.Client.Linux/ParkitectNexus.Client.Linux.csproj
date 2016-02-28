@@ -18,12 +18,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="AfterExecute" command="--url parkitectnexus://install/76adb0b9b5" />
-      </CustomCommands>
-    </CustomCommands>
-    <Commandlineparameters>--url parkitectnexus://install/b2bd075a4d</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>

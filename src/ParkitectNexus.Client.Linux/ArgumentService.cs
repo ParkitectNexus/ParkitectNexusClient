@@ -101,6 +101,7 @@ namespace ParkitectNexus.Client.Linux
 
         private void OnAccept(IAsyncResult ar)
         {
+            try{
             allDone.Set();
            
             System.Net.Sockets.Socket listener = (System.Net.Sockets.Socket)ar.AsyncState;
@@ -119,7 +120,12 @@ namespace ParkitectNexus.Client.Linux
 
                 }
             }
-            _socket.BeginAccept(new AsyncCallback(OnAccept), _socket);
+            }
+            catch(Exception e)
+            {
+                _logger.WriteException(e);
+            }
+            //_socket.BeginAccept(new AsyncCallback(OnAccept), _socket);
 
         }
 
