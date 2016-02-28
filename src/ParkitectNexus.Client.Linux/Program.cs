@@ -41,24 +41,18 @@ namespace ParkitectNexus.Client.Linux
             bool hasArgs = args.Any();
 
             var argumentService = new ArgumentService(hasArgs, args, logger, ObjectFactory.Container.GetInstance<IQueueableTaskManager>());
-            if (!hasArgs || argumentService.IsServer )
+            if ( argumentService.IsServer )
             {
 
-                
-#if DEBUG
-                presenterFactory.InstantiatePresenter<MainWindow>().Show();
-                if (hasArgs)
-                {
-                    argumentService.ProcessArguments(args);
-                }
-                Application.Run();
 
-
-#else
             try
             {
-                presenterFactory.InstantiatePresenter<MainWindow> ().Show ();
-                Application.Run ();
+                    presenterFactory.InstantiatePresenter<MainWindow>().Show();
+                    if (hasArgs)
+                    {
+                        argumentService.ProcessArguments(args);
+                    }
+                    Application.Run();
             }
             catch (Exception e)
             {
@@ -73,8 +67,7 @@ namespace ParkitectNexus.Client.Linux
 
 
             }
-#endif
-           
+  
                
             }
 

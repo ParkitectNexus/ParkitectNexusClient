@@ -23,9 +23,9 @@
         <Command type="AfterExecute" command="--url parkitectnexus://install/76adb0b9b5" />
       </CustomCommands>
     </CustomCommands>
+    <Commandlineparameters>--url parkitectnexus://install/b2bd075a4d</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -130,11 +130,5 @@
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
       <Name>ParkitectNexus.Data</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ParkitectNexus.desktop">
-      <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>

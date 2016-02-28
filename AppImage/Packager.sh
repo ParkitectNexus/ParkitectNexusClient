@@ -9,6 +9,7 @@ mkdir -p ./$APP/$APP.AppDir/usr/opt/nexus
 cp -R ./../src/ParkitectNexus.Client.Linux/bin/Release/* ./$APP/$APP.AppDir/usr/opt/nexus
 cp parkitectnexus.desktop $APP/$APP.AppDir/.
 cp parkitectnexus $APP/$APP.AppDir/usr/bin/.
+cp parkitectnexus.wrapper $APP/$APP.AppDir/usr/bin/
 chmod a+x $APP/$APP.AppDir/usr/bin/parkitectnexus
 
 cd ./$APP
@@ -27,7 +28,7 @@ cp ./usr/opt/nexus/parkitectnexus_logo.png parkitectnexus.png
 
 # Add desktop integration
 XAPP=parkitectnexus
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+#wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
 chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 

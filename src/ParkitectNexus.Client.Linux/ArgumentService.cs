@@ -18,13 +18,16 @@ namespace ParkitectNexus.Client.Linux
 {
     public class ArgumentService
     {
-        
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
+
         public bool IsServer{ get; private set;}
         private IQueueableTaskManager _queueTaskManager;
         private EndPoint _endPoint;
         private Socket _socket;
+        private ILogger _logger;
         public ArgumentService(bool isClient,string[] args,ILogger logger,IQueueableTaskManager queuableTaskManager)
         {
+            _logger = logger;
             this._queueTaskManager = queuableTaskManager;
             _endPoint = new UnixEndPoint(Path.GetTempPath()+"/parkitect_nexus.socket");
             _socket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.IP);
@@ -50,7 +53,7 @@ namespace ParkitectNexus.Client.Linux
 
                         }
                     }
-                    _socket.Close();
+                    // _socket.Close();
                 }  
                 catch
                 {
@@ -75,21 +78,30 @@ namespace ParkitectNexus.Client.Linux
             }
             catch(System.Net.Sockets.SocketException e)
             {
+                _logger.WriteException(e);
                 throw e;
             }
         }
 
         private void Listen()
         {
-            while (_socket.Connected)
+            try{
+                while (true)
                 {
+                    allDone.Reset();
                     _socket.BeginAccept(new System.AsyncCallback(OnAccept),_socket);
+                    allDone.WaitOne();
                 }
+            }catch(Exception e)
+            {
+                _logger.WriteException(e);
+            }
             
         }
 
         private void OnAccept(IAsyncResult ar)
         {
+            allDone.Set();
            
             System.Net.Sockets.Socket listener = (System.Net.Sockets.Socket)ar.AsyncState;
             System.Net.Sockets.Socket handler = listener.EndAccept(ar);
@@ -116,6 +128,14 @@ namespace ParkitectNexus.Client.Linux
         {
             var options = new AppCommandLineOptions();
             Parser.Default.ParseArguments(arguments, options);
+            for (int x = 0; x < arguments.Length; x++)
+            {
+                if (arguments[x].Contains("parkitectnexus://"))
+                {
+                    options.Url = arguments[x];
+                }
+            }
+                
             if (options.Url != null)
             {
                 NexusUrl url;
