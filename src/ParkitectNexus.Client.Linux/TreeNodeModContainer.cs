@@ -14,7 +14,7 @@ namespace ParkitectNexus.Client.Linux
                 AvaliableVersion= "-";
             }
 
-        public IModAsset ParkitectMod
+            public IModAsset ParkitectMod
             {
                 get{ return _parkitectMod; }
             }

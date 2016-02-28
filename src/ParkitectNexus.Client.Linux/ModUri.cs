@@ -15,23 +15,17 @@ namespace ParkitectNexus.Client.Linux
     public partial class ModUri : Gtk.Dialog, IPresenter
     {
         private readonly IParkitect _parkitect;
-       private readonly IPresenterFactory _presenterFactory;
-        private readonly ILogger _logger;
 		private IQueueableTaskManager _queuableTaskManager;
 		private IRemoteAssetRepository _assetRepository;
-		private IParkitectNexusAPI _nexusAPI;
         private IWebsite _website;
-        public ModUri (IWebsite website,IQueueableTaskManager queuableTaskManager, IRemoteAssetRepository assetRepositry,IParkitectNexusAPI nexusAPI,IQueueableTaskManager taskManager,IParkitect parkitect,ILogger logger,IPresenterFactory presenterFactory)
+        public ModUri (IWebsite website,IQueueableTaskManager queuableTaskManager, IRemoteAssetRepository assetRepositry,IQueueableTaskManager taskManager,IParkitect parkitect)
         {
             
 			this.Build ();
             this._website = website;
 			this._assetRepository = assetRepositry;
-			this._nexusAPI = nexusAPI;
 
-			this._logger = logger;
             this._parkitect = parkitect;
-            this._presenterFactory = presenterFactory;
 			this._queuableTaskManager = queuableTaskManager;
 		}
 
@@ -67,18 +61,7 @@ namespace ParkitectNexus.Client.Linux
 					task.Data = nexusURL.Data;
 					_queuableTaskManager.Add (task);
 
-
-				/*switch (form.Run ()) {
-                case (int)Gtk.ResponseType.Apply:
-                    
-                    form.Destroy ();
-               break;
-                default:
-                    this.Respond (Gtk.ResponseType.Cancel);
-
-                 break;
-                }
-                form.Destroy ();*/
+               
                 this.Destroy ();
             }
         

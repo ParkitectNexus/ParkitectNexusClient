@@ -313,6 +313,7 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Install Asset</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="InstallMod" after="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -462,6 +463,7 @@
                                 <child>
                                   <widget class="Gtk.EventBox" id="eventViewParkitectNexus">
                                     <property name="MemberName" />
+                                    <signal name="ButtonPressEvent" handler="VistModWebsite" after="yes" />
                                     <child>
                                       <widget class="Gtk.Label" id="lblViewOnParkitectNexusWebsite">
                                         <property name="MemberName" />

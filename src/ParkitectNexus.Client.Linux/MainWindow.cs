@@ -114,6 +114,11 @@ public partial class MainWindow: Gtk.Window, IPresenter
         page.ShowAll ();
     }
 
+    public void ChangeLabelText(Widget page,string text)
+    {
+        ((Gtk.Label)Pages.GetTabLabel(page)).Text = text;
+    }
+
     protected void OnDeleteEvent (object sender, DeleteEventArgs a)
     {
         Application.Quit ();

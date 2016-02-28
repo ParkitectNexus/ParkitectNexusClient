@@ -12,6 +12,7 @@ using ParkitectNexus.Data.Web.Models;
 using ParkitectNexus.Data.Web.API;
 using ParkitectNexus.Data.Assets.Modding;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -23,17 +24,13 @@ namespace ParkitectNexus.Client.Linux
         private TreeNodeModContainer _selectedMod;
         private Window _parentwindow;
         private IPresenterFactory _presenterFactory;
-        private ILogger _logger;
-		private IQueueableTaskManager _queuableTaskManager;
-		private IRemoteAssetRepository _assetRepository;
-		private IParkitectNexusAPI _nexusAPI;
-	
-        public ModsPage (IAssetUpdatesManager updateManager,ILogger logger,IParkitectNexusAPI nexusAPI,IRemoteAssetRepository assetRepository,IQueueableTaskManager queueableTaskManager,IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect)
+        private IQueueableTaskManager _queuableTaskManager;
+        //hack to get the latest tag
+        private Dictionary<string,string> _versionCache = new Dictionary<string, string>();
+
+        public ModsPage (IAssetUpdatesManager updateManager,IQueueableTaskManager queueableTaskManager,IPresenterFactory presenterFactory,IPresenter parentWindow,IParkitect parkitect)
         {
-			this._nexusAPI = nexusAPI;
-			this._assetRepository = assetRepository;
 			this._queuableTaskManager = queueableTaskManager;
-            this._logger = logger;
             this._presenterFactory = presenterFactory;
             this._parentwindow = (Window)parentWindow;
             this._parkitect = parkitect;
@@ -80,11 +77,27 @@ namespace ParkitectNexus.Client.Linux
             //update the tag information
             listViewMods.Model.RowInserted += async (o, args) => {
                 var mod = (TreeNodeModContainer)((NodeStore)o).GetNode(args.Path);
+                try
+                {
+                    if (mod.ParkitectMod != null && mod.ParkitectMod.Name != null) {
+                        
+                        if(!_versionCache.ContainsKey(mod.Name))
+                        {
 
-                if (mod.ParkitectMod != null && mod.ParkitectMod.Name != null) {
-                    mod.AvaliableVersion = await updateManager.GetLatestVersionName(mod.ParkitectMod);
+                            mod.AvaliableVersion = await updateManager.GetLatestVersionName(mod.ParkitectMod);
+                            _versionCache.Add(mod.Name,mod.AvaliableVersion);
+                        }
+                        else
+                        {
+                            mod.AvaliableVersion =  _versionCache[mod.Name];
 
-                    listViewMods.QueueDraw();   
+                        }
+
+                        listViewMods.QueueDraw();   
+                    }
+                }
+                catch 
+                {
                 }
             };
 
@@ -207,6 +220,7 @@ namespace ParkitectNexus.Client.Linux
         {
             if (_selectedMod == null) return;
               Process.Start($"https://client.parkitectnexus.com/redirect/{_selectedMod.ParkitectMod.Repository}");
+           
         }
            
 

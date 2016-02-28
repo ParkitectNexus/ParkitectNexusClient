@@ -288,6 +288,8 @@ namespace ParkitectNexus.Client.Linux
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.btnInstallMod.Clicked += new global::System.EventHandler (this.InstallMod);
+			this.eventViewParkitectNexus.ButtonPressEvent += new global::Gtk.ButtonPressEventHandler (this.VistModWebsite);
 			this.btnRecompile.Clicked += new global::System.EventHandler (this.Recompile);
 			this.btnUpdate.Clicked += new global::System.EventHandler (this.Update);
 			this.btnUninstall.Clicked += new global::System.EventHandler (this.UninstallMod);
