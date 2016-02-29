@@ -25,6 +25,7 @@ namespace ParkitectNexus.Client.Linux
         private EndPoint _endPoint;
         private Socket _socket;
         private ILogger _logger;
+        private bool _closingConnection = false;
         public ArgumentService(bool isClient,string[] args,ILogger logger,IQueueableTaskManager queuableTaskManager)
         {
             _logger = logger;
@@ -86,7 +87,7 @@ namespace ParkitectNexus.Client.Linux
         private void Listen()
         {
             try{
-                while (true)
+                while (_socket.IsBound)
                 {
                     allDone.Reset();
                     _socket.BeginAccept(new System.AsyncCallback(OnAccept),_socket);
@@ -101,32 +102,27 @@ namespace ParkitectNexus.Client.Linux
 
         private void OnAccept(IAsyncResult ar)
         {
-            try{
-            allDone.Set();
            
-            System.Net.Sockets.Socket listener = (System.Net.Sockets.Socket)ar.AsyncState;
-            System.Net.Sockets.Socket handler = listener.EndAccept(ar);
-            using (NetworkStream stream = new NetworkStream(handler))
+            allDone.Set();
+            if (!_closingConnection)
             {
-                using (StreamReader reader = new StreamReader(stream))
+                System.Net.Sockets.Socket listener = (System.Net.Sockets.Socket)ar.AsyncState;
+                System.Net.Sockets.Socket handler = listener.EndAccept(ar);
+                using (NetworkStream stream = new NetworkStream(handler))
                 {
-                    int numberArguments = int.Parse(reader.ReadLine());
-                    string[] args = new string[numberArguments];
-                    for (int x = 0; x < numberArguments; x++)
+                    using (StreamReader reader = new StreamReader(stream))
                     {
-                        args[x] = reader.ReadLine();
-                    }
-                    ProcessArguments(args);
+                        int numberArguments = int.Parse(reader.ReadLine());
+                        string[] args = new string[numberArguments];
+                        for (int x = 0; x < numberArguments; x++)
+                        {
+                            args[x] = reader.ReadLine();
+                        }
+                        ProcessArguments(args);
 
+                    }
                 }
             }
-            }
-            catch(Exception e)
-            {
-                _logger.WriteException(e);
-            }
-            //_socket.BeginAccept(new AsyncCallback(OnAccept), _socket);
-
         }
 
 
@@ -162,6 +158,7 @@ namespace ParkitectNexus.Client.Linux
 
         public void Close()
         {
+            _closingConnection = true;
             _socket.Close();
         }
 

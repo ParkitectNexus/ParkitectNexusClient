@@ -1,15 +1,10 @@
 
-export MONO_PATH=././lib/mono/4.5:././lib/mono/gtk-sharp-2.0
+#!/bin/sh
+
+export MONO_PATH=././lib/mono/4.5:././lib/mono/4.0:././lib/mono/3.5:././lib/mono/2.0:././lib/mono/gtk-sharp-2.0:././lib64:././lib
 export MONO_CONFIG=././etc/mono/config
 export MONO_CFG_DIR=././etc
-export LC_ALL="en_US"
-export LANG="en_US"
-export LANGUAGE="en_NZ"
-export C_CTYPE="en_US"
-export LC_NUMERIC=
-export LC_TIME=en"en_US"
 
-#!/bin/sh
 ././bin/mono  "././bin/ParkitectNexus.Client.Linux.exe" "$@"
 
 
