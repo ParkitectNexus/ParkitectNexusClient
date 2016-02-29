@@ -10,11 +10,6 @@ using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Assets.Modding
 {
-    public interface IModLoadOrderBuilder
-    {
-        void Build();
-    }
-
     public class ModLoadOrderBuilder : IModLoadOrderBuilder
     {
         private readonly IParkitect _parkitect;
@@ -53,7 +48,7 @@ namespace ParkitectNexus.Data.Assets.Modding
             orderedList.Add(mod);
         }
 
-        public void Build()
+        public IEnumerable<IModAsset> Build()
         {
             _log.WriteLine("Building mod load order list.");
 
@@ -67,8 +62,13 @@ namespace ParkitectNexus.Data.Assets.Modding
                     AddModToList(mods, new Stack<IModAsset>(), mod, orderedList);
             }
 
+            return orderedList;
+        }
+
+        public void BuildAndStore()
+        {
             File.WriteAllLines(Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Mod), "load.dat"),
-                orderedList.Select(m => Path.GetFileName(m.InstallationPath)).ToArray());
+                Build().Select(m => Path.GetFileName(m.InstallationPath)).ToArray());
         }
     }
 }
