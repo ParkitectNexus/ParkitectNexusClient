@@ -83,14 +83,14 @@ namespace ParkitectNexus.Client.Windows
                 SetUserName("Log in");
 
             // Fetch updates
-            // TODO: Disable update checking; It takes too many GH calls. Reimplementing when PN reports version numbers.
+            // TODO: Disabled update checking; It takes too many GH calls. Reimplementing when PN reports version numbers.
 //            if (assetUpdatesManager.ShouldCheckForUpdates())
 //                _taskManager.Add<CheckForUpdatesTask>();
         }
 
         public void ProcessArguments(string[] args)
         {
-            _log.WriteLine($"Received arguments: '{string.Join(" ", args)}", LogLevel.Info);
+            _log.WriteLine($"Received arguments: '{string.Join(" ", args)}'", LogLevel.Info);
 
             var options = new AppCommandLineOptions();
             Parser.Default.ParseArguments(args, options);
@@ -118,7 +118,10 @@ namespace ParkitectNexus.Client.Windows
                 foreach (
                     var mod in
                         _modLoadOrderBuilder.Build()
-                            .Where(m => modsBeingCompiled.Contains(m) || m.Information.IsDevelopment))
+                            .Where(
+                                m =>
+                                    m.Information.Dependencies?.Any(d => modsBeingCompiled.Any(k => k.Repository == d)) ?? false ||
+                                    m.Information.IsDevelopment))
                 {
                     modsBeingCompiled.Add(mod);
                     _taskManager.With(mod).Add<CompileModTask>();
