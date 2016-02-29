@@ -186,7 +186,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                             }
                             catch (Exception e)
                             {
-                                _log.WriteLine.Log($"Could not copy binaries to persistant path {persistantPath}!",
+                                _log.WriteLine($"Could not copy binaries to persistant path {persistantPath}!",
                                     LogLevel.Warn);
                                 _log.WriteException(e, LogLevel.Warn);
                                 logFile.Log($"Could not copy binaries to persistant path {persistantPath}!",
