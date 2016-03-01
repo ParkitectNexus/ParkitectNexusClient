@@ -5,6 +5,7 @@ export MONO_PATH=././lib/mono/4.5:././lib/mono/4.0:././lib/mono/3.5:././lib/mono
 export MONO_CONFIG=././etc/mono/config
 export MONO_CFG_DIR=././etc
 
+././bin/mozroots --import --sync
 ././bin/mono  "././bin/ParkitectNexus.Client.Linux.exe" "$@"
 
 

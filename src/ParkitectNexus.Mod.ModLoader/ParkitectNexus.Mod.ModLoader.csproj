@@ -74,11 +74,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\game\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\Documents\Parkitect_Pre-Alpha_8_Linux_2\Parkitect_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\game\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\Documents\Parkitect_Pre-Alpha_8_Linux_2\Parkitect_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
