@@ -5,6 +5,8 @@ MONO_LOCALE=https://kojipkgs.fedoraproject.org//packages/mono/4.0.5/3.fc23/x86_6
 GTK_SHARP=http://download.mono-project.com/repo/centos/g/gtk-sharp2/gtk-sharp2-2.12.26-0.x86_64.rpm
 GLIB_SHARP=http://download.mono-project.com/repo/centos/g/gtk-sharp2/glib-sharp2-2.12.26-0.x86_64.rpm
 GDK_PIX=https://kojipkgs.fedoraproject.org//packages/gdk-pixbuf2/2.33.2/2.fc24/x86_64/gdk-pixbuf2-2.33.2-2.fc24.x86_64.rpm
+#GTK2=https://kojipkgs.fedoraproject.org//packages/gtk2/2.24.29/2.fc24/x86_64/gtk2-2.24.29-2.fc24.x86_64.rpm
+
 #create APP directory
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 mkdir -p ./$APP/$APP.AppDir/usr/opt
@@ -32,6 +34,7 @@ wget -c --trust-server-names "$GTK_SHARP"
 wget -c --trust-server-names "$GLIB_SHARP"
 wget -c --trust-server-names "$MONO_LOCALE"
 wget -c --trust-server-names "$GDK_PIX"
+#wget -c --trust-server-names "$GTK2"
 
 cd $APP.AppDir/
 
@@ -42,16 +45,21 @@ rpm2cpio ../gtk-sharp2*.rpm . | cpio -idmv
 rpm2cpio ../glib-sharp2*.x86_64.rpm . | cpio -idmv
 rpm2cpio ../mono-locale*.x86_64.rpm . | cpio -idmv
 rpm2cpio ../gdk-pixbuf*.x86_64.rpm . | cpio -idmv
+#rpm2cpio ../gtk2*.rpm . | cpio -idmv
 
 #grab AppRun
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
 
 #move etc into the user folder
-mv etc/ usr/
+cp -R etc/ usr/
+rm -rf etc/
 
 #fixed mono .so dependency
 sed -i -e "s|/usr/|././|g" usr/etc/mono/config
+#sed -i -e "s|libgtk-x11-2.0.so.0|././lib64/libgtk-x11-2.0.so.0|g" usr/etc/mono/config
+#find . -type f -exec sed -i -e 's|/usr|././|g' {} \;
+#find . -type f -exec sed -i -e 's|target="libgtk-x11-2.0.so.0"|target="././lib64/libgtk-x11-2.0.so.0"|g' {} \;
 
 #copy image into $APP.dir
 cp ./usr/bin/parkitectnexus_logo.png parkitectnexus.png
