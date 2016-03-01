@@ -32,7 +32,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             var result = await _modCompiler.Compile(_mod);
 
             // Build the mod load order and store it to the load.dat file.
-            _modLoadOrderBuilder.Build();
+            _modLoadOrderBuilder.BuildAndStore();
 
             // Set the status to finished.
             if (result.Success)

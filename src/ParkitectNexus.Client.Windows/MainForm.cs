@@ -2,6 +2,8 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -34,16 +36,18 @@ namespace ParkitectNexus.Client.Windows
         private readonly IQueueableTaskManager _taskManager;
         private readonly IParkitect _parkitect;
         private readonly IUpdateManager _updateManager;
+        private readonly IModLoadOrderBuilder _modLoadOrderBuilder;
         private SliderPanel _currentPanel;
 
         public MainForm(IPresenterFactory presenterFactory, ILogger log,
-            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IUpdateManager updateManager)
+            IAuthManager authManager, IQueueableTaskManager taskManager, IParkitect parkitect, IUpdateManager updateManager, IModLoadOrderBuilder modLoadOrderBuilder)
         {
             _log = log;
             _authManager = authManager;
             _taskManager = taskManager;
             _parkitect = parkitect;
             _updateManager = updateManager;
+            _modLoadOrderBuilder = modLoadOrderBuilder;
 
             // Hook onto the authentication manager events.
             _authManager.Authenticated += (sender, args) => FetchUserInfo();
@@ -79,14 +83,14 @@ namespace ParkitectNexus.Client.Windows
                 SetUserName("Log in");
 
             // Fetch updates
-            // TODO: Disable update checking; It takes too many GH calls. Reimplementing when PN reports version numbers.
+            // TODO: Disabled update checking; It takes too many GH calls. Reimplementing when PN reports version numbers.
 //            if (assetUpdatesManager.ShouldCheckForUpdates())
 //                _taskManager.Add<CheckForUpdatesTask>();
         }
 
-        public bool ProcessArguments(string[] args)
+        public void ProcessArguments(string[] args)
         {
-            _log.WriteLine($"Received arguments: '{string.Join(" ", args)}", LogLevel.Info);
+            _log.WriteLine($"Received arguments: '{string.Join(" ", args)}'", LogLevel.Info);
 
             var options = new AppCommandLineOptions();
             Parser.Default.ParseArguments(args, options);
@@ -104,24 +108,28 @@ namespace ParkitectNexus.Client.Windows
 
                         _taskManager.Add(task);
 
-                        return true;
                     }
                 }
             }
-
-            if (options.Launch)
+            else if (options.Launch)
             {
+                var modsBeingCompiled = new List<IModAsset>();
+
                 foreach (
                     var mod in
-                        _parkitect.Assets[AssetType.Mod].OfType<IModAsset>().Where(m => m.Information.IsDevelopment))
+                        _modLoadOrderBuilder.Build()
+                            .Where(
+                                m =>
+                                    m.Information.Dependencies?.Any(d => modsBeingCompiled.Any(k => k.Repository == d)) ?? false ||
+                                    m.Information.IsDevelopment))
+                {
+                    modsBeingCompiled.Add(mod);
                     _taskManager.With(mod).Add<CompileModTask>();
-
+                }
 
                 _taskManager.Add<LaunchGameTask>();
                 _taskManager.Add(new CloseAppTask(this));
-                return false;
             }
-            return true;
         }
 
         public void SpawnSliderPanel(SliderPanel panel)
@@ -289,6 +297,7 @@ namespace ParkitectNexus.Client.Windows
 
                 ShowMe();
             }
+
             base.WndProc(ref m);
         }
 
