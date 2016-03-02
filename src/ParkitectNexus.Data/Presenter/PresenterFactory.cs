@@ -1,5 +1,9 @@
-﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+﻿using ParkitectNexus.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data.Presenter
 {
@@ -7,7 +11,13 @@ namespace ParkitectNexus.Data.Presenter
     {
         public T InstantiatePresenter<T>()
         {
-            return ObjectFactory.GetInstance<T>();
+            return ObjectFactory.Container.GetInstance<T>();
         }
+
+        public T InstantiatePresenter<T>(IPresenter parent)
+        {
+            return ObjectFactory.Container.With(parent).GetInstance<T> ();
+        }
+
     }
 }

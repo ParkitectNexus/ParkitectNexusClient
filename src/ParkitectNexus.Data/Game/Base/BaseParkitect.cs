@@ -36,7 +36,7 @@ namespace ParkitectNexus.Data.Game.Base
             {
                 return IsValidInstallationPath(GameSettings.Model.InstallationPath)
                     ? GameSettings.Model.InstallationPath
-                    : null;
+                        : null;
             }
             set
             {
