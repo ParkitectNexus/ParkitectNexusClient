@@ -2,6 +2,7 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ParkitectNexus.Data.Assets;
@@ -58,10 +59,18 @@ namespace ParkitectNexus.Data.Tasks.Prefab
                 // Store the asset in in the appropriate location.
                 var asset = await _parkitect.Assets.StoreAsset(downloadedAsset);
 
+                // If the downloaded asset is a mod, add a "compile mod" task to the queue.
+                var modAsset = asset as IModAsset;
+                if (modAsset != null)
+                    _queueableTaskManager.With(modAsset).InsertAfter<CompileModTask>(this);
+
                 // Ensure dependencies have been installed.
                 foreach (var dependency in assetData.Dependencies)
                 {
                     if (!dependency.Required && !InstallOptionalDependencies)
+                        continue;
+
+                    if (_parkitect.Assets.Any(a => a.Id == dependency.Asset.Id))
                         continue;
 
                     // Create install task for the dependency.
@@ -72,11 +81,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
                     _queueableTaskManager.InsertAfter(installDependencyTask, this);
                 }
 
-                // If the downloaded asset is a mod, add a "compile mod" task to the queue.
-                var modAsset = asset as IModAsset;
-                if (modAsset != null)
-                    _queueableTaskManager.With(modAsset).InsertAfter<CompileModTask>(this);
-
+                
                 // Update the status of the task.
                 UpdateStatus($"Installed {assetData.Type.ToString().ToLower()} '{assetData.Name}'.", 100,
                     TaskStatus.Finished);

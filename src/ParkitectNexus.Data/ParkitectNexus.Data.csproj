@@ -119,6 +119,7 @@
     <Compile Include="Assets\Meta\IModMetadata.cs" />
     <Compile Include="Assets\Modding\IModAsset.cs" />
     <Compile Include="Assets\Modding\IModCompiler.cs" />
+    <Compile Include="Assets\Modding\IModLoadOrderBuilder.cs" />
     <Compile Include="Assets\Modding\ModCompiler.cs" />
     <Compile Include="Assets\Modding\ModCompileResults.cs" />
     <Compile Include="Assets\Modding\ModInformation.cs" />

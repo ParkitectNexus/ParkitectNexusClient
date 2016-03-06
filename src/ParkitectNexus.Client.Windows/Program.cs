@@ -2,8 +2,11 @@
 // Copyright 2016 Parkitect, Tim Potze
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Security.AccessControl;
 using System.Threading;
 using System.Windows.Forms;
 using ParkitectNexus.Data;
@@ -25,6 +28,11 @@ namespace ParkitectNexus.Client.Windows
             // assume the app is already running and broadcast a WM_GIVEFICUS message.
             bool mutexIsNew;
             var mutex = new Mutex(false, "com.ParkitectNexus.Client", out mutexIsNew);
+
+            // Mutex suck. Slight hack here.
+//            mutexIsNew =
+//                Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location))
+//                    .Length <= 1;
 
             // Look and see if this is the only running instance of the client.
             if (mutexIsNew)
@@ -95,10 +103,10 @@ namespace ParkitectNexus.Client.Windows
                         // temporary ipc.dat file.
                         NativeMethods.SendNotifyMessage((IntPtr)NativeMethods.HWND_BROADCAST,
                             (uint)NativeMethods.WM_GIVEFOCUS, 1, 0);
-
+                        
                         return;
                     }
-                    catch (IOException)
+                    catch (IOException e)
                     {
                         // If storing the arguments fails, we're in trouble. Let's try it again in a few.
                         Thread.Sleep(500);
