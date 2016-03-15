@@ -26,7 +26,7 @@ namespace ParkitectNexus.Data.Web.API
             switch (SubscribableType)
             {
                 case "asset":
-                    return await Subscribable?.GetResource();
+                return Subscribable == null ? null : await Subscribable.GetResource();
                 default:
                     return null;
             }
