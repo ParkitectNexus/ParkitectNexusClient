@@ -15,14 +15,16 @@ namespace ParkitectNexus.MacOSX
         private NSSplitView _splitView;
 
         public MainWindow()
-            : base(new Rectangle(0, 0, 493, 369), (NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable | NSWindowStyle.Resizable), NSBackingStore.Buffered, false)
+            : base(new Rectangle(0, 0, 800, 600), (NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable | NSWindowStyle.Resizable), NSBackingStore.Buffered, false)
         {
             Title = "ParkitectNexus Client";
 
-            ContentView = _splitView = new NSSplitView();
+            ContentView = _splitView = new NSSplitView(Frame);
             _splitView.IsVertical = true;
             _splitView.DividerStyle = NSSplitViewDividerStyle.Thin;
             _splitView.Delegate = new MainSplitViewDelegate();
+
+            var scrollView = new NSScrollView();
 
             var menuOutlineView = new NSOutlineView();
             menuOutlineView.IndentationPerLevel = 16.0f;
@@ -38,7 +40,10 @@ namespace ParkitectNexus.MacOSX
             menuOutlineView.AddColumn(tableColumn);
             menuOutlineView.OutlineTableColumn = tableColumn;
    
-            _splitView.AddSubview(menuOutlineView);
+            scrollView.DocumentView = menuOutlineView;
+//            _splitView.AddSubview(menuOutlineView);
+            _splitView.AddSubview(scrollView);
+
             SetView(new MainMenuView());
             _splitView.SetPositionOfDivider(200f, 0);
 
@@ -84,18 +89,24 @@ namespace ParkitectNexus.MacOSX
                 return;
 
             var firstSubView = splitView.Subviews.First();
-            firstSubView.Frame = new RectangleF(firstSubView.Frame.X, firstSubView.Frame.Y, 200, newSize.Height);
+            var lastSubView = splitView.Subviews.Last();
+            firstSubView.Frame = new RectangleF(0, 0, 200, newSize.Height);
+
+            if(lastSubView == firstSubView)
+                return;
+
+            lastSubView.Frame = new RectangleF(200, 0, newSize.Width - 200, newSize.Height);
         }
     }
 
     public class MenuDelegate : NSOutlineViewDelegate
     {
         NSOutlineView _menuView;
-//        MainWindow _window;
+        MainWindow _window;
         public MenuDelegate(MainWindow window, NSOutlineView menuView)
         {
             _menuView = menuView;
-//            _window = window;
+            _window = window;
         }
 
         public override bool ShouldEditTableColumn(NSOutlineView outlineView, NSTableColumn tableColumn, NSObject item)
@@ -109,9 +120,11 @@ namespace ParkitectNexus.MacOSX
             {
             case 0:
                 // Main menu
+                _window.SetView(new MainMenuView());
                 break;
             case 1:
                 // Mods
+                _window.SetView(new ModsView());
                 break;
             }
         }

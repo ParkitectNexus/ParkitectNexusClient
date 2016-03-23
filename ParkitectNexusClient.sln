@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 VisualStudioVersion = 14.0.24720.0
@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.Windo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.MacOSX", "src\ParkitectNexus.MacOSX\ParkitectNexus.MacOSX.csproj", "{63929436-D13E-44F7-A110-522249F21261}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkitectNexus.Client.Linux", "src\ParkitectNexus.Client.Linux\ParkitectNexus.Client.Linux.csproj", "{0D99E802-1FE5-4417-B57C-87B6BD8E146C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CB13383-05D3-40F5-B0E1-3907A42872DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D99E802-1FE5-4417-B57C-87B6BD8E146C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D99E802-1FE5-4417-B57C-87B6BD8E146C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D99E802-1FE5-4417-B57C-87B6BD8E146C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D99E802-1FE5-4417-B57C-87B6BD8E146C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3451EBAF-3D69-4019-92BE-10E331F32A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +47,10 @@ Global
 		{63929436-D13E-44F7-A110-522249F21261}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63929436-D13E-44F7-A110-522249F21261}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63929436-D13E-44F7-A110-522249F21261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A940BE61-A6C6-49B4-945B-AC557B00CF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU

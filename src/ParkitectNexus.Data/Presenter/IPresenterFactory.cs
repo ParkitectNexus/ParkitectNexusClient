@@ -6,5 +6,6 @@ namespace ParkitectNexus.Data.Presenter
     public interface IPresenterFactory
     {
         T InstantiatePresenter<T>();
+		T InstantiatePresenter<T>(IPresenter parent);
     }
 }

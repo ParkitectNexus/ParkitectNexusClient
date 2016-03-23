@@ -72,6 +72,7 @@
     <Compile Include="FiddleView.designer.cs">
       <DependentUpon>FiddleView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\LoadableTilesView.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
@@ -82,6 +83,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <BundleResource Include="Resources\default-placeholder.png" />
+    <BundleResource Include="Resources\placeholder.jpg" />
   </ItemGroup>
 </Project>

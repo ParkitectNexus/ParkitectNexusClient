@@ -6,8 +6,16 @@ namespace ParkitectNexus.MacOSX
 {
     public class BaseView : NSView
     {
-        public BaseView() : base(new Rectangle(0, 0, 493, 311/*369 - 58*/))
+        public BaseView() : base(new Rectangle(0, 0, 600, 600))
         {
+        }
+
+        public override bool IsFlipped
+        {
+            get
+            {
+                return true;
+            }
         }
 
         public new MainWindow Window
