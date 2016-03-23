@@ -5,18 +5,27 @@ using MonoMac.Foundation;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ParkitectNexus.Data;
+using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Game;
 
 namespace ParkitectNexus.MacOSX
 {
     [Register("MainWindow")]
-    public class MainWindow : NSWindow
+    public class MainWindow : NSWindow, IPresenter
     {
+        private IPresenterFactory _presenterFactory;
+        private IParkitect _parkitect;
+
         private BaseView _currentView;
         private NSSplitView _splitView;
 
-        public MainWindow()
+        public MainWindow(IPresenterFactory presenterFactory, IParkitect parkitect)
             : base(new Rectangle(0, 0, 800, 600), (NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable | NSWindowStyle.Resizable), NSBackingStore.Buffered, false)
         {
+            _presenterFactory = presenterFactory;
+            _parkitect = parkitect;
+
             Title = "ParkitectNexus Client";
 
             ContentView = _splitView = new NSSplitView(Frame);
@@ -41,14 +50,41 @@ namespace ParkitectNexus.MacOSX
             menuOutlineView.OutlineTableColumn = tableColumn;
    
             scrollView.DocumentView = menuOutlineView;
-//            _splitView.AddSubview(menuOutlineView);
             _splitView.AddSubview(scrollView);
 
-            SetView(new MainMenuView());
+            SetView<MainMenuView>();
             _splitView.SetPositionOfDivider(200f, 0);
 
             Center();
 
+        }
+
+        public override void AwakeFromNib()
+        {
+            base.AwakeFromNib();
+
+            if(!_parkitect.DetectInstallationPath())
+            {
+                var alert = new NSAlert {
+                    MessageText = "It appears you haven't installed Parkitect!\nPlease make sure you have install your Parkitect.app in your /Applications folder.",
+                    AlertStyle = NSAlertStyle.Informational
+                };
+
+                alert.RunSheetModal(this);
+                Terminate();
+            }
+        }
+
+        public void SetView<T>() where T : BaseView
+        {
+            var presenterFactory = ObjectFactory.GetInstance<PresenterFactory>();
+            SetView(presenterFactory.InstantiatePresenter<T>());
+        }
+
+        public void SetView<T,T2>(T2 with) where T : BaseView
+        {
+            var view = ObjectFactory.Container.With(with).GetInstance<T> ();
+            SetView(view);
         }
 
         public void SetView(BaseView view)
@@ -71,105 +107,6 @@ namespace ParkitectNexus.MacOSX
         public void Terminate()
         {
             NSApplication.SharedApplication.Terminate(this);
-        }
-    }
-
-    public class MainSplitViewDelegate : NSSplitViewDelegate
-    {
-        public override RectangleF GetEffectiveRect(NSSplitView splitView, RectangleF proposedEffectiveRect, RectangleF drawnRect, int dividerIndex)
-        {
-            return new RectangleF();
-        }
-
-        public override void Resize(NSSplitView splitView, SizeF oldSize)
-        {
-            RectangleF newSize = splitView.Frame;
-
-            if(!splitView.Subviews.Any())
-                return;
-
-            var firstSubView = splitView.Subviews.First();
-            var lastSubView = splitView.Subviews.Last();
-            firstSubView.Frame = new RectangleF(0, 0, 200, newSize.Height);
-
-            if(lastSubView == firstSubView)
-                return;
-
-            lastSubView.Frame = new RectangleF(200, 0, newSize.Width - 200, newSize.Height);
-        }
-    }
-
-    public class MenuDelegate : NSOutlineViewDelegate
-    {
-        NSOutlineView _menuView;
-        MainWindow _window;
-        public MenuDelegate(MainWindow window, NSOutlineView menuView)
-        {
-            _menuView = menuView;
-            _window = window;
-        }
-
-        public override bool ShouldEditTableColumn(NSOutlineView outlineView, NSTableColumn tableColumn, NSObject item)
-        {
-            return false;
-        }
-
-        public override void SelectionDidChange(NSNotification notification)
-        {  
-            switch(_menuView.SelectedRow)
-            {
-            case 0:
-                // Main menu
-                _window.SetView(new MainMenuView());
-                break;
-            case 1:
-                // Mods
-                _window.SetView(new ModsView());
-                break;
-            }
-        }
-    }
-
-    public class MenuItem:NSObject
-    {
-        public string Name { get;set; }
-    }
-
-    public class MenuDataSource:NSOutlineViewDataSource
-    {
-        public List<MenuItem> Items {
-            get;
-            set;
-        }
-
-        public MenuDataSource()
-        {
-            Items = new List<MenuItem>();
-            Items.Add(new MenuItem(){ Name = "Main Menu" });
-            Items.Add(new MenuItem(){ Name = "Mods" });
-            Items.Add(new MenuItem(){ Name = "Blueprints" });
-            Items.Add(new MenuItem(){ Name = "Savegames" });
-            Items.Add(new MenuItem(){ Name = "Queue" });
-        }
-
-        public override int GetChildrenCount (NSOutlineView outlineView, NSObject item)
-        {
-            return item == null ? Items.Count : 0;
-        }
-
-        public override NSObject GetObjectValue (NSOutlineView outlineView, NSTableColumn forTableColumn, NSObject byItem)
-        {
-            return (NSString)((byItem as MenuItem)?.Name ?? string.Empty);
-        }
-
-        public override NSObject GetChild (NSOutlineView outlineView, int childIndex, NSObject ofItem)
-        {
-            return ofItem == null ? Items[childIndex] : null;
-        }
-
-        public override bool ItemExpandable (NSOutlineView outlineView, NSObject item)
-        {
-            return false;
         }
     }
 }

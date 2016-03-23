@@ -1,5 +1,7 @@
 ﻿using System;
 using MonoMac.Foundation;
+using ParkitectNexus.Data;
+using ParkitectNexus.Data.Presenter;
 
 namespace ParkitectNexus.MacOSX
 {
@@ -19,7 +21,8 @@ namespace ParkitectNexus.MacOSX
 
         public MainWindowController() : base("MainWindow")
         {
-            base.Window = new MainWindow();
+            IPresenterFactory presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
+            base.Window = presenterFactory.InstantiatePresenter<MainWindow>();
             Window.AwakeFromNib();
         }
 

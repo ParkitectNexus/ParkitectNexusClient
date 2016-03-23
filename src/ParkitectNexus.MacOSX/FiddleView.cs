@@ -9,6 +9,32 @@ namespace ParkitectNexus.MacOSX
 {
     public partial class FiddleView : MonoMac.AppKit.NSView
     {
+        //
+        // I'm using FiddleView.xib for testing view hierarchies in Xcode.
+        // Do not instantiate this view or things might explode.
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+
         #region Constructors
 
         // Called when created from unmanaged code
@@ -27,6 +53,7 @@ namespace ParkitectNexus.MacOSX
         // Shared initialization code
         void Initialize()
         {
+            throw new NotImplementedException();
         }
 
         #endregion
