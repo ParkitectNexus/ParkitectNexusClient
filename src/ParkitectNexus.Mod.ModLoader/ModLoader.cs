@@ -29,8 +29,7 @@ namespace ParkitectNexus.Mod.ModLoader
 
         public ModLoader()
         {
-            _modEntries = typeof (ModManager).GetField("modEntries", BindingFlags.Instance | BindingFlags.NonPublic)
-                .GetValue(ModManager.Instance) as List<ModManager.ModEntry>;
+            _modEntries = new List<ModManager.ModEntry>(ModManager.Instance.getModEntries());
 
             LoadMods();
         }
@@ -99,6 +98,7 @@ namespace ParkitectNexus.Mod.ModLoader
 
                     var isEnabled = ReadFromDictonary<bool>(dictionary, "IsEnabled");
                     var isDevelopment = ReadFromDictonary<bool>(dictionary, "IsDevelopment");
+                    var priority = ReadFromDictonary<double>(dictionary, "Priority");
 
                     var binBuildPath = FPath.Combine(folder, "bin/build.dat");
 
@@ -137,7 +137,7 @@ namespace ParkitectNexus.Mod.ModLoader
                         SetProperty(userMod, "Path", folder);
                         SetProperty(userMod, "Identifier", directoryName);
 
-                        ModManager.Instance.addMod(userMod);
+                        ModManager.Instance.addMod(userMod, (int)priority);
                         _loadedMods.Add(userMod);
 
                         // Enable mod if mods were already enabled
