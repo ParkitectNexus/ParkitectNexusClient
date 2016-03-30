@@ -29,8 +29,8 @@ namespace ParkitectNexus.Mod.ModLoader
 
         public ModLoader()
         {
-            _modEntries = typeof (ModManager).GetField("modEntries", BindingFlags.Instance | BindingFlags.NonPublic)
-                .GetValue(ModManager.Instance) as List<ModManager.ModEntry>;
+            var fieldInfo = typeof (ModManager).GetField("modEntries", BindingFlags.Instance | BindingFlags.NonPublic);
+            _modEntries = fieldInfo.GetValue(ModManager.Instance) as List<ModManager.ModEntry>;
 
             LoadMods();
         }
