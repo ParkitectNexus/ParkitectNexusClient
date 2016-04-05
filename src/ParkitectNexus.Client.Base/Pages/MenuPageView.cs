@@ -17,7 +17,7 @@ namespace ParkitectNexus.Client.Base.Pages
         private readonly IParkitect _parkitect;
         private readonly IWebsite _website;
 
-        public MenuPageView(IParkitect parkitect, IWebsite website)
+        public MenuPageView(IParkitect parkitect, IWebsite website, IPresenter parent)
         {
             _parkitect = parkitect;
             _website = website;
@@ -27,11 +27,7 @@ namespace ParkitectNexus.Client.Base.Pages
             AddButton(null, "Visit ParkitectNexus", App.Images["parkitectnexus_logo-64x64.png"],
                 Color.FromBytes(0xf3, 0x77, 0x35), website.Launch);
             AddButton(null, "Launch Parkitect", App.Images["parkitect_logo.png"], Color.FromBytes(45, 137, 239),
-                () =>
-                {
-                    parkitect.Launch();
-
-                });
+                () => { parkitect.Launch(); });
             AddButton(null, "View help", App.Images["appbar.information.png"], Color.FromBytes(45, 137, 239), () =>
             {
                 // Temporary help solution.

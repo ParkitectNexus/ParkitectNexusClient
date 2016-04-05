@@ -42,7 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Pages\AssetsPageView.cs" />
+    <Compile Include="Tiles\LoadableDataTileView.cs" />
     <Compile Include="Main\MainHeaderView.cs" />
+    <Compile Include="Pages\SavegamesPageView.cs" />
+    <Compile Include="Components\SliderBox.cs" />
+    <Compile Include="Tiles\Tile.cs" />
     <Compile Include="Pages\MenuPageView.cs" />
     <Compile Include="Main\MainNotebook.cs" />
     <Compile Include="Main\MainView.cs" />
@@ -76,6 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\appbar.thumbs.up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\appbar.chevron.left.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

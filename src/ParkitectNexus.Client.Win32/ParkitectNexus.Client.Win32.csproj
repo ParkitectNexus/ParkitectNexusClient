@@ -33,12 +33,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StructureMap, Version=4.1.0.361, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\structuremap.4.1.0.361\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.1.2.386, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.1.2.386\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap.Net4, Version=4.1.0.361, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\structuremap.4.1.0.361\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap.Net4, Version=4.1.2.386, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.1.2.386\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -55,11 +55,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\external\xwt\Xwt.WPF\Xwt.WPF.csproj">
+    <ProjectReference Include="..\..\external\xwt\Xwt.WPF\Xwt.WPF.csproj">
       <Project>{c93d746e-1586-4d4f-b411-bf5a966e6a08}</Project>
       <Name>Xwt.WPF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\external\xwt\Xwt\Xwt.csproj">
+    <ProjectReference Include="..\..\external\xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>
@@ -67,7 +67,7 @@
       <Project>{9e4a3c1a-f432-408a-a395-615eece825ac}</Project>
       <Name>ParkitectNexus.Client.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
       <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
       <Name>ParkitectNexus.Data</Name>
     </ProjectReference>

@@ -10,16 +10,16 @@ namespace ParkitectNexus.Client.Base
 {
     public class App : IPresenter
     {
-        private readonly IPresenterFactory _presenterFactory;
         private readonly IParkitect _parkitect;
-
-        public static UIImageProvider Images { get; } = new UIImageProvider();
+        private readonly IPresenterFactory _presenterFactory;
 
         public App(IPresenterFactory presenterFactory, IParkitect parkitect)
         {
             _presenterFactory = presenterFactory;
             _parkitect = parkitect;
         }
+
+        public static UIImageProvider Images { get; } = new UIImageProvider();
 
         public void Run(ToolkitType type)
         {
@@ -30,7 +30,9 @@ namespace ParkitectNexus.Client.Base
 
             if (!_parkitect.DetectInstallationPath())
             {
-                if(!MessageDialog.Confirm("We couldn't detect Parkitect on your machine.\nPlease point me to it!", Command.Ok))
+                if (
+                    !MessageDialog.Confirm("We couldn't detect Parkitect on your machine.\nPlease point me to it!",
+                        Command.Ok))
                 {
                     window.Dispose();
                     Application.Dispose();
