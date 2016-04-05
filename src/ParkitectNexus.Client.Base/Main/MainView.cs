@@ -112,6 +112,11 @@ namespace ParkitectNexus.Client.Base.Main
             {
                 var tiles = new List<Tile>();
 
+                if(_parkitect == null || _parkitect.Assets == null)
+                {
+                    return (IEnumerable<Tile>)new Tile[0];
+                }
+
                 var current = 0;
                 var fileCount = _parkitect.Assets.GetAssetCount(_type);
                 foreach (var asset in _parkitect.Assets[_type])
