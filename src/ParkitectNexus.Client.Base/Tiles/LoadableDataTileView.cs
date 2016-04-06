@@ -139,21 +139,8 @@ namespace ParkitectNexus.Client.Base.Tiles
             }
         }
 
-        #region Overrides of Widget
-
-        /// <summary>
-        ///     Raises the bounds changed event.
-        /// </summary>
-        /// <remarks>
-        ///     Override <see cref="OnBoundsChanged" /> to handle the event internally and call the base
-        ///     <see cref="Xwt.Widget.OnBoundsChanged" /> to finally raise the event.
-        ///     The event will be enabled in the backend automatically, if <see cref="Xwt.Widget.OnBoundsChanged" />
-        ///     is overridden.
-        /// </remarks>
-        protected override void OnBoundsChanged()
+        public void HandleSizeUpdate()
         {
-            base.OnBoundsChanged();
-
             if (CalculateButtonsPerRow() == _buttonsPerRow)
                 return;
 
@@ -173,6 +160,24 @@ namespace ParkitectNexus.Client.Base.Tiles
                 _rows.Peek().PackStart(button);
                 i++;
             }
+        }
+
+        #region Overrides of Widget
+
+        /// <summary>
+        ///     Raises the bounds changed event.
+        /// </summary>
+        /// <remarks>
+        ///     Override <see cref="OnBoundsChanged" /> to handle the event internally and call the base
+        ///     <see cref="Xwt.Widget.OnBoundsChanged" /> to finally raise the event.
+        ///     The event will be enabled in the backend automatically, if <see cref="Xwt.Widget.OnBoundsChanged" />
+        ///     is overridden.
+        /// </remarks>
+        protected override void OnBoundsChanged()
+        {
+            base.OnBoundsChanged();
+
+            HandleSizeUpdate();
         }
 
         #endregion
