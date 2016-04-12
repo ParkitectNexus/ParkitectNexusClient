@@ -43,10 +43,11 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Pages\AssetsPageView.cs" />
+    <Compile Include="Pages\BlueprintsPageView.cs" />
     <Compile Include="Tiles\LoadableDataTileView.cs" />
     <Compile Include="Main\MainHeaderView.cs" />
     <Compile Include="Pages\SavegamesPageView.cs" />
-    <Compile Include="Components\SliderBox.cs" />
+    <Compile Include="Components\SidebarContainer.cs" />
     <Compile Include="Tiles\Tile.cs" />
     <Compile Include="Pages\MenuPageView.cs" />
     <Compile Include="Main\MainNotebook.cs" />
