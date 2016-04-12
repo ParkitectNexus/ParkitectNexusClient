@@ -5,6 +5,7 @@ using ParkitectNexus.Client.Base.Components;
 using ParkitectNexus.Client.Base.Pages;
 using ParkitectNexus.Data.Presenter;
 using Xwt;
+using ParkitectNexus.Client.Base.Tiles;
 
 namespace ParkitectNexus.Client.Base.Main
 {
@@ -30,6 +31,7 @@ namespace ParkitectNexus.Client.Base.Main
             _sidebarContainer = new SidebarContainer();
             sideBox.PackStart(_sidebarContainer, true, true);
             var box = new HBox();
+
             box.PackStart(tabcon, true);
             box.PackEnd(sideBox);
 
@@ -39,6 +41,15 @@ namespace ParkitectNexus.Client.Base.Main
         public void ShowSidebarWidget(string name, Widget widget)
         {
             _sidebarContainer.ShowWidget(name, widget);
+        }
+
+        protected override void OnBoundsChanged()
+        {
+            base.OnBoundsChanged();
+
+            var tv = _notebook.CurrentTab.Child as LoadableDataTileView;
+            if(tv != null)
+                tv.HandleSizeUpdate();
         }
     }
 }
