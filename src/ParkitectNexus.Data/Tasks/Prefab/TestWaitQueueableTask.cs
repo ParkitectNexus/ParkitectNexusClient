@@ -17,11 +17,11 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 
         public override async Task Run(CancellationToken token)
         {
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 25; i++)
             {
                 ThrowIfCancellationRequested(token);
 
-                UpdateStatus("Such descriptive, much wow" + new string(Enumerable.Repeat('.', i/10).ToArray()), i,
+                UpdateStatus("Such descriptive, much wow" + new string(Enumerable.Repeat('.', i).ToArray()), i,
                     TaskStatus.Running);
                 await Task.Delay(100, token);
             }

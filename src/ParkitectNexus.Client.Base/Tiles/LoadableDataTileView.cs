@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ParkitectNexus.Client.Base.Pages;
 using ParkitectNexus.Client.Base.Utilities;
 using ParkitectNexus.Data.Presenter;
 using Xwt;
@@ -12,7 +13,7 @@ using Xwt.Drawing;
 
 namespace ParkitectNexus.Client.Base.Tiles
 {
-    public abstract class LoadableDataTileView : ScrollView, IPresenter
+    public abstract class LoadableDataTileView : ScrollView, IPresenter, IPageView
     {
         private readonly VBox _box;
 
@@ -22,8 +23,11 @@ namespace ParkitectNexus.Client.Base.Tiles
         private Size _tileSize = new Size(100, 100);
         private CancellationTokenSource _tokenSource;
 
-        protected LoadableDataTileView()
+        protected LoadableDataTileView(string displayName)
         {
+            if (displayName == null) throw new ArgumentNullException(nameof(displayName));
+            DisplayName = displayName;
+
             Content = _box = new VBox();
             PushNewRow();
             RefreshTiles();
@@ -179,6 +183,14 @@ namespace ParkitectNexus.Client.Base.Tiles
 
             HandleSizeUpdate();
         }
+
+        #endregion
+
+        #region Implementation of IPageView
+
+        public string DisplayName { get; }
+
+        public event EventHandler DisplayNameChanged;
 
         #endregion
     }

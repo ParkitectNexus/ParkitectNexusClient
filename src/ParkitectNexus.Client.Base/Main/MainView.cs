@@ -3,22 +3,25 @@
 
 using ParkitectNexus.Client.Base.Components;
 using ParkitectNexus.Client.Base.Pages;
+using ParkitectNexus.Client.Base.Tiles;
 using ParkitectNexus.Data.Presenter;
 using Xwt;
-using ParkitectNexus.Client.Base.Tiles;
 
 namespace ParkitectNexus.Client.Base.Main
 {
     public class MainView : VBox, IPresenter
     {
+        private readonly MainNotebook _notebook;
         private readonly SidebarContainer _sidebarContainer;
 
         public MainView(IPresenterFactory presenterFactory)
         {
-            var tabcon = presenterFactory.InstantiatePresenter<MainNotebook>();
-            tabcon.Add(presenterFactory.InstantiatePresenter<MenuPageView>(this));
-            tabcon.Add(presenterFactory.InstantiatePresenter<BlueprintsPageView>(this));
-            tabcon.Add(presenterFactory.InstantiatePresenter<SavegamesPageView>(this));
+            _notebook = presenterFactory.InstantiatePresenter<MainNotebook>();
+            _notebook.Add(presenterFactory.InstantiatePresenter<MenuPageView>(this));
+            _notebook.Add(presenterFactory.InstantiatePresenter<ModsPageView>(this));
+            _notebook.Add(presenterFactory.InstantiatePresenter<BlueprintsPageView>(this));
+            _notebook.Add(presenterFactory.InstantiatePresenter<SavegamesPageView>(this));
+            _notebook.Add(presenterFactory.InstantiatePresenter<TasksPageView>(this));
 
             PackStart(presenterFactory.InstantiatePresenter<MainHeaderView>());
 
@@ -32,10 +35,15 @@ namespace ParkitectNexus.Client.Base.Main
             sideBox.PackStart(_sidebarContainer, true, true);
             var box = new HBox();
 
-            box.PackStart(tabcon, true);
+            box.PackStart(_notebook, true);
             box.PackEnd(sideBox);
 
             PackStart(box, true, true);
+        }
+
+        public void SwitchToTab(int index)
+        {
+            _notebook.CurrentTabIndex = index;
         }
 
         public void ShowSidebarWidget(string name, Widget widget)
@@ -48,8 +56,7 @@ namespace ParkitectNexus.Client.Base.Main
             base.OnBoundsChanged();
 
             var tv = _notebook.CurrentTab.Child as LoadableDataTileView;
-            if(tv != null)
-                tv.HandleSizeUpdate();
+            tv?.HandleSizeUpdate();
         }
     }
 }

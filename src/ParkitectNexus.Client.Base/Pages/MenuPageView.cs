@@ -11,24 +11,18 @@ using Xwt.Drawing;
 
 namespace ParkitectNexus.Client.Base.Pages
 {
-    public class MenuPageView : VBox, IPresenter
+    public class MenuPageView : VBox, IPresenter, IPageView
     {
         private readonly HBox _line;
-        private readonly IParkitect _parkitect;
-        private readonly IWebsite _website;
-
         public MenuPageView(IParkitect parkitect, IWebsite website, IPresenter parent)
         {
-            _parkitect = parkitect;
-            _website = website;
-
             _line = new HBox {Margin = new WidgetSpacing(5, 5, 5, 5)};
 
             AddButton(null, "Visit ParkitectNexus", App.Images["parkitectnexus_logo-64x64.png"],
                 Color.FromBytes(0xf3, 0x77, 0x35), website.Launch);
             AddButton(null, "Launch Parkitect", App.Images["parkitect_logo.png"], Color.FromBytes(45, 137, 239),
                 () => { parkitect.Launch(); });
-            AddButton(null, "View help", App.Images["appbar.information.png"], Color.FromBytes(45, 137, 239), () =>
+            AddButton(null, "Help", App.Images["appbar.information.png"], Color.FromBytes(45, 137, 239), () =>
             {
                 // Temporary help solution.
                 Process.Start(
@@ -50,17 +44,6 @@ namespace ParkitectNexus.Client.Base.Pages
             PackStart(_line);
         }
 
-        #region Overrides of Widget
-
-        /// <summary>
-        ///     Gets or sets the name of this widget.
-        /// </summary>
-        /// <value>The widgets name.</value>
-        /// <remarks>The name can be used to identify this widget by e.g. designers.</remarks>
-        public override string Name { get; set; } = "Main Menu";
-
-        #endregion
-
         public void AddButton(string text, string tooltip, Image image, Color backgroundColor, Action clickedAction)
         {
             if (clickedAction == null) throw new ArgumentNullException(nameof(clickedAction));
@@ -81,5 +64,13 @@ namespace ParkitectNexus.Client.Base.Pages
 
             _line.PackStart(b);
         }
+
+        #region Implementation of IPageView
+
+        public string DisplayName { get; } = "Menu";
+
+        public event EventHandler DisplayNameChanged;
+
+        #endregion
     }
 }

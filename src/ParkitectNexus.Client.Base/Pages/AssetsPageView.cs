@@ -18,18 +18,33 @@ namespace ParkitectNexus.Client.Base.Pages
 {
     public class AssetsPageView : LoadableDataTileView
     {
-        private readonly MainView _mainView;
         private readonly IParkitect _parkitect;
         private readonly AssetType _type;
 
-        public AssetsPageView(IParkitect parkitect, AssetType type, IPresenter parent)
+        public AssetsPageView(IParkitect parkitect, AssetType type, IPresenter parent, string displayName)
+            : base(displayName)
         {
             if (!(parent is MainView))
                 throw new ArgumentException("parent must be MainView", nameof(parent));
 
             _parkitect = parkitect;
             _type = type;
-            _mainView = (MainView) parent;
+            MainView = (MainView) parent;
+
+            parkitect.Assets.AssetAdded += Assets_AssetAdded;
+            parkitect.Assets.AssetRemoved += Assets_AssetRemoved;
+        }
+
+        public MainView MainView { get; }
+
+        private void Assets_AssetRemoved(object sender, AssetEventArgs e)
+        {
+            RefreshTiles();
+        }
+
+        private void Assets_AssetAdded(object sender, AssetEventArgs e)
+        {
+            RefreshTiles();
         }
 
         protected virtual void PopulateViewBoxWithTitle(VBox vBox, IAsset asset)
@@ -54,6 +69,18 @@ namespace ParkitectNexus.Client.Base.Pages
         protected virtual void PopulateViewBoxWithButtons(VBox vBox, IAsset asset)
         {
             var deleteButton = new Button("Delete");
+            deleteButton.Clicked += (sender, args) =>
+            {
+                if (
+                    MessageDialog.AskQuestion(
+                        $"Are you sure you wish to delete \"{asset.Name}\"? This action cannot be undone!", 0,
+                        Command.No,
+                        Command.Yes) == Command.Yes)
+                {
+                    _parkitect.Assets.DeleteAsset(asset);
+                    MainView.ShowSidebarWidget(null, null);
+                }
+            };
             vBox.PackStart(deleteButton);
         }
 
@@ -84,7 +111,7 @@ namespace ParkitectNexus.Client.Base.Pages
                     cancellationToken.ThrowIfCancellationRequested();
 
                     var tile = new Tile(asset.GetImage(), asset.Name,
-                        () => { _mainView.ShowSidebarWidget(asset.Type.ToString(), CreateViewBox(asset)); });
+                        () => { MainView.ShowSidebarWidget(asset.Type.ToString(), CreateViewBox(asset)); });
                     tiles.Add(tile);
                 }
                 return tiles;

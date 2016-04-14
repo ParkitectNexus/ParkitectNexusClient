@@ -44,6 +44,10 @@
     <Compile Include="App.cs" />
     <Compile Include="Pages\AssetsPageView.cs" />
     <Compile Include="Pages\BlueprintsPageView.cs" />
+    <Compile Include="Pages\IPageView.cs" />
+    <Compile Include="Pages\ModsPageView.cs" />
+    <Compile Include="Pages\TasksPageView.cs" />
+    <Compile Include="Components\TaskView.cs" />
     <Compile Include="Tiles\LoadableDataTileView.cs" />
     <Compile Include="Main\MainHeaderView.cs" />
     <Compile Include="Pages\SavegamesPageView.cs" />

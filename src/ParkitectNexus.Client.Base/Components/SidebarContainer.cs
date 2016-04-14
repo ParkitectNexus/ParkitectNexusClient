@@ -1,10 +1,8 @@
 // ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
-using System.Threading.Tasks;
 using Xwt;
 using Xwt.Drawing;
-using Xwt.Motion;
 
 namespace ParkitectNexus.Client.Base.Components
 {

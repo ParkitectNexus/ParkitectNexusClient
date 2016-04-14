@@ -90,7 +90,7 @@ namespace ParkitectNexus.Data.Utilities
         /// <param name="logLevel">The log level.</param>
         public void WriteLine(string message, LogLevel logLevel)
         {
-            if (logLevel >= MinimumLogLevel)
+            if (_streamWriter != null && logLevel >= MinimumLogLevel)
                 _streamWriter.Log(message, logLevel);
         }
 

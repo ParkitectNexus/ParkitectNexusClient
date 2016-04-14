@@ -1,6 +1,10 @@
 ﻿// ParkitectNexusClient
 // Copyright 2016 Parkitect, Tim Potze
 
+using System;
+using System.Linq;
+using ParkitectNexus.Client.Base.Pages;
+using ParkitectNexus.Client.Base.Tiles;
 using ParkitectNexus.Data.Presenter;
 using Xwt;
 
@@ -16,7 +20,36 @@ namespace ParkitectNexus.Client.Base.Main
 
         public void Add(Widget w)
         {
-            Add(w, w.Name);
+            var page = w as IPageView;
+
+            if (page != null)
+            {
+                Add(w, page.DisplayName);
+
+                page.DisplayNameChanged += Page_NameChanged;
+            }
         }
+
+        private void Page_NameChanged(object sender, EventArgs e)
+        {
+            var tab = Tabs.FirstOrDefault(t => t.Child == sender);
+            var page = tab?.Child as IPageView;
+
+            if (tab != null && page != null)
+                Application.Invoke(() => { tab.Label = page.DisplayName; });
+        }
+
+        #region Overrides of Notebook
+
+        protected override void OnCurrentTabChanged(EventArgs e)
+        {
+            base.OnCurrentTabChanged(e);
+
+            var loadableTilesView = CurrentTab.Child as LoadableDataTileView;
+
+            loadableTilesView?.HandleSizeUpdate();
+        }
+
+        #endregion
     }
 }
