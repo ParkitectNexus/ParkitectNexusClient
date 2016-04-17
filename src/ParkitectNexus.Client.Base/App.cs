@@ -10,6 +10,7 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Tasks.Prefab;
+using ParkitectNexus.Data.Updating;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Models;
@@ -20,6 +21,7 @@ namespace ParkitectNexus.Client.Base
     public class App : IPresenter
     {
         private readonly ILogger _log;
+        private readonly IUpdateManager _updateManager;
         private readonly IParkitect _parkitect;
         private readonly IPresenterFactory _presenterFactory;
         private readonly IQueueableTaskManager _taskManager;
@@ -27,16 +29,18 @@ namespace ParkitectNexus.Client.Base
         private MainWindow _window;
 
         public App(IPresenterFactory presenterFactory, IParkitect parkitect, IQueueableTaskManager taskManager,
-            ILogger log)
+            ILogger log, IUpdateManager updateManager)
         {
             _presenterFactory = presenterFactory;
             _parkitect = parkitect;
             _taskManager = taskManager;
             _log = log;
+            _updateManager = updateManager;
         }
 
         public static UIImageProvider Images { get; } = new UIImageProvider();
 
+        
         public bool Initialize(ToolkitType type)
         {
             _log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
@@ -46,6 +50,26 @@ namespace ParkitectNexus.Client.Base
 
             _window = _presenterFactory.InstantiatePresenter<MainWindow>();
             _window.Show();
+
+            var update = _updateManager.CheckForUpdates<App>();
+            if (update != null)
+            {
+                if (
+                    MessageDialog.AskQuestion("A required update for the ParkitectNexus Client needs to be installed.\n" +
+                        "Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n" +
+                        $"Would you like to install it now?\n\nYou are currently running v{typeof(App).Assembly.GetName().Version}. The newest version is v{update.Version}",
+                        "ParkitectNexus Client Update", Command.Yes, Command.No) !=
+                    Command.Yes)
+                {
+                    return false;
+                }
+
+                if (!_updateManager.InstallUpdate(update))
+                    MessageDialog.ShowError(_window, "Failed installing the update! Please try again later.",
+                        "ParkitectNexus Client Update");
+
+                return false;
+            }
 
             if (!_parkitect.DetectInstallationPath())
             {
@@ -80,6 +104,8 @@ namespace ParkitectNexus.Client.Base
                     }
                 } while (!_parkitect.IsInstalled);
             }
+
+            ModLoaderUtil.InstallModLoader(_parkitect, _log);
 
             return true;
         }

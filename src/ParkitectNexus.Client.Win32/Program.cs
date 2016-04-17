@@ -34,7 +34,7 @@ namespace ParkitectNexus.Client.Win32
                 try
                 {
                     // Increase maximum threads.
-                    ThreadPool.SetMaxThreads(16, 16);
+                    //ThreadPool.SetMaxThreads(16, 16);
 
                     // Initialize the structure map container.
                     var registry = ObjectFactory.ConfigureStructureMap();
@@ -46,7 +46,8 @@ namespace ParkitectNexus.Client.Win32
                     // form.
                     var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
                     var app = presenterFactory.InstantiatePresenter<App>();
-                    app.Initialize(ToolkitType.Wpf);
+                    if (!app.Initialize(ToolkitType.Wpf))
+                        return;
 
                     ParkitectNexusProtocol.Install(ObjectFactory.GetInstance<ILogger>());
 
