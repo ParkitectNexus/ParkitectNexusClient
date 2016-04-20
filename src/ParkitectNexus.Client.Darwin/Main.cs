@@ -21,7 +21,9 @@ namespace ParkitectNexus.Client.Darwin
             var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
 
             var app = presenterFactory.InstantiatePresenter<App>();
-            app.Run(ToolkitType.Cocoa);
+            app.Initialize(ToolkitType.Cocoa);
+
+            app.Run();
         }
     }
 }

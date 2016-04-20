@@ -39,6 +39,9 @@ namespace ParkitectNexus.Client.Base.Main
             box.PackEnd(sideBox);
 
             PackStart(box, true, true);
+
+            _notebook.HandleSizeChangeOnTabChange = true;
+            _notebook.HandleSizeUpdate();
         }
 
         public void SwitchToTab(int index)
@@ -55,8 +58,7 @@ namespace ParkitectNexus.Client.Base.Main
         {
             base.OnBoundsChanged();
 
-            var tv = _notebook.CurrentTab.Child as LoadableDataTileView;
-            tv?.HandleSizeUpdate();
+            _notebook.HandleSizeUpdate();
         }
     }
 }

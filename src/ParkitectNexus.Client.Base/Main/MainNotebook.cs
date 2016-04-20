@@ -18,6 +18,8 @@ namespace ParkitectNexus.Client.Base.Main
             WidthRequest = 100;
         }
 
+        public bool HandleSizeChangeOnTabChange { get; set; }
+
         public void Add(Widget w)
         {
             var page = w as IPageView;
@@ -30,6 +32,7 @@ namespace ParkitectNexus.Client.Base.Main
             }
         }
 
+
         private void Page_NameChanged(object sender, EventArgs e)
         {
             var tab = Tabs.FirstOrDefault(t => t.Child == sender);
@@ -39,15 +42,32 @@ namespace ParkitectNexus.Client.Base.Main
                 Application.Invoke(() => { tab.Label = page.DisplayName; });
         }
 
+        public void HandleSizeUpdate()
+        {
+            foreach(var tab in Tabs)
+            {
+                var loadableTilesView = tab.Child as LoadableDataTileView;
+
+                loadableTilesView?.HandleSizeUpdate((float)Size.Width);
+
+                var vvv = tab.Child as TasksPageView;
+                vvv?.HandleSizeChange();
+            }
+        }
+
         #region Overrides of Notebook
 
         protected override void OnCurrentTabChanged(EventArgs e)
         {
             base.OnCurrentTabChanged(e);
 
-            var loadableTilesView = CurrentTab.Child as LoadableDataTileView;
+            if(!HandleSizeChangeOnTabChange)
+                return;
 
-            loadableTilesView?.HandleSizeUpdate();
+            HandleSizeUpdate();
+//            var loadableTilesView = CurrentTab.Child as LoadableDataTileView;
+//
+//            loadableTilesView?.HandleSizeUpdate((float)Size.Width);
         }
 
         #endregion

@@ -10,6 +10,7 @@ using ParkitectNexus.Client.Base.Utilities;
 using ParkitectNexus.Data.Presenter;
 using Xwt;
 using Xwt.Drawing;
+using System.Diagnostics;
 
 namespace ParkitectNexus.Client.Base.Tiles
 {
@@ -52,10 +53,10 @@ namespace ParkitectNexus.Client.Base.Tiles
 
         protected abstract Task<IEnumerable<Tile>> LoadTiles(CancellationToken cancellationToken);
 
-        private int CalculateButtonsPerRow()
+        private int CalculateButtonsPerRow(float width)
         {
             return Math.Max(1,
-                (int) Math.Floor((Size.Width - 5 - 25 /*scroll and a bit*/)/(_tileSize.Width + 5)));
+                (int) Math.Floor((width - 5 - 25 /*scroll and a bit*/)/(_tileSize.Width + 5)));
         }
 
         public async void RefreshTiles()
@@ -89,7 +90,7 @@ namespace ParkitectNexus.Client.Base.Tiles
             while (spinner == null)
                 await Task.Delay(5);
 
-            _buttonsPerRow = CalculateButtonsPerRow();
+            _buttonsPerRow = CalculateButtonsPerRow((float)Size.Width);
             var i = 0;
 
             _tokenSource = new CancellationTokenSource();
@@ -143,12 +144,12 @@ namespace ParkitectNexus.Client.Base.Tiles
             }
         }
 
-        public void HandleSizeUpdate()
+        public void HandleSizeUpdate(float width)
         {
-            if (CalculateButtonsPerRow() == _buttonsPerRow)
+            if (CalculateButtonsPerRow(width) == _buttonsPerRow)
                 return;
-
-            _buttonsPerRow = CalculateButtonsPerRow();
+            
+            _buttonsPerRow = CalculateButtonsPerRow(width);
             var i = 0;
 
             ClearTiles();
@@ -181,7 +182,7 @@ namespace ParkitectNexus.Client.Base.Tiles
         {
             base.OnBoundsChanged();
 
-            HandleSizeUpdate();
+            HandleSizeUpdate((float)Size.Width);
         }
 
         #endregion

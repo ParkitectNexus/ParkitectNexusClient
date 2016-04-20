@@ -9,6 +9,7 @@ using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks;
 using Xwt;
 using Xwt.Drawing;
+using System.Diagnostics;
 
 namespace ParkitectNexus.Client.Base.Pages
 {
@@ -38,6 +39,21 @@ namespace ParkitectNexus.Client.Base.Pages
             _vBox.PackStart(_nothingLabel, true, true);
 
             Content = _vBox;
+        }
+
+        public void HandleSizeChange()
+        {
+            // Stupid fix awgh...
+            if(ParkitectNexus.Data.Utilities.OperatingSystem.Detect() == ParkitectNexus.Data.SupportedOperatingSystem.MacOSX)
+            {
+                var backendHost = BackendHost as WidgetBackendHost;
+                backendHost?.OnVisibleRectChanged();
+            }
+        }
+
+        protected override void OnVisibleRectChanged(EventArgs e)
+        {
+            base.OnVisibleRectChanged(e);
         }
 
         private void TaskManager_TaskFinished(object sender, QueueableTaskEventArgs e)
@@ -101,6 +117,7 @@ namespace ParkitectNexus.Client.Base.Pages
         {
             DisplayNameChanged?.Invoke(this, EventArgs.Empty);
         }
+       
 
         #region Implementation of IPageView
 
