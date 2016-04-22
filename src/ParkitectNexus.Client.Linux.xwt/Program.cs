@@ -14,7 +14,11 @@ using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using Xwt;
 
+<<<<<<< HEAD
 namespace ParkitectNexus.Client.Linux
+=======
+namespace ParkitectNexus.Client.Win32
+>>>>>>> fe06d0ca5facea05edbf8cde2693cfac2016193c
 {
     public class Program
     {
