@@ -1,9 +1,12 @@
 APP=ParkitectNexus
 
-MONO_CORE=http://download.mono-project.com/repo/centos/m/mono-core/mono-core-4.2.2.30-0.xamarin.2.x86_64.rpm
+MONO_EXTRA=http://download.mono-project.com/repo/centos/m/mono-core/mono-extras-3.8.0-1.x86_64.rpm
+MONO_CORE=http://download.mono-project.com/repo/centos/m/mono-core/mono-core-4.2.3.4-0.xamarin.1.x86_64.rpm
+MONO_DATA=http://download.mono-project.com/repo/centos/m/mono-core/mono-data-3.8.0-1.x86_64.rpm
 MONO_LOCALE=https://kojipkgs.fedoraproject.org//packages/mono/4.0.5/3.fc23/x86_64/mono-locale-extras-4.0.5-3.fc23.x86_64.rpm
 GTK_SHARP=http://download.mono-project.com/repo/centos/g/gtk-sharp2/gtk-sharp2-2.12.26-0.x86_64.rpm
 GLIB_SHARP=http://download.mono-project.com/repo/centos/g/gtk-sharp2/glib-sharp2-2.12.26-0.x86_64.rpm
+
 #GDK_PIX=https://kojipkgs.fedoraproject.org//packages/gdk-pixbuf2/2.33.2/2.fc24/x86_64/gdk-pixbuf2-2.33.2-2.fc24.x86_64.rpm
 #GTK2=https://kojipkgs.fedoraproject.org//packages/gtk2/2.24.29/2.fc24/x86_64/gtk2-2.24.29-2.fc24.x86_64.rpm
 
@@ -12,8 +15,8 @@ mkdir -p ./$APP/$APP.AppDir/usr/bin
 mkdir -p ./$APP/$APP.AppDir/usr/opt
 
 #build Nexus Client and copy release into bin
-xbuild /p:Configuration=Release ./../src/ParkitectNexus.Client.Linux/ParkitectNexus.Client.Linux.csproj
-cp -R ./../src/ParkitectNexus.Client.Linux/bin/Release/* ./$APP/$APP.AppDir/usr/bin
+xbuild /p:Configuration=Release ./../src/ParkitectNexus.Client.Linux.xwt/ParkitectNexus.Client.Linux.xwt.csproj
+cp -R ./../src/ParkitectNexus.Client.Linux.xwt/bin/Release/* ./$APP/$APP.AppDir/usr/bin
 
 # Figure out $VERSION
 VERSION=$(git describe origin/master  --tags $(git rev-list --tags --max-count=0))
@@ -33,6 +36,8 @@ wget -c --trust-server-names "$MONO_CORE"
 wget -c --trust-server-names "$GTK_SHARP"
 wget -c --trust-server-names "$GLIB_SHARP"
 wget -c --trust-server-names "$MONO_LOCALE"
+wget -c --trust-server-names "$MONO_DATA"
+wget -c --trust-server-names "$MONO_EXTRA"
 #wget -c --trust-server-names "$GDK_PIX"
 #wget -c --trust-server-names "$GTK2"
 
@@ -44,6 +49,8 @@ rpm2cpio ../mono-basic*.rpm . | cpio -idmv
 rpm2cpio ../gtk-sharp2*.rpm . | cpio -idmv
 rpm2cpio ../glib-sharp2*.x86_64.rpm . | cpio -idmv
 rpm2cpio ../mono-locale*.x86_64.rpm . | cpio -idmv
+rpm2cpio ../mono-data*.x86_64.rpm . | cpio -idmv
+rpm2cpio ../mono-extras*.x86_64.rpm . | cpio -idmv
 #rpm2cpio ../gdk-pixbuf*.x86_64.rpm . | cpio -idmv
 #rpm2cpio ../gtk2*.rpm . | cpio -idmv
 

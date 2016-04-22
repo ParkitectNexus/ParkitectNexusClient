@@ -75,22 +75,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Octokit, Version=0.19.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Octokit.0.19.0\lib\net45\Octokit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap, Version=4.1.2.386, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.2.386\lib\net40\StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap.Net4, Version=4.1.2.386, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.2.386\lib\net40\StructureMap.Net4.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -104,6 +88,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="ParkitectNexus.AssetMagic, Version=0.1.2.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\packages\ParkitectNexus.AssetMagic.0.1.2.0\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Octokit, Version=0.19.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\Octokit.0.19.0\lib\net45\Octokit.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.1.2.386, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\structuremap.4.1.2.386\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=4.1.2.386, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\structuremap.4.1.2.386\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
