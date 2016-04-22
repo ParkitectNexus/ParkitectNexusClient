@@ -60,9 +60,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Main.cs" />
   </ItemGroup>
   <ItemGroup>

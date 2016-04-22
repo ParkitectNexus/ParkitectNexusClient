@@ -77,8 +77,9 @@ namespace ParkitectNexus.Data.Updating
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
+                _log.WriteException (e);
             }
 
             return null;

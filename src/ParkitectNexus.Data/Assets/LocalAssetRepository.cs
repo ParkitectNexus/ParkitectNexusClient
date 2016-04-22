@@ -323,9 +323,17 @@ namespace ParkitectNexus.Data.Assets
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
+               
+                    //return an empty string array if asset path is null
+                    if(_parkitect.Paths.GetAssetPath(type) == null)
+                        return new string[0];
+                
                     return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), GetAssetPattern(type),
-                        SearchOption.AllDirectories);
-                case AssetType.Mod:
+                            SearchOption.AllDirectories);
+            case AssetType.Mod:
+                    //return an empty string array if asset path is null    
+                    if (_parkitect.Paths.GetAssetPath (AssetType.Mod) == null)
+                        return new string[0];
                     return Directory.GetDirectories(_parkitect.Paths.GetAssetPath(AssetType.Mod))
                         .Where(path => File.Exists(Path.Combine(path, "mod.json")))
                         .ToArray();
