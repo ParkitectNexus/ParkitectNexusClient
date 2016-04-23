@@ -70,6 +70,10 @@
       <Project>{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}</Project>
       <Name>Xwt.Gtk</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ParkitectNexus.Mod.ModLoader\ParkitectNexus.Mod.ModLoader.csproj">
+      <Project>{3451EBAF-3D69-4019-92BE-10E331F32A6F}</Project>
+      <Name>ParkitectNexus.Mod.ModLoader</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
