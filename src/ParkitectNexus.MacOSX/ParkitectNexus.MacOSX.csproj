@@ -61,13 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Window\" />
-    <Folder Include="View\" />
-    <Folder Include="View\LoadableTiles\" />
-    <Folder Include="Window\WindowMenu\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="AppDelegate.designer.cs">

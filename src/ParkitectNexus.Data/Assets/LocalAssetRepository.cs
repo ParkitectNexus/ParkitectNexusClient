@@ -319,18 +319,23 @@ namespace ParkitectNexus.Data.Assets
 
         private string[] GetFilesInAssetPath(AssetType type)
         {
-            switch (type)
+            switch (type) 
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
-                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), GetAssetPattern(type),
+                    if (_parkitect.Paths.GetAssetPath (type) == null)
+                        return new string[0];
+                    
+                    return Directory.GetFiles (_parkitect.Paths.GetAssetPath (type), GetAssetPattern (type),
                         SearchOption.AllDirectories);
                 case AssetType.Mod:
-                    return Directory.GetDirectories(_parkitect.Paths.GetAssetPath(AssetType.Mod))
-                        .Where(path => File.Exists(Path.Combine(path, "mod.json")))
-                        .ToArray();
+                    if (_parkitect.Paths.GetAssetPath (type) == null)
+                        return new string[0];
+                    return Directory.GetDirectories (_parkitect.Paths.GetAssetPath (AssetType.Mod))
+                            .Where (path => File.Exists (Path.Combine (path, "mod.json")))
+                            .ToArray ();
                 default:
-                    throw new Exception("unsupported asset type.");
+                    throw new Exception ("unsupported asset type.");
             }
         }
 
