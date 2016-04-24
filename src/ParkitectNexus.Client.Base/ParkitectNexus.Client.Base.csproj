@@ -58,9 +58,9 @@
     <Compile Include="Main\MainNotebook.cs" />
     <Compile Include="Main\MainView.cs" />
     <Compile Include="Main\MainWindow.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIImageProvider.cs" />
     <Compile Include="Utilities\ImageConverterUtility.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\external\xwt\Xwt\Xwt.csproj">
@@ -99,4 +99,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 </Project>

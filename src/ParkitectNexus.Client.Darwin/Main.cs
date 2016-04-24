@@ -7,6 +7,9 @@ using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Client.Base;
 using Xwt;
+using Xwt.Mac;
+using ParkitectNexus.Data.Web;
+using System.Text.RegularExpressions;
 
 namespace ParkitectNexus.Client.Darwin
 {
@@ -21,7 +24,26 @@ namespace ParkitectNexus.Client.Darwin
             var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
 
             var app = presenterFactory.InstantiatePresenter<App>();
-            app.Initialize(ToolkitType.Cocoa);
+            if(!app.Initialize(ToolkitType.Cocoa))
+                return;
+
+            MacEngine.App.OpenUrl += (sender, e) =>
+            {
+                if(e.Url.StartsWith("parkitectnexus://"))
+                    e.Url = e.Url;
+                else
+                {
+                    var match = Regex.Match(e.Url, "<NSAppleEventDescriptor: \"(parkitectnexus:\\/\\/.*)\">");
+                    if(match.Success)
+                    {
+                        e.Url = match.Groups[1].Value;
+                    }
+                }
+                NexusUrl url;
+
+                if(NexusUrl.TryParse(e.Url, out url))
+                    app.HandleUrl(url);
+            };
 
             app.Run();
         }

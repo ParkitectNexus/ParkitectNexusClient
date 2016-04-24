@@ -13,6 +13,8 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using Xwt;
 using Xwt.Drawing;
+using ParkitectNexus.Data;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Client.Base.Pages
 {
@@ -58,11 +60,18 @@ namespace ParkitectNexus.Client.Base.Pages
 
         protected virtual void PopulateViewBoxWithImage(VBox vBox, IAsset asset)
         {
+            try
+            {
             var image = asset.GetImage();
             if (image != null)
             {
                 var imageView = new ImageView(image.ToXwtImage().WithSize(250));
                 vBox.PackStart(imageView);
+            }
+            }
+            catch(Exception e)
+            {
+                ObjectFactory.GetInstance<ILogger>().WriteException(e);
             }
         }
 
@@ -110,7 +119,16 @@ namespace ParkitectNexus.Client.Base.Pages
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    var tile = new Tile(asset.GetImage(), asset.Name,
+                    System.Drawing.Image image = null;
+                    try
+                    {
+                        image = asset.GetImage();
+                    }
+                    catch(Exception e)
+                    {
+                        ObjectFactory.GetInstance<ILogger>().WriteException(e);
+                    }
+                    var tile = new Tile(image, asset.Name,
                         () => { MainView.ShowSidebarWidget(asset.Type.ToString(), CreateViewBox(asset)); });
                     tiles.Add(tile);
                 }

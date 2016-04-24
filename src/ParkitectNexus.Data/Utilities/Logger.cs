@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace ParkitectNexus.Data.Utilities
 {
@@ -49,6 +50,7 @@ namespace ParkitectNexus.Data.Utilities
 
             try
             {
+                Debug.WriteLine("Now logging to " + path);
                 LoggingPath = path;
                 _streamWriter = overwrite ? new StreamWriter(File.Open(path, FileMode.Create)) : File.AppendText(path);
                 _streamWriter.AutoFlush = true;

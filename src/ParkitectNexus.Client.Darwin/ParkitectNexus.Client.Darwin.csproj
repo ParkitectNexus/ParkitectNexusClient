@@ -10,6 +10,8 @@
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <AssemblyName>ParkitectNexus.Client.Darwin</AssemblyName>
     <SuppressXamMacMigration>True</SuppressXamMacMigration>
+    <ReleaseVersion>2.0.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,9 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -87,5 +91,10 @@
       <Project>{5F8E0511-7210-487F-90A1-EC3E74467617}</Project>
       <Name>Xwt.Mac</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\..\images\logo.icns">
+      <Link>Resources\logo.icns</Link>
+    </BundleResource>
   </ItemGroup>
 </Project>

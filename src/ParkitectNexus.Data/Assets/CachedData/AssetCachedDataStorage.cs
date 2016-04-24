@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using ParkitectNexus.AssetMagic.Readers;
 using ParkitectNexus.Data.Assets.Meta;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Assets.CachedData
 {
@@ -17,8 +18,11 @@ namespace ParkitectNexus.Data.Assets.CachedData
     {
         private readonly IWebsite _website;
 
-        public AssetCachedDataStorage(IWebsite website)
+        ILogger _log;
+
+        public AssetCachedDataStorage(IWebsite website, ILogger log)
         {
+            _log = log;
             _website = website;
         }
 
@@ -52,54 +56,64 @@ namespace ParkitectNexus.Data.Assets.CachedData
 
         private async Task<IAssetCachedData> GenerateCachableData(AssetType type, IAssetMetadata metadata, string path)
         {
-            switch (type)
+            try
             {
-                case AssetType.Blueprint:
-                    using (var blueprintImage = Image.FromFile(path))
-                    {
-                        var blueprintReader = new BlueprintReader();
-                        var blueprint = blueprintReader.Read((Bitmap) blueprintImage);
-                        return new AssetCachedData
+                switch (type)
+                {
+                    case AssetType.Blueprint:
+                        using(var blueprintImage = Image.FromFile(path))
                         {
-                            Name = blueprint.Header.Name
-                        };
-                    }
-                case AssetType.Mod:
-                    if (metadata == null)
-                        return null;
-
-                    using (var stream = new MemoryStream())
-                    {
-                        var asset = await _website.API.GetAsset(metadata.Id);
-                        using (var thumbnail = await asset.Thumbnail.Get())
-                        {
-                            thumbnail.Save(stream, ImageFormat.Png);
+                            var blueprintReader = new BlueprintReader();
+                            var blueprint = blueprintReader.Read((Bitmap)blueprintImage);
+                            return new AssetCachedData {
+                                Name = blueprint.Header.Name
+                            };
                         }
+                    case AssetType.Mod:
+                        if (metadata == null)
+                            return null;
 
-                        return new AssetWithImageCachedData
+                        using (var stream = new MemoryStream())
                         {
-                            ImageBase64 = Convert.ToBase64String(stream.ToArray())
-                        };
-                    }
-                case AssetType.Savegame:
-                    var savegameReader = new SavegameReader();
-                    var savegame = savegameReader.Deserialize(File.ReadAllText(path));
+                            var asset = await _website.API.GetAsset(metadata.Id);
+                            using (var thumbnail = await asset.Thumbnail.Get())
+                            {
+                                thumbnail.Save(stream, ImageFormat.Png);
+                            }
 
-                    using (var stream = new MemoryStream())
-                    {
-                        using (var thumbnail = savegame.Screenshot)
-                        {
-                            thumbnail.Save(stream, ImageFormat.Png);
+                            return new AssetWithImageCachedData
+                            {
+                                ImageBase64 = Convert.ToBase64String(stream.ToArray())
+                            };
                         }
+                    case AssetType.Savegame:
+                        var savegameReader = new SavegameReader();
+                        var savegame = savegameReader.Deserialize(File.ReadAllText(path));
 
-                        return new AssetWithImageCachedData
+                        using (var stream = new MemoryStream())
                         {
-                            Name = savegame.Header.Name,
-                            ImageBase64 = Convert.ToBase64String(stream.ToArray())
-                        };
-                    }
-                default:
-                    throw new Exception("Unsupported type");
+                            using (var thumbnail = savegame.Screenshot)
+                            {
+                                thumbnail.Save(stream, ImageFormat.Png);
+                            }
+
+                            return new AssetWithImageCachedData
+                            {
+                                Name = savegame.Header.Name,
+                                ImageBase64 = Convert.ToBase64String(stream.ToArray())
+                            };
+                        }
+                    default:
+                        throw new Exception("Unsupported type");
+                }
+            }
+            catch(Exception e)
+            {
+                _log.WriteException(e);
+                return new AssetCachedData
+                {
+                    Name = "Failed to open " + path
+                };
             }
         }
 
