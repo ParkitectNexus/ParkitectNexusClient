@@ -27,10 +27,12 @@ namespace ParkitectNexus.Client.Base
         private readonly IQueueableTaskManager _taskManager;
         private bool _isRunning;
         private MainWindow _window;
+        private Migrator _migrator;
 
         public App(IPresenterFactory presenterFactory, IParkitect parkitect, IQueueableTaskManager taskManager,
-            ILogger log, IUpdateManager updateManager)
+            ILogger log, IUpdateManager updateManager, Migrator migrator)
         {
+            _migrator = migrator;
             _presenterFactory = presenterFactory;
             _parkitect = parkitect;
             _taskManager = taskManager;
@@ -105,6 +107,7 @@ namespace ParkitectNexus.Client.Base
                 } while (!_parkitect.IsInstalled);
             }
 
+            _migrator.Migrate();
             ModLoaderUtil.InstallModLoader(_parkitect, _log);
 
             return true;

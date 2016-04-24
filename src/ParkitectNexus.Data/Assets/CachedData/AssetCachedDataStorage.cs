@@ -70,7 +70,7 @@ namespace ParkitectNexus.Data.Assets.CachedData
                             };
                         }
                     case AssetType.Mod:
-                        if (metadata == null)
+                        if (metadata == null || metadata.Id == null)
                             return null;
 
                         using (var stream = new MemoryStream())
