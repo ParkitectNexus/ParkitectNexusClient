@@ -35,24 +35,23 @@ namespace ParkitectNexus.Data.Game.MacOSX
             if (IsInstalled)
                 return true;
 
+            // TODO: Detect Steam version of the game
+
             return SetInstallationPathIfValid("/Applications/Parkitect.app");
         }
 
         /// <summary>
-        ///     Launches the game with the specified arguments.
+        ///     Launches the game.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The launched process.</returns>
-        public override Process Launch(string arguments = "-single-instance")
+        public override void Launch()
         {
-            Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            Logger.WriteLine($"Attempting to launch game.");
 
-            return IsInstalled
-                ? Process.Start(new ProcessStartInfo(
+            if (IsInstalled)
+                Process.Start(new ProcessStartInfo(
                     "open",
-                    "-a '" + InstallationPath + "' --args " + arguments)
-                {UseShellExecute = false})
-                : null;
+                    "-a '" + InstallationPath + "' --args -single-instance")
+                {UseShellExecute = false});
         }
 
         protected override bool IsValidInstallationPath(string path)

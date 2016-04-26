@@ -16,6 +16,8 @@ namespace ParkitectNexus.Data.Game.Windows
     /// </summary>
     public class WindowsParkitect : BaseParkitect
     {
+        private SteamPathSeeker _steamPathSeeker = new SteamPathSeeker();
+
         public WindowsParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger)
             : base(gameSettingsRepository, logger)
         {
@@ -34,22 +36,28 @@ namespace ParkitectNexus.Data.Game.Windows
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
         public override bool DetectInstallationPath()
         {
-            if (IsInstalled)
+            if(IsInstalled && GameSettings.Model.IsSteamVersion == _steamPathSeeker.IsSteamVersionInstalled)
                 return true;
 
-            // TODO Detect registry key of installation path.
-            // can only do this once it's installed trough steam or a setup.
-            return false;
+            var steamGamePath = _steamPathSeeker.GetSteamInstallationPath();
+
+            GameSettings.Model.IsSteamVersion = steamGamePath != null;
+            GameSettings.Save();
+
+            if (steamGamePath != null)
+            {
+                InstallationPath = steamGamePath;
+            }
+
+            return IsInstalled;
         }
 
         /// <summary>
-        ///     Launches the game with the specified arguments.
+        ///     Launches the game.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The launched process.</returns>
-        public override Process Launch(string arguments = "-single-instance")
+        public override void Launch()
         {
-            Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            Logger.WriteLine("Attempting to launch game.");
 
             // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
@@ -60,18 +68,24 @@ namespace ParkitectNexus.Data.Game.Windows
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
 
                 User32.SetForegroundWindow(running.MainWindowHandle);
-                return running;
+                return;
             }
 
-            Logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.exe")}'.");
-            // Start the game process.
-            return !IsInstalled
-                ? null
-                : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
-                {
-                    WorkingDirectory = InstallationPath,
-                    Arguments = arguments
-                });
+            if (GameSettings.Model.IsSteamVersion)
+            {
+                Logger.WriteLine("Launching steam version of game.");
+                Process.Start(Steam.LaunchUrl);
+            }
+            else
+            {
+                Logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.exe")}'.");
+                // Start the game process.
+                if (IsInstalled)
+                    Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.exe"))
+                    {
+                        WorkingDirectory = InstallationPath
+                    });
+            }
         }
 
         protected override bool IsValidInstallationPath(string path)

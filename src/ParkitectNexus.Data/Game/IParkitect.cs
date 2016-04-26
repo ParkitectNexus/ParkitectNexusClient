@@ -13,10 +13,10 @@ namespace ParkitectNexus.Data.Game
     public interface IParkitect
     {
         /// <summary>
-        ///     Gets or sets the installation path.
+        ///     Gets the installation path.
         /// </summary>
         /// <exception cref="ArgumentException">Thrown if the installation path is invalid</exception>
-        string InstallationPath { get; set; }
+        string InstallationPath { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the game is installed.
@@ -40,11 +40,9 @@ namespace ParkitectNexus.Data.Game
         bool DetectInstallationPath();
 
         /// <summary>
-        ///     Launches the game with the specified arguments.
+        ///     Launches the game.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The launched process.</returns>
-        Process Launch(string arguments = "-single-instance");
+        void Launch();
 
         /// <summary>
         ///     Sets the installation path if the specified path is a valid installation path.

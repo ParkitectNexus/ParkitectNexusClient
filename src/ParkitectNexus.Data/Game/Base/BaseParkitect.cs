@@ -27,7 +27,7 @@ namespace ParkitectNexus.Data.Game.Base
         protected ISettingsRepository<GameSettings> GameSettings { get; }
 
         /// <summary>
-        ///     Gets or sets the installation path.
+        ///     Gets the installation path.
         /// </summary>
         /// <exception cref="ArgumentException">Thrown if the value is invalid.</exception>
         public virtual string InstallationPath
@@ -38,7 +38,7 @@ namespace ParkitectNexus.Data.Game.Base
                     ? GameSettings.Model.InstallationPath
                     : null;
             }
-            set
+            protected set
             {
                 if (!IsValidInstallationPath(value))
                     throw new ArgumentException("invalid installation path", nameof(value));
@@ -86,11 +86,9 @@ namespace ParkitectNexus.Data.Game.Base
         public abstract bool DetectInstallationPath();
 
         /// <summary>
-        ///     Launches the game with the specified arguments.
+        ///     Launches the game.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The launched process.</returns>
-        public abstract Process Launch(string arguments = "-single-instance");
+        public abstract void Launch();
 
         protected abstract bool IsValidInstallationPath(string path);
     }

@@ -6,5 +6,6 @@ namespace ParkitectNexus.Data.Settings.Models
     public class GameSettings
     {
         public string InstallationPath { get; set; }
+        public bool IsSteamVersion { get; set; }
     }
 }

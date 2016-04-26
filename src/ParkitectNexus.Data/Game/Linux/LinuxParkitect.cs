@@ -34,19 +34,17 @@ namespace ParkitectNexus.Data.Game.Linux
             if (IsInstalled)
                 return true;
 
-            // TODO Detect registry key of installation path.
-            // can only do this once it's installed trough steam or a setup.
+            // TODO Detect Steam version of the game
+
             return false;
         }
 
         /// <summary>
-        ///     Launches the game with the specified arguments.
+        ///     Launches the game.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The launched process.</returns>
-        public override Process Launch(string arguments = "-single-instance")
+        public override void Launch()
         {
-            Logger.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
+            Logger.WriteLine("Attempting to launch game.");
 
             // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
@@ -56,18 +54,15 @@ namespace ParkitectNexus.Data.Game.Linux
                 Logger.WriteLine(
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
 
-                return running;
+                return;
             }
 
-            var t = Logger.LoggingPath;
             Logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
             // Start the game process.
-            return !IsInstalled
-                ? null
-                : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.x86_64"))
+            if (IsInstalled)
+                Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.x86_64"))
                 {
-                    WorkingDirectory = InstallationPath,
-                    Arguments = arguments
+                    WorkingDirectory = InstallationPath
                 });
         }
 
