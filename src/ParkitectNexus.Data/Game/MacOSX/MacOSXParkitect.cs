@@ -35,7 +35,7 @@ namespace ParkitectNexus.Data.Game.MacOSX
             if (IsInstalled)
                 return true;
 
-            // TODO: Detect Steam version of the game
+            // TODO Detect Steam version of the game
 
             return SetInstallationPathIfValid("/Applications/Parkitect.app");
         }
