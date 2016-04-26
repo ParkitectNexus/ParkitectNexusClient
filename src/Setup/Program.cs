@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using WixSharp;
 using Assembly = System.Reflection.Assembly;
@@ -20,7 +21,7 @@ namespace WixSharpSetup
 
         private const string AppIcon = @"..\..\images\nexus.ico";
         private const string AppName = @"ParkitectNexus Client";
-        private const string AppExecutable = @"ParkitectNexusClient.exe";
+        private const string AppExecutable = @"ParkitectNexus.Client.Win32.exe";
         private const string AppBinariesPath = @"..\..\bin\" + Configuration + @"\";
 
         private static void Main()
@@ -36,16 +37,16 @@ namespace WixSharpSetup
                 new Dir(new Id("INSTALL_DIR"), @"%ProgramFiles%\" + AppName,
                     new File(AppExecutable),
                     new File(@"CommandLine.dll"),
-                    new File(@"MetroFramework.Design.dll"),
-                    new File(@"MetroFramework.dll"),
-                    new File(@"MetroFramework.Fonts.dll"),
                     new File(@"Newtonsoft.Json.dll"),
                     new File(@"Octokit.dll"),
                     new File(@"ParkitectNexus.AssetMagic.dll"),
+                    new File(@"ParkitectNexus.Client.Base.dll"),
                     new File(@"ParkitectNexus.Data.dll"),
                     new File(@"ParkitectNexus.Mod.ModLoader.dll"),
                     new File(@"StructureMap.dll"),
-                    new File(@"StructureMap.Net4.dll")
+                    new File(@"StructureMap.Net4.dll"),
+                    new File(@"Xwt.dll"),
+                    new File(@"Xwt.WPF.dll")
                     ),
                 new Dir(@"%ProgramMenu%\" + AppName,
                     new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", ""),
