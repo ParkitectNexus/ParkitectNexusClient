@@ -21,7 +21,7 @@ namespace WixSharpSetup
 
         private const string AppIcon = @"..\..\images\nexus.ico";
         private const string AppName = @"ParkitectNexus Client";
-        private const string AppExecutable = @"ParkitectNexus.Client.Win32.exe";
+        private const string AppExecutable = @"ParkitectNexus Client.exe";
         private const string AppBinariesPath = @"..\..\bin\" + Configuration + @"\";
 
         private static void Main()

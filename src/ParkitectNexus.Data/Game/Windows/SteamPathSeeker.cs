@@ -4,69 +4,63 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
 namespace ParkitectNexus.Data.Game.Windows
 {
     internal class SteamPathSeeker
     {
-        private static readonly string[] IgnoredFolders =
-        {
-            @"C:\Users",
-            @"C:\Windows",
-            @"C:\ProgramData",
-            @"C:\$recycle.bin"
-        };
-
+        private RegistryKey SteamKey => Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam")
+                                        ?? Registry.CurrentUser.OpenSubKey("Software\\Wow6432Node\\Valve\\Steam")
+                                        ?? Registry.LocalMachine.OpenSubKey("Software\\Valve\\Steam")
+                                        ?? Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Valve\\Steam");
 
         public bool IsSteamVersionInstalled
         {
             get
             {
-                var key = Registry.GetValue($@"HKEY_CURRENT_USER\SOFTWARE\Valve\Steam\Apps\{Steam.AppId}", "Installed",
-                    null);
+                var key = SteamKey.OpenSubKey($@"Apps\{Steam.AppId}")?.GetValue("Installed", null);
                 return key != null && (int) key == 1;
             }
         }
 
-        public string GetSteamInstallationPath()
+        private string SteamFolder => SteamKey?.GetValue("SteamPath")?.ToString()
+                                      ?? SteamKey?.GetValue("InstallPath")?.ToString();
+
+        private IEnumerable<string> LibraryFolders
+        {
+            get
+            {
+                var steamFolder = SteamFolder;
+                yield return steamFolder;
+
+                var configFile = steamFolder + "\\config\\config.vdf";
+
+                var regex = new Regex("BaseInstallFolder[^\"]*\"\\s*\"([^\"]*)\"");
+                using (var reader = new StreamReader(configFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        var match = regex.Match(line);
+                        if (match.Success)
+                        {
+                            yield return Regex.Unescape(match.Groups[1].Value);
+                        }
+                    }
+                }
+            }
+        }
+
+        public string GetParkitectInstallationPath()
         {
             if (!IsSteamVersionInstalled)
                 return null;
 
-            return GetSteamAppsFolders()
-                .Select(p => Path.Combine(p, "common", "Parkitect"))
+            return LibraryFolders
+                .Select(p => Path.Combine(p, "SteamApps", "common", "Parkitect"))
                 .FirstOrDefault(p => File.Exists(Path.Combine(p, "Parkitect.exe")));
-        }
-
-        private IEnumerable<string> GetSteamAppsFolders()
-        {
-            return DriveInfo.GetDrives()
-                .Where(d => d.DriveType == DriveType.Fixed)
-                .SelectMany(d => GetSteamAppsFolders(d.RootDirectory.FullName, 0));
-        }
-
-        private IEnumerable<string> GetSteamAppsFolders(string path, int depth)
-        {
-            string[] directories;
-            try
-            {
-                directories = Directory.GetDirectories(path);
-            }
-            catch
-            {
-                yield break;
-            }
-
-            foreach (var directory in directories.Except(IgnoredFolders))
-            {
-                if (Path.GetFileName(directory) == "SteamApps")
-                    yield return directory;
-
-                if (depth < 6)
-                    foreach (var r in GetSteamAppsFolders(directory, depth + 1))
-                        yield return r;
-            }
         }
     }
 }

@@ -39,7 +39,7 @@ namespace ParkitectNexus.Data.Game.Windows
             if(IsInstalled && GameSettings.Model.IsSteamVersion == _steamPathSeeker.IsSteamVersionInstalled)
                 return true;
 
-            var steamGamePath = _steamPathSeeker.GetSteamInstallationPath();
+            var steamGamePath = _steamPathSeeker.GetParkitectInstallationPath();
 
             GameSettings.Model.IsSteamVersion = steamGamePath != null;
             GameSettings.Save();
