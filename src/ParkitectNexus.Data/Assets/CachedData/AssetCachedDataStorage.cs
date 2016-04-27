@@ -35,9 +35,6 @@ namespace ParkitectNexus.Data.Assets.CachedData
             {
                 var newInstance = await GenerateCachableData(type, metadata, path);
 
-                if (newInstance == null)
-                    return null;
-
                 StoreData(type, path, newInstance);
                 return newInstance;
             }
@@ -70,8 +67,8 @@ namespace ParkitectNexus.Data.Assets.CachedData
                             };
                         }
                     case AssetType.Mod:
-                        if (metadata == null || metadata.Id == null)
-                            return null;
+                        if (metadata?.Id == null)
+                            return new AssetWithImageCachedData();
 
                         using (var stream = new MemoryStream())
                         {

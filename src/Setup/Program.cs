@@ -21,7 +21,7 @@ namespace WixSharpSetup
 
         private const string AppIcon = @"..\..\images\nexus.ico";
         private const string AppName = @"ParkitectNexus Client";
-        private const string AppExecutable = @"ParkitectNexus Client.exe";
+        private const string AppExecutable = @"ParkitectNexusClient.exe";
         private const string AppBinariesPath = @"..\..\bin\" + Configuration + @"\";
 
         private static void Main()
@@ -50,7 +50,6 @@ namespace WixSharpSetup
                     ),
                 new Dir(@"%ProgramMenu%\" + AppName,
                     new ExeFileShortcut(AppName, $"[INSTALL_DIR]{AppExecutable}", ""),
-                    new ExeFileShortcut("Launch Parkitect with Mods", $"[INSTALL_DIR]{AppExecutable}", "--launch"),
                     new ExeFileShortcut("Uninstall " + AppName, "[System64Folder]msiexec.exe", "/x [ProductCode]")
                     ),
                 new Dir(@"%Desktop%",
