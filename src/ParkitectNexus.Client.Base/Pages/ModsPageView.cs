@@ -45,13 +45,17 @@ namespace ParkitectNexus.Client.Base.Pages
 
             var enabledCheckbox = new CheckBox
             {
-                Active = mod.Information.IsEnabled
+                Active = mod.Information.IsEnabled,
+                Sensitive = !mod.Information.IsDevelopment
             };
-            enabledCheckbox.Clicked += (sender, args) =>
-            {
-                mod.Information.IsEnabled = !mod.Information.IsEnabled;
-                mod.SaveInformation();
-            };
+
+            if (!mod.Information.IsDevelopment)
+                enabledCheckbox.Clicked += (sender, args) =>
+                {
+                    mod.Information.IsEnabled = !mod.Information.IsEnabled;
+                    mod.SaveInformation();
+                };
+
             enabled.PackEnd(enabledCheckbox);
 
             vBox.PackStart(version);
@@ -62,9 +66,13 @@ namespace ParkitectNexus.Client.Base.Pages
         {
             var mod = asset as IModAsset;
 
-            var viewOnWebsiteButton = new Button("View on ParkitectNexus");
-            viewOnWebsiteButton.Clicked +=
-                (sender, args) => { Process.Start(_website.ResolveUrl($"redirect/{mod.Repository}", "client")); };
+            var viewOnWebsiteButton = new Button("View on ParkitectNexus")
+            {
+                Sensitive = !mod.Information.IsDevelopment
+            };
+            if (!mod.Information.IsDevelopment)
+                viewOnWebsiteButton.Clicked +=
+                    (sender, args) => { Process.Start(_website.ResolveUrl($"redirect/{mod.Repository}", "client")); };
 
             var recompileButton = new Button("Recompile");
             recompileButton.Clicked += (sender, args) =>
@@ -73,12 +81,16 @@ namespace ParkitectNexus.Client.Base.Pages
                 MainView.SwitchToTab(4);
             };
 
-            var updateButton = new Button("Update");
-            updateButton.Clicked += (sender, args) =>
+            var updateButton = new Button("Update")
             {
-                _queueableTaskManager.With(mod).Add<UpdateModTask>();
-                MainView.SwitchToTab(4);
+                Sensitive = !mod.Information.IsDevelopment
             };
+            if (!mod.Information.IsDevelopment)
+                updateButton.Clicked += (sender, args) =>
+                {
+                    _queueableTaskManager.With(mod).Add<UpdateModTask>();
+                    MainView.SwitchToTab(4);
+                };
 
             var utils = new HBox();
             utils.PackStart(recompileButton, true);
