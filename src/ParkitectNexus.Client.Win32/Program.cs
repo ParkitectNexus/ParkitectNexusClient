@@ -31,7 +31,7 @@ namespace ParkitectNexus.Client.Win32
             {
                 // No matter if the application crashes, we must release the mutex when the app closes. Wrap the app
                 // logic in a try-finally block.
-#if RELEASE
+#if !DEBUG
                 try
                 {
 #endif
@@ -67,7 +67,7 @@ namespace ParkitectNexus.Client.Win32
                     }
 
                     app.Run();
-#if RELEASE
+#if !DEBUG
                 }
                 catch (Exception e)
                 {

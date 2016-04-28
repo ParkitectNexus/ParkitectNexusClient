@@ -46,6 +46,7 @@ namespace ParkitectNexus.Client.Base.Tiles
             foreach (var r in _rows)
                 r.Clear();
 
+            _buttons.Clear();
             _rows.Clear();
             _box.Clear();
             PushNewRow();
@@ -70,14 +71,13 @@ namespace ParkitectNexus.Client.Base.Tiles
                     await Task.Delay(1);
             }
 
-            // Clear controls
-            ClearTiles();
-
-
             Spinner spinner = null;
 
             Application.Invoke(() =>
             {
+                // Clear controls
+                ClearTiles();
+
                 Content =
                     spinner = new Spinner
                     {
@@ -139,7 +139,7 @@ namespace ParkitectNexus.Client.Base.Tiles
             }
             finally
             {
-                _tokenSource.Dispose();
+                _tokenSource?.Dispose();
                 _tokenSource = null;
             }
         }
@@ -148,7 +148,7 @@ namespace ParkitectNexus.Client.Base.Tiles
         {
             if (CalculateButtonsPerRow(width) == _buttonsPerRow)
                 return;
-            
+
             _buttonsPerRow = CalculateButtonsPerRow(width);
             var i = 0;
 

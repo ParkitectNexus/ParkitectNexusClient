@@ -58,6 +58,8 @@ namespace ParkitectNexus.Data.Reporting
                         return new WindowsCrashReport(parkitect, action, exception, _log);
                     case SupportedOperatingSystem.MacOSX:
                         return new MacOSXCrashReport(parkitect, action, exception, _log);
+                    case SupportedOperatingSystem.Linux:
+                        return new LinuxCrashReport(parkitect, action, exception, _log);
                     default:
                         throw new Exception("unsupported operating system " + os);
                 }

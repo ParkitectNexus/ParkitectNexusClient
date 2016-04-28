@@ -41,12 +41,14 @@ namespace ParkitectNexus.Client.Base.Pages
 
         private void Assets_AssetRemoved(object sender, AssetEventArgs e)
         {
-            RefreshTiles();
+            if (e.Asset.Type == _type)
+                RefreshTiles();
         }
 
         private void Assets_AssetAdded(object sender, AssetEventArgs e)
         {
-            RefreshTiles();
+            if (e.Asset.Type == _type)
+                RefreshTiles();
         }
 
         protected virtual void PopulateViewBoxWithTitle(VBox vBox, IAsset asset)

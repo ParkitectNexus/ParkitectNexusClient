@@ -65,9 +65,6 @@ namespace ParkitectNexus.Data.Updating
                     {
                         var newestVersion = new Version(updateInfo.Version);
 
-                        currentVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build);
-                        newestVersion = new Version(newestVersion.Major, newestVersion.Minor, newestVersion.Build);
-
                         _log.WriteLine($"Server reported newest version is v{updateInfo.Version}.");
                         if (newestVersion > currentVersion)
                         {

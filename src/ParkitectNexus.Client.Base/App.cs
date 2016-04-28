@@ -42,7 +42,7 @@ namespace ParkitectNexus.Client.Base
 
         public static UIImageProvider Images { get; } = new UIImageProvider();
 
-        
+
         public bool Initialize(ToolkitType type)
         {
             _log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
@@ -76,7 +76,7 @@ namespace ParkitectNexus.Client.Base
             if (!_parkitect.DetectInstallationPath())
             {
                 if (
-                    !MessageDialog.Confirm("We couldn't detect Parkitect on your machine.\nPlease point me to it!",
+                    !MessageDialog.Confirm("We couldn't automatically detect Parkitect on your machine!\nPlease press OK and manually select the installation folder of Parkitect.",
                         Command.Ok))
                 {
                     _window.Dispose();
@@ -125,7 +125,6 @@ namespace ParkitectNexus.Client.Base
             }
         }
 
-        // TODO: Replace with simple TCP server configuration
         private async void CheckForIpcFile()
         {
             var ipcPath = Path.Combine(AppData.Path, "ipc.dat");
