@@ -7,6 +7,7 @@ using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Settings.Models;
 using ParkitectNexus.Data.Utilities;
+using System;
 
 namespace ParkitectNexus.Data.Game.MacOSX
 {
@@ -32,12 +33,20 @@ namespace ParkitectNexus.Data.Game.MacOSX
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
         public override bool DetectInstallationPath()
         {
-            if (IsInstalled)
+            if (IsInstalled && GameSettings.Model.IsSteamVersion)
                 return true;
 
-            // TODO Detect Steam version of the game
+            bool success = SetInstallationPathIfValid(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), 
+                "Library/Application Support/Steam/steamapps/common/Parkitect/Parkitect.app")) ||
+                           SetInstallationPathIfValid("/Applications/Parkitect.app");
+         
+            if(IsInstalled)
+            {
+                GameSettings.Model.IsSteamVersion = File.Exists(Path.Combine(InstallationPath, "installscript_osx.vdf"));
+                GameSettings.Save();
+            }
 
-            return SetInstallationPathIfValid("/Applications/Parkitect.app");
+            return success;
         }
 
         /// <summary>
