@@ -26,10 +26,13 @@ namespace ParkitectNexus.Client.Base.Tiles
             ClickAction = clickAction;
         }
 
+        // TODO better use xwt image
         public Image Image { get; }
 
         public string Text { get; }
 
         public Action ClickAction { get; }
+
+        public Xwt.Drawing.Color BackgroundColor { get; set; } = Xwt.Drawing.Color.FromBytes(45, 137, 239);
     }
 }

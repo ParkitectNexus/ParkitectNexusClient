@@ -13,15 +13,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ParkitectNexus.Client.Base.Pages;
 using ParkitectNexus.Client.Base.Utilities;
 using ParkitectNexus.Data.Presenter;
 using Xwt;
-using Xwt.Drawing;
 
 namespace ParkitectNexus.Client.Base.Tiles
 {
@@ -121,7 +118,7 @@ namespace ParkitectNexus.Client.Base.Tiles
                             PushNewRow();
                             i = 0;
                         }
-                        var button = new Button(tile.Image?.ToXwtImage()?.WithSize(100))
+                        var button = new Button(tile.Image?.ToXwtImage()?.ScaleToSize(100))
                         {
                             Label = tile.Image == null ? tile.Text : null,
                             TooltipText = tile.Text,
@@ -129,7 +126,7 @@ namespace ParkitectNexus.Client.Base.Tiles
                             HeightRequest = 100,
                             MinWidth = 0,
                             Style = ButtonStyle.Borderless,
-                            BackgroundColor = Color.FromBytes(45, 137, 239),
+                            BackgroundColor =tile.BackgroundColor,
                             ImagePosition = ContentPosition.Center
                         };
 
@@ -177,8 +174,6 @@ namespace ParkitectNexus.Client.Base.Tiles
                 _rows.Peek().PackStart(button);
                 i++;
             }
-
-            Debug.WriteLine("Moved {0} buttons to {1} rows", _buttons.Count, _box.Children.Count());
         }
 
         #region Overrides of Widget

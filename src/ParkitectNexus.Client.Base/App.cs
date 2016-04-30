@@ -50,9 +50,9 @@ namespace ParkitectNexus.Client.Base
             _updateManager = updateManager;
         }
 
-        public static UIImageProvider Images { get; } = new UIImageProvider();
-
-
+        public static UIImageProvider<Xwt.Drawing.Image> Images { get; } = new UIImageProvider<Xwt.Drawing.Image>();
+        public static UIImageProvider<System.Drawing.Image> DImages { get; } = new UIImageProvider<System.Drawing.Image>();
+        
         public bool Initialize(ToolkitType type)
         {
             _log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));

@@ -15,8 +15,23 @@ using Xwt.Drawing;
 
 namespace ParkitectNexus.Client.Base
 {
-    public class UIImageProvider
+    public class UIImageProvider<TImageType> where TImageType : class
     {
-        public Image this[string key] => Image.FromResource(GetType(), $"ParkitectNexus.Client.Base.Resources.{key}");
+        public TImageType this[string key]
+        {
+            get
+            {
+                if (typeof (TImageType) == typeof (Image))
+                    return Image.FromResource(GetType(), $"ParkitectNexus.Client.Base.Resources.{key}") as TImageType;
+
+                if (typeof (TImageType) == typeof (System.Drawing.Image))
+                {
+                    using (var str = GetType().Assembly.GetManifestResourceStream($"ParkitectNexus.Client.Base.Resources.{key}"))
+                        return System.Drawing.Image.FromStream(str) as TImageType;
+                }
+
+                return null;
+            }
+        }
     }
 }
