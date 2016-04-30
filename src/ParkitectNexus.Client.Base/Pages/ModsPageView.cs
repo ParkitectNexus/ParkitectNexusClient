@@ -99,7 +99,6 @@ namespace ParkitectNexus.Client.Base.Pages
                 updateButton.Clicked += (sender, args) =>
                 {
                     _queueableTaskManager.With(mod).Add<UpdateModTask>();
-                    MainView.SwitchToTab(4);
                 };
 
             var utils = new HBox();

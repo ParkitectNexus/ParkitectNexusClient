@@ -19,7 +19,7 @@ namespace ParkitectNexus.Data.Game.Windows
     /// <summary>
     ///     Contains calls to the user32.dll API.
     /// </summary>
-    internal class User32
+    public class User32
     {
         /// <summary>
         ///     Brings the thread that created the specified window into the foreground and activates the window. Keyboard input is

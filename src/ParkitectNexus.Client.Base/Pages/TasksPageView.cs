@@ -13,11 +13,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using ParkitectNexus.Client.Base.Components;
+using ParkitectNexus.Client.Base.Main;
 using ParkitectNexus.Data;
+using ParkitectNexus.Data.Game.Windows;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks;
+using ParkitectNexus.Data.Tasks.Prefab;
 using Xwt;
 using Xwt.Drawing;
 using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
@@ -26,14 +31,27 @@ namespace ParkitectNexus.Client.Base.Pages
 {
     public class TasksPageView : ScrollView, IPresenter, IPageView
     {
+        private Type[] _tasksOfInterest =
+        {
+            typeof(CompileModTask),
+            typeof(InstallAssetTask)
+        };
+
         private readonly Label _nothingLabel;
         private readonly IQueueableTaskManager _taskManager;
         private readonly VBox _vBox;
         private string _displayName = "Tasks";
+        private readonly MainView _mainView;
         private List<TaskView> _taskViews = new List<TaskView>();
 
-        public TasksPageView(IQueueableTaskManager taskManager)
+        public TasksPageView(IQueueableTaskManager taskManager, IPresenter parent)
         {
+
+            if (!(parent is MainView))
+                throw new ArgumentException("parent must be MainView", nameof(parent));
+
+            _mainView = (MainView)parent;
+
             _taskManager = taskManager;
 
             taskManager.TaskAdded += TaskManager_TaskAdded;
@@ -62,32 +80,10 @@ namespace ParkitectNexus.Client.Base.Pages
             }
         }
 
-        protected override void OnVisibleRectChanged(EventArgs e)
-        {
-            base.OnVisibleRectChanged(e);
-        }
-
         private void TaskManager_TaskFinished(object sender, QueueableTaskEventArgs e)
         {
             var count = _taskManager.Count;
             DisplayName = count == 0 ? "Tasks" : $"Tasks ({count})";
-        }
-
-        private void ReOrderTasks()
-        {
-            _vBox.Clear();
-
-            _taskViews =
-                _taskViews.Select(v => new KeyValuePair<int, TaskView>(_taskManager.IndexOf(v.Task), v))
-                    .Where(kv => kv.Key >= 0)
-                    .Select(kv => kv.Value)
-                    .ToList();
-
-            foreach (var v in _taskViews)
-                _vBox.PackStart(v);
-
-            if (!_taskViews.Any())
-                _vBox.PackStart(_nothingLabel, true, true);
         }
 
         private void TaskManager_TaskRemoved(object sender, QueueableTaskEventArgs e)
@@ -120,8 +116,33 @@ namespace ParkitectNexus.Client.Base.Pages
             {
                 var tv = new TaskView(e.Task);
                 _taskViews.Add(tv);
+
+                if (_tasksOfInterest.Contains(e.Task.GetType()))
+                {
+                    _mainView.SwitchToTab(4);
+
+                    if (OperatingSystem.Detect() == SupportedOperatingSystem.Windows)
+                        User32.SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
+                }
                 ReOrderTasks();
             });
+        }
+
+        private void ReOrderTasks()
+        {
+            _vBox.Clear();
+
+            _taskViews =
+                _taskViews.Select(v => new KeyValuePair<int, TaskView>(_taskManager.IndexOf(v.Task), v))
+                    .Where(kv => kv.Key >= 0)
+                    .Select(kv => kv.Value)
+                    .ToList();
+
+            foreach (var v in _taskViews)
+                _vBox.PackStart(v);
+
+            if (!_taskViews.Any())
+                _vBox.PackStart(_nothingLabel, true, true);
         }
 
         protected virtual void OnDisplayNameChanged()
