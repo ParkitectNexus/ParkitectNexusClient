@@ -1,11 +1,23 @@
 ﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading;
 using CommandLine;
+using Mono.Unix;
 using ParkitectNexus.Client.Base;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
@@ -13,8 +25,6 @@ using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using Xwt;
-using System.Net.Sockets;
-using Mono.Unix;
 
 namespace ParkitectNexus.Client.Linux
 {
@@ -22,44 +32,43 @@ namespace ParkitectNexus.Client.Linux
     {
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         public static App app;
-        public static bool closed = false;
+        public static bool closed;
 
 
         [STAThread]
         public static void Main(string[] args)
         {
             String socketPath = Path.GetTempPath() + "/parkitect_nexus.socket";
-            bool isHost = false; 
+            bool isHost = false;
             var endPoint = new UnixEndPoint(socketPath);
-            var socket = new System.Net.Sockets.Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.IP);
+            var socket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.IP);
 
-            if (!System.IO.File.Exists(Path.GetTempPath() + "/parkitect_nexus.socket"))
+            if (!File.Exists(Path.GetTempPath() + "/parkitect_nexus.socket"))
             {
-                if(!CreateSocket(socket, endPoint)) return;
-
+                if (!CreateSocket(socket, endPoint)) return;
             }
             else
             {
-                try{
+                try
+                {
                     socket.Connect(endPoint);
                     using (NetworkStream sr = new NetworkStream(socket))
                     {
                         using (StreamWriter writer = new StreamWriter(sr))
                         {
-                            writer.WriteLine(args.Length); 
+                            writer.WriteLine(args.Length);
                             for (int x = 0; x < args.Length; x++)
                             {
-                                writer.WriteLine(args[x]); 
+                                writer.WriteLine(args[x]);
                             }
-
                         }
                     }
                     return;
-                }  
+                }
                 catch
                 {
-                    System.IO.File.Delete(Path.GetTempPath()+"/parkitect_nexus.socket");
-                    if(!CreateSocket(socket, endPoint)) return;
+                    File.Delete(Path.GetTempPath() + "/parkitect_nexus.socket");
+                    if (!CreateSocket(socket, endPoint)) return;
                 }
             }
 
@@ -100,7 +109,6 @@ namespace ParkitectNexus.Client.Linux
             }
             closed = true;
             socket.Close();
-
         }
 
         public static void OnAccept(IAsyncResult ar)
@@ -109,8 +117,8 @@ namespace ParkitectNexus.Client.Linux
             allDone.Set();
             if (!closed)
             {
-                System.Net.Sockets.Socket listener = (System.Net.Sockets.Socket)ar.AsyncState;
-                System.Net.Sockets.Socket handler = listener.EndAccept(ar);
+                Socket listener = (Socket) ar.AsyncState;
+                Socket handler = listener.EndAccept(ar);
                 using (NetworkStream stream = new NetworkStream(handler))
                 {
                     using (StreamReader reader = new StreamReader(stream))
@@ -122,7 +130,6 @@ namespace ParkitectNexus.Client.Linux
                             args[x] = reader.ReadLine();
                         }
                         ProcessArgs(args);
-
                     }
                 }
             }
@@ -150,7 +157,7 @@ namespace ParkitectNexus.Client.Linux
                 {
                     NexusUrl url;
                     if (NexusUrl.TryParse(options.Url, out url))
-                        Program.app.HandleUrl(url);
+                        app.HandleUrl(url);
                 }
             }
         }
@@ -159,19 +166,19 @@ namespace ParkitectNexus.Client.Linux
         {
             try
             {
-
                 //listen for a connection and then rebind the accept
-                var listeningThread = new Thread(delegate() {
+                var listeningThread = new Thread(delegate()
+                {
                     s.Bind(end);
                     s.Listen(10);
 
-                    while(s.IsBound)
+                    while (s.IsBound)
                     {
                         allDone.Reset();
-                        if(closed)
+                        if (closed)
                             break;
                         //bind accept and listen for arguments
-                        s.BeginAccept(new System.AsyncCallback(OnAccept),s);
+                        s.BeginAccept(OnAccept, s);
                         //end the thread when nothing is connected
 
                         allDone.WaitOne();
@@ -181,12 +188,10 @@ namespace ParkitectNexus.Client.Linux
 
                 return true;
             }
-            catch(System.Net.Sockets.SocketException e)
+            catch (SocketException e)
             {
                 throw e;
             }
         }
-
-
     }
 }

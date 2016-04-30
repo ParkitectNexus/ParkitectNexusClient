@@ -1,15 +1,26 @@
 ﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using ParkitectNexus.Client.Base.Components;
+using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks;
 using Xwt;
 using Xwt.Drawing;
-using System.Diagnostics;
+using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
 namespace ParkitectNexus.Client.Base.Pages
 {
@@ -44,7 +55,7 @@ namespace ParkitectNexus.Client.Base.Pages
         public void HandleSizeChange()
         {
             // Stupid fix awgh...
-            if(ParkitectNexus.Data.Utilities.OperatingSystem.Detect() == ParkitectNexus.Data.SupportedOperatingSystem.MacOSX)
+            if (OperatingSystem.Detect() == SupportedOperatingSystem.MacOSX)
             {
                 var backendHost = BackendHost as WidgetBackendHost;
                 backendHost?.OnVisibleRectChanged();
@@ -117,7 +128,6 @@ namespace ParkitectNexus.Client.Base.Pages
         {
             DisplayNameChanged?.Invoke(this, EventArgs.Empty);
         }
-       
 
         #region Implementation of IPageView
 

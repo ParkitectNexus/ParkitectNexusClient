@@ -1,43 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ParkitectNexusClient
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Client;
+using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
 namespace ParkitectNexus.Data.Updating
 {
     public class UpdateManager : IUpdateManager
     {
-        private readonly IWebsite _website;
-        private readonly INexusWebClientFactory _webClientFactory;
         private readonly ILogger _log;
+        private readonly INexusWebClientFactory _webClientFactory;
+        private readonly IWebsite _website;
 
         public UpdateManager(IWebsite website, INexusWebClientFactory webClientFactory, ILogger log)
         {
             _website = website;
             _webClientFactory = webClientFactory;
             _log = log;
-        }
-
-        protected virtual string GetUpdateVersionUrl()
-        {
-            switch (Utilities.OperatingSystem.Detect())
-            {
-                case SupportedOperatingSystem.Windows:
-                    return _website.ResolveUrl("update.json", "client");
-                case SupportedOperatingSystem.MacOSX:
-                    return _website.ResolveUrl("update-osx.json", "client");
-                case SupportedOperatingSystem.Linux:
-                    throw new NotImplementedException();
-                default:
-                    throw new Exception("unknown operating system");
-            }
         }
 
         /// <summary>
@@ -51,7 +47,7 @@ namespace ParkitectNexus.Data.Updating
             try
             {
                 _log.WriteLine(
-                    $"Checking for client updates... Currently on version v{currentVersion}-{Utilities.OperatingSystem.Detect()}.");
+                    $"Checking for client updates... Currently on version v{currentVersion}-{OperatingSystem.Detect()}.");
 
                 using (var webClient = _webClientFactory.CreateWebClient(true))
                 using (var stream = webClient.OpenRead(GetUpdateVersionUrl()))
@@ -90,7 +86,7 @@ namespace ParkitectNexus.Data.Updating
         {
             try
             {
-                switch (Utilities.OperatingSystem.Detect())
+                switch (OperatingSystem.Detect())
                 {
                     case SupportedOperatingSystem.Windows:
                     {
@@ -146,9 +142,25 @@ namespace ParkitectNexus.Data.Updating
             }
         }
 
+        protected virtual string GetUpdateVersionUrl()
+        {
+            switch (OperatingSystem.Detect())
+            {
+                case SupportedOperatingSystem.Windows:
+                    return _website.ResolveUrl("update.json", "client");
+                case SupportedOperatingSystem.MacOSX:
+                    return _website.ResolveUrl("update-osx.json", "client");
+                case SupportedOperatingSystem.Linux:
+                    throw new NotImplementedException();
+                default:
+                    throw new Exception("unknown operating system");
+            }
+        }
+
         private static string RandomString(int length)
         {
-            var eligable = Enumerable.Range(0, 36).Select(n => n < 10 ? (char)(n + '0') : (char)('a' + n - 10)).ToArray();
+            var eligable =
+                Enumerable.Range(0, 36).Select(n => n < 10 ? (char) (n + '0') : (char) ('a' + n - 10)).ToArray();
             var random = new Random();
             return string.Concat(Enumerable.Range(0, length).Select(n => eligable[random.Next(eligable.Length)]));
         }

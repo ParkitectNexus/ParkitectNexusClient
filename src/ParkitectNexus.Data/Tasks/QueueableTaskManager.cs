@@ -1,56 +1,65 @@
 ﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using ParkitectNexus.Data.Utilities;
-using StructureMap.Pipeline;
 
 namespace ParkitectNexus.Data.Tasks
 {
     public class QueueableTaskManager : IQueueableTaskManager
     {
         private readonly ILogger _log;
-        private readonly List<IQueueableTask> _runningAndFinishedTasks = new List<IQueueableTask>();
         private readonly List<IQueueableTask> _queuedTasks = new List<IQueueableTask>();
-        
+        private readonly List<IQueueableTask> _runningAndFinishedTasks = new List<IQueueableTask>();
+
+        private CancellationTokenSource _cancellationTokenSource;
+        private IQueueableTask _currentTask;
+
         public QueueableTaskManager(ILogger log)
         {
             _log = log;
         }
 
-        private CancellationTokenSource _cancellationTokenSource;
-        private IQueueableTask _currentTask;
-
         /// <summary>
-        /// Occurs when a task was added.
-        /// </summary>
-        public event EventHandler<QueueableTaskEventArgs> TaskAdded;
-
-        /// <summary>
-        /// Occurs when task was removed.
-        /// </summary>
-        public event EventHandler<QueueableTaskEventArgs> TaskRemoved;
-
-        /// <summary>
-        /// Occurs when a task has finished.
-        /// </summary>
-        public event EventHandler<QueueableTaskEventArgs> TaskFinished;
-
-        /// <summary>
-        /// Gets the task count.
-        /// </summary>
-        public int Count => _queuedTasks.Count + (_currentTask != null ? 1 : 0);
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is idle.
+        ///     Gets a value indicating whether this instance is idle.
         /// </summary>
         public bool IsIdle => Count == 0;
 
         /// <summary>
-        /// Adds the specified task to the queue.
+        ///     Occurs when a task was added.
+        /// </summary>
+        public event EventHandler<QueueableTaskEventArgs> TaskAdded;
+
+        /// <summary>
+        ///     Occurs when task was removed.
+        /// </summary>
+        public event EventHandler<QueueableTaskEventArgs> TaskRemoved;
+
+        /// <summary>
+        ///     Occurs when a task has finished.
+        /// </summary>
+        public event EventHandler<QueueableTaskEventArgs> TaskFinished;
+
+        /// <summary>
+        ///     Gets the task count.
+        /// </summary>
+        public int Count => _queuedTasks.Count + (_currentTask != null ? 1 : 0);
+
+        /// <summary>
+        ///     Adds the specified task to the queue.
         /// </summary>
         /// <param name="task">The task.</param>
         public void Add(IQueueableTask task)
@@ -130,7 +139,10 @@ namespace ParkitectNexus.Data.Tasks
         {
             // Gather a collection of finished tasks.
             var completed = _runningAndFinishedTasks
-                .Where(t => t.Status == TaskStatus.Canceled || t.Status == TaskStatus.Finished || t.Status == TaskStatus.FinishedWithErrors)
+                .Where(
+                    t =>
+                        t.Status == TaskStatus.Canceled || t.Status == TaskStatus.Finished ||
+                        t.Status == TaskStatus.FinishedWithErrors)
                 .ToArray();
 
             // Remove every finished task from the list and raise the TaskRemoved event.
@@ -170,7 +182,8 @@ namespace ParkitectNexus.Data.Tasks
             {
                 _log.WriteLine($"Started task {_currentTask}.");
                 await _currentTask.Run(_cancellationTokenSource.Token);
-                _log.WriteLine($"Task {_currentTask} ended in state {_currentTask.Status} at {_currentTask.CompletionPercentage}%.");
+                _log.WriteLine(
+                    $"Task {_currentTask} ended in state {_currentTask.Status} at {_currentTask.CompletionPercentage}%.");
 
                 // If the task requests a break, move it to the end of the queue.
                 if (_currentTask.Status == TaskStatus.Break)
@@ -222,7 +235,7 @@ namespace ParkitectNexus.Data.Tasks
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TaskAdded" /> event.
+        ///     Raises the <see cref="E:TaskAdded" /> event.
         /// </summary>
         /// <param name="e">The <see cref="ParkitectNexus.Data.Tasks.QueueableTaskEventArgs" /> instance containing the event data.</param>
         protected virtual void OnTaskAdded(QueueableTaskEventArgs e)
@@ -231,7 +244,7 @@ namespace ParkitectNexus.Data.Tasks
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TaskRemoved" /> event.
+        ///     Raises the <see cref="E:TaskRemoved" /> event.
         /// </summary>
         /// <param name="e">The <see cref="ParkitectNexus.Data.Tasks.QueueableTaskEventArgs" /> instance containing the event data.</param>
         protected virtual void OnTaskRemoved(QueueableTaskEventArgs e)
@@ -240,7 +253,7 @@ namespace ParkitectNexus.Data.Tasks
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TaskFinished" /> event.
+        ///     Raises the <see cref="E:TaskFinished" /> event.
         /// </summary>
         /// <param name="e">The <see cref="ParkitectNexus.Data.Tasks.QueueableTaskEventArgs" /> instance containing the event data.</param>
         protected virtual void OnTaskFinished(QueueableTaskEventArgs e)

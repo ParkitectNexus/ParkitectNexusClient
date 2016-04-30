@@ -1,5 +1,15 @@
 ﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.IO;
 using System.Reflection;
@@ -21,13 +31,13 @@ namespace ParkitectNexus.Client.Base
     public class App : IPresenter
     {
         private readonly ILogger _log;
-        private readonly IUpdateManager _updateManager;
         private readonly IParkitect _parkitect;
         private readonly IPresenterFactory _presenterFactory;
         private readonly IQueueableTaskManager _taskManager;
+        private readonly IUpdateManager _updateManager;
         private bool _isRunning;
+        private readonly Migrator _migrator;
         private MainWindow _window;
-        private Migrator _migrator;
 
         public App(IPresenterFactory presenterFactory, IParkitect parkitect, IQueueableTaskManager taskManager,
             ILogger log, IUpdateManager updateManager, Migrator migrator)
@@ -57,9 +67,10 @@ namespace ParkitectNexus.Client.Base
             if (update != null)
             {
                 if (
-                    MessageDialog.AskQuestion("A required update for the ParkitectNexus Client needs to be installed.\n" +
+                    MessageDialog.AskQuestion(
+                        "A required update for the ParkitectNexus Client needs to be installed.\n" +
                         "Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n" +
-                        $"Would you like to install it now?\n\nYou are currently running v{typeof(App).Assembly.GetName().Version}. The newest version is v{update.Version}",
+                        $"Would you like to install it now?\n\nYou are currently running v{typeof (App).Assembly.GetName().Version}. The newest version is v{update.Version}",
                         "ParkitectNexus Client Update", Command.Yes, Command.No) !=
                     Command.Yes)
                 {
@@ -76,7 +87,8 @@ namespace ParkitectNexus.Client.Base
             if (!_parkitect.DetectInstallationPath())
             {
                 if (
-                    !MessageDialog.Confirm("We couldn't automatically detect Parkitect on your machine!\nPlease press OK and manually select the installation folder of Parkitect.",
+                    !MessageDialog.Confirm(
+                        "We couldn't automatically detect Parkitect on your machine!\nPlease press OK and manually select the installation folder of Parkitect.",
                         Command.Ok))
                 {
                     _window.Dispose();

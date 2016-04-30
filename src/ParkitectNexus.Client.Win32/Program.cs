@@ -1,5 +1,15 @@
 ﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.IO;
@@ -9,7 +19,6 @@ using CommandLine;
 using ParkitectNexus.Client.Base;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
-using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using Xwt;
@@ -35,38 +44,38 @@ namespace ParkitectNexus.Client.Win32
                 try
                 {
 #endif
-                    // Increase maximum threads.
-                    //ThreadPool.SetMaxThreads(16, 16);
+                // Increase maximum threads.
+                //ThreadPool.SetMaxThreads(16, 16);
 
-                    // Initialize the structure map container.
-                    var registry = ObjectFactory.ConfigureStructureMap();
-                    registry.IncludeRegistry(new PresenterRegistry());
-                    ObjectFactory.SetUpContainer(registry);
+                // Initialize the structure map container.
+                var registry = ObjectFactory.ConfigureStructureMap();
+                registry.IncludeRegistry(new PresenterRegistry());
+                ObjectFactory.SetUpContainer(registry);
 
 
-                    // Create the form and run its message loop. If arguments were specified, process them within the
-                    // form.
-                    var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
-                    var app = presenterFactory.InstantiatePresenter<App>();
-                    if (!app.Initialize(ToolkitType.Wpf))
-                        return;
+                // Create the form and run its message loop. If arguments were specified, process them within the
+                // form.
+                var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
+                var app = presenterFactory.InstantiatePresenter<App>();
+                if (!app.Initialize(ToolkitType.Wpf))
+                    return;
 
-                    ParkitectNexusProtocol.Install(ObjectFactory.GetInstance<ILogger>());
+                ParkitectNexusProtocol.Install(ObjectFactory.GetInstance<ILogger>());
 
-                    if (args.Any())
+                if (args.Any())
+                {
+                    var options = new AppCommandLineOptions();
+                    Parser.Default.ParseArguments(args, options);
+
+                    if (options.Url != null)
                     {
-                        var options = new AppCommandLineOptions();
-                        Parser.Default.ParseArguments(args, options);
-
-                        if (options.Url != null)
-                        {
-                            NexusUrl url;
-                            if (NexusUrl.TryParse(options.Url, out url))
-                                app.HandleUrl(url);
-                        }
+                        NexusUrl url;
+                        if (NexusUrl.TryParse(options.Url, out url))
+                            app.HandleUrl(url);
                     }
+                }
 
-                    app.Run();
+                app.Run();
 #if !DEBUG
                 }
                 catch (Exception e)

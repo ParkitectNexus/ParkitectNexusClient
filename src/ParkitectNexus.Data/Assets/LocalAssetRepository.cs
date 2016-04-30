@@ -1,5 +1,15 @@
 // ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections;
@@ -14,7 +24,6 @@ using ParkitectNexus.Data.Assets.Meta;
 using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
-using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Data.Assets
 {
@@ -25,12 +34,42 @@ namespace ParkitectNexus.Data.Assets
         private readonly ILogger _log;
         private readonly IParkitect _parkitect;
 
-        public LocalAssetRepository(IParkitect parkitect, ILogger log, IAssetMetadataStorage assetMetadataStorage, IAssetCachedDataStorage assetCachedDataStorage)
+        public LocalAssetRepository(IParkitect parkitect, ILogger log, IAssetMetadataStorage assetMetadataStorage,
+            IAssetCachedDataStorage assetCachedDataStorage)
         {
             _parkitect = parkitect;
             _log = log;
             _assetMetadataStorage = assetMetadataStorage;
             _assetCachedDataStorage = assetCachedDataStorage;
+        }
+
+        private string[] GetFilesInAssetPath(AssetType type)
+        {
+            switch (type)
+            {
+                case AssetType.Blueprint:
+                    if (_parkitect.Paths.GetAssetPath(type) == null)
+                        return new string[0];
+
+                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.png",
+                        SearchOption.AllDirectories);
+                case AssetType.Savegame:
+                    if (_parkitect.Paths.GetAssetPath(type) == null)
+                        return new string[0];
+
+                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.txt",
+                        SearchOption.AllDirectories)
+                        .Concat(Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.park",
+                            SearchOption.AllDirectories)).ToArray();
+                case AssetType.Mod:
+                    if (_parkitect.Paths.GetAssetPath(type) == null)
+                        return new string[0];
+                    return Directory.GetDirectories(_parkitect.Paths.GetAssetPath(AssetType.Mod))
+                        .Where(path => File.Exists(Path.Combine(path, "mod.json")))
+                        .ToArray();
+                default:
+                    throw new Exception("unsupported asset type.");
+            }
         }
 
         #region Implementation of ILocalAssetRepository
@@ -317,39 +356,10 @@ namespace ParkitectNexus.Data.Assets
 
         #endregion
 
-        private string[] GetFilesInAssetPath(AssetType type)
-        {
-            switch (type) 
-            {
-                case AssetType.Blueprint:
-                    if (_parkitect.Paths.GetAssetPath(type) == null)
-                        return new string[0];
-
-                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.png",
-                        SearchOption.AllDirectories);
-                case AssetType.Savegame:
-                    if (_parkitect.Paths.GetAssetPath (type) == null)
-                        return new string[0];
-
-                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.txt",
-                        SearchOption.AllDirectories)
-                        .Concat(Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.park",
-                            SearchOption.AllDirectories)).ToArray();
-                case AssetType.Mod:
-                    if (_parkitect.Paths.GetAssetPath (type) == null)
-                        return new string[0];
-                    return Directory.GetDirectories (_parkitect.Paths.GetAssetPath (AssetType.Mod))
-                            .Where (path => File.Exists (Path.Combine (path, "mod.json")))
-                            .ToArray ();
-                default:
-                    throw new Exception ("unsupported asset type.");
-            }
-        }
-        
         #region Event raisers
 
         /// <summary>
-        /// Raises the <see cref="E:AssetAdded" /> event.
+        ///     Raises the <see cref="E:AssetAdded" /> event.
         /// </summary>
         /// <param name="e">The <see cref="ParkitectNexus.Data.Assets.AssetEventArgs" /> instance containing the event data.</param>
         protected virtual void OnAssetAdded(AssetEventArgs e)
@@ -358,7 +368,7 @@ namespace ParkitectNexus.Data.Assets
         }
 
         /// <summary>
-        /// Raises the <see cref="E:AssetRemoved" /> event.
+        ///     Raises the <see cref="E:AssetRemoved" /> event.
         /// </summary>
         /// <param name="e">The <see cref="ParkitectNexus.Data.Assets.AssetEventArgs" /> instance containing the event data.</param>
         protected virtual void OnAssetRemoved(AssetEventArgs e)
@@ -371,10 +381,10 @@ namespace ParkitectNexus.Data.Assets
         #region Implementation of IEnumerable
 
         /// <summary>
-        /// Returns an enumerator that iterates through the collection.
+        ///     Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
         public IEnumerator<IAsset> GetEnumerator()
         {
@@ -386,10 +396,10 @@ namespace ParkitectNexus.Data.Assets
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a collection.
+        ///     Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        ///     An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {

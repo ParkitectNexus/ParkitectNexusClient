@@ -1,5 +1,15 @@
 // ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +26,7 @@ namespace ParkitectNexus.Data.Game.Windows
     /// </summary>
     public class WindowsParkitect : BaseParkitect
     {
-        private SteamPathSeeker _steamPathSeeker = new SteamPathSeeker();
+        private readonly SteamPathSeeker _steamPathSeeker = new SteamPathSeeker();
 
         public WindowsParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger)
             : base(gameSettingsRepository, logger)
@@ -36,7 +46,7 @@ namespace ParkitectNexus.Data.Game.Windows
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
         public override bool DetectInstallationPath()
         {
-            if(IsInstalled && GameSettings.Model.IsSteamVersion == _steamPathSeeker.IsSteamVersionInstalled)
+            if (IsInstalled && GameSettings.Model.IsSteamVersion == _steamPathSeeker.IsSteamVersionInstalled)
                 return true;
 
             var steamGamePath = _steamPathSeeker.GetParkitectInstallationPath();
