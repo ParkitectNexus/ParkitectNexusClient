@@ -11,6 +11,7 @@ using ParkitectNexus.Data.Presenter;
 using Xwt;
 using Xwt.Drawing;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ParkitectNexus.Client.Base.Tiles
 {
@@ -46,7 +47,6 @@ namespace ParkitectNexus.Client.Base.Tiles
             foreach (var r in _rows)
                 r.Clear();
 
-            _buttons.Clear();
             _rows.Clear();
             _box.Clear();
             PushNewRow();
@@ -76,6 +76,7 @@ namespace ParkitectNexus.Client.Base.Tiles
             Application.Invoke(() =>
             {
                 // Clear controls
+                _buttons.Clear();
                 ClearTiles();
 
                 Content =
@@ -128,6 +129,7 @@ namespace ParkitectNexus.Client.Base.Tiles
                         _rows.Peek().PackStart(button);
                         i++;
                     }
+
                     Content = _box;
                 });
             }
@@ -165,6 +167,8 @@ namespace ParkitectNexus.Client.Base.Tiles
                 _rows.Peek().PackStart(button);
                 i++;
             }
+
+            Debug.WriteLine("Moved {0} buttons to {1} rows", _buttons.Count, _box.Children.Count());
         }
 
         #region Overrides of Widget
