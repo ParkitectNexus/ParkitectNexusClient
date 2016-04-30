@@ -322,12 +322,19 @@ namespace ParkitectNexus.Data.Assets
             switch (type) 
             {
                 case AssetType.Blueprint:
+                    if (_parkitect.Paths.GetAssetPath(type) == null)
+                        return new string[0];
+
+                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.png",
+                        SearchOption.AllDirectories);
                 case AssetType.Savegame:
                     if (_parkitect.Paths.GetAssetPath (type) == null)
                         return new string[0];
-                    
-                    return Directory.GetFiles (_parkitect.Paths.GetAssetPath (type), GetAssetPattern (type),
-                        SearchOption.AllDirectories);
+
+                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.txt",
+                        SearchOption.AllDirectories)
+                        .Concat(Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.park",
+                            SearchOption.AllDirectories)).ToArray();
                 case AssetType.Mod:
                     if (_parkitect.Paths.GetAssetPath (type) == null)
                         return new string[0];
@@ -338,22 +345,7 @@ namespace ParkitectNexus.Data.Assets
                     throw new Exception ("unsupported asset type.");
             }
         }
-
-        private static string GetAssetPattern(AssetType type)
-        {
-            switch (type)
-            {
-                case AssetType.Blueprint:
-                    return "*.png";
-                case AssetType.Savegame:
-                    return "*.txt";
-                case AssetType.Mod:
-                    return "\\";
-                default:
-                    throw new Exception("Unsupported asset type");
-            }
-        }
-
+        
         #region Event raisers
 
         /// <summary>

@@ -7,7 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ParkitectNexus.AssetMagic.Readers;
+using ParkitectNexus.AssetMagic.Converters;
 using ParkitectNexus.Data.Assets.Meta;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Utilities;
@@ -58,14 +58,11 @@ namespace ParkitectNexus.Data.Assets.CachedData
                 switch (type)
                 {
                     case AssetType.Blueprint:
-                        using(var blueprintImage = Image.FromFile(path))
+                        var blueprint = BlueprintConverter.DeserializeFromFile(path);
+                        return new AssetCachedData
                         {
-                            var blueprintReader = new BlueprintReader();
-                            var blueprint = blueprintReader.Read((Bitmap)blueprintImage);
-                            return new AssetCachedData {
-                                Name = blueprint.Header.Name
-                            };
-                        }
+                            Name = blueprint.Header.Name
+                        };
                     case AssetType.Mod:
                         if (metadata?.Id == null)
                             return new AssetWithImageCachedData();
@@ -84,8 +81,7 @@ namespace ParkitectNexus.Data.Assets.CachedData
                             };
                         }
                     case AssetType.Savegame:
-                        var savegameReader = new SavegameReader();
-                        var savegame = savegameReader.Deserialize(File.ReadAllText(path));
+                        var savegame = SavegameConverter.DeserializeFromFile(path);
 
                         using (var stream = new MemoryStream())
                         {
