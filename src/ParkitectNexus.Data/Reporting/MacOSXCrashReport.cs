@@ -120,7 +120,7 @@ namespace ParkitectNexus.Data.Reporting
         private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
 
-        public MacOSXCrashReport(IParkitect parkitect, string action, Exception exception, ILogger logger)
+        public LinuxCrashReport(IParkitect parkitect, string action, Exception exception, ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
