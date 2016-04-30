@@ -253,6 +253,15 @@ namespace ParkitectNexus.Data.Assets
                             var installationPath = Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Mod),
                                 downloadedAsset.Info.Repository.Replace('/', '@'));
 
+                            // TODO: Should actually try and look if the mod has been updated since and delete the whole folder.
+                            if (Directory.Exists(installationPath))
+                            {
+                                if (File.Exists(Path.Combine(installationPath, "modinfo.meta")))
+                                    File.Delete(Path.Combine(installationPath, "modinfo.meta"));
+                                if (File.Exists(Path.Combine(installationPath, "moddata.cache")))
+                                    File.Delete(Path.Combine(installationPath, "moddata.cache"));
+                            }
+
                             _log.WriteLine($"mod.json was deserialized to mod object '{modInformation}'.");
 
                             // Set default mod properties.
