@@ -19,6 +19,7 @@ namespace ParkitectNexus.Client.Darwin
         {
             var registry = ObjectFactory.ConfigureStructureMap();
             registry.IncludeRegistry(new PresenterRegistry());
+            registry.For<IApp>().Singleton().Use<App>();
             ObjectFactory.SetUpContainer(registry);
 
             var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();

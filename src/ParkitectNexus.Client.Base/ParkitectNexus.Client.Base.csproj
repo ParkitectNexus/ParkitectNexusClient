@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="IApp.cs" />
     <Compile Include="ModLoaderUtil.cs" />
     <Compile Include="Pages\AssetsPageView.cs" />
     <Compile Include="Pages\BlueprintsPageView.cs" />

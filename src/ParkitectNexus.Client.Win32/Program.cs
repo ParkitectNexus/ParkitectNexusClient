@@ -44,12 +44,10 @@ namespace ParkitectNexus.Client.Win32
                 try
                 {
 #endif
-                // Increase maximum threads.
-                //ThreadPool.SetMaxThreads(16, 16);
-
                 // Initialize the structure map container.
                 var registry = ObjectFactory.ConfigureStructureMap();
                 registry.IncludeRegistry(new PresenterRegistry());
+                registry.For<IApp>().Singleton().Use<App>();
                 ObjectFactory.SetUpContainer(registry);
 
 

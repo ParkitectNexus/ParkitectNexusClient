@@ -28,7 +28,7 @@ using Xwt;
 
 namespace ParkitectNexus.Client.Base
 {
-    public class App : IPresenter
+    public class App : IApp
     {
         private readonly ILogger _log;
         private readonly IParkitect _parkitect;

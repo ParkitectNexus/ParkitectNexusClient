@@ -78,6 +78,7 @@ namespace ParkitectNexus.Client.Linux
                 // Initialize the structure map container.
                 var registry = ObjectFactory.ConfigureStructureMap();
                 registry.IncludeRegistry(new PresenterRegistry());
+                registry.For<IApp>().Singleton().Use<App>();
                 ObjectFactory.SetUpContainer(registry);
 
 
