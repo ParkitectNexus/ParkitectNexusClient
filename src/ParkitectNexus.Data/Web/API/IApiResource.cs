@@ -11,6 +11,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using Newtonsoft.Json.Serialization;
+
 namespace ParkitectNexus.Data.Web.API
 {
     /// <summary>
@@ -21,6 +23,6 @@ namespace ParkitectNexus.Data.Web.API
         /// <summary>
         ///     Gets or sets the identifier of this resource.
         /// </summary>
-        int Id { get; set; }
+        string Id { get; set; }
     }
 }

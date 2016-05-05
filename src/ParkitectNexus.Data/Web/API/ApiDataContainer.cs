@@ -19,7 +19,6 @@ namespace ParkitectNexus.Data.Web.API
     ///     Represents a json data container.
     /// </summary>
     /// <typeparam name="T">The data type.</typeparam>
-    [JsonObject]
     public class ApiDataContainer<T>
     {
         /// <summary>

@@ -36,7 +36,7 @@ namespace ParkitectNexus.Client.Base.Pages
         private readonly AssetType _type;
 
         public AssetsPageView(IParkitect parkitect, ILogger log, AssetType type, IPresenter parent, string displayName)
-            : base(displayName)
+            : base(log, displayName)
         {
             if (!(parent is MainView))
                 throw new ArgumentException("parent must be MainView", nameof(parent));

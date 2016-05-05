@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using ParkitectNexus.Client.Base.Tiles;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using Xwt;
 using Xwt.Drawing;
@@ -32,7 +33,7 @@ namespace ParkitectNexus.Client.Base.Pages
         private readonly IParkitect _parkitect;
         private readonly IWebsite _website;
 
-        public MenuPageView(IParkitect parkitect, IWebsite website, App app) : base("Menu")
+        public MenuPageView(IParkitect parkitect, ILogger log, IWebsite website, App app) : base(log, "Menu")
         {
             _parkitect = parkitect;
             _website = website;

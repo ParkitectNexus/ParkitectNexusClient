@@ -18,12 +18,14 @@ using System.Threading.Tasks;
 using ParkitectNexus.Client.Base.Pages;
 using ParkitectNexus.Client.Base.Utilities;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Utilities;
 using Xwt;
 
 namespace ParkitectNexus.Client.Base.Tiles
 {
     public abstract class LoadableDataTileView : ScrollView, IPresenter, IPageView
     {
+        private readonly ILogger _log;
         private readonly VBox _box;
 
         private readonly List<Button> _buttons = new List<Button>();
@@ -32,8 +34,9 @@ namespace ParkitectNexus.Client.Base.Tiles
         private Size _tileSize = new Size(100, 100);
         private CancellationTokenSource _tokenSource;
 
-        protected LoadableDataTileView(string displayName)
+        protected LoadableDataTileView(ILogger log, string displayName)
         {
+            _log = log;
             if (displayName == null) throw new ArgumentNullException(nameof(displayName));
             DisplayName = displayName;
 
@@ -118,23 +121,32 @@ namespace ParkitectNexus.Client.Base.Tiles
                             PushNewRow();
                             i = 0;
                         }
-                        var button = new Button(tile.Image?.ToXwtImage()?.ScaleToSize(100))
+
+                        try
                         {
-                            Label = tile.Image == null ? tile.Text : null,
-                            TooltipText = tile.Text,
-                            WidthRequest = 100,
-                            HeightRequest = 100,
-                            MinWidth = 0,
-                            Style = ButtonStyle.Borderless,
-                            BackgroundColor =tile.BackgroundColor,
-                            ImagePosition = ContentPosition.Center
-                        };
+                            var button = new Button(tile.Image?.ToXwtImage()?.ScaleToSize(100))
+                            {
+                                Label = tile.Image == null ? tile.Text : null,
+                                TooltipText = tile.Text,
+                                WidthRequest = 100,
+                                HeightRequest = 100,
+                                MinWidth = 0,
+                                Style = ButtonStyle.Borderless,
+                                BackgroundColor = tile.BackgroundColor,
+                                ImagePosition = ContentPosition.Center
+                            };
 
-                        button.Clicked += (sender, args) => tile.ClickAction();
+                            button.Clicked += (sender, args) => tile.ClickAction();
 
-                        _buttons.Add(button);
-                        _rows.Peek().PackStart(button);
-                        i++;
+                            _buttons.Add(button);
+                            _rows.Peek().PackStart(button);
+                            i++;
+                        }
+                        catch (Exception e)
+                        {
+                            _log.WriteLine("Failed to convert Tile object to UI");
+                            _log.WriteException(e);
+                        }
                     }
 
                     Content = _box;

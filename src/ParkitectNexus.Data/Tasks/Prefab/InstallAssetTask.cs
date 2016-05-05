@@ -75,17 +75,17 @@ namespace ParkitectNexus.Data.Tasks.Prefab
                     _queueableTaskManager.With(modAsset).InsertAfter<CompileModTask>(this);
 
                 // Ensure dependencies have been installed.
-                foreach (var dependency in assetData.Dependencies)
+                foreach (var dependency in assetData.Dependencies.Data)
                 {
-                    if (!dependency.Required && !InstallOptionalDependencies)
-                        continue;
+//                    if (!dependency.Required && !InstallOptionalDependencies)
+//                        continue;
 
-                    if (_parkitect.Assets.Any(a => a.Id == dependency.Asset.Id))
+                    if (_parkitect.Assets.Any(a => a.Id == dependency.Id))
                         continue;
 
                     // Create install task for the dependency.
                     var installDependencyTask = ObjectFactory.GetInstance<InstallAssetTask>();
-                    installDependencyTask.Data = new InstallUrlAction(dependency.Asset.Id);
+                    installDependencyTask.Data = new InstallUrlAction(dependency.Id);
 
                     // Insert the install task in the queueable task manager.
                     _queueableTaskManager.InsertAfter(installDependencyTask, this);

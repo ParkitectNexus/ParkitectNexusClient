@@ -197,9 +197,9 @@ namespace ParkitectNexus.Data.Assets
 
                     var meta = new AssetMetadata
                     {
-                        Id = downloadedAsset.ApiAsset.Id,
-                        InstalledVersion = downloadedAsset.ApiAsset.UpdatedAt
-                    };
+                        Id = downloadedAsset.ApiAsset.Id
+//                        InstalledVersion = downloadedAsset.ApiAsset.UpdatedAt
+                    };// TODO: Re-add installed version
 
                     _assetMetadataStorage.StoreMetadata(downloadedAsset.ApiAsset.Type, assetPath, meta);
                     var cachedData =
@@ -245,12 +245,12 @@ namespace ParkitectNexus.Data.Assets
                             var meta = new ModMetadata
                             {
                                 Id = downloadedAsset.ApiAsset.Id,
-                                InstalledVersion = downloadedAsset.ApiAsset.UpdatedAt,
+//                                InstalledVersion = downloadedAsset.ApiAsset.UpdatedAt,
                                 Tag = downloadedAsset.Info.Tag,
                                 Repository = downloadedAsset.Info.Repository
-                            };
+                            };// TODO: Re-add installed version
 
-                            var installationPath = Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Mod),
+                                var installationPath = Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Mod),
                                 downloadedAsset.Info.Repository.Replace('/', '@'));
 
                             // TODO: Should actually try and look if the mod has been updated since and delete the whole folder.

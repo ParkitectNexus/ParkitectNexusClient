@@ -20,6 +20,7 @@ using ParkitectNexus.AssetMagic.Converters;
 using ParkitectNexus.Data.Assets.Meta;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
+using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Data.Assets.CachedData
 {
@@ -75,19 +76,35 @@ namespace ParkitectNexus.Data.Assets.CachedData
                     case AssetType.Mod:
                         if (metadata?.Id == null)
                             return new AssetWithImageCachedData();
-
-                        using (var stream = new MemoryStream())
+                        
+                        var asset = await _website.API.GetAsset(metadata.Id);
+                        using (var memoryStream = new MemoryStream())
                         {
-                            var asset = await _website.API.GetAsset(metadata.Id);
-                            using (var thumbnail = await asset.Thumbnail.Get())
+                            try
                             {
-                                thumbnail.Save(stream, ImageFormat.Png);
+                                using (var image = await asset.Image.Data.Get())
+                                {
+                                    if (image == null)
+                                    {
+                                        return new AssetWithImageCachedData
+                                        {
+                                            ImageBase64 = null
+                                        };
+                                    }
+                                    
+                                    image.Save(memoryStream, ImageFormat.Png);
+                                    return new AssetWithImageCachedData
+                                    {
+                                        ImageBase64 = Convert.ToBase64String(memoryStream.ToArray())
+                                    };
+                                }
                             }
-
-                            return new AssetWithImageCachedData
+                            catch (Exception e)
                             {
-                                ImageBase64 = Convert.ToBase64String(stream.ToArray())
-                            };
+                                _log.WriteLine("Failed to load image!");
+                                _log.WriteException(e);
+                                return new AssetWithImageCachedData();
+                            }
                         }
                     case AssetType.Savegame:
                         var savegame = SavegameConverter.DeserializeFromFile(path);
@@ -114,7 +131,7 @@ namespace ParkitectNexus.Data.Assets.CachedData
                 _log.WriteException(e);
                 return new AssetCachedData
                 {
-                    Name = "Failed to open " + path
+                    Name = "Failed to open image for " + path
                 };
             }
         }

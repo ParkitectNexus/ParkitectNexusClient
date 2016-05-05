@@ -55,7 +55,7 @@ namespace ParkitectNexus.Data.Web.API
             try
             {
                 _log.WriteLine($"Fetching information from the PN API for asset {id}.");
-                var url = _website.ResolveUrl("api/assets/" + id);
+                var url = _website.ResolveUrl("api/assets/" + id + "?include=image,user,resource,dependencies");
 
                 using (var client = _webClientFactory.CreateWebClient())
                 using (var stream = client.OpenRead(url))
@@ -83,20 +83,21 @@ namespace ParkitectNexus.Data.Web.API
         /// <returns>
         ///     The subscriptions.
         /// </returns>
-        public async Task<ApiSubscription[]> GetSubscriptions(string authKey)
+        public Task<ApiSubscription[]> GetSubscriptions(string authKey)
         {
-            var url = _website.ResolveUrl("api/subscriptions");
-
-            using (var client = _webClientFactory.CreateWebClient(true))
-            {
-                _log.WriteLine($"Fetching subscriptions for auth key {authKey.Substring(0, 4)}xxxxxxxxxx.");
-
-                using (var stream = client.OpenRead(url))
-                using (var reader = new StreamReader(stream))
-                    return
-                        JsonConvert.DeserializeObject<ApiDataContainer<ApiSubscription[]>>(await reader.ReadToEndAsync())
-                            .Data;
-            }
+            throw new NotImplementedException();
+//            var url = _website.ResolveUrl("api/subscriptions");
+//
+//            using (var client = _webClientFactory.CreateWebClient(true))
+//            {
+//                _log.WriteLine($"Fetching subscriptions for auth key {authKey.Substring(0, 4)}xxxxxxxxxx.");
+//
+//                using (var stream = client.OpenRead(url))
+//                using (var reader = new StreamReader(stream))
+//                    return
+//                        JsonConvert.DeserializeObject<ApiDataContainer<ApiSubscription[]>>(await reader.ReadToEndAsync())
+//                            .Data;
+//            }
         }
 
         /// <summary>
@@ -104,20 +105,21 @@ namespace ParkitectNexus.Data.Web.API
         /// </summary>
         /// <param name="authKey">The authentication key.</param>
         /// <returns>The user information.</returns>
-        public async Task<ApiUser> GetUserInfo(string authKey)
+        public Task<ApiUser> GetUserInfo(string authKey)
         {
-            var url = _website.ResolveUrl("api/users/me");
-
-            using (var client = _webClientFactory.CreateWebClient(true))
-            {
-                _log.WriteLine($"Fetching user info for auth key {authKey.Substring(0, 4)}xxxxxxxxxx.");
-
-                using (var stream = client.OpenRead(url))
-                using (var reader = new StreamReader(stream))
-                    return
-                        JsonConvert.DeserializeObject<ApiDataContainer<ApiUser>>(await reader.ReadToEndAsync())
-                            .Data;
-            }
+            throw new NotImplementedException();
+//            var url = _website.ResolveUrl("api/users/me");
+//
+//            using (var client = _webClientFactory.CreateWebClient(true))
+//            {
+//                _log.WriteLine($"Fetching user info for auth key {authKey.Substring(0, 4)}xxxxxxxxxx.");
+//
+//                using (var stream = client.OpenRead(url))
+//                using (var reader = new StreamReader(stream))
+//                    return
+//                        JsonConvert.DeserializeObject<ApiDataContainer<ApiUser>>(await reader.ReadToEndAsync())
+//                            .Data;
+//            }
         }
     }
 }

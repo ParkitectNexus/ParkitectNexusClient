@@ -35,25 +35,26 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 
         public override async Task Run(CancellationToken token)
         {
-            var data = Data as AuthUrlAction;
-            if (data == null)
-            {
-                UpdateStatus("Invalid URL supplied.", 100, TaskStatus.Canceled);
-                return;
-            }
-
-            UpdateStatus("Getting user information...", 25, TaskStatus.Running);
-
-            if (_authManager.IsAuthenticated)
-                _authManager.Logout();
-
-            _authManager.Key = data.Key;
-
-            var user = await _authManager.GetUser();
-            UpdateStatus("Getting user avatar...", 75, TaskStatus.Running);
-            await _authManager.GetAvatar();
-
-            UpdateStatus($"You are now logged in as {user.Name}!", 100, TaskStatus.Finished);
+            throw new NotImplementedException();
+//            var data = Data as AuthUrlAction;
+//            if (data == null)
+//            {
+//                UpdateStatus("Invalid URL supplied.", 100, TaskStatus.Canceled);
+//                return;
+//            }
+//
+//            UpdateStatus("Getting user information...", 25, TaskStatus.Running);
+//
+//            if (_authManager.IsAuthenticated)
+//                _authManager.Logout();
+//
+//            _authManager.Key = data.Key;
+//
+//            var user = await _authManager.GetUser();
+//            UpdateStatus("Getting user avatar...", 75, TaskStatus.Running);
+//            await _authManager.GetAvatar();
+//
+//            UpdateStatus($"You are now logged in as {user.Name}!", 100, TaskStatus.Finished);
         }
 
         #endregion

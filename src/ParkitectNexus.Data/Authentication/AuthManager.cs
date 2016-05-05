@@ -51,61 +51,64 @@ namespace ParkitectNexus.Data.Authentication
             get { return _authSettingsRepository.Model.APIKey; }
             set
             {
-                _authSettingsRepository.Model.APIKey = value;
-                _authSettingsRepository.Save();
-
-                _log.WriteLine("User authenticated.");
-                if (value != null)
-                    OnAuthenticated();
+                throw new NotImplementedException();
+//                _authSettingsRepository.Model.APIKey = value;
+//                _authSettingsRepository.Save();
+//
+//                _log.WriteLine("User authenticated.");
+//                if (value != null)
+//                    OnAuthenticated();
             }
         }
 
         public async Task<ApiUser> GetUser()
         {
-            AssertAuthenticated();
-
-            var cached = _cacheManager.GetItem<ApiUser>("user" + Key);
-
-            if (cached == null)
-            {
-                var real = await _website.API.GetUserInfo(Key);
-                _cacheManager.SetItem("user" + Key, real);
-                return real;
-            }
-            return cached;
+            throw new NotImplementedException();
+//            AssertAuthenticated();
+//
+//            var cached = _cacheManager.GetItem<ApiUser>("user" + Key);
+//
+//            if (cached == null)
+//            {
+//                var real = await _website.API.GetUserInfo(Key);
+//                _cacheManager.SetItem("user" + Key, real);
+//                return real;
+//            }
+//            return cached;
         }
 
-        public async Task<Image> GetAvatar()
+        public Task<Image> GetAvatar()
         {
-            AssertAuthenticated();
-
-            var cached = _cacheManager.GetItem<AvatarCache>("avatar" + Key);
-
-            if (cached == null || !cached.File.Exists)
-            {
-                using (var fullsize = await (await GetUser()).GetAvatar())
-                {
-                    if (fullsize == null)
-                    {
-                        _cacheManager.SetItem("avatar" + Key, new AvatarCache {HasAvatar = false});
-                        return null;
-                    }
-
-                    var resized = ImageUtility.ResizeImage(fullsize, 32, 32);
-                    var newCached = new AvatarCache {HasAvatar = true};
-
-                    using (var fileStream = newCached.File.Open(FileMode.OpenOrCreate))
-                    {
-                        fileStream.SetLength(0);
-                        resized.Save(fileStream, ImageFormat.Bmp);
-                    }
-
-                    _cacheManager.SetItem("avatar" + Key, newCached);
-                    return resized;
-                }
-            }
-
-            return cached.HasAvatar ? cached.GetImage() : null;
+            throw new NotImplementedException();
+//            AssertAuthenticated();
+//
+//            var cached = _cacheManager.GetItem<AvatarCache>("avatar" + Key);
+//
+//            if (cached == null || !cached.File.Exists)
+//            {
+//                using (var fullsize = await (await GetUser()).GetAvatar())
+//                {
+//                    if (fullsize == null)
+//                    {
+//                        _cacheManager.SetItem("avatar" + Key, new AvatarCache {HasAvatar = false});
+//                        return null;
+//                    }
+//
+//                    var resized = ImageUtility.ResizeImage(fullsize, 32, 32);
+//                    var newCached = new AvatarCache {HasAvatar = true};
+//
+//                    using (var fileStream = newCached.File.Open(FileMode.OpenOrCreate))
+//                    {
+//                        fileStream.SetLength(0);
+//                        resized.Save(fileStream, ImageFormat.Bmp);
+//                    }
+//
+//                    _cacheManager.SetItem("avatar" + Key, newCached);
+//                    return resized;
+//                }
+//            }
+//
+//            return cached.HasAvatar ? cached.GetImage() : null;
         }
 
         public async Task<ApiSubscription[]> GetSubscriptions()
@@ -116,18 +119,19 @@ namespace ParkitectNexus.Data.Authentication
 
         public async Task<ApiAsset[]> GetSubscribedAssets()
         {
-            AssertAuthenticated();
-            var assets = new List<ApiAsset>();
-            var subscriptions = await GetSubscriptions();
-
-            foreach (var subscription in subscriptions)
-            {
-                var asset = await subscription.GetAsset();
-                if (asset != null)
-                    assets.Add(asset);
-            }
-
-            return assets.ToArray();
+            throw new NotImplementedException();
+//            AssertAuthenticated();
+//            var assets = new List<ApiAsset>();
+//            var subscriptions = await GetSubscriptions();
+//
+//            foreach (var subscription in subscriptions)
+//            {
+//                var asset = await subscription.GetAsset();
+//                if (asset != null)
+//                    assets.Add(asset);
+//            }
+//
+//            return assets.ToArray();
         }
 
         public void OpenLoginPage()

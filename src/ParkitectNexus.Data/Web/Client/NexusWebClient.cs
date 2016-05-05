@@ -80,7 +80,7 @@ namespace ParkitectNexus.Data.Web.Client
             }
 
             // Set a 10 seconds timeout.
-            request.Timeout = 10000;
+            request.Timeout = 2000;
             return request;
         }
     }

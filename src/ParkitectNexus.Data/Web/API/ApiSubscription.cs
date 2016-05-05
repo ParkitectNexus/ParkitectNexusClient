@@ -11,35 +11,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-
 namespace ParkitectNexus.Data.Web.API
 {
-    [JsonObject]
     public class ApiSubscription
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
-        [JsonProperty("subscribable_id")]
-        public int SubscribableId { get; set; }
-
-        [JsonProperty("subscribable_type")]
-        public string SubscribableType { get; set; }
-
-        [JsonProperty("subscribable")]
-        public ApiResourcePromiseWithUrl<ApiAsset> Subscribable { get; set; }
-
-        public async Task<ApiAsset> GetAsset()
-        {
-            switch (SubscribableType)
-            {
-                case "asset":
-                    return Subscribable == null ? null : await Subscribable.GetResource();
-                default:
-                    return null;
-            }
-        }
     }
 }

@@ -11,55 +11,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Drawing;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Data.Web.API
 {
-    public class ApiUser
+    public class ApiUser : IApiResource
     {
+        #region Implementation of IApiResource
+
+        /// <summary>
+        ///     Gets or sets the identifier of this resource.
+        /// </summary>
         [JsonProperty("identifier")]
         public string Id { get; set; }
 
+        #endregion
+
         [JsonProperty("username")]
         public string Username { get; set; }
-
-        [JsonProperty("avatar")]
-        public string AvatarUrl { get; set; }
-
-        [JsonProperty("steam")]
-        public string SteamId { get; set; }
-
-        [JsonProperty("twitch")]
-        public string TwitchUsername { get; set; }
-
-        [JsonProperty("twitter")]
-        public string TwitterUsername { get; set; }
-
-        [JsonProperty("bitcoin")]
-        public string BitcoinId { get; set; }
-
-        [JsonProperty("paypal")]
-        public string PaypalMeUsername { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("email")]
-        public string Email { get; set; }
-
-        public async Task<Image> GetAvatar()
-        {
-            if (AvatarUrl == null)
-                return null;
-
-            var webClientFactory = ObjectFactory.GetInstance<INexusWebClientFactory>();
-
-            using (var client = webClientFactory.CreateWebClient())
-            using (var stream = await client.OpenReadTaskAsync(AvatarUrl))
-                return Image.FromStream(stream);
-        }
     }
 }
