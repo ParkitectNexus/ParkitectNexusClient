@@ -37,14 +37,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <LinkMode>SdkOnly</LinkMode>
     <Profiling>false</Profiling>
     <UseRefCounting>false</UseRefCounting>
     <UseSGen>false</UseSGen>
-    <IncludeMonoRuntime>true</IncludeMonoRuntime>
-    <CreatePackage>true</CreatePackage>
-    <CodeSigningKey>Developer ID Application</CodeSigningKey>
-    <EnableCodeSigning>true</EnableCodeSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <CreatePackage>false</CreatePackage>
+    <EnableCodeSigning>false</EnableCodeSigning>
     <EnablePackageSigning>false</EnablePackageSigning>
   </PropertyGroup>
   <ItemGroup>
@@ -95,6 +93,9 @@
   <ItemGroup>
     <BundleResource Include="..\..\images\logo.icns">
       <Link>Resources\logo.icns</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\bin\Release\ParkitectNexus.Mod.ModLoader.dll">
+      <Link>Resources\ParkitectNexus.Mod.ModLoader.dll</Link>
     </BundleResource>
   </ItemGroup>
 </Project>
