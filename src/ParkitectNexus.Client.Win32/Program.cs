@@ -19,6 +19,7 @@ using CommandLine;
 using ParkitectNexus.Client.Base;
 using ParkitectNexus.Data;
 using ParkitectNexus.Data.Presenter;
+using ParkitectNexus.Data.Reporting;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using Xwt;
