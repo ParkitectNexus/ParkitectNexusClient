@@ -11,6 +11,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -41,12 +42,20 @@ namespace ParkitectNexus.Data.Game.Linux
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
         public override bool DetectInstallationPath()
         {
-            if (IsInstalled)
+            if (IsInstalled && GameSettings.Model.IsSteamVersion)
                 return true;
 
-            // TODO Detect Steam version of the game
+            var success = SetInstallationPathIfValid(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "/.steam/steam/steamapps/common/Parkitect"));
 
-            return false;
+            if (success)
+            {
+                GameSettings.Model.IsSteamVersion = File.Exists(Path.Combine(InstallationPath, "Parkitect.x86_64"));
+                GameSettings.Save();
+            }
+
+            return success;
         }
 
         /// <summary>
