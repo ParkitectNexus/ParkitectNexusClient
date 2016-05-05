@@ -79,9 +79,8 @@ namespace ParkitectNexus.Data.Web.Client
                 http.ServicePoint.Expect100Continue = false;
             }
 
-            // Set a 10 minute timeout. Should allow the slowest of connections to download anything.
-            request.Timeout = 2000;
-            //request.Timeout = 10*60*1000;
+            // Set a 10 seconds timeout.
+            request.Timeout = 10000;
             return request;
         }
     }
