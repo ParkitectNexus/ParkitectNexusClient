@@ -1,5 +1,15 @@
 // ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
@@ -7,20 +17,25 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using ParkitectNexus.Data.Assets;
+using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Utilities;
 
 namespace ParkitectNexus.Data.Reporting
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class MacOSXCrashReport
     {
+        private readonly ILogger _logger;
         private readonly IParkitect _parkitect;
 
-        public MacOSXCrashReport(IParkitect parkitect, string action, Exception exception)
+        public MacOSXCrashReport(IParkitect parkitect, string action, Exception exception, ILogger logger)
         {
             if (parkitect == null) throw new ArgumentNullException(nameof(parkitect));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
 
+            _logger = logger;
             _parkitect = parkitect;
             Action = action;
             Exception = exception;
@@ -76,8 +91,8 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    return _parkitect.InstalledMods.Select(
-                        m => $"{m}(Enabled: {m.IsEnabled}, Directory: {m.InstallationPath})");
+                    return _parkitect.Assets[AssetType.Mod].OfType<ModAsset>().Select(
+                        m => $"{m}(Enabled: ???, Directory: {m.InstallationPath})");
                 }
                 catch
                 {
@@ -93,13 +108,13 @@ namespace ParkitectNexus.Data.Reporting
             {
                 try
                 {
-                    if (!Utilities.Log.IsOpened)
+                    if (!_logger.IsOpened)
                         return "not opened";
 
-                    var path = Utilities.Log.LoggingPath;
-                    Utilities.Log.Close();
+                    var path = _logger.LoggingPath;
+                    _logger.Close();
                     var result = File.ReadAllText(path);
-                    Utilities.Log.Open(path);
+                    _logger.Open(path);
                     return result;
                 }
                 catch (Exception e)

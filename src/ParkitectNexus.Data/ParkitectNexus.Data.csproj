@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ParkitectNexus.Data</RootNamespace>
     <AssemblyName>ParkitectNexus.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -32,17 +32,64 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=2.0.5969.20896, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.2.0.5969.20896\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Octokit, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Octokit.0.16.0\lib\net45\Octokit.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
@@ -51,47 +98,144 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Octokit, Version=0.19.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\Octokit.0.19.0\lib\net45\Octokit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bases\BaseParkitect.cs" />
-    <Compile Include="Bases\BaseParkitectPaths.cs" />
+    <Compile Include="Assets\AssetEventArgs.cs" />
+    <Compile Include="Assets\AssetUpdatesManager.cs" />
+    <Compile Include="Assets\BlueprintAsset.cs" />
+    <Compile Include="Assets\CachedData\AssetCachedDataStorage.cs" />
+    <Compile Include="Assets\CachedData\AssetWithImageCachedData.cs" />
+    <Compile Include="Assets\CachedData\IAssetCachedData.cs" />
+    <Compile Include="Assets\CachedData\IAssetCachedDataStorage.cs" />
+    <Compile Include="Assets\IAssetUpdatesManager.cs" />
+    <Compile Include="Assets\Meta\AssetMetadata.cs" />
+    <Compile Include="Assets\AssetTypeUtil.cs" />
+    <Compile Include="Assets\DownloadInfo.cs" />
+    <Compile Include="Assets\Meta\AssetMetadataStorage.cs" />
+    <Compile Include="Assets\Meta\IAssetMetadata.cs" />
+    <Compile Include="Assets\Meta\IAssetMetadataStorage.cs" />
+    <Compile Include="Assets\Meta\IModMetadata.cs" />
+    <Compile Include="Assets\Modding\IModAsset.cs" />
+    <Compile Include="Assets\Modding\IModCompiler.cs" />
+    <Compile Include="Assets\Modding\IModLoadOrderBuilder.cs" />
+    <Compile Include="Assets\Modding\ModCompiler.cs" />
+    <Compile Include="Assets\Modding\ModCompileResults.cs" />
+    <Compile Include="Assets\Modding\ModInformation.cs" />
+    <Compile Include="Assets\Meta\ModMetadata.cs" />
+    <Compile Include="Assets\Modding\ModLoadOrderBuilder.cs" />
+    <Compile Include="Assets\SavegameAsset.cs" />
+    <Compile Include="Authentication\AvatarCache.cs" />
+    <Compile Include="Authentication\IAuthManager.cs" />
+    <Compile Include="Caching\CachedFile.cs" />
+    <Compile Include="Caching\CachedFileJsonConverter.cs" />
+    <Compile Include="Caching\CacheManager.cs" />
+    <Compile Include="Caching\ICachedFile.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Assets\Asset.cs" />
+    <Compile Include="Assets\CachedData\AssetCachedData.cs" />
+    <Compile Include="Assets\LocalAssetRepository.cs" />
+    <Compile Include="Assets\IAsset.cs" />
+    <Compile Include="Assets\ILocalAssetRepository.cs" />
+    <Compile Include="Game\Base\BaseParkitect.cs" />
+    <Compile Include="Game\Base\BaseParkitectPaths.cs" />
+    <Compile Include="Game\GameRegistry.cs" />
+    <Compile Include="Assets\Modding\ModAsset.cs" />
+    <Compile Include="Game\Linux\LinuxParkitect.cs" />
+    <Compile Include="Game\Linux\LinuxParkitectPaths.cs" />
+    <Compile Include="Game\Steam.cs" />
+    <Compile Include="Game\Windows\SteamPathSeeker.cs" />
+    <Compile Include="Reporting\LinuxCrashReport.cs" />
+    <Compile Include="Settings\Models\AuthSettings.cs" />
+    <Compile Include="Tasks\ExplicitQueueableTaskArgsExpression.cs" />
+    <Compile Include="Tasks\ExplicitQueueableTasksPropertyExpression.cs" />
+    <Compile Include="Tasks\IQueueableTask.cs" />
+    <Compile Include="Tasks\IQueueableTaskManager.cs" />
+    <Compile Include="Tasks\Prefab\AuthenticateTask.cs" />
+    <Compile Include="Tasks\Prefab\CheckForUpdatesTask.cs" />
+    <Compile Include="Tasks\Prefab\CompileModTask.cs" />
+    <Compile Include="Tasks\Prefab\InstallAssetTask.cs" />
+    <Compile Include="Tasks\Prefab\LaunchGameTask.cs" />
+    <Compile Include="Tasks\Prefab\UpdateModTask.cs" />
+    <Compile Include="Tasks\Prefab\UrlQueueableTask.cs" />
+    <Compile Include="Tasks\QueueableTask.cs" />
+    <Compile Include="Tasks\QueueableTaskEventArgs.cs" />
+    <Compile Include="Tasks\QueueableTaskManager.cs" />
+    <Compile Include="Tasks\TaskStatus.cs" />
+    <Compile Include="Tasks\Prefab\TestWaitQueueableTask.cs" />
+    <Compile Include="Updating\IUpdateManager.cs" />
+    <Compile Include="Updating\UpdateInfo.cs" />
+    <Compile Include="Updating\UpdateManager.cs" />
+    <Compile Include="Utilities\ILogger.cs" />
+    <Compile Include="Utilities\ImageUtility.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="Game\IParkitect.cs" />
-    <Compile Include="Game\IParkitectAsset.cs" />
-    <Compile Include="Game\IParkitectMod.cs" />
+    <Compile Include="Game\IDownloadedAsset.cs" />
+    <Compile Include="Presenter\IPresenter.cs" />
+    <Compile Include="Presenter\IPresenterFactory.cs" />
+    <Compile Include="Presenter\PresenterFactory.cs" />
+    <Compile Include="Presenter\PresenterRegistry.cs" />
+    <Compile Include="Reporting\ICrashReporterFactory.cs" />
     <Compile Include="Reporting\MacOSXCrashReport.cs" />
-    <Compile Include="Web\IParkitectNexusUrl.cs" />
-    <Compile Include="Web\IParkitectNexusWebsite.cs" />
-    <Compile Include="Web\IParkitectOnlineAssetRepository.cs" />
-    <Compile Include="Reporting\CrashReporter.cs" />
-    <Compile Include="Web\DownloadInfo.cs" />
+    <Compile Include="Settings\ISettingsRepository.cs" />
+    <Compile Include="Settings\SettingsRepository.cs" />
+    <Compile Include="Utilities\PathUtility.cs" />
+    <Compile Include="Utilities\StreamUtility.cs" />
+    <Compile Include="Utilities\UtilityRegistry.cs" />
+    <Compile Include="Web\API\ApiImage.cs" />
+    <Compile Include="Web\API\ApiUser.cs" />
+    <Compile Include="Web\API\ApiAsset.cs" />
+    <Compile Include="Web\API\ApiDataContainer.cs" />
+    <Compile Include="Web\API\ApiSubscription.cs" />
+    <Compile Include="Web\API\IParkitectNexusAPI.cs" />
+    <Compile Include="Web\API\IApiResource.cs" />
+    <Compile Include="Web\API\ParkitectNexusAPI.cs" />
+    <Compile Include="Web\Client\INexusWebClient.cs" />
+    <Compile Include="Web\Client\INexusWebClientFactory.cs" />
+    <Compile Include="Web\Client\NexusWebClientFactory.cs" />
+    <Compile Include="Web\INexusUrl.cs" />
+    <Compile Include="Web\IWebsite.cs" />
+    <Compile Include="Assets\IRemoteAssetRepository.cs" />
+    <Compile Include="Reporting\CrashReporterFactory.cs" />
     <Compile Include="Game\IParkitectPaths.cs" />
-    <Compile Include="Web\ParkitectOnlineAssetRepository.cs" />
-    <Compile Include="Settings\GameSettings.cs" />
+    <Compile Include="Web\Models\IUrlAction.cs" />
+    <Compile Include="Web\Models\AuthUrlAction.cs" />
+    <Compile Include="Web\Models\InstallUrlAction.cs" />
+    <Compile Include="Authentication\AuthManager.cs" />
+    <Compile Include="Web\Models\UrlActionTaskAttribute.cs" />
+    <Compile Include="Web\UrlAction.cs" />
+    <Compile Include="Web\UrlActionAttribute.cs" />
+    <Compile Include="Assets\RemoteAssetRepository.cs" />
+    <Compile Include="Settings\Models\GameSettings.cs" />
     <Compile Include="Game\Windows\WindowsParkitectPaths.cs" />
     <Compile Include="Reporting\FailedCrashReport.cs" />
     <Compile Include="Reporting\WindowsCrashReport.cs" />
     <Compile Include="Game\Windows\User32.cs" />
     <Compile Include="Utilities\EnumUtility.cs" />
-    <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\LogLevel.cs" />
     <Compile Include="Game\Windows\WindowsParkitect.cs" />
-    <Compile Include="Game\ParkitectAsset.cs" />
-    <Compile Include="Game\ParkitectAssetInfoAttribute.cs" />
-    <Compile Include="Game\ParkitectAssetType.cs" />
-    <Compile Include="Game\ParkitectMod.cs" />
-    <Compile Include="Web\ParkitectNexusWebsite.cs" />
-    <Compile Include="Web\ParkitectNexusUrl.cs" />
-    <Compile Include="Web\ParkitectNexusWebClient.cs">
+    <Compile Include="Game\DownloadedAsset.cs" />
+    <Compile Include="Assets\AssetInfoAttribute.cs" />
+    <Compile Include="Assets\AssetType.cs" />
+    <Compile Include="Web\Website.cs" />
+    <Compile Include="Web\NexusUrl.cs" />
+    <Compile Include="Web\Client\NexusWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OperatingSystems.cs" />
+    <Compile Include="Utilities\OperatingSystem.cs" />
     <Compile Include="Utilities\StreamWriterLogUtility.cs" />
     <Compile Include="SupportedOperatingSystem.cs" />
     <Compile Include="Game\MacOSX\MacOSXParkitect.cs" />
     <Compile Include="Game\MacOSX\MacOSXParkitectPaths.cs" />
     <Compile Include="Utilities\AppData.cs" />
-    <Compile Include="Settings\SettingsBase.cs" />
+    <Compile Include="Web\WebRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -99,7 +243,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

@@ -1,5 +1,15 @@
 ﻿// ParkitectNexusClient
-// Copyright 2016 Parkitect, Tim Potze
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
@@ -78,16 +88,19 @@ namespace ParkitectNexus.Mod.ModLoader
             var modsPath = FilePaths.getFolderPath("pnmods");
 
             // Find mod directories in the mods directory.
-            foreach (var folder in Directory.GetDirectories(modsPath))
+            foreach (var directoryName in File.ReadAllLines(FPath.Combine(modsPath, "load.dat")))
             {
+                if (string.IsNullOrEmpty(directoryName))
+                    continue;
+
+                var folder = FPath.Combine(modsPath, directoryName);
+                var filePath = FPath.Combine(folder, "mod.json");
+
+                if (!File.Exists(filePath))
+                    continue;
+
                 try
                 {
-                    var directoryName = FPath.GetFileName(folder);
-                    var filePath = FPath.Combine(folder, "mod.json");
-
-                    if (!File.Exists(filePath))
-                        continue;
-
                     // Read the mod.json file.
                     var dictionary = Json.Deserialize(File.ReadAllText(filePath)) as Dictionary<string, object>;
 
@@ -96,6 +109,7 @@ namespace ParkitectNexus.Mod.ModLoader
 
                     var isEnabled = ReadFromDictonary<bool>(dictionary, "IsEnabled");
                     var isDevelopment = ReadFromDictonary<bool>(dictionary, "IsDevelopment");
+                    var priority = ReadFromDictonary<double>(dictionary, "Priority");
 
                     var binBuildPath = FPath.Combine(folder, "bin/build.dat");
 
@@ -134,7 +148,7 @@ namespace ParkitectNexus.Mod.ModLoader
                         SetProperty(userMod, "Path", folder);
                         SetProperty(userMod, "Identifier", directoryName);
 
-                        ModManager.Instance.addMod(userMod);
+                        ModManager.Instance.addMod(userMod, (int) priority);
                         _loadedMods.Add(userMod);
 
                         // Enable mod if mods were already enabled

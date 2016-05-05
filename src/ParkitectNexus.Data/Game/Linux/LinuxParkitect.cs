@@ -1,26 +1,40 @@
-﻿using System;
-using ParkitectNexus.Data.Base;
-using ParkitectNexus.Data.Game;
-using System.Diagnostics;
-using ParkitectNexus.Data.Utilities;
-using System.Linq;
-using System.IO;
+﻿// ParkitectNexusClient
+// Copyright (C) 2016 ParkitectNexus, Tim Potze
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace ParkitectNexus.Data
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using ParkitectNexus.Data.Game.Base;
+using ParkitectNexus.Data.Settings;
+using ParkitectNexus.Data.Settings.Models;
+using ParkitectNexus.Data.Utilities;
+
+namespace ParkitectNexus.Data.Game.Linux
 {
     public class LinuxParkitect : BaseParkitect
     {
-
-        public LinuxParkitect()
+        public LinuxParkitect(ISettingsRepository<GameSettings> gameSettingsRepository, ILogger logger)
+            : base(gameSettingsRepository, logger)
         {
-            Paths = new LinuxParkitectPath(this);
+            Paths = new LinuxParkitectPaths(this);
         }
 
 
-        ///<summary>
-        /// get a collection of paths
+        /// <summary>
+        ///     get a collection of paths
         /// </summary>
-        public override IParkitectPaths Paths {get;}
+        public override IParkitectPaths Paths { get; }
 
         /// <summary>
         ///     Detects the installation path.
@@ -28,55 +42,53 @@ namespace ParkitectNexus.Data
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
         public override bool DetectInstallationPath()
         {
-            if (IsInstalled)
+            if (IsInstalled && GameSettings.Model.IsSteamVersion)
                 return true;
 
-            // TODO Detect registry key of installation path.
-            // can only do this once it's installed trough steam or a setup.
-            return false;
+            var success = SetInstallationPathIfValid(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "/.steam/steam/steamapps/common/Parkitect"));
+
+            if (success)
+            {
+                GameSettings.Model.IsSteamVersion = File.Exists(Path.Combine(InstallationPath, "Parkitect.x86_64"));
+                GameSettings.Save();
+            }
+
+            return success;
         }
 
         /// <summary>
-        ///     Launches the game with the specified arguments.
+        ///     Launches the game.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The launched process.</returns>
-        public override Process Launch(string arguments = "-single-instance")
+        public override void Launch()
         {
-            Log.WriteLine($"Attempting to launch game with arguments '{arguments}'.");
-
-            Log.WriteLine("Attempting to compile installed mods.");
-            CompileActiveMods();
+            Logger.WriteLine("Attempting to launch game.");
 
             // If the process is already running, push it to the foreground and return it.
             var running = Process.GetProcessesByName("Parkitect").FirstOrDefault();
 
             if (running != null)
             {
-                Log.WriteLine(
+                Logger.WriteLine(
                     $"'Parkitect' is already running. Giving window handle '{running.MainWindowHandle}' focus.");
-                
-                return running;
+
+                return;
             }
 
-            var t = Log.LoggingPath;
-            Log.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
+            Logger.WriteLine($"Launching game at path '{Paths.GetPathInGameFolder("Parkitect.x86_64")}'.");
             // Start the game process.
-            return !IsInstalled
-                ? null
-                    : Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.x86_64"))
-                        {
-                            WorkingDirectory = InstallationPath,
-                            Arguments = arguments
-                        });
+            if (IsInstalled)
+                Process.Start(new ProcessStartInfo(Paths.GetPathInGameFolder("Parkitect.x86_64"))
+                {
+                    WorkingDirectory = InstallationPath
+                });
         }
 
         protected override bool IsValidInstallationPath(string path)
         {
-            
             // Path must exist and contain Parkitect.exe.
             return !string.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "Parkitect.x86_64"));
         }
     }
 }
-
