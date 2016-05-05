@@ -21,16 +21,16 @@ namespace ParkitectNexus.Data.Game.Windows
 {
     internal class SteamPathSeeker
     {
-        private RegistryKey SteamKey => Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam")
-                                        ?? Registry.CurrentUser.OpenSubKey("Software\\Wow6432Node\\Valve\\Steam")
-                                        ?? Registry.LocalMachine.OpenSubKey("Software\\Valve\\Steam")
-                                        ?? Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Valve\\Steam");
+        private RegistryKey SteamKey => Registry.CurrentUser?.OpenSubKey("Software\\Valve\\Steam")
+                                        ?? Registry.CurrentUser?.OpenSubKey("Software\\Wow6432Node\\Valve\\Steam")
+                                        ?? Registry.LocalMachine?.OpenSubKey("Software\\Valve\\Steam")
+                                        ?? Registry.LocalMachine?.OpenSubKey("Software\\Wow6432Node\\Valve\\Steam");
 
         public bool IsSteamVersionInstalled
         {
             get
             {
-                var key = SteamKey.OpenSubKey($@"Apps\{Steam.AppId}")?.GetValue("Installed", null);
+                var key = SteamKey?.OpenSubKey($@"Apps\{Steam.AppId}")?.GetValue("Installed", null);
                 return key != null && (int) key == 1;
             }
         }
