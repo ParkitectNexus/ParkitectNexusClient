@@ -52,7 +52,7 @@ namespace ParkitectNexus.Client.Base
 
         public static UIImageProvider<Xwt.Drawing.Image> Images { get; } = new UIImageProvider<Xwt.Drawing.Image>();
         public static UIImageProvider<System.Drawing.Image> DImages { get; } = new UIImageProvider<System.Drawing.Image>();
-        
+
         public bool Initialize(ToolkitType type)
         {
             _log.Open(Path.Combine(AppData.Path, "ParkitectNexusLauncher.log"));
@@ -67,19 +67,18 @@ namespace ParkitectNexus.Client.Base
             if (update != null)
             {
                 if (
-                    MessageDialog.AskQuestion(
+                    MessageDialog.AskQuestion("ParkitectNexus Client Update",
                         "A required update for the ParkitectNexus Client needs to be installed.\n" +
                         "Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n" +
                         $"Would you like to install it now?\n\nYou are currently running v{typeof (App).Assembly.GetName().Version}. The newest version is v{update.Version}",
-                        "ParkitectNexus Client Update", Command.Yes, Command.No) !=
+                        Command.Yes, Command.No) !=
                     Command.Yes)
                 {
                     return false;
                 }
 
                 if (!_updateManager.InstallUpdate(update))
-                    MessageDialog.ShowError(_window, "Failed installing the update! Please try again later.",
-                        "ParkitectNexus Client Update");
+                    MessageDialog.ShowError(_window, "ParkitectNexus Client Update", "Failed installing the update! Please try again later.");
 
                 return false;
             }
