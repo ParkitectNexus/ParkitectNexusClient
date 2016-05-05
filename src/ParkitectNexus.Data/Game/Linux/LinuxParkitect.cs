@@ -18,6 +18,7 @@ using ParkitectNexus.Data.Game.Base;
 using ParkitectNexus.Data.Settings;
 using ParkitectNexus.Data.Settings.Models;
 using ParkitectNexus.Data.Utilities;
+using System;
 
 namespace ParkitectNexus.Data.Game.Linux
 {
@@ -41,12 +42,20 @@ namespace ParkitectNexus.Data.Game.Linux
         /// <returns>true if the installation path has been detected; false otherwise.</returns>
         public override bool DetectInstallationPath()
         {
-            if (IsInstalled)
+            if (IsInstalled && GameSettings.Model.IsSteamVersion)
                 return true;
 
-            // TODO Detect Steam version of the game
+            bool success = SetInstallationPathIfValid(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    "/.steam/steam/steamapps/common/Parkitect"));
 
-            return false;
+            if (success)
+            {
+                GameSettings.Model.IsSteamVersion = File.Exists(Path.Combine(InstallationPath, "Parkitect.x86_64"));
+                GameSettings.Save();
+            }
+
+            return success;
         }
 
         /// <summary>
