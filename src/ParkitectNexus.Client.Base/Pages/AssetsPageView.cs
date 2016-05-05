@@ -32,15 +32,17 @@ namespace ParkitectNexus.Client.Base.Pages
     public class AssetsPageView : LoadableDataTileView
     {
         private readonly IParkitect _parkitect;
+        private readonly ILogger _log;
         private readonly AssetType _type;
 
-        public AssetsPageView(IParkitect parkitect, AssetType type, IPresenter parent, string displayName)
+        public AssetsPageView(IParkitect parkitect, ILogger log, AssetType type, IPresenter parent, string displayName)
             : base(displayName)
         {
             if (!(parent is MainView))
                 throw new ArgumentException("parent must be MainView", nameof(parent));
 
             _parkitect = parkitect;
+            _log = log;
             _type = type;
             MainView = (MainView) parent;
 
@@ -128,22 +130,38 @@ namespace ParkitectNexus.Client.Base.Pages
                     return new Tile[0] as IEnumerable<Tile>;
                 }
 
-                foreach (var asset in _parkitect.Assets[_type])
+                try
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    foreach (var asset in _parkitect.Assets[_type])
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
 
-                    Image image = null;
-                    try
-                    {
-                        image = asset.GetImage();
+                        try
+                        {
+                            Image image = null;
+                            try
+                            {
+                                image = asset.GetImage();
+                            }
+                            catch (Exception e)
+                            {
+                                ObjectFactory.GetInstance<ILogger>().WriteException(e);
+                            }
+                            var tile = new Tile(image, asset.Name,
+                                () => { MainView.ShowSidebarWidget(asset.Type.ToString(), CreateViewBox(asset)); });
+                            tiles.Add(tile);
+                        }
+                        catch (Exception e)
+                        {
+                            _log.WriteLine($"Failed to load asset tile for {_type} {asset.Name}.");
+                            _log.WriteException(e);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        ObjectFactory.GetInstance<ILogger>().WriteException(e);
-                    }
-                    var tile = new Tile(image, asset.Name,
-                        () => { MainView.ShowSidebarWidget(asset.Type.ToString(), CreateViewBox(asset)); });
-                    tiles.Add(tile);
+                }
+                catch (Exception e)
+                {
+                    _log.WriteLine($"Failed to load asset tiles for {_type}.");
+                    _log.WriteException(e);
                 }
                 return tiles;
             }, cancellationToken);

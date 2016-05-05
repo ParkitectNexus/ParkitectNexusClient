@@ -18,6 +18,7 @@ using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Tasks;
 using ParkitectNexus.Data.Tasks.Prefab;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
 using Xwt;
 
@@ -28,8 +29,8 @@ namespace ParkitectNexus.Client.Base.Pages
         private readonly IQueueableTaskManager _queueableTaskManager;
         private readonly IWebsite _website;
 
-        public ModsPageView(IParkitect parkitect, IPresenter parent, IQueueableTaskManager queueableTaskManager,
-            IWebsite website) : base(parkitect, AssetType.Mod, parent, "Mods")
+        public ModsPageView(IParkitect parkitect, ILogger log, IPresenter parent, IQueueableTaskManager queueableTaskManager,
+            IWebsite website) : base(parkitect, log, AssetType.Mod, parent, "Mods")
         {
             _queueableTaskManager = queueableTaskManager;
             _website = website;

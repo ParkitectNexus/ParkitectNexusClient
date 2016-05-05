@@ -75,16 +75,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ParkitectNexus.AssetMagic, Version=2.0.5962.36529, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.2.0.5962.36529\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=2.0.5969.20896, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.2.0.5969.20896\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap, Version=4.1.3.394, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.3.394\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap.Net4, Version=4.1.3.394, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.1.3.394\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap.Net4, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
