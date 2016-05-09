@@ -30,16 +30,15 @@ namespace ParkitectNexus.Client.Linux
 {
     public class Program
     {
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
-        public static App app;
-        public static bool closed;
+        public static ManualResetEvent AllDone = new ManualResetEvent(false);
+        public static App App;
+        public static bool Closed;
 
 
         [STAThread]
         public static void Main(string[] args)
         {
-            String socketPath = Path.GetTempPath() + "/parkitect_nexus.socket";
-            bool isHost = false;
+            var socketPath = Path.GetTempPath() + "/parkitect_nexus.socket";
             var endPoint = new UnixEndPoint(socketPath);
             var socket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.IP);
 
@@ -52,14 +51,14 @@ namespace ParkitectNexus.Client.Linux
                 try
                 {
                     socket.Connect(endPoint);
-                    using (NetworkStream sr = new NetworkStream(socket))
+                    using (var sr = new NetworkStream(socket))
                     {
-                        using (StreamWriter writer = new StreamWriter(sr))
+                        using (var writer = new StreamWriter(sr))
                         {
                             writer.WriteLine(args.Length);
-                            for (int x = 0; x < args.Length; x++)
+                            foreach (var t in args)
                             {
-                                writer.WriteLine(args[x]);
+                                writer.WriteLine(t);
                             }
                         }
                     }
@@ -85,8 +84,8 @@ namespace ParkitectNexus.Client.Linux
                 // Create the form and run its message loop. If arguments were specified, process them within the
                 // form.
                 var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
-                app = presenterFactory.InstantiatePresenter<App>();
-                if (!app.Initialize(ToolkitType.Gtk))
+                App = presenterFactory.InstantiatePresenter<App>();
+                if (!App.Initialize(ToolkitType.Gtk))
                     return;
 
 
@@ -95,7 +94,7 @@ namespace ParkitectNexus.Client.Linux
                     ProcessArgs(args);
                 }
 
-                app.Run();
+                App.Run();
             }
             catch (Exception e)
             {
@@ -108,25 +107,25 @@ namespace ParkitectNexus.Client.Linux
                 log?.WriteLine("Application crashed!", LogLevel.Fatal);
                 log?.WriteException(e);
             }
-            closed = true;
+            Closed = true;
             socket.Close();
         }
 
         public static void OnAccept(IAsyncResult ar)
         {
             //release the listening thread and process the args
-            allDone.Set();
-            if (!closed)
+            AllDone.Set();
+            if (!Closed)
             {
-                Socket listener = (Socket) ar.AsyncState;
-                Socket handler = listener.EndAccept(ar);
-                using (NetworkStream stream = new NetworkStream(handler))
+                var listener = (Socket) ar.AsyncState;
+                var handler = listener.EndAccept(ar);
+                using (var stream = new NetworkStream(handler))
                 {
-                    using (StreamReader reader = new StreamReader(stream))
+                    using (var reader = new StreamReader(stream))
                     {
-                        int numberArguments = int.Parse(reader.ReadLine());
-                        string[] args = new string[numberArguments];
-                        for (int x = 0; x < numberArguments; x++)
+                        var numberArguments = int.Parse(reader.ReadLine());
+                        var args = new string[numberArguments];
+                        for (var x = 0; x < numberArguments; x++)
                         {
                             args[x] = reader.ReadLine();
                         }
@@ -141,11 +140,11 @@ namespace ParkitectNexus.Client.Linux
         {
             var options = new AppCommandLineOptions();
             Parser.Default.ParseArguments(args, options);
-            for (int x = 0; x < args.Length; x++)
+            foreach (var t in args)
             {
-                if (args[x].Contains("parkitectnexus://"))
+                if (t.Contains("parkitectnexus://"))
                 {
-                    options.Url = args[x];
+                    options.Url = t;
                 }
             }
 
@@ -158,41 +157,34 @@ namespace ParkitectNexus.Client.Linux
                 {
                     NexusUrl url;
                     if (NexusUrl.TryParse(options.Url, out url))
-                        app.HandleUrl(url);
+                        App.HandleUrl(url);
                 }
             }
         }
 
         public static bool CreateSocket(Socket s, UnixEndPoint end)
         {
-            try
+            //listen for a connection and then rebind the accept
+            var listeningThread = new Thread(delegate()
             {
-                //listen for a connection and then rebind the accept
-                var listeningThread = new Thread(delegate()
+                s.Bind(end);
+                s.Listen(10);
+
+                while (s.IsBound)
                 {
-                    s.Bind(end);
-                    s.Listen(10);
+                    AllDone.Reset();
+                    if (Closed)
+                        break;
+                    //bind accept and listen for arguments
+                    s.BeginAccept(OnAccept, s);
+                    //end the thread when nothing is connected
 
-                    while (s.IsBound)
-                    {
-                        allDone.Reset();
-                        if (closed)
-                            break;
-                        //bind accept and listen for arguments
-                        s.BeginAccept(OnAccept, s);
-                        //end the thread when nothing is connected
+                    AllDone.WaitOne();
+                }
+            });
+            listeningThread.Start();
 
-                        allDone.WaitOne();
-                    }
-                });
-                listeningThread.Start();
-
-                return true;
-            }
-            catch (SocketException e)
-            {
-                throw e;
-            }
+            return true;
         }
     }
 }

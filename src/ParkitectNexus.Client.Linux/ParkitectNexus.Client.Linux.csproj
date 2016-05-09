@@ -78,9 +78,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="..\ParkitectNexus.Client.Windows\Resources\parkitectnexus_logo.png">
-      <Link>parkitectnexus_logo.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="parkitectnexus_logo.png" />
   </ItemGroup>
 </Project>
