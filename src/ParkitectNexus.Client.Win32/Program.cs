@@ -12,6 +12,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -31,13 +32,12 @@ namespace ParkitectNexus.Client.Win32
         [STAThread]
         public static void Main(string[] args)
         {
-            // Create a mutex which is held while the app is open. If the app is started and the mutex can't be awaited,
-            // assume the app is already running and broadcast a WM_GIVEFICUS message.
-            bool mutexIsNew;
-            var mutex = new Mutex(false, "com.ParkitectNexus.Client", out mutexIsNew);
-
             // Look and see if this is the only running instance of the client.
-            if (mutexIsNew)
+            var procCount =
+                Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName)
+                    .Count(p => p.MainModule.FileName == Process.GetCurrentProcess().MainModule.FileName);
+
+            if (procCount == 1)
             {
                 // No matter if the application crashes, we must release the mutex when the app closes. Wrap the app
                 // logic in a try-finally block.
@@ -45,36 +45,36 @@ namespace ParkitectNexus.Client.Win32
                 try
                 {
 #endif
-                // Initialize the structure map container.
-                var registry = ObjectFactory.ConfigureStructureMap();
-                registry.IncludeRegistry(new PresenterRegistry());
-                registry.For<IApp>().Singleton().Use<App>();
-                ObjectFactory.SetUpContainer(registry);
+                    // Initialize the structure map container.
+                    var registry = ObjectFactory.ConfigureStructureMap();
+                    registry.IncludeRegistry(new PresenterRegistry());
+                    registry.For<IApp>().Singleton().Use<App>();
+                    ObjectFactory.SetUpContainer(registry);
 
 
-                // Create the form and run its message loop. If arguments were specified, process them within the
-                // form.
-                var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
-                var app = presenterFactory.InstantiatePresenter<App>();
-                if (!app.Initialize(ToolkitType.Wpf))
-                    return;
+                    // Create the form and run its message loop. If arguments were specified, process them within the
+                    // form.
+                    var presenterFactory = ObjectFactory.GetInstance<IPresenterFactory>();
+                    var app = presenterFactory.InstantiatePresenter<App>();
+                    if (!app.Initialize(ToolkitType.Wpf))
+                        return;
 
-                ParkitectNexusProtocol.Install(ObjectFactory.GetInstance<ILogger>());
+                    ParkitectNexusProtocol.Install(ObjectFactory.GetInstance<ILogger>());
 
-                if (args.Any())
-                {
-                    var options = new AppCommandLineOptions();
-                    Parser.Default.ParseArguments(args, options);
-
-                    if (options.Url != null)
+                    if (args.Any())
                     {
-                        NexusUrl url;
-                        if (NexusUrl.TryParse(options.Url, out url))
-                            app.HandleUrl(url);
-                    }
-                }
+                        var options = new AppCommandLineOptions();
+                        Parser.Default.ParseArguments(args, options);
 
-                app.Run();
+                        if (options.Url != null)
+                        {
+                            NexusUrl url;
+                            if (NexusUrl.TryParse(options.Url, out url))
+                                app.HandleUrl(url);
+                        }
+                    }
+
+                    app.Run();
 #if !DEBUG
                 }
                 catch (Exception e)
@@ -121,8 +121,6 @@ namespace ParkitectNexus.Client.Win32
                     }
                 } while (attempts < 5); // Limit to 5 attempts.
             }
-
-            GC.KeepAlive(mutex);
         }
     }
 }
