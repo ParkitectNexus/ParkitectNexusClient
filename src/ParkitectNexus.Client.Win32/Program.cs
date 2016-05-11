@@ -34,8 +34,12 @@ namespace ParkitectNexus.Client.Win32
         {
             // Look and see if this is the only running instance of the client.
             var procCount =
+#if !DEBUG
                 Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName)
                     .Count(p => p.MainModule.FileName == Process.GetCurrentProcess().MainModule.FileName);
+#else
+                Process.GetProcesses().Count(p => p.ProcessName.Contains("ParkitectNexus"));
+#endif
 
             if (procCount == 1)
             {

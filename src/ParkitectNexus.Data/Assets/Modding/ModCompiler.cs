@@ -60,7 +60,7 @@ namespace ParkitectNexus.Data.Assets.Modding
                 {
                     var dep =
                         _parkitect.Assets[AssetType.Mod].OfType<IModAsset>()
-                            .FirstOrDefault(m => m.Repository == repository);
+                            .FirstOrDefault(m => m.Repository.ToLower() == repository.ToLower());
 
                     if (dep == null)
                         throw new Exception($"Dependency {repository} was not installed.");

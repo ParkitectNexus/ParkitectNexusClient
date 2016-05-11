@@ -12,6 +12,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Diagnostics;
+using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web.API;
 
 namespace ParkitectNexus.Data.Web
@@ -21,8 +22,9 @@ namespace ParkitectNexus.Data.Web
     /// </summary>
     public class Website : IWebsite
     {
+        private readonly ILogger _log;
 #if DEBUG
-        private const string WebsiteUrl = "http://{0}staging.parkitectnexus.com/{1}";
+        private const string WebsiteUrl = "http://{0}dev.parkitectnexus.com/{1}";
 #else
         private const string WebsiteUrl = "http://{0}parkitectnexus.com/{1}";
 #endif
@@ -30,8 +32,9 @@ namespace ParkitectNexus.Data.Web
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
-        public Website()
+        public Website(ILogger log)
         {
+            _log = log;
             API = ObjectFactory.With<IWebsite>(this).GetInstance<IParkitectNexusAPI>();
         }
 
@@ -70,7 +73,10 @@ namespace ParkitectNexus.Data.Web
         /// <returns>The URL.</returns>
         public string ResolveUrl(string path, string subdomain)
         {
-            return string.Format(WebsiteUrl, string.IsNullOrEmpty(subdomain) ? string.Empty : subdomain + ".", path);
+            var url = string.Format(WebsiteUrl, string.IsNullOrEmpty(subdomain) ? string.Empty : subdomain + ".", path);
+
+            _log.WriteLine($"Resolved URL: {url}");
+            return url;
         }
 
         /// <summary>

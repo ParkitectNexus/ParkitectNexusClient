@@ -36,6 +36,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             _parkitect = parkitect;
             _assetUpdatesManager = assetUpdatesManager;
             _queueableTaskManager = queueableTaskManager;
+
+            StatusDescription = $"Update mod {mod.Name}";
         }
 
         #region Overrides of QueueableTask

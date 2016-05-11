@@ -39,6 +39,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             _website = website;
             _remoteAssetRepository = remoteAssetRepository;
             _queueableTaskManager = queueableTaskManager;
+
+            StatusDescription = "Install an asse.t";
         }
 
         #region Overrides of QueueableTask

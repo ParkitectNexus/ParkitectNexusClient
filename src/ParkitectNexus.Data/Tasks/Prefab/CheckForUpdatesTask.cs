@@ -24,6 +24,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
         public CheckForUpdatesTask(IAssetUpdatesManager assetUpdatesManager) : base("Updates check")
         {
             _assetUpdatesManager = assetUpdatesManager;
+
+            StatusDescription = "Check for updates.";
         }
 
         #region Overrides of QueueableTask

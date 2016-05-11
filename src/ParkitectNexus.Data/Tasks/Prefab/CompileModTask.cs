@@ -31,6 +31,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             _mod = mod;
             _modCompiler = modCompiler;
             _modLoadOrderBuilder = modLoadOrderBuilder;
+
+            StatusDescription = $"Compile mod {mod.Name}.";
         }
 
         #region Overrides of QueueableTask
