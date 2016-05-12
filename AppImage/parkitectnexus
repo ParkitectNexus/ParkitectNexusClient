@@ -6,7 +6,7 @@ export MONO_CONFIG=././etc/mono/config
 export MONO_CFG_DIR=././etc
 
 ././bin/mozroots --import --sync
-././bin/mono  "././bin/ParkitectNexus.Client.Linux.Xwt.exe" "$@"
+././bin/mono  "././bin/ParkitectNexus.Client.Linux.exe" "$@"
 
 
 
