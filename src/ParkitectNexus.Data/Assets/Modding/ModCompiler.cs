@@ -56,11 +56,12 @@ namespace ParkitectNexus.Data.Assets.Modding
         {
             return await Task.Run(() =>
             {
-                var dependencies = mod.Information.Dependencies?.Select(repository =>
+                var dependencies = mod.Information.Dependencies?.Where(repository => repository != null)
+                    .Select(repository =>
                 {
                     var dep =
                         _parkitect.Assets[AssetType.Mod].OfType<IModAsset>()
-                            .FirstOrDefault(m => m.Repository.ToLower() == repository.ToLower());
+                            .FirstOrDefault(m => m.Repository?.ToLower() == repository.ToLower());
 
                     if (dep == null)
                         throw new Exception($"Dependency {repository} was not installed.");
