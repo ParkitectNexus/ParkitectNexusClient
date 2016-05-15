@@ -12,6 +12,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Diagnostics;
+using System.Linq;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
@@ -26,12 +27,14 @@ namespace ParkitectNexus.Client.Base.Pages
 {
     public class ModsPageView : AssetsPageView
     {
+        private readonly IParkitect _parkitect;
         private readonly IQueueableTaskManager _queueableTaskManager;
         private readonly IWebsite _website;
 
         public ModsPageView(IParkitect parkitect, ILogger log, IPresenter parent, IQueueableTaskManager queueableTaskManager,
-            IWebsite website) : base(parkitect, log, AssetType.Mod, parent, "Mods")
+            IWebsite website) : base(parkitect, website, log, AssetType.Mod, parent, "Mods")
         {
+            _parkitect = parkitect;
             _queueableTaskManager = queueableTaskManager;
             _website = website;
         }

@@ -15,13 +15,14 @@ using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Client.Base.Pages
 {
     public class SavegamesPageView : AssetsPageView
     {
-        public SavegamesPageView(IParkitect parkitect, ILogger log, IPresenter parent)
-            : base(parkitect, log, AssetType.Savegame, parent, "Savegames")
+        public SavegamesPageView(IParkitect parkitect, IWebsite website, ILogger log, IPresenter parent)
+            : base(parkitect, website, log, AssetType.Savegame, parent, "Savegames")
         {
         }
     }

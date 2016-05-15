@@ -23,31 +23,43 @@ using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web;
 using Xwt;
 using Xwt.Drawing;
 using Image = System.Drawing.Image;
+using System.Linq;
 
 namespace ParkitectNexus.Client.Base.Pages
 {
     public class AssetsPageView : LoadableDataTileView
     {
+        private string[] _requiredAssets;
         private readonly IParkitect _parkitect;
+        private readonly IWebsite _website;
         private readonly ILogger _log;
         private readonly AssetType _type;
 
-        public AssetsPageView(IParkitect parkitect, ILogger log, AssetType type, IPresenter parent, string displayName)
+        public AssetsPageView(IParkitect parkitect, IWebsite website, ILogger log, AssetType type, IPresenter parent, string displayName)
             : base(log, displayName)
         {
             if (!(parent is MainView))
                 throw new ArgumentException("parent must be MainView", nameof(parent));
 
             _parkitect = parkitect;
+            _website = website;
             _log = log;
             _type = type;
             MainView = (MainView) parent;
 
             parkitect.Assets.AssetAdded += Assets_AssetAdded;
             parkitect.Assets.AssetRemoved += Assets_AssetRemoved;
+
+            GetRequiredMods();
+        }
+
+        private async void GetRequiredMods()
+        {
+            _requiredAssets = await _website.API.GetRequiredModIdentifiers();
         }
 
         public MainView MainView { get; }
@@ -92,7 +104,10 @@ namespace ParkitectNexus.Client.Base.Pages
 
         protected virtual void PopulateViewBoxWithButtons(VBox vBox, IAsset asset)
         {
-            var deleteButton = new Button("Delete");
+            var canDelete = _requiredAssets == null || !_requiredAssets.Contains(asset.Id);
+
+            var deleteButton = new Button("Delete") { Sensitive = canDelete };
+
             deleteButton.Clicked += (sender, args) =>
             {
                 if (
