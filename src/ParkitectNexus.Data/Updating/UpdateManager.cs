@@ -72,9 +72,17 @@ namespace ParkitectNexus.Data.Updating
             }
             catch(Exception e)
             {
-                _log.WriteLine(GetUpdateVersionUrl());
-                _log.WriteLine("Failed to check for updates");
-                _log.WriteException(e);
+                //TODO: hotfix to avoid the application from crashing
+                try{
+                    _log.WriteLine(GetUpdateVersionUrl());
+                    _log.WriteLine("Failed to check for updates");
+                    _log.WriteException(e);
+                }
+                catch(Exception ex)
+                {
+                    _log.WriteException(ex);
+
+                }
             }
 
             return null;
