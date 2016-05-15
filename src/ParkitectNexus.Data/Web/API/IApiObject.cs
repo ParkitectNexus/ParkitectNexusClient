@@ -1,4 +1,4 @@
-// ParkitectNexusClient
+﻿// ParkitectNexusClient
 // Copyright (C) 2016 ParkitectNexus, Tim Potze
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -11,21 +11,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Serialization;
 
-namespace ParkitectNexus.Data.Assets
+namespace ParkitectNexus.Data.Web.API
 {
-    public interface IAssetUpdatesManager
+    /// <summary>
+    ///     Contains the properties of an object.
+    /// </summary>
+    public interface IApiObject
     {
-        bool HasChecked { get; }
-
-        event EventHandler<AssetEventArgs> UpdateFound;
-
-        Task<int> CheckForUpdates();
-        Task<bool> IsUpdateAvailableOnline(IAsset asset);
-        bool IsUpdateAvailableInMemory(IAsset asset);
-        Task<string> GetLatestVersionName(IAsset asset);
-        bool ShouldCheckForUpdates();
+        /// <summary>
+        ///     Gets or sets the identifier of this object.
+        /// </summary>
+        string Id { get; set; }
     }
 }

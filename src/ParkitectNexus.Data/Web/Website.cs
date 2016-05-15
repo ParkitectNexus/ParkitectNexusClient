@@ -73,6 +73,11 @@ namespace ParkitectNexus.Data.Web
         /// <returns>The URL.</returns>
         public string ResolveUrl(string path, string subdomain)
         {
+#if DEBUG
+            if (subdomain == "client")
+                subdomain = null;
+#endif
+
             var url = string.Format(WebsiteUrl, string.IsNullOrEmpty(subdomain) ? string.Empty : subdomain + ".", path);
 
             _log.WriteLine($"Resolved URL: {url}");

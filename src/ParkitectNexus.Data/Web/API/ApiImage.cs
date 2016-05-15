@@ -13,15 +13,13 @@
 
 using System;
 using System.Drawing;
-using System.IO;
 using System.Threading.Tasks;
-using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web.Client;
 
 namespace ParkitectNexus.Data.Web.API
 {
-    public class ApiImage : ApiResourceSource
+    public class ApiImage : ApiResource
     {
         public async Task<Bitmap> Get()
         {
@@ -33,8 +31,8 @@ namespace ParkitectNexus.Data.Web.API
                 using (var webclient = ObjectFactory.GetInstance<INexusWebClientFactory>().CreateWebClient())
                 {
                     using (var stream = await webclient.OpenReadTaskAsync(Url))
-                        using (var bmp = new Bitmap(stream))
-                            return bmp.Clone() as Bitmap;
+                    using (var bmp = new Bitmap(stream))
+                        return bmp.Clone() as Bitmap;
                 }
             }
             catch (Exception e)

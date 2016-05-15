@@ -62,6 +62,11 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 
                 var assetData = await _website.API.GetAsset(data.Id);
 
+                if (assetData.Resource.Data.Version == null)
+                {
+                    UpdateStatus($"The '{assetData.Name}' mod has not yet been released! Ask the author to release it.", 100, TaskStatus.Canceled);
+                    return;
+                }
                 // Download the asset trough the RemoveAssetRepository.
                 UpdateStatus($"Installing {assetData.Type.ToString().ToLower()} '{assetData.Name}'...", 15,
                     TaskStatus.Running);

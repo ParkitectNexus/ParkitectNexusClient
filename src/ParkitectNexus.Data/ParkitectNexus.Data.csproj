@@ -101,19 +101,14 @@
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.19.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Octokit.0.19.0\lib\net45\Octokit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetEventArgs.cs" />
-    <Compile Include="Assets\AssetUpdatesManager.cs" />
     <Compile Include="Assets\BlueprintAsset.cs" />
     <Compile Include="Assets\CachedData\AssetCachedDataStorage.cs" />
     <Compile Include="Assets\CachedData\AssetWithImageCachedData.cs" />
     <Compile Include="Assets\CachedData\IAssetCachedData.cs" />
     <Compile Include="Assets\CachedData\IAssetCachedDataStorage.cs" />
-    <Compile Include="Assets\IAssetUpdatesManager.cs" />
     <Compile Include="Assets\Meta\AssetMetadata.cs" />
     <Compile Include="Assets\AssetTypeUtil.cs" />
     <Compile Include="Assets\DownloadInfo.cs" />
@@ -188,12 +183,14 @@
     <Compile Include="Utilities\StreamUtility.cs" />
     <Compile Include="Utilities\UtilityRegistry.cs" />
     <Compile Include="Web\API\ApiImage.cs" />
+    <Compile Include="Web\API\ApiResource.cs" />
+    <Compile Include="Web\API\ApiResourceSource.cs" />
     <Compile Include="Web\API\ApiUser.cs" />
     <Compile Include="Web\API\ApiAsset.cs" />
     <Compile Include="Web\API\ApiDataContainer.cs" />
     <Compile Include="Web\API\ApiSubscription.cs" />
     <Compile Include="Web\API\IParkitectNexusAPI.cs" />
-    <Compile Include="Web\API\IApiResource.cs" />
+    <Compile Include="Web\API\IApiObject.cs" />
     <Compile Include="Web\API\ParkitectNexusAPI.cs" />
     <Compile Include="Web\Client\INexusWebClient.cs" />
     <Compile Include="Web\Client\INexusWebClientFactory.cs" />

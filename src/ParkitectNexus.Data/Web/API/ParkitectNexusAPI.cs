@@ -77,6 +77,21 @@ namespace ParkitectNexus.Data.Web.API
         }
 
         /// <summary>
+        ///     Gets the identifiers of the required mods.
+        /// </summary>
+        /// <returns>The identifiers of the required mods.</returns>
+        public async Task<string[]> GetRequiredModIdentifiers()
+        {
+            using (var webClient = _webClientFactory.CreateWebClient())
+            using (var stream = await webClient.OpenReadTaskAsync(_website.ResolveUrl("api/assets/required", "client")))
+            using (var streamReader = new StreamReader(stream))
+            {
+                var info = JsonConvert.DeserializeObject<ApiDataContainer<string[]>>(await streamReader.ReadToEndAsync());
+                return info.Data;
+            }
+        }
+
+        /// <summary>
         ///     Gets the subscriptions of the authenticated user.
         /// </summary>
         /// <param name="authKey">The authentication key.</param>

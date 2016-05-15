@@ -40,5 +40,11 @@ namespace ParkitectNexus.Data.Web.API
         /// <param name="authKey">The authentication key.</param>
         /// <returns>The user information.</returns>
         Task<ApiUser> GetUserInfo(string authKey);
+
+        /// <summary>
+        ///     Gets the identifiers of the required mods.
+        /// </summary>
+        /// <returns>The identifiers of the required mods.</returns>
+        Task<string[]> GetRequiredModIdentifiers();
     }
 }

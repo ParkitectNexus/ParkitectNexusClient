@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using ParkitectNexus.Client.Base.Components;
 using ParkitectNexus.Client.Base.Main;
 using ParkitectNexus.Data;
@@ -31,26 +30,27 @@ namespace ParkitectNexus.Client.Base.Pages
 {
     public class TasksPageView : ScrollView, IPresenter, IPageView
     {
-        private Type[] _tasksOfInterest =
-        {
-            typeof(CompileModTask),
-            typeof(InstallAssetTask)
-        };
+        private readonly MainView _mainView;
 
         private readonly Label _nothingLabel;
         private readonly IQueueableTaskManager _taskManager;
         private readonly VBox _vBox;
         private string _displayName = "Tasks";
-        private readonly MainView _mainView;
+
+        private readonly Type[] _tasksOfInterest =
+        {
+            typeof (CompileModTask),
+            typeof (InstallAssetTask)
+        };
+
         private List<TaskView> _taskViews = new List<TaskView>();
 
         public TasksPageView(IQueueableTaskManager taskManager, IPresenter parent)
         {
-
             if (!(parent is MainView))
                 throw new ArgumentException("parent must be MainView", nameof(parent));
 
-            _mainView = (MainView)parent;
+            _mainView = (MainView) parent;
 
             _taskManager = taskManager;
 

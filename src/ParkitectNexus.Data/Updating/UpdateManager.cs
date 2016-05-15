@@ -150,9 +150,9 @@ namespace ParkitectNexus.Data.Updating
             switch (OperatingSystem.Detect())
             {
                 case SupportedOperatingSystem.Windows:
-                    return _website.ResolveUrl("update.json");
+                    return _website.ResolveUrl("update.json", "client");
                 case SupportedOperatingSystem.MacOSX:
-                    return _website.ResolveUrl("update-osx.json");
+                    return _website.ResolveUrl("update-osx.json", "client");
                 case SupportedOperatingSystem.Linux:
                     throw new NotImplementedException();
                 default:

@@ -282,6 +282,9 @@ namespace ParkitectNexus.Data.Assets
                                 var partDir = entry.FullName.Substring(mainFolder.Length);
                                 var path = Path.Combine(installationPath, partDir);
 
+                                if (partDir == "moddata.cache" || partDir == "modinfo.meta")
+                                   continue;
+
                                 if (string.IsNullOrEmpty(entry.Name))
                                 {
                                     _log.WriteLine($"Creating directory '{path}'.");
@@ -307,9 +310,6 @@ namespace ParkitectNexus.Data.Assets
                             var createdAsset = new ModAsset(installationPath, meta,
                                 cachedData as AssetWithImageCachedData, modInformation);
                             OnAssetAdded(new AssetEventArgs(createdAsset));
-
-                            // Save and compile the mod.
-                            // TODO compile mod.
 
                             return createdAsset;
                         }

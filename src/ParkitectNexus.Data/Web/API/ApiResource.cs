@@ -1,4 +1,4 @@
-﻿// ParkitectNexusClient
+// ParkitectNexusClient
 // Copyright (C) 2016 ParkitectNexus, Tim Potze
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -11,18 +11,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace ParkitectNexus.Data.Web.API
 {
-    /// <summary>
-    ///     Contains the properties of a resource.
-    /// </summary>
-    public interface IApiResource
+    public class ApiResource
     {
-        /// <summary>
-        ///     Gets or sets the identifier of this resource.
-        /// </summary>
-        string Id { get; set; }
+        [JsonProperty("source")]
+        public string Source { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
 }

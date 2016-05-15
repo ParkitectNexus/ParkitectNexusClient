@@ -17,25 +17,25 @@ using System.Threading.Tasks;
 using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
+using ParkitectNexus.Data.Web.API;
 using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Tasks.Prefab
 {
     public class UpdateModTask : QueueableTask
     {
-        private readonly IAssetUpdatesManager _assetUpdatesManager;
         private readonly IModAsset _mod;
         private readonly IParkitect _parkitect;
         private readonly IQueueableTaskManager _queueableTaskManager;
+        private readonly IParkitectNexusAPI _api;
 
-        public UpdateModTask(IModAsset mod, IParkitect parkitect, IAssetUpdatesManager assetUpdatesManager,
-            IQueueableTaskManager queueableTaskManager) : base($"Update mod {mod?.Name}")
+        public UpdateModTask(IModAsset mod, IParkitect parkitect, IQueueableTaskManager queueableTaskManager, IParkitectNexusAPI api) : base($"Update mod {mod?.Name}")
         {
             if (mod == null) throw new ArgumentNullException(nameof(mod));
             _mod = mod;
             _parkitect = parkitect;
-            _assetUpdatesManager = assetUpdatesManager;
             _queueableTaskManager = queueableTaskManager;
+            _api = api;
 
             StatusDescription = $"Update mod {mod.Name}";
         }
@@ -46,9 +46,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
         {
             UpdateStatus("Checking latest version...", 25, TaskStatus.Running);
 
-            var updateAvailable = await _assetUpdatesManager.IsUpdateAvailableOnline(_mod);
-
-            if (!updateAvailable)
+            var info = await _api.GetAsset(_mod.Id);
+            if (_mod.Tag == info.Resource.Data.Version)
             {
                 UpdateStatus("No update available.", 100, TaskStatus.Finished);
                 return;
@@ -62,7 +61,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             task.Data = new InstallUrlAction(_mod.Id);
             _queueableTaskManager.Add(task);
 
-            UpdateStatus("Finished checking for updates.", 100, TaskStatus.Finished);
+            UpdateStatus("Started installation task.", 100, TaskStatus.Finished);
         }
 
         #endregion
