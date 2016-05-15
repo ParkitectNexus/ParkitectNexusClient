@@ -89,9 +89,6 @@
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.19.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Octokit.0.19.0\lib\net45\Octokit.dll</HintPath>
-    </Reference>
     <Reference Include="ParkitectNexus.AssetMagic, Version=2.0.5969.20896, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\packages\ParkitectNexus.AssetMagic.2.0.5969.20896\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
     </Reference>
@@ -164,7 +161,8 @@
     <Compile Include="Tasks\TaskStatus.cs" />
     <Compile Include="Tasks\Prefab\TestWaitQueueableTask.cs" />
     <Compile Include="Updating\IUpdateManager.cs" />
-    <Compile Include="Updating\UpdateManager.cs"></Compile>
+    <Compile Include="Updating\UpdateManager.cs">
+    </Compile>
     <Compile Include="Updating\UpdateInfo.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
