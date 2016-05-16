@@ -19,9 +19,9 @@ namespace ParkitectNexus.Data.Web.API
     /// <summary>
     ///     Represents an API asset.
     /// </summary>
-    public class ApiAsset : IApiResource
+    public class ApiAsset : IApiObject
     {
-        #region Implementation of IApiResource
+        #region Implementation of IApiObject
 
         /// <summary>
         ///     Gets or sets the identifier of this resource.
@@ -54,13 +54,5 @@ namespace ParkitectNexus.Data.Web.API
 
         [JsonIgnore]
         public AssetType Type => AssetTypeUtil.Parse(TypeString);
-    }
-
-    public class ApiResourceSource
-    {
-        [JsonProperty("source")]
-        public string Source { get; set; }
-        [JsonProperty("url")]
-        public string Url { get; set; }
     }
 }

@@ -47,7 +47,6 @@ namespace WixSharpSetup
                     new File(AppExecutable),
                     new File(@"CommandLine.dll"),
                     new File(@"Newtonsoft.Json.dll"),
-                    new File(@"Octokit.dll"),
                     new File(@"ParkitectNexus.AssetMagic.dll"),
                     new File(@"ParkitectNexus.Client.Base.dll"),
                     new File(@"ParkitectNexus.Data.dll"),

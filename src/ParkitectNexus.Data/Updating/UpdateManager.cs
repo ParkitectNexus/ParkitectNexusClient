@@ -72,9 +72,17 @@ namespace ParkitectNexus.Data.Updating
             }
             catch(Exception e)
             {
-                _log.WriteLine(GetUpdateVersionUrl());
-                _log.WriteLine("Failed to check for updates");
-                _log.WriteException(e);
+                //TODO: hotfix to avoid the application from crashing
+                try{
+                    _log.WriteLine(GetUpdateVersionUrl());
+                    _log.WriteLine("Failed to check for updates");
+                    _log.WriteException(e);
+                }
+                catch(Exception ex)
+                {
+                    _log.WriteException(ex);
+
+                }
             }
 
             return null;
@@ -150,9 +158,9 @@ namespace ParkitectNexus.Data.Updating
             switch (OperatingSystem.Detect())
             {
                 case SupportedOperatingSystem.Windows:
-                    return _website.ResolveUrl("update.json");
+                    return _website.ResolveUrl("update.json", "client");
                 case SupportedOperatingSystem.MacOSX:
-                    return _website.ResolveUrl("update-osx.json");
+                    return _website.ResolveUrl("update-osx.json", "client");
                 case SupportedOperatingSystem.Linux:
                     throw new NotImplementedException();
                 default:

@@ -75,18 +75,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ParkitectNexus.AssetMagic, Version=2.0.5969.20896, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.2.0.5969.20896\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap.Net4, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.Net4.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -101,19 +89,23 @@
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.19.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\Octokit.0.19.0\lib\net45\Octokit.dll</HintPath>
+    <Reference Include="ParkitectNexus.AssetMagic, Version=2.0.5969.20896, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\ParkitectNexus.AssetMagic.2.0.5969.20896\lib\net45\ParkitectNexus.AssetMagic.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.2.0.402, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=4.2.0.402, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetEventArgs.cs" />
-    <Compile Include="Assets\AssetUpdatesManager.cs" />
     <Compile Include="Assets\BlueprintAsset.cs" />
     <Compile Include="Assets\CachedData\AssetCachedDataStorage.cs" />
     <Compile Include="Assets\CachedData\AssetWithImageCachedData.cs" />
     <Compile Include="Assets\CachedData\IAssetCachedData.cs" />
     <Compile Include="Assets\CachedData\IAssetCachedDataStorage.cs" />
-    <Compile Include="Assets\IAssetUpdatesManager.cs" />
     <Compile Include="Assets\Meta\AssetMetadata.cs" />
     <Compile Include="Assets\AssetTypeUtil.cs" />
     <Compile Include="Assets\DownloadInfo.cs" />
@@ -169,8 +161,9 @@
     <Compile Include="Tasks\TaskStatus.cs" />
     <Compile Include="Tasks\Prefab\TestWaitQueueableTask.cs" />
     <Compile Include="Updating\IUpdateManager.cs" />
+    <Compile Include="Updating\UpdateManager.cs">
+    </Compile>
     <Compile Include="Updating\UpdateInfo.cs" />
-    <Compile Include="Updating\UpdateManager.cs" />
     <Compile Include="Utilities\ILogger.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="ObjectFactory.cs" />
@@ -188,12 +181,14 @@
     <Compile Include="Utilities\StreamUtility.cs" />
     <Compile Include="Utilities\UtilityRegistry.cs" />
     <Compile Include="Web\API\ApiImage.cs" />
+    <Compile Include="Web\API\ApiResource.cs" />
+    <Compile Include="Web\API\ApiResourceSource.cs" />
     <Compile Include="Web\API\ApiUser.cs" />
     <Compile Include="Web\API\ApiAsset.cs" />
     <Compile Include="Web\API\ApiDataContainer.cs" />
     <Compile Include="Web\API\ApiSubscription.cs" />
     <Compile Include="Web\API\IParkitectNexusAPI.cs" />
-    <Compile Include="Web\API\IApiResource.cs" />
+    <Compile Include="Web\API\IApiObject.cs" />
     <Compile Include="Web\API\ParkitectNexusAPI.cs" />
     <Compile Include="Web\Client\INexusWebClient.cs" />
     <Compile Include="Web\Client\INexusWebClientFactory.cs" />

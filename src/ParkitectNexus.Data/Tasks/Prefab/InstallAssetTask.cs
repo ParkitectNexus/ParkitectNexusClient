@@ -39,6 +39,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             _website = website;
             _remoteAssetRepository = remoteAssetRepository;
             _queueableTaskManager = queueableTaskManager;
+
+            StatusDescription = "Install an asset.";
         }
 
         #region Overrides of QueueableTask
@@ -59,6 +61,12 @@ namespace ParkitectNexus.Data.Tasks.Prefab
                 UpdateStatus("Fetching asset information...", 0, TaskStatus.Running);
 
                 var assetData = await _website.API.GetAsset(data.Id);
+
+                if (assetData.Type == AssetType.Mod && assetData.Resource.Data.Version == null)
+                {
+                    UpdateStatus($"The '{assetData.Name}' mod has not yet been released! Ask the author to release it.", 100, TaskStatus.Canceled);
+                    return;
+                }
 
                 // Download the asset trough the RemoveAssetRepository.
                 UpdateStatus($"Installing {assetData.Type.ToString().ToLower()} '{assetData.Name}'...", 15,

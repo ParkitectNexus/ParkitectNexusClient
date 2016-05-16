@@ -15,8 +15,8 @@ mkdir -p ./$APP/$APP.AppDir/usr/bin
 mkdir -p ./$APP/$APP.AppDir/usr/opt
 
 #build Nexus Client and copy release into bin
-xbuild /p:Configuration=Release ./../src/ParkitectNexus.Client.Linux.Xwt/ParkitectNexus.Client.Linux.Xwt.csproj
-cp -R ./../src/ParkitectNexus.Client.Linux.Xwt/bin/Release/* ./$APP/$APP.AppDir/usr/bin
+xbuild /p:Configuration=Release ./../src/ParkitectNexus.Client.Linux/ParkitectNexus.Client.Linux.csproj
+cp -R ./../bin/Release/* ./$APP/$APP.AppDir/usr/bin
 
 # Figure out $VERSION
 VERSION=$(git describe origin/master  --tags $(git rev-list --tags --max-count=0))

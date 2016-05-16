@@ -72,9 +72,10 @@ namespace ParkitectNexus.Client.Darwin
             if(!app.Initialize(ToolkitType.Cocoa))
                 return;
 
-            TmpFixModLoaderUtil.InstallModLoader(ObjectFactory.GetInstance<IParkitect>(), ObjectFactory.GetInstance<ILogger>());
             MacEngine.App.OpenUrl += (sender, e) =>
             {
+                ObjectFactory.GetInstance<ILogger>().WriteLine($"Got url {e.Url}");
+
                 if(e.Url.StartsWith("parkitectnexus://"))
                     e.Url = e.Url;
                 else
@@ -90,6 +91,8 @@ namespace ParkitectNexus.Client.Darwin
                 if(NexusUrl.TryParse(e.Url, out url))
                     app.HandleUrl(url);
             };
+
+            TmpFixModLoaderUtil.InstallModLoader(ObjectFactory.GetInstance<IParkitect>(), ObjectFactory.GetInstance<ILogger>());
 
             app.Run();
         }

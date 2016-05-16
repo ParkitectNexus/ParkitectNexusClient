@@ -21,6 +21,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
     {
         public TestWaitQueueableTask(int number) : base($"Wait task for testing #{number}")
         {
+            StatusDescription = "A test which does nothing.";
         }
 
         #region Overrides of QueueableTask

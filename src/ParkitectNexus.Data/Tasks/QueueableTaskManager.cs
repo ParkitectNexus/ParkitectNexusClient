@@ -200,6 +200,7 @@ namespace ParkitectNexus.Data.Tasks
                         _currentTask.StatusDescription = "Task finished in an unkown error.";
                     }
                 }
+
             }
             catch (Exception e)
             {

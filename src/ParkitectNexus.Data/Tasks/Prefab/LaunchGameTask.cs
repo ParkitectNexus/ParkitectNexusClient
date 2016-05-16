@@ -24,6 +24,8 @@ namespace ParkitectNexus.Data.Tasks.Prefab
         public LaunchGameTask(IParkitect parkitect) : base("Launch parkitect")
         {
             _parkitect = parkitect;
+
+            StatusDescription = "Launch the game.";
         }
 
         #region Overrides of QueueableTask

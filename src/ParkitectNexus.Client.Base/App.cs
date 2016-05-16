@@ -120,7 +120,7 @@ namespace ParkitectNexus.Client.Base
 
             _migrator.Migrate();
             ModLoaderUtil.InstallModLoader(_parkitect, _log);
-
+            _taskManager.Add<CheckForUpdatesTask>();
             return true;
         }
 

@@ -15,9 +15,9 @@ using Newtonsoft.Json;
 
 namespace ParkitectNexus.Data.Web.API
 {
-    public class ApiUser : IApiResource
+    public class ApiUser : IApiObject
     {
-        #region Implementation of IApiResource
+        #region Implementation of IApiObject
 
         /// <summary>
         ///     Gets or sets the identifier of this resource.
