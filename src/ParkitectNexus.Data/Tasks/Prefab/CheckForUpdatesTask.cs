@@ -19,6 +19,7 @@ using ParkitectNexus.Data.Assets;
 using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.API;
 using ParkitectNexus.Data.Web.Models;
 
@@ -27,14 +28,14 @@ namespace ParkitectNexus.Data.Tasks.Prefab
     public class CheckForUpdatesTask : QueueableTask
     {
         private readonly IParkitect _parkitect;
-        private readonly IParkitectNexusAPI _api;
+        private readonly IWebsite _website;
         private readonly ILogger _log;
         private readonly IQueueableTaskManager _queueableTaskManager;
 
-        public CheckForUpdatesTask(IParkitect parkitect, IParkitectNexusAPI api, ILogger log, IQueueableTaskManager queueableTaskManager) : base("Check for updates")
+        public CheckForUpdatesTask(IParkitect parkitect, IWebsite website, ILogger log, IQueueableTaskManager queueableTaskManager) : base("Check for updates")
         {
             _parkitect = parkitect;
-            _api = api;
+            _website = website;
             _log = log;
             _queueableTaskManager = queueableTaskManager;
             StatusDescription = "Check for updates.";
@@ -47,7 +48,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             var count = 0;
             UpdateStatus("Gathering information...", 0, TaskStatus.Running);
 
-            foreach (var required in await _api.GetRequiredModIdentifiers())
+            foreach (var required in await _website.API.GetRequiredModIdentifiers())
             {
                 if (_parkitect.Assets[AssetType.Mod].All(m => m.Id != required))
                 {
@@ -72,7 +73,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
 
                 try
                 {
-                    var info = await _api.GetAsset(mod.Id);
+                    var info = await _website.API.GetAsset(mod.Id);
                     if (mod.Tag != info.Resource.Data.Version)
                     {
                         _queueableTaskManager.With(mod).Add<UpdateModTask>();

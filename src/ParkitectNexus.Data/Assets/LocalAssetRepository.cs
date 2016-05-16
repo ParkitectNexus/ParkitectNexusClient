@@ -24,6 +24,7 @@ using ParkitectNexus.Data.Assets.Meta;
 using ParkitectNexus.Data.Assets.Modding;
 using ParkitectNexus.Data.Game;
 using ParkitectNexus.Data.Utilities;
+using ParkitectNexus.Data.Web;
 
 namespace ParkitectNexus.Data.Assets
 {
@@ -33,11 +34,13 @@ namespace ParkitectNexus.Data.Assets
         private readonly IAssetMetadataStorage _assetMetadataStorage;
         private readonly ILogger _log;
         private readonly IParkitect _parkitect;
+        private readonly IWebsite _website;
 
-        public LocalAssetRepository(IParkitect parkitect, ILogger log, IAssetMetadataStorage assetMetadataStorage,
+        public LocalAssetRepository(IParkitect parkitect, IWebsite website, ILogger log, IAssetMetadataStorage assetMetadataStorage,
             IAssetCachedDataStorage assetCachedDataStorage)
         {
             _parkitect = parkitect;
+            _website = website;
             _log = log;
             _assetMetadataStorage = assetMetadataStorage;
             _assetCachedDataStorage = assetCachedDataStorage;
@@ -248,9 +251,9 @@ namespace ParkitectNexus.Data.Assets
 //                                InstalledVersion = downloadedAsset.ApiAsset.UpdatedAt,
                                 Tag = downloadedAsset.Info.Tag,
                                 Repository = downloadedAsset.Info.Repository
-                            };// TODO: Re-add installed version
+                            }; // TODO: Re-add installed version
 
-                                var installationPath = Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Mod),
+                            var installationPath = Path.Combine(_parkitect.Paths.GetAssetPath(AssetType.Mod),
                                 downloadedAsset.Info.Repository.Replace('/', '@'));
 
                             // TODO: Should actually try and look if the mod has been updated since and delete the whole folder.
@@ -283,7 +286,7 @@ namespace ParkitectNexus.Data.Assets
                                 var path = Path.Combine(installationPath, partDir);
 
                                 if (partDir == "moddata.cache" || partDir == "modinfo.meta")
-                                   continue;
+                                    continue;
 
                                 if (string.IsNullOrEmpty(entry.Name))
                                 {
@@ -299,6 +302,8 @@ namespace ParkitectNexus.Data.Assets
                                 }
                             }
 
+                            _log.WriteLine("Register installation to API.");
+                            _website.API.RegisterDownload(downloadedAsset.ApiAsset.Id);
 
                             _assetMetadataStorage.StoreMetadata(downloadedAsset.ApiAsset.Type, installationPath, meta);
                             var cachedData = await _assetCachedDataStorage.GetData(downloadedAsset.ApiAsset.Type, meta,

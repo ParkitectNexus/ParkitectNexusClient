@@ -92,6 +92,16 @@ namespace ParkitectNexus.Data.Web.API
         }
 
         /// <summary>
+        ///     Registers a download for the asset with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        public async void RegisterDownload(string id)
+        {
+            using (var webClient = _webClientFactory.CreateWebClient())
+                await webClient.OpenReadTaskAsync(_website.ResolveUrl("api/downloads/add/asset/" + id, "client"));
+        }
+
+        /// <summary>
         ///     Gets the subscriptions of the authenticated user.
         /// </summary>
         /// <param name="authKey">The authentication key.</param>
