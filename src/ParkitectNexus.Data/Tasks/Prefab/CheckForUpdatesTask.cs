@@ -66,7 +66,7 @@ namespace ParkitectNexus.Data.Tasks.Prefab
             for (var index = 0; index < mods.Length; index++)
             {
                 var mod = mods[index];
-                if (!mod.Information.IsDevelopment || mod.Id == null)
+                if (mod.Information.IsDevelopment || mod.Id == null)
                     continue;
 
                 UpdateStatus($"{index + 1}/{mods.Length}: Checking mod: {mod.Name}...", (int)(index * (100.0f/mods.Length)), TaskStatus.Running);
