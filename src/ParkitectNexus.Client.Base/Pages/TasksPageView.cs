@@ -40,7 +40,8 @@ namespace ParkitectNexus.Client.Base.Pages
         private readonly Type[] _tasksOfInterest =
         {
             typeof (CompileModTask),
-            typeof (InstallAssetTask)
+            typeof (InstallAssetTask),
+            typeof (UpdateModTask),
         };
 
         private List<TaskView> _taskViews = new List<TaskView>();
