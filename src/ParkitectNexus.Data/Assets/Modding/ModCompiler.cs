@@ -26,23 +26,6 @@ namespace ParkitectNexus.Data.Assets.Modding
 {
     public class ModCompiler : IModCompiler
     {
-        /// <summary>
-        ///     Assemblies provided by the mono runtime.
-        /// </summary>
-        private static readonly string[] SystemAssemblies =
-        {
-            "System", "System.Core", "System.Data", "System.Xml",
-            "System.Xml.Linq", "System.Data.DataSetExtensions", "System.Net.Http"
-        };
-
-        /// <summary>
-        ///     References ignored during compilation.
-        /// </summary>
-        private static readonly string[] IgnoredAssemblies =
-        {
-            "Microsoft.CSharp"
-        };
-
         private readonly ILogger _log;
         private readonly IParkitect _parkitect;
 
@@ -270,27 +253,13 @@ namespace ParkitectNexus.Data.Assets.Modding
 
             var dllName = $"{assemblyName}.dll";
 
-            if (SystemAssemblies.Contains(assemblyName))
-                return dllName;
-
-            if (IgnoredAssemblies.Contains(assemblyName))
-                return null;
-
-//            var modPath = Path.Combine(InstallationPath, BaseDir ?? "", dllName);
-//            if (File.Exists(Path.Combine(modPath)))
-//                return modPath;
-
             var managedAssemblyNames =
                 Directory.GetFiles(_parkitect.Paths.DataManaged, "*.dll").Select(Path.GetFileName).ToArray();
 
             if (managedAssemblyNames.Contains(dllName))
                 return Path.Combine(_parkitect.Paths.DataManaged, dllName);
 
-//            if (SystemAssemblies.Contains(assemblyName))
-//                return dllName;
-
             return null;
-            //throw new Exception($"Failed to resolve referenced assembly '{assemblyName}'");
         }
     }
 }
