@@ -1,8 +1,8 @@
 APP=ParkitectNexus
 
-MONO_EXTRA=http://download.mono-project.com/repo/centos/m/mono-core/mono-extras-3.8.0-1.x86_64.rpm
+MONO_EXTRA=http://download.mono-project.com/repo/centos/m/mono-core/mono-extras-4.0.1-4.x86_64.rpm
 MONO_CORE=http://download.mono-project.com/repo/centos/m/mono-core/mono-core-4.2.3.4-0.xamarin.1.x86_64.rpm
-MONO_DATA=http://download.mono-project.com/repo/centos/m/mono-core/mono-data-3.8.0-1.x86_64.rpm
+MONO_DATA=http://download.mono-project.com/repo/centos/m/mono-core/mono-data-4.2.3.4-0.xamarin.1.x86_64.rpm
 MONO_LOCALE=https://kojipkgs.fedoraproject.org//packages/mono/4.0.5/3.fc23/x86_64/mono-locale-extras-4.0.5-3.fc23.x86_64.rpm
 GTK_SHARP=http://download.mono-project.com/repo/centos/g/gtk-sharp2/gtk-sharp2-2.12.26-0.x86_64.rpm
 GLIB_SHARP=http://download.mono-project.com/repo/centos/g/gtk-sharp2/glib-sharp2-2.12.26-0.x86_64.rpm
