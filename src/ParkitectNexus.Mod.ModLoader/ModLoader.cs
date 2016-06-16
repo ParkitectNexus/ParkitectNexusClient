@@ -58,8 +58,14 @@ namespace ParkitectNexus.Mod.ModLoader
                     typeof (T), new Type[0], null);
 
             if (property != null)
-                property.SetValue(@object, value, BindingFlags.NonPublic | BindingFlags.Public, null, null,
-                    CultureInfo.CurrentCulture);
+            {
+                var setter = property.GetSetMethod(true);
+                if (setter != null)
+                {
+                    setter.Invoke(@object, BindingFlags.NonPublic | BindingFlags.Public, null, new object[] {value},
+                                    CultureInfo.CurrentCulture);
+                }
+            }
         }
 
         private static void LogToMod(string folder, string level, string format, params object[] args)
