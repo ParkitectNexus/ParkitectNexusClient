@@ -55,7 +55,7 @@ namespace ParkitectNexus.Data.Game.Linux
                 GameSettings.Save();
             }
 
-            return success;
+            return IsInstalled;
         }
 
         /// <summary>

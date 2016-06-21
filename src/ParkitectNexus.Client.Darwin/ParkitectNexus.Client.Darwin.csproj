@@ -60,10 +60,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -93,9 +89,6 @@
   <ItemGroup>
     <BundleResource Include="..\..\images\logo.icns">
       <Link>Resources\logo.icns</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\bin\Release\ParkitectNexus.Mod.ModLoader.dll">
-      <Link>Resources\ParkitectNexus.Mod.ModLoader.dll</Link>
     </BundleResource>
   </ItemGroup>
 </Project>
