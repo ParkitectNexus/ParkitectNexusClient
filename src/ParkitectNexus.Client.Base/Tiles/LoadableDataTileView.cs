@@ -36,7 +36,7 @@ namespace ParkitectNexus.Client.Base.Tiles
         private Size _tileSize = new Size (100, 100);
         private CancellationTokenSource _tokenSource;
 
-        protected LoadableDataTileView (ILogger log, string displayName)
+        protected LoadableDataTileView(ILogger log, string displayName)
         {
             _log = log;
             if (displayName == null)
@@ -48,14 +48,14 @@ namespace ParkitectNexus.Client.Base.Tiles
             RefreshTiles ();
         }
 
-        private void PushNewRow ()
+        private void PushNewRow()
         {
             var v = new HBox { Margin = new WidgetSpacing (5, 5, 5, 5) };
             _rows.Push (v);
             _box.PackStart (v);
         }
 
-        protected virtual void ClearTiles ()
+        protected virtual void ClearTiles()
         {
             foreach (var r in _rows)
                 r.Clear ();
@@ -67,13 +67,13 @@ namespace ParkitectNexus.Client.Base.Tiles
 
         protected abstract Task<IEnumerable<Tile>> LoadTiles (CancellationToken cancellationToken);
 
-        private int CalculateButtonsPerRow (float width)
+        private int CalculateButtonsPerRow(float width)
         {
             return Math.Max (1,
                 (int)Math.Floor ((width - 5 - 25 /*scroll and a bit*/) / (_tileSize.Width + 5)));
         }
 
-        public async void RefreshTiles ()
+        public async void RefreshTiles()
         {
             // Cancel previous loads
             if (_tokenSource != null) {
@@ -195,7 +195,7 @@ namespace ParkitectNexus.Client.Base.Tiles
             }
         }
 
-        public void HandleSizeUpdate (float width)
+        public void HandleSizeUpdate(float width)
         {
             if (CalculateButtonsPerRow (width) == _buttonsPerRow)
                 return;
@@ -227,7 +227,7 @@ namespace ParkitectNexus.Client.Base.Tiles
         ///     The event will be enabled in the backend automatically, if <see cref="Xwt.Widget.OnBoundsChanged" />
         ///     is overridden.
         /// </remarks>
-        protected override void OnBoundsChanged ()
+        protected override void OnBoundsChanged()
         {
             base.OnBoundsChanged ();
 
