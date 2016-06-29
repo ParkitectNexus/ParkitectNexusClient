@@ -59,7 +59,13 @@ namespace ParkitectNexus.Client.Base.Pages
 
         private async void GetRequiredMods()
         {
-            _requiredAssets = await _website.API.GetRequiredModIdentifiers();
+            try
+            {
+                _requiredAssets = await _website.API.GetRequiredModIdentifiers();
+            }
+            catch
+            {
+            }
         }
 
         public MainView MainView { get; }
