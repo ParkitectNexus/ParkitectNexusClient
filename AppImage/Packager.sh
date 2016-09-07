@@ -63,7 +63,7 @@ cp -R etc/ usr/
 rm -rf etc/
 
 #fixed mono .so dependency
-sed -i -e "s|/usr/|././|g" usr/etc/mono/config
+find . -type f -exec sed -i -e "s|/usr|././|g" {} \;
 #sed -i -e "s|libgtk-x11-2.0.so.0|././lib64/libgtk-x11-2.0.so.0|g" usr/etc/mono/config
 #find . -type f -exec sed -i -e 's|/usr|././|g' {} \;
 #find . -type f -exec sed -i -e 's|target="libgtk-x11-2.0.so.0"|target="././lib64/libgtk-x11-2.0.so.0"|g' {} \;
