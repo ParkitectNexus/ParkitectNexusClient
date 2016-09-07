@@ -303,8 +303,9 @@ namespace ParkitectNexus.Data.Assets
                                 // Compute path.
                                 var partDir = entry.FullName.Substring(mainFolder.Length);
                                 var path = Path.Combine(installationPath, partDir);
+                                var ignoredFiles = new[] {"moddata.cache", "modinfo.meta", "mod.log"};
 
-                                if (partDir == "moddata.cache" || partDir == "modinfo.meta")
+                                if (ignoredFiles.Contains(partDir))
                                     continue;
 
                                 if (string.IsNullOrEmpty(entry.Name))
