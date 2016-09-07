@@ -1,4 +1,4 @@
-﻿// ParkitectNexusClient
+// ParkitectNexusClient
 // Copyright (C) 2016 ParkitectNexus, Tim Potze
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -58,8 +58,27 @@ namespace ParkitectNexus.Mod.ModLoader
                     typeof (T), new Type[0], null);
 
             if (property != null)
-                property.SetValue(@object, value, BindingFlags.NonPublic | BindingFlags.Public, null, null,
-                    CultureInfo.CurrentCulture);
+            {
+                var setter = property.GetSetMethod(true);
+                if (setter != null)
+                {
+                    setter.Invoke(@object, BindingFlags.NonPublic | BindingFlags.Public, null, new object[] {value},
+                                    CultureInfo.CurrentCulture);
+                }
+            }
+        }
+
+        private static T GetProperty<T>(object @object, string propertyName)
+        {
+            var property = @object.GetType ()
+                .GetProperty (propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null,
+                    typeof (T), new Type [0], null);
+
+            if (property == null)
+                return default(T);
+
+            var ret = property.GetValue (@object, null);
+            return (T)ret;
         }
 
         private static void LogToMod(string folder, string level, string format, params object[] args)
@@ -147,6 +166,8 @@ namespace ParkitectNexus.Mod.ModLoader
                         // Bind additional mod information.
                         SetProperty(userMod, "Path", folder);
                         SetProperty(userMod, "Identifier", directoryName);
+                        if(String.IsNullOrEmpty(GetProperty<String>(userMod, "Name")))
+                            SetProperty(userMod, "Name", directoryName.Split('@')[1]);
 
                         ModManager.Instance.addMod(userMod, (int) priority);
                         _loadedMods.Add(userMod);
