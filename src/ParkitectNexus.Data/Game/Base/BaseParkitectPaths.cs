@@ -43,6 +43,8 @@ namespace ParkitectNexus.Data.Game.Base
                     return GetPathInSavesFolder("Saves" + Path.DirectorySeparatorChar + "Blueprints", true);
                 case AssetType.Savegame:
                     return GetPathInSavesFolder("Saves" + Path.DirectorySeparatorChar + "Savegames", true);
+                case AssetType.Scenario:
+                    return GetPathInSavesFolder("Saves" + Path.DirectorySeparatorChar + "Scenarios", true);
                 case AssetType.Mod:
                     return GetPathInSavesFolder("pnmods", true);
                 default:

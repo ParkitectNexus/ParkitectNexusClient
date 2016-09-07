@@ -30,6 +30,7 @@ namespace ParkitectNexus.Client.Base.Main
             _notebook.Add(presenterFactory.InstantiatePresenter<ModsPageView>(this));
             _notebook.Add(presenterFactory.InstantiatePresenter<BlueprintsPageView>(this));
             _notebook.Add(presenterFactory.InstantiatePresenter<SavegamesPageView>(this));
+            _notebook.Add(presenterFactory.InstantiatePresenter<ScenariosPageView>(this));
             _notebook.Add(presenterFactory.InstantiatePresenter<TasksPageView>(this));
 
             PackStart(presenterFactory.InstantiatePresenter<MainHeaderView>());

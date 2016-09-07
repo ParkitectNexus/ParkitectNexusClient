@@ -76,7 +76,7 @@ namespace ParkitectNexus.Data.Assets.CachedData
                     case AssetType.Mod:
                         if (metadata?.Id == null)
                             return new AssetWithImageCachedData();
-                        
+
                         var asset = await _website.API.GetAsset(metadata.Id);
                         using (var memoryStream = new MemoryStream())
                         {
@@ -91,7 +91,7 @@ namespace ParkitectNexus.Data.Assets.CachedData
                                             ImageBase64 = null
                                         };
                                     }
-                                    
+
                                     image.Save(memoryStream, ImageFormat.Png);
                                     return new AssetWithImageCachedData
                                     {
@@ -122,6 +122,22 @@ namespace ParkitectNexus.Data.Assets.CachedData
                                 ImageBase64 = Convert.ToBase64String(stream.ToArray())
                             };
                         }
+                    case AssetType.Scenario:
+                        var scenario = SavegameConverter.DeserializeFromFile(path);
+
+                        using (var stream = new MemoryStream())
+                        {
+                            using (var thumbnail = scenario.Screenshot)
+                            {
+                                thumbnail.Save(stream, ImageFormat.Png);
+                            }
+
+                            return new AssetWithImageCachedData
+                            {
+                                Name = scenario.Header.Name,
+                                ImageBase64 = Convert.ToBase64String(stream.ToArray())
+                            };
+                        }
                     default:
                         throw new Exception("Unsupported type");
                 }
@@ -142,6 +158,7 @@ namespace ParkitectNexus.Data.Assets.CachedData
             {
                 case AssetType.Blueprint:
                     return typeof (AssetCachedData);
+                case AssetType.Scenario:
                 case AssetType.Savegame:
                 case AssetType.Mod:
                     return typeof (AssetWithImageCachedData);
@@ -156,6 +173,7 @@ namespace ParkitectNexus.Data.Assets.CachedData
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
+                case AssetType.Scenario:
                     return Path.Combine(Path.GetDirectoryName(path), $"{Path.GetFileNameWithoutExtension(path)}.cache");
                 case AssetType.Mod:
                     return Path.Combine(path, "moddata.cache");

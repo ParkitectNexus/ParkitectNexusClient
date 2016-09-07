@@ -45,6 +45,7 @@ namespace ParkitectNexus.Data.Assets.Meta
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
+                case AssetType.Scenario:
                     return typeof (AssetMetadata);
                 case AssetType.Mod:
                     return typeof (ModMetadata);
@@ -59,6 +60,7 @@ namespace ParkitectNexus.Data.Assets.Meta
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
+                case AssetType.Scenario:
                     return Path.Combine(Path.GetDirectoryName(path), $"{Path.GetFileNameWithoutExtension(path)}.meta");
                 case AssetType.Mod:
                     return Path.Combine(path, "modinfo.meta");

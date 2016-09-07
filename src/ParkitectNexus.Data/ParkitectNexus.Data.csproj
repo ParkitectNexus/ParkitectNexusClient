@@ -122,6 +122,7 @@
     <Compile Include="Assets\Meta\ModMetadata.cs" />
     <Compile Include="Assets\Modding\ModLoadOrderBuilder.cs" />
     <Compile Include="Assets\SavegameAsset.cs" />
+    <Compile Include="Assets\ScenarioAsset.cs" />
     <Compile Include="Authentication\AvatarCache.cs" />
     <Compile Include="Authentication\IAuthManager.cs" />
     <Compile Include="Caching\CachedFile.cs" />

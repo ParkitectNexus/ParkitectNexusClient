@@ -34,6 +34,8 @@ namespace ParkitectNexus.Data.Assets
                     return AssetType.Mod;
                 case "blueprint":
                     return AssetType.Blueprint;
+                case "scenario":
+                    return AssetType.Scenario;
                 default:
                     return default(AssetType);
             }
