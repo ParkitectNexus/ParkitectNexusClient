@@ -40,7 +40,6 @@ namespace ParkitectNexus.Data.Assets
         /// <summary>
         ///     A scenario.
         /// </summary>
-        [AssetInfo("text/plain")]// TODO: What type?
-        Scenario,
+        [AssetInfo("application/x-gzip")] Scenario,
     }
 }
