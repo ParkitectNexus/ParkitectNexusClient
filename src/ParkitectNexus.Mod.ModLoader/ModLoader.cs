@@ -59,7 +59,7 @@ namespace ParkitectNexus.Mod.ModLoader
 
             if (property != null)
             {
-                var setter = property.GetSetMethod(true);
+                var setter = property.GetSetMethod() ?? property.GetSetMethod(true);
                 if (setter != null)
                 {
                     setter.Invoke(@object, BindingFlags.NonPublic | BindingFlags.Public, null, new object[] {value},
@@ -77,8 +77,8 @@ namespace ParkitectNexus.Mod.ModLoader
             if (property == null)
                 return default(T);
 
-            var ret = property.GetValue (@object, null);
-            return (T)ret;
+            var getter = property.GetGetMethod() ?? property.GetGetMethod(true);
+            return getter == null ? default(T) : (T)getter.Invoke(@object, BindingFlags.NonPublic | BindingFlags.Public, null, null, CultureInfo.CurrentCulture);
         }
 
         private static void LogToMod(string folder, string level, string format, params object[] args)

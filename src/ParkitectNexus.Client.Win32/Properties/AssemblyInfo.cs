@@ -19,9 +19,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("ParkitectNexus Client")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("ParkitectNexus Client for Windows")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ParkitectNexus")]
 [assembly: AssemblyProduct("ParkitectNexus Client")]
 [assembly: AssemblyCopyright("Copyright © ParkitectNexus 2016")]
 [assembly: AssemblyTrademark("")]
@@ -48,4 +48,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.1.*")]
+[assembly: AssemblyVersion("2.2.*")]
