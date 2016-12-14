@@ -1,4 +1,5 @@
-﻿// ParkitectNexusClient
+﻿using System.Resources;
+// ParkitectNexusClient
 // Copyright (C) 2016 ParkitectNexus, Tim Potze
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,13 +19,13 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("ParkitectNexus.Client.Base")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("ParkitectNexus Client Base")]
+[assembly: AssemblyDescription("ParkitectNexus Client Base")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ParkitectNexus.Client.Base")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("ParkitectNexus")]
+[assembly: AssemblyProduct("ParkitectNexus Client Base")]
+[assembly: AssemblyCopyright("Copyright © ParkitectNexus 2016")]
+[assembly: AssemblyTrademark("ParkitectNexus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -48,4 +49,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.1.*")]
+[assembly: AssemblyVersion("2.2.*")]
+[assembly: NeutralResourcesLanguage("en")]
+

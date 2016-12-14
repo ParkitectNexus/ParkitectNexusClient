@@ -124,6 +124,7 @@ namespace ParkitectNexus.Data.Assets
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
+                case AssetType.Scenario:
                     return new DownloadInfo(asset.Resource.Data.Url, null, null);
                 case AssetType.Mod:
                     var repoUrl = asset.Resource.Data.Source;

@@ -64,6 +64,12 @@ namespace ParkitectNexus.Data.Assets
                         SearchOption.AllDirectories)
                         .Concat(Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.park",
                             SearchOption.AllDirectories)).ToArray();
+                case AssetType.Scenario:
+                    if (_parkitect.Paths.GetAssetPath(type) == null)
+                        return new string[0];
+
+                    return Directory.GetFiles(_parkitect.Paths.GetAssetPath(type), "*.scenario",
+                        SearchOption.AllDirectories);
                 case AssetType.Mod:
                     if (_parkitect.Paths.GetAssetPath(type) == null)
                         return new string[0];
@@ -102,6 +108,15 @@ namespace ParkitectNexus.Data.Assets
                             var cachedData =
                                 _assetCachedDataStorage.GetData(type, metadata, path).Result as AssetWithImageCachedData;
                             yield return new SavegameAsset(path, metadata, cachedData);
+                        }
+                        break;
+                    case AssetType.Scenario:
+                        foreach (var path in GetFilesInAssetPath(type))
+                        {
+                            var metadata = _assetMetadataStorage.GetMetadata(type, path);
+                            var cachedData =
+                                _assetCachedDataStorage.GetData(type, metadata, path).Result as AssetWithImageCachedData;
+                            yield return new ScenarioAsset(path, metadata, cachedData);
                         }
                         break;
                     case AssetType.Mod:
@@ -149,7 +164,8 @@ namespace ParkitectNexus.Data.Assets
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
-                {
+                case AssetType.Scenario:
+                    {
                     // Create the directory where the asset should be stored and create a path to where the asset should be stored.
                     var storagePath = _parkitect.Paths.GetAssetPath(downloadedAsset.ApiAsset.Type);
                     var assetPath = Path.Combine(storagePath, downloadedAsset.FileName);
@@ -217,7 +233,10 @@ namespace ParkitectNexus.Data.Assets
                         case AssetType.Savegame:
                             createdAsset = new SavegameAsset(assetPath, meta, cachedData as AssetWithImageCachedData);
                             break;
-                    }
+                        case AssetType.Scenario:
+                            createdAsset = new ScenarioAsset(assetPath, meta, cachedData as AssetWithImageCachedData);
+                            break;
+                        }
 
                     OnAssetAdded(new AssetEventArgs(createdAsset));
                     return createdAsset;
@@ -284,8 +303,9 @@ namespace ParkitectNexus.Data.Assets
                                 // Compute path.
                                 var partDir = entry.FullName.Substring(mainFolder.Length);
                                 var path = Path.Combine(installationPath, partDir);
+                                var ignoredFiles = new[] {"moddata.cache", "modinfo.meta", "mod.log"};
 
-                                if (partDir == "moddata.cache" || partDir == "modinfo.meta")
+                                if (ignoredFiles.Contains(partDir))
                                     continue;
 
                                 if (string.IsNullOrEmpty(entry.Name))
@@ -335,6 +355,7 @@ namespace ParkitectNexus.Data.Assets
             {
                 case AssetType.Blueprint:
                 case AssetType.Savegame:
+                case AssetType.Scenario:
                     var directory = Path.GetDirectoryName(asset.InstallationPath);
                     var filenameWithoutExtension = Path.GetFileNameWithoutExtension(asset.InstallationPath);
 

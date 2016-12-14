@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("ParkitectNexus Client")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("ParkitectNexus Client for MacOS")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ParkitectNexus")]
 [assembly: AssemblyProduct("ParkitectNexus Client")]
 [assembly: AssemblyCopyright("Copyright © ParkitectNexus 2016")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("ParkitectNexus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -38,4 +38,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.1.5980.38291")]
+[assembly: AssemblyVersion("2.2.6096.20556")]

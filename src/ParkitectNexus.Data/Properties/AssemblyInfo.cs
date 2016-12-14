@@ -19,11 +19,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("ParkitectNexus.Data")]
+[assembly: AssemblyTitle("ParkitectNexus Data")]
 [assembly: AssemblyDescription("ParkitectNexus Data")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ParkitectNexus")]
-[assembly: AssemblyProduct("ParkitectNexus.Data")]
+[assembly: AssemblyProduct("ParkitectNexus Data")]
 [assembly: AssemblyCopyright("Copyright © ParkitectNexus 2016")]
 [assembly: AssemblyTrademark("ParkitectNexus")]
 [assembly: AssemblyCulture("")]
@@ -49,5 +49,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.1.*")]
+[assembly: AssemblyVersion("2.2.*")]
 [assembly: NeutralResourcesLanguage("en")]

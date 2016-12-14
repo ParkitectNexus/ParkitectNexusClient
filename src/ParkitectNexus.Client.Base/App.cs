@@ -69,7 +69,7 @@ namespace ParkitectNexus.Client.Base
                 if (
                     MessageDialog.AskQuestion("ParkitectNexus Client Update",
                         "A required update for the ParkitectNexus Client needs to be installed.\n" +
-                        "Without this update you won't be able to install blueprints, savegames or mods trough this application. The update should take less than a minute.\n" +
+                        "Without this update you won't be able to install blueprints, savegames, scenarios or mods trough this application. The update should take less than a minute.\n" +
                         $"Would you like to install it now?\n\nYou are currently running v{typeof (App).Assembly.GetName().Version}. The newest version is v{update.Version}",
                         Command.Yes, Command.No) !=
                     Command.Yes)

@@ -28,6 +28,7 @@ namespace ParkitectNexus.Data.Web.API
         private readonly ILogger _log;
         private readonly INexusWebClientFactory _webClientFactory;
         private readonly IWebsite _website;
+        private string[] _requiredModIdentifiers;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ParkitectNexusAPI" /> class.
@@ -82,12 +83,15 @@ namespace ParkitectNexus.Data.Web.API
         /// <returns>The identifiers of the required mods.</returns>
         public async Task<string[]> GetRequiredModIdentifiers()
         {
+            if(_requiredModIdentifiers != null)
+                return _requiredModIdentifiers;
+            
             using (var webClient = _webClientFactory.CreateWebClient())
             using (var stream = await webClient.OpenReadTaskAsync(_website.ResolveUrl("api/assets/required", "client")))
             using (var streamReader = new StreamReader(stream))
             {
                 var info = JsonConvert.DeserializeObject<ApiDataContainer<string[]>>(await streamReader.ReadToEndAsync());
-                return info.Data;
+                return _requiredModIdentifiers = info.Data;
             }
         }
 

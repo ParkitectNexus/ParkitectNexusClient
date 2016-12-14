@@ -10,8 +10,9 @@
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <AssemblyName>ParkitectNexus Client</AssemblyName>
     <SuppressXamMacMigration>True</SuppressXamMacMigration>
-    <ReleaseVersion>2.1.5980.38291</ReleaseVersion>
+    <ReleaseVersion>2.2.6096.20556</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,9 @@
     <CreatePackage>false</CreatePackage>
     <EnableCodeSigning>false</EnableCodeSigning>
     <EnablePackageSigning>false</EnablePackageSigning>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <LinkMode>None</LinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -44,6 +48,9 @@
     <CreatePackage>false</CreatePackage>
     <EnableCodeSigning>false</EnableCodeSigning>
     <EnablePackageSigning>false</EnablePackageSigning>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <LinkMode>None</LinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -69,21 +76,21 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
-      <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
-      <Name>ParkitectNexus.Data</Name>
+    <ProjectReference Include="..\..\external\xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\ParkitectNexus.Client.Base\ParkitectNexus.Client.Base.csproj">
       <Project>{9E4A3C1A-F432-408A-A395-615EECE825AC}</Project>
       <Name>ParkitectNexus.Client.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\external\xwt\Xwt\Xwt.csproj">
-      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\external\xwt\Xwt.Mac\Xwt.Mac.csproj">
       <Project>{5F8E0511-7210-487F-90A1-EC3E74467617}</Project>
       <Name>Xwt.Mac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParkitectNexus.Data\ParkitectNexus.Data.csproj">
+      <Project>{0CB13383-05D3-40F5-B0E1-3907A42872DC}</Project>
+      <Name>ParkitectNexus.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

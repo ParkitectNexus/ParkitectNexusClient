@@ -63,7 +63,7 @@ namespace ParkitectNexus.Data.Assets.Modding
         {
             var path = Path.Combine(InstallationPath, "mod.log");
 
-            return new StreamWriter(File.OpenWrite(path));
+            return File.AppendText(path);
         }
 
         public void SaveInformation()

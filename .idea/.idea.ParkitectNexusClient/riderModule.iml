@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt.Gtk" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt.Mac" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt.WPF" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Client.Base" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Client.Darwin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Client.Linux" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Client.Win32" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Data" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Data.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Mod.ModLoader" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/Setup" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt.Gtk/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt.Gtk/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../external/xwt/Xwt/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+      <excludeFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Client.Base/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Client.Linux/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Client.Linux/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Data.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Data/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../src/ParkitectNexus.Mod.ModLoader/obj" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

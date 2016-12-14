@@ -35,6 +35,11 @@ namespace ParkitectNexus.Data.Assets
         /// <summary>
         ///     A mod.
         /// </summary>
-        [AssetInfo("application/zip")] Mod
+        [AssetInfo("application/zip")] Mod,
+
+        /// <summary>
+        ///     A scenario.
+        /// </summary>
+        [AssetInfo("application/x-gzip")] Scenario,
     }
 }
