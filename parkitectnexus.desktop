@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=parkitectnexus
+Exec=/opt/ParkitectNexus/parkitectnexus %u
+Comment=A mod installer for Parkitect
+GenericName=Parkitect Nexus
+Icon=/opt/ParkitectNexus/parkitectnexus_logo.png
+Categories=Utility;
+StartupNotify=true
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/parkitectnexus;

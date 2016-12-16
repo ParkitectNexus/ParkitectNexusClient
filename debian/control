@@ -1,0 +1,15 @@
+Source: parkitect-nexus-client
+Maintainer: michael-pollind <mpollind@gmail.com>
+Build-Depends: mono-complete (>= 2.10.8),  debhelper (>=9) 
+Standards-Version: 2.1.5980.38291
+Homepage: https://parkitectnexus.com/
+
+Package: parkitect-nexus-client
+Architecture: any
+Section: games
+Priority: optional
+Depends: mono-complete (>= 2.10.8)
+Description: An automatic blueprint and savegames installer for ParkitectNexus.
+ The Parkitect Nexus client is an application used to download and install
+ mods from ParkitectNexus. The client will download, and compile mods for 
+ the Parkitect.
