@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=parkitectnexus
-Exec=/opt/ParkitectNexus/parkitectnexus %u
+Exec=mono /opt/ParkitectNexus/ParkitectNexus.Client.exe %u
 Comment=A mod installer for Parkitect
 GenericName=Parkitect Nexus
 Icon=/opt/ParkitectNexus/parkitectnexus_logo.png
