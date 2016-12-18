@@ -115,4 +115,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages" />
+  </ItemGroup>
 </Project>
