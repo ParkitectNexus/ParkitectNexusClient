@@ -25,7 +25,7 @@ namespace ParkitectNexus.Data.Assets
         ///     Initializes a new instance of the <see cref="AssetInfoAttribute" /> class.
         /// </summary>
         /// <param name="contentType">Type of the content.</param>
-        public AssetInfoAttribute(string contentType)
+        public AssetInfoAttribute(string[] contentType)
         {
             ContentType = contentType;
         }
@@ -33,6 +33,6 @@ namespace ParkitectNexus.Data.Assets
         /// <summary>
         ///     Gets the type of the content provided when an asset of this type is being downloaded.
         /// </summary>
-        public string ContentType { get; }
+        public string[] ContentType { get; }
     }
 }
