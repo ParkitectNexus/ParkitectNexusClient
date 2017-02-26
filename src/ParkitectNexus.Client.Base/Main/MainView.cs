@@ -11,6 +11,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using ParkitectNexus.Client.Base.Components;
 using ParkitectNexus.Client.Base.Pages;
 using ParkitectNexus.Data.Presenter;
@@ -54,9 +55,17 @@ namespace ParkitectNexus.Client.Base.Main
             _notebook.HandleSizeUpdate();
         }
 
-        public void SwitchToTab(int index)
+        public bool SwitchToTab<T>()
         {
-            _notebook.CurrentTabIndex = index;
+            for (int x = 0; x < _notebook.Tabs.Count; x++)
+            {
+                if (_notebook.Tabs[x].Child is T)
+                {
+                    _notebook.CurrentTabIndex = x;
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void ShowSidebarWidget(string name, Widget widget)

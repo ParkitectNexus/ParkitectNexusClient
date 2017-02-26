@@ -102,6 +102,9 @@ namespace ParkitectNexus.Data.Utilities
         /// <param name="logLevel">The log level.</param>
         public void WriteLine(string message, LogLevel logLevel)
         {
+
+            Debug.WriteLine (message, logLevel);
+
             if (_streamWriter != null && logLevel >= MinimumLogLevel)
                 _streamWriter.Log(message, logLevel);
         }
@@ -122,6 +125,7 @@ namespace ParkitectNexus.Data.Utilities
         /// <param name="logLevel">The log level.</param>
         public void WriteException(Exception exception, LogLevel logLevel)
         {
+
             WriteLine("Exception: " + exception.Message, logLevel);
             WriteLine("StrackTrace: " + exception.StackTrace, logLevel);
             if (exception.InnerException != null && exception.InnerException != exception)

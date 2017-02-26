@@ -11,16 +11,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using ParkitectNexus.Data.Web;
 using ParkitectNexus.Data.Web.Models;
 
 namespace ParkitectNexus.Data.Test.Web
 {
-    [TestClass]
+    [TestFixture]
     public class ParkitectNexusUrlTest
     {
-        [TestMethod]
+        [TestCase]
         public void TryParseInstallTest()
         {
             // arrange
@@ -29,12 +29,12 @@ namespace ParkitectNexus.Data.Test.Web
             // act
             var result1 = NexusUrl.Parse(url1);
 
-            Assert.AreEqual(UrlAction.Install, result1.Action);
-            Assert.IsInstanceOfType(result1.Data, typeof (InstallUrlAction));
+            Assert.True(UrlAction.Install == result1.Action);
+            Assert.IsInstanceOf(typeof(InstallUrlAction),result1.Data);
             Assert.AreEqual("testidentifier", (result1.Data as InstallUrlAction)?.Id);
         }
 
-        [TestMethod]
+        [TestCase]
         public void TryParseAuthTest()
         {
             // arrange
@@ -43,8 +43,9 @@ namespace ParkitectNexus.Data.Test.Web
             // act
             var result1 = NexusUrl.Parse(url1);
 
-            Assert.AreEqual(UrlAction.Auth, result1.Action);
-            Assert.IsInstanceOfType(result1.Data, typeof (AuthUrlAction));
+
+            Assert.True(UrlAction.Auth== result1.Action);
+            Assert.IsInstanceOf(typeof (AuthUrlAction),result1.Data);
             Assert.AreEqual("myauthkey", (result1.Data as AuthUrlAction)?.Key);
         }
     }
