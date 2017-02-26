@@ -125,7 +125,7 @@ namespace ParkitectNexus.Client.Base.Tiles
 
                             if (ParkitectNexus.Data.Utilities.OperatingSystem.Detect() == SupportedOperatingSystem.Linux){
                                 if (image != null) {
-                                    Xwt.Drawing.Image lighterImage = image.WithAlpha(.7f);
+                                    Image lighterImage = image.WithAlpha(.7f);
                                     var clickableImage = new ImageView (image);
                                     clickableImage.ButtonPressed += (sender, args) => tile.ClickAction ();
                                    
@@ -168,6 +168,19 @@ namespace ParkitectNexus.Client.Base.Tiles
                                     BackgroundColor = tile.BackgroundColor,
                                     ImagePosition = ContentPosition.Center
                                 };
+                                Image lighterImage = image.WithAlpha(.7f);
+
+                                button.MouseEntered += (object sender, EventArgs e) => {
+                                    ((Button)sender).Image = lighterImage;
+                                    ((Widget)sender).BackgroundColor = Color.FromBytes(255, 255, 255);
+                                };
+                                button.MouseExited += (object sender, EventArgs e) => {
+                                    ((Button)sender).Image = image;
+                                    ((Widget)sender).BackgroundColor = tile.BackgroundColor;
+                                };
+
+                                button.Clicked += (sender, args) => tile.ClickAction();
+                     
                                 widget = button;
                             }
 
