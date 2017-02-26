@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: parkitect-nexus
+Upstream-Contact: Michael Pollind <mpollind@gmail.com>
+Source: <https://github.com/pollend/ParkitectNexusClient>
+
+Files: opt/*, debian/*
+Copyright: 2016 Tim Poetz
+License: GPL-3+

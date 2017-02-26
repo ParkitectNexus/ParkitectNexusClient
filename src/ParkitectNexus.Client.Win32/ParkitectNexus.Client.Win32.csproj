@@ -36,6 +36,9 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="StructureMap, Version=4.4.2.472, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\StructureMap.4.4.2\lib\net45\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\external\xwt\Xwt.WPF\Xwt.WPF.csproj">
-      <Project>{C93D746E-1586-4D4F-B411-BF5A966E6A08}</Project>
+      <Project>{b3cda68a-7ccf-4e12-8d06-15740c03dc2f}</Project>
       <Name>Xwt.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\external\xwt\Xwt\Xwt.csproj">
@@ -75,9 +78,6 @@
       <Name>ParkitectNexus.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -88,5 +88,6 @@
   -->
   <ItemGroup>
     <Content Include="nexus.ico" />
+    <Content Include="packages.config" />
   </ItemGroup>
 </Project>

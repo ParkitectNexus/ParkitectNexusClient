@@ -14,6 +14,7 @@
 using CommandLine;
 
 namespace ParkitectNexus.Client.Linux
+
 {
     public class AppCommandLineOptions
     {

@@ -20,6 +20,8 @@ using ParkitectNexus.Client.Base.Utilities;
 using ParkitectNexus.Data.Presenter;
 using ParkitectNexus.Data.Utilities;
 using Xwt;
+using ParkitectNexus.Data;
+using Xwt.Drawing;
 
 namespace ParkitectNexus.Client.Base.Tiles
 {
@@ -28,162 +30,201 @@ namespace ParkitectNexus.Client.Base.Tiles
         private readonly ILogger _log;
         private readonly VBox _box;
 
-        private readonly List<Button> _buttons = new List<Button>();
-        private readonly Stack<HBox> _rows = new Stack<HBox>();
+        private readonly List<Widget> _buttons = new List<Widget> ();
+        private readonly Stack<HBox> _rows = new Stack<HBox> ();
         private int _buttonsPerRow;
-        private Size _tileSize = new Size(100, 100);
+        private Size _tileSize = new Size (100, 100);
         private CancellationTokenSource _tokenSource;
 
         protected LoadableDataTileView(ILogger log, string displayName)
         {
             _log = log;
-            if (displayName == null) throw new ArgumentNullException(nameof(displayName));
+            if (displayName == null)
+                throw new ArgumentNullException (nameof (displayName));
             DisplayName = displayName;
 
-            Content = _box = new VBox();
-            PushNewRow();
-            RefreshTiles();
+            Content = _box = new VBox ();
+            PushNewRow ();
+            RefreshTiles ();
         }
 
         private void PushNewRow()
         {
-            var v = new HBox {Margin = new WidgetSpacing(5, 5, 5, 5)};
-            _rows.Push(v);
-            _box.PackStart(v);
+            var v = new HBox { Margin = new WidgetSpacing (5, 5, 5, 5) };
+            _rows.Push (v);
+            _box.PackStart (v);
         }
 
         protected virtual void ClearTiles()
         {
             foreach (var r in _rows)
-                r.Clear();
+                r.Clear ();
 
-            _rows.Clear();
-            _box.Clear();
-            PushNewRow();
+            _rows.Clear ();
+            _box.Clear ();
+            PushNewRow ();
         }
 
-        protected abstract Task<IEnumerable<Tile>> LoadTiles(CancellationToken cancellationToken);
+        protected abstract Task<IEnumerable<Tile>> LoadTiles (CancellationToken cancellationToken);
 
         private int CalculateButtonsPerRow(float width)
         {
-            return Math.Max(1,
-                (int) Math.Floor((width - 5 - 25 /*scroll and a bit*/)/(_tileSize.Width + 5)));
+            return Math.Max (1,
+                (int)Math.Floor ((width - 5 - 25 /*scroll and a bit*/) / (_tileSize.Width + 5)));
         }
 
         public async void RefreshTiles()
         {
             // Cancel previous loads
-            if (_tokenSource != null)
-            {
-                _tokenSource.Cancel();
+            if (_tokenSource != null) {
+                _tokenSource.Cancel ();
 
                 while (_tokenSource != null)
-                    await Task.Delay(1);
+                    await Task.Delay (1);
             }
 
             Spinner spinner = null;
 
-            Application.Invoke(() =>
-            {
+            Application.Invoke (() => {
                 // Clear controls
-                _buttons.Clear();
-                ClearTiles();
+                _buttons.Clear ();
+                ClearTiles ();
 
                 Content =
-                    spinner = new Spinner
-                    {
-                        Animate = true,
-                        MinHeight = 50,
-                        MinWidth = 50
-                    };
+                    spinner = new Spinner {
+                    Animate = true,
+                    MinHeight = 50,
+                    MinWidth = 50
+                };
             });
 
             while (spinner == null)
-                await Task.Delay(5);
+                await Task.Delay (5);
 
-            _buttonsPerRow = CalculateButtonsPerRow((float) Size.Width);
+            _buttonsPerRow = CalculateButtonsPerRow ((float)Size.Width);
             var i = 0;
 
-            _tokenSource = new CancellationTokenSource();
+            _tokenSource = new CancellationTokenSource ();
 
-            try
-            {
-                var tiles = await LoadTiles(_tokenSource.Token);
+            try {
+                var tiles = await LoadTiles (_tokenSource.Token);
 
-                Application.Invoke(() =>
-                {
-                    foreach (var tile in tiles)
-                    {
-                        if (tile == null) continue;
+                Application.Invoke (() => {
+                    foreach (var tile in tiles) {
+                        if (tile == null)
+                            continue;
 
-                        if (i >= _buttonsPerRow)
-                        {
-                            PushNewRow();
+                        if (i >= _buttonsPerRow) {
+                            PushNewRow ();
                             i = 0;
                         }
 
-                        try
-                        {
-                            var button = new Button(tile.Image?.ToXwtImage()?.ScaleToSize(100))
+                        try {
+                            Xwt.Drawing.Image image = tile.Image?.ToXwtImage ()?.ScaleToSize (100);
+                            Widget widget = null;
+
+                            if (ParkitectNexus.Data.Utilities.OperatingSystem.Detect() == SupportedOperatingSystem.Linux){
+                                if (image != null) {
+                                    Image lighterImage = image.WithAlpha(.7f);
+                                    var clickableImage = new ImageView (image);
+                                    clickableImage.ButtonPressed += (sender, args) => tile.ClickAction ();
+                                   
+                                    clickableImage.MouseEntered += (object sender, EventArgs e) => {
+                                        ((ImageView)sender).Image = lighterImage;
+                                        ((Widget)sender).BackgroundColor = Color.FromBytes(255,255,255);
+                                    };
+                                    clickableImage.MouseExited += (object sender, EventArgs e) => {
+                                        ((ImageView)sender).Image = image;
+                                        ((Widget)sender).BackgroundColor = tile.BackgroundColor;
+                                    };
+
+                                    widget = clickableImage;
+                                }
+                                else
+                                {
+                                    var label = new Label(tile.Text);
+                                    label.ButtonPressed += (sender, args) => tile.ClickAction ();
+                                    label.Wrap = WrapMode.Word;
+                                    label.TextAlignment = Alignment.Center;
+                                   
+                                    label.MouseEntered += (object sender, EventArgs e) => {
+                                        ((Widget)sender).BackgroundColor = Color.FromBytes(255,255,255);
+                                    };
+                                    label.MouseExited += (object sender, EventArgs e) => {
+                                        ((Widget)sender).BackgroundColor = tile.BackgroundColor;
+                                    };
+
+                                    widget = label;
+
+                                }
+
+                            }
+                            else
                             {
-                                Label = tile.Image == null ? tile.Text : null,
-                                TooltipText = tile.Text,
-                                WidthRequest = 100,
-                                HeightRequest = 100,
-                                MinWidth = 0,
-                                Style = ButtonStyle.Borderless,
-                                BackgroundColor = tile.BackgroundColor,
-                                ImagePosition = ContentPosition.Center
-                            };
+                                var button = new Button (image) {
+                                    Label = tile.Image == null ? tile.Text : null,
+                                    TooltipText = tile.Text,
+                                    Style = ButtonStyle.Borderless,
+                                    BackgroundColor = tile.BackgroundColor,
+                                    ImagePosition = ContentPosition.Center
+                                };
+                                Image lighterImage = image.WithAlpha(.7f);
 
-                            button.Clicked += (sender, args) => tile.ClickAction();
+                                button.MouseEntered += (object sender, EventArgs e) => {
+                                    ((Button)sender).Image = lighterImage;
+                                    ((Widget)sender).BackgroundColor = Color.FromBytes(255, 255, 255);
+                                };
+                                button.MouseExited += (object sender, EventArgs e) => {
+                                    ((Button)sender).Image = image;
+                                    ((Widget)sender).BackgroundColor = tile.BackgroundColor;
+                                };
 
-                            _buttons.Add(button);
-                            _rows.Peek().PackStart(button);
+                                button.Clicked += (sender, args) => tile.ClickAction();
+                     
+                                widget = button;
+                            }
+
+                            widget.WidthRequest = 100;
+                            widget.HeightRequest = 100;
+                            widget.MinWidth = 0;
+                            widget.BackgroundColor= tile.BackgroundColor;
+
+                            _buttons.Add (widget);
+                            _rows.Peek ().PackStart (widget);
                             i++;
-                        }
-                        catch (Exception e)
-                        {
-                            _log.WriteLine("Failed to convert Tile object to UI");
-                            _log.WriteException(e);
+                        } catch (Exception e) {
+                            _log.WriteLine ("Failed to convert Tile object to UI");
+                            _log.WriteException (e);
                         }
                     }
 
                     Content = _box;
                 });
-            }
-            catch (TaskCanceledException)
-            {
-            }
-            catch (OperationCanceledException)
-            {
-            }
-            finally
-            {
-                _tokenSource?.Dispose();
+            } catch (TaskCanceledException) {
+            } catch (OperationCanceledException) {
+            } finally {
+                _tokenSource?.Dispose ();
                 _tokenSource = null;
             }
         }
 
         public void HandleSizeUpdate(float width)
         {
-            if (CalculateButtonsPerRow(width) == _buttonsPerRow)
+            if (CalculateButtonsPerRow (width) == _buttonsPerRow)
                 return;
 
-            _buttonsPerRow = CalculateButtonsPerRow(width);
+            _buttonsPerRow = CalculateButtonsPerRow (width);
             var i = 0;
 
-            ClearTiles();
-            PushNewRow();
+            ClearTiles ();
+            PushNewRow ();
 
-            foreach (var button in _buttons)
-            {
-                if (i >= _buttonsPerRow)
-                {
-                    PushNewRow();
+            foreach (var button in _buttons) {
+                if (i >= _buttonsPerRow) {
+                    PushNewRow ();
                     i = 0;
                 }
-                _rows.Peek().PackStart(button);
+                _rows.Peek ().PackStart (button);
                 i++;
             }
         }
@@ -201,9 +242,9 @@ namespace ParkitectNexus.Client.Base.Tiles
         /// </remarks>
         protected override void OnBoundsChanged()
         {
-            base.OnBoundsChanged();
+            base.OnBoundsChanged ();
 
-            HandleSizeUpdate((float) Size.Width);
+            HandleSizeUpdate ((float)Size.Width);
         }
 
         #endregion

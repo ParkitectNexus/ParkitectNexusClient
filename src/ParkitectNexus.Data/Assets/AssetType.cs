@@ -19,27 +19,27 @@ namespace ParkitectNexus.Data.Assets
     /// <summary>
     ///     Contains parkitect asset types supported by the client.
     /// </summary>
-    [JsonConverter(typeof (StringEnumConverter))]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum AssetType
     {
         /// <summary>
         ///     A savegame.
         /// </summary>
-        [AssetInfo("text/plain")] Savegame,
+        [AssetInfo(new[]{"text/plain","application/x-gzip"})]Savegame,
 
         /// <summary>
         ///     A blueprint.
         /// </summary>
-        [AssetInfo("image/png")] Blueprint,
+        [AssetInfo(new[]{"image/png"})] Blueprint,
 
         /// <summary>
         ///     A mod.
         /// </summary>
-        [AssetInfo("application/zip")] Mod,
+        [AssetInfo(new[]{"application/zip"})] Mod,
 
         /// <summary>
         ///     A scenario.
         /// </summary>
-        [AssetInfo("application/x-gzip")] Scenario,
+        [AssetInfo(new[]{"application/x-gzip"})] Scenario,
     }
 }
