@@ -92,7 +92,7 @@ namespace ParkitectNexus.Client.Base.Pages
             recompileButton.Clicked += (sender, args) =>
             {
                 _queueableTaskManager.With(mod).Add<CompileModTask>();
-                MainView.SwitchToTab(5);
+                MainView.SwitchToTab<TasksPageView>();
             };
 
             var updateButton = new Button("Update")

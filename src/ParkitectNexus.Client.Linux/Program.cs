@@ -138,8 +138,10 @@ namespace ParkitectNexus.Client.Linux
         //process the arguments passed into the application
         public static void ProcessArgs(string[] args)
         {
+
             var options = new AppCommandLineOptions();
-            Parser.Default.ParseArguments(args, options);
+            Parser.Default.ParseArguments(args,options);
+
             foreach (var t in args)
             {
                 if (t.Contains("parkitectnexus://"))
@@ -152,7 +154,6 @@ namespace ParkitectNexus.Client.Linux
             if (args.Any())
             {
                 Parser.Default.ParseArguments(args, options);
-
                 if (options.Url != null)
                 {
                     NexusUrl url;

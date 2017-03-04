@@ -47,7 +47,7 @@ namespace ParkitectNexus.Data.Game.Linux
 
             var success = SetInstallationPathIfValid(
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                    "/.steam/steam/steamapps/common/Parkitect"));
+                    ".steam/steam/steamapps/common/Parkitect"));
 
             if (success)
             {
@@ -55,7 +55,7 @@ namespace ParkitectNexus.Data.Game.Linux
                 GameSettings.Save();
             }
 
-            return success;
+            return IsInstalled;
         }
 
         /// <summary>

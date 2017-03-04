@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\external\xwt\Xwt.WPF\Xwt.WPF.csproj">
-      <Project>{C93D746E-1586-4D4F-B411-BF5A966E6A08}</Project>
+      <Project>{b3cda68a-7ccf-4e12-8d06-15740c03dc2f}</Project>
       <Name>Xwt.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\external\xwt\Xwt\Xwt.csproj">
@@ -75,9 +75,6 @@
       <Name>ParkitectNexus.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -88,5 +85,6 @@
   -->
   <ItemGroup>
     <Content Include="nexus.ico" />
+    <Content Include="packages.config" />
   </ItemGroup>
 </Project>

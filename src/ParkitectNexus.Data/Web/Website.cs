@@ -23,11 +23,11 @@ namespace ParkitectNexus.Data.Web
     public class Website : IWebsite
     {
         private readonly ILogger _log;
-#if DEBUG
-        private const string WebsiteUrl = "http://{0}dev.parkitectnexus.com/{1}";
-#else
+//#if DEBUG
+//        private const string WebsiteUrl = "http://{0}dev.parkitectnexus.com/{1}";
+//#else
         private const string WebsiteUrl = "http://{0}parkitectnexus.com/{1}";
-#endif
+//#endif
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Object" /> class.

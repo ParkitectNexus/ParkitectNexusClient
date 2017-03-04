@@ -78,7 +78,7 @@ namespace ParkitectNexus.Data.Assets
                     var assetInfo = asset.Type.GetCustomAttribute<AssetInfoAttribute>();
 
                     // Ensure the type of the received content matches the expected content type.
-                    if (assetInfo == null || assetInfo.ContentType != contentTypeHeader.Split(';').FirstOrDefault())
+                    if (assetInfo == null || !assetInfo.ContentType.Contains(contentTypeHeader.Split(';').FirstOrDefault()))
                         throw new Exception("invalid response type");
 
                     // Extract the filename of the asset from the content disposition header.

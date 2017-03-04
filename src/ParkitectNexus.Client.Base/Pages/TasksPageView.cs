@@ -120,7 +120,7 @@ namespace ParkitectNexus.Client.Base.Pages
 
                 if (_tasksOfInterest.Contains(e.Task.GetType()))
                 {
-                    _mainView.SwitchToTab(4);
+                    _mainView.SwitchToTab<TasksPageView>();
 
                     if (OperatingSystem.Detect() == SupportedOperatingSystem.Windows)
                         User32.SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
