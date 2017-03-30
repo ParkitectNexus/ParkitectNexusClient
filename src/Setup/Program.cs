@@ -13,6 +13,7 @@
 
 using System;
 using System.IO;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using WixSharp;
 using Assembly = System.Reflection.Assembly;
@@ -27,7 +28,6 @@ namespace WixSharpSetup
 #else
         private const string Configuration = "Release";
 #endif
-
         private const string AppIcon = @"..\..\images\nexus.ico";
         private const string AppName = @"ParkitectNexus Client";
         private const string AppExecutable = @"ParkitectNexusClient.exe";
