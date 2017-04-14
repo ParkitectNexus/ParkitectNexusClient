@@ -59,7 +59,7 @@ namespace ParkitectNexus.Data.Web.API
                 var url = _website.ResolveUrl("api/assets/" + id + "?include=image,user,resource,dependencies");
 
                 using (var client = _webClientFactory.CreateWebClient())
-                using (var stream = client.OpenRead(url))
+                using (var stream = await client.OpenRead(url))
                 using (var reader = new StreamReader(stream))
                 {
                     var data = await reader.ReadToEndAsync();

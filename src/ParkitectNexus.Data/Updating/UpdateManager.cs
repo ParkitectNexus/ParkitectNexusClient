@@ -15,6 +15,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkitectNexus.Data.Utilities;
 using ParkitectNexus.Data.Web;
@@ -40,7 +41,7 @@ namespace ParkitectNexus.Data.Updating
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>
-        public UpdateInfo CheckForUpdates<TEntryPoint>()
+        public async Task<UpdateInfo> CheckForUpdates<TEntryPoint>()
         {
             var currentVersion = typeof (TEntryPoint).Assembly.GetName().Version;
 
@@ -50,7 +51,7 @@ namespace ParkitectNexus.Data.Updating
                     $"Checking for client updates... Currently on version v{currentVersion}-{OperatingSystem.Detect()}.");
 
                 using (var webClient = _webClientFactory.CreateWebClient(true))
-                using (var stream = webClient.OpenRead(GetUpdateVersionUrl()))
+                using (var stream = await webClient.OpenRead(GetUpdateVersionUrl()))
                 using (var streamReader = new StreamReader(stream))
                 using (var jsonTextReader = new JsonTextReader(streamReader))
                 {

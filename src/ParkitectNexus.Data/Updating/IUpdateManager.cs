@@ -11,6 +11,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Threading.Tasks;
+
 namespace ParkitectNexus.Data.Updating
 {
     public interface IUpdateManager
@@ -19,7 +21,7 @@ namespace ParkitectNexus.Data.Updating
         ///     Checks for available updates.
         /// </summary>
         /// <returns>Information about the available update.</returns>
-        UpdateInfo CheckForUpdates<TEntryPoint>();
+        Task<UpdateInfo> CheckForUpdates<TEntryPoint>();
 
         /// <summary>
         ///     Installs the specified update.

@@ -14,19 +14,20 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ParkitectNexus.Data.Web.Client
 {
     public interface INexusWebClient : IDisposable
     {
-        WebHeaderCollection ResponseHeaders { get; }
+        HttpResponseHeaders ResponseHeaders { get; }
 
         Task<Stream> OpenReadTaskAsync(string url);
-        string UploadString(string url, string data);
-        Stream OpenRead(string url);
+        void UploadString(string url, string data);
+        Task<Stream> OpenRead(string url);
         void DownloadFile(string url, string path);
-        string DownloadString(string url);
+        Task<string> DownloadString(string url);
         void Authorize();
     }
 }

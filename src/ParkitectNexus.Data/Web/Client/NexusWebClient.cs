@@ -12,15 +12,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Threading.Tasks;
 using ParkitectNexus.Data.Authentication;
 using OperatingSystem = ParkitectNexus.Data.Utilities.OperatingSystem;
 
 namespace ParkitectNexus.Data.Web.Client
 {
-    internal class NexusWebClient : WebClient, INexusWebClient
+    internal class NexusWebClient : HttpClient, INexusWebClient
     {
         private readonly IAuthManager _authManager;
 
@@ -37,15 +42,14 @@ namespace ParkitectNexus.Data.Web.Client
             // Workaround: disable certificate cache on MacOSX.
             if (os == SupportedOperatingSystem.MacOSX)
             {
-                CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
                 ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
             }
 
             // Add a version number header of requests.
             var version = $"{Assembly.GetEntryAssembly().GetName().Version}-{os}";
-
-            Headers.Add("X-ParkitectNexusInstaller-Version", version);
-            Headers.Add("user-agent", $"ParkitectNexus/{version}");
+            
+            DefaultRequestHeaders.Add("X-ParkitectNexusInstaller-Version", version);
+            DefaultRequestHeaders.Add("user-agent", $"ParkitectNexus/{version}");
         }
 
         #region Implementation of INexusWebClient
@@ -53,35 +57,63 @@ namespace ParkitectNexus.Data.Web.Client
         public void Authorize()
         {
             if (_authManager.IsAuthenticated)
-                Headers.Add("Authorization", _authManager.Key);
+                DefaultRequestHeaders.Add("Authorization", _authManager.Key);
         }
 
         #endregion
-
-        /// <summary>
-        ///     Returns a <see cref="T:System.Net.WebRequest" /> object for the specified resource.
-        /// </summary>
-        /// <returns>
-        ///     A new <see cref="T:System.Net.WebRequest" /> object for the specified resource.
-        /// </returns>
-        /// <param name="uri">A <see cref="T:System.Uri" /> that identifies the resource to request.</param>
-        protected override WebRequest GetWebRequest(Uri uri)
+        
+	    public async Task<Stream> OpenReadTaskAsync(string url)
         {
-            var request = base.GetWebRequest(uri);
-
-            if (request == null) return null;
-
-            // Some jumble for downloading from github.
-            if (request is HttpWebRequest)
+            using (HttpResponseMessage response = await GetAsync(url))
+            using (HttpContent content = response.Content)
             {
-                var http = request as HttpWebRequest;
-                http.KeepAlive = false;
-                http.ServicePoint.Expect100Continue = false;
+                return await content.ReadAsStreamAsync();
             }
-
-            // Set a 10 seconds timeout.
-            request.Timeout = 2000;
-            return request;
         }
+
+	    public async void UploadString(string url, string data) {
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("", data)
+            });
+		    await PostAsync(url, content);
+	    }
+
+	    public async Task<Stream> OpenRead(string url)
+        {
+            using (HttpResponseMessage response = await GetAsync(url))
+            using (HttpContent content = response.Content) {
+	            ResponseHeaders = response.Headers;
+	            return await content.ReadAsStreamAsync();
+            }
+        }
+
+	    public async void DownloadFile(string url, string path) {
+            using (HttpResponseMessage response = await GetAsync(url))
+            using (HttpContent content = response.Content)
+            {
+                ResponseHeaders = response.Headers;
+                byte[] result = await content.ReadAsByteArrayAsync();
+                
+                if (result != null)
+                {
+                    File.WriteAllBytes(path, result);
+                }
+            }
+        }
+
+	    public async Task<string> DownloadString(string url)
+        {
+            using (HttpResponseMessage response = await GetAsync(url))
+            using (HttpContent content = response.Content)
+            {
+                ResponseHeaders = response.Headers;
+                string str = await content.ReadAsStringAsync();
+
+                return str;
+            }
+        }
+
+	    public HttpResponseHeaders ResponseHeaders { get; set; }
     }
 }

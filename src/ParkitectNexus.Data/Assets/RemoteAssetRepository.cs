@@ -60,9 +60,9 @@ namespace ParkitectNexus.Data.Assets
                 using (var stream = await webClient.OpenReadTaskAsync(downloadInfo.Url))
                 {
                     // Read content information from the headers.
-                    var contentDispositionHeader = webClient.ResponseHeaders.Get("Content-Disposition");
-                    var contentLengthHeader = webClient.ResponseHeaders.Get("Content-Length");
-                    var contentTypeHeader = webClient.ResponseHeaders.Get("Content-Type");
+                    var contentDispositionHeader = webClient.ResponseHeaders.GetValues("Content-Disposition").First();
+                    var contentLengthHeader = webClient.ResponseHeaders.GetValues("Content-Length").First();
+                    var contentTypeHeader = webClient.ResponseHeaders.GetValues("Content-Type").First();
 
                     // Ensure the required content headers exist.
                     if (string.IsNullOrWhiteSpace(contentDispositionHeader) ||
